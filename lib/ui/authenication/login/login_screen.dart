@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/MVC/controller/authentication/signIn.dart';
 import 'package:bebeautyapp/ui/authenication/register/register_screen.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -22,6 +24,9 @@ class LoginScreen extends StatelessWidget {
   final loginButtonController = RoundedLoadingButtonController();
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
+
+  String email = "";
+  String password = "";
 
   // manage state of modal progress HUD widget
   bool _isInAsyncCall = false;
@@ -62,13 +67,17 @@ class LoginScreen extends StatelessWidget {
                   hintText: "Your Email",
                   icon: Icons.mail_outline_outlined,
                   focusNode: emailFocusNode,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    email = value;
+                  },
                 ),
 
                 RoundedPasswordField(
                   hintText: "Password",
                   focusNode: passwordFocusNode,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    password = value;
+                  },
                 ),
 
                 Container(
@@ -95,23 +104,26 @@ class LoginScreen extends StatelessWidget {
                 ),
                 CustomRoundedLoadingButton(
                   text: 'Sign In',
-                  onPress: () {
-                    //login click
-                    // Provider.of<LoginViewModel>(context, listen: false)
-                    //     .loginWithEmailAndPassword((message) {
-                    //   if (message != null) {
-                    //     CoolAlert.show(
-                    //         context: context,
-                    //         type: CoolAlertType.error,
-                    //         text: 'Sign in failed!\nError: $message',
-                    //         onConfirmBtnTap: () {
-                    //           loginButtonController.reset();
-                    //           Navigator.of(context).pop();
-                    //         });
-                    //   } else {
-                    //     loginButtonController.success();
-                    //   }
-                    // });
+                  onPress: () async {
+                   int result = await SignIn_Controller().logInWithEmailAndPassword(email, password) as int;
+                   if(result == 0) { // sign in as admin
+                      // Open Home Page for admin
+                     print("Sign in as admin");
+                     Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                     loginButtonController.success();
+                   }
+                   else if (result == 1) { //sign in as user
+                     // Open Home Page for user
+                     print("Sign in as user");
+                     Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                     loginButtonController.success();
+                     Navigator.push(
+                         context, MaterialPageRoute(builder: (context) => MainScreen()));
+                   }
+                   else {
+                     print("Failed sign in");
+                     loginButtonController.stop();
+                   }
                   },
                   controller: loginButtonController,
                   horizontalPadding: 45,
@@ -185,9 +197,8 @@ class LoginScreen extends StatelessWidget {
                   textColor: Colors.black54,
                   color: Colors.white,
                   onPress: () {
-                    //TODO google login click
-                    // Provider.of<LoginViewModel>(context, listen: false)
-                    //     .onGoogleLoginClick();
+                    print("ok");
+
                   },
                 ),
                 SizedBox(

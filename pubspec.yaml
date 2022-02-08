@@ -48,6 +48,8 @@ dependencies:
   rounded_loading_button: ^2.0.8
   google_sign_in: ^5.0.0-nullsafety
   flutter_facebook_auth: ^4.0.1
+  flutter_login_facebook: ^1.1.0
+  fluttertoast: ^8.0.8
   uuid: ^3.0.5
   font_awesome_flutter: ^9.2.0
 

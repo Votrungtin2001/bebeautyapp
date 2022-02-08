@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/MVC/controller/authentication/signUp.dart';
 import 'package:bebeautyapp/main.dart';
 import 'package:bebeautyapp/model/login/register_view_model.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
@@ -18,6 +19,12 @@ class RegisterScreen extends StatelessWidget {
   final retypePasswordFocusNode = FocusNode();
   final phoneNumberFocusNode = FocusNode();
   final nameFocusNode = FocusNode();
+
+  String email = "";
+  String displayName = "";
+  String phone = "";
+  String password = "";
+  String rePassword = "";
 
   @override
   Widget build(BuildContext context) {
@@ -63,32 +70,41 @@ class RegisterScreen extends StatelessWidget {
                             hintText: "Email",
                             icon: Icons.mail_outline_outlined,
                             focusNode: emailFocusNode,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              email = value;
+                            },
                           ),
                           RoundedInputField(
                             hintText: "Display Name",
                             icon: Icons.person,
                             focusNode: nameFocusNode,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              displayName = value;
+                            },
                           ),
                           RoundedInputField(
                             hintText: "Phone Number",
                             focusNode: phoneNumberFocusNode,
                             icon: Icons.phone_android_rounded,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              phone = value;
+                            },
                           ),
 
                           RoundedPasswordField(
                             hintText: "Password",
                             focusNode: passwordFocusNode,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              password = value;
+                            },
                           ),
                           RoundedPasswordField(
                             hintText: "Re-Enter Password",
                             focusNode: retypePasswordFocusNode,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              rePassword = value;
+                            },
                           ),
-
 
                           Align(
                             alignment: Alignment.center,
@@ -119,7 +135,18 @@ class RegisterScreen extends StatelessWidget {
                                                   width: 3,
                                                 ),
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                                                onPressed: (){},
+                                                onPressed: (){
+                                                  //Validate
+                                                  if (1==1) {
+                                                    Future<bool> result = SignUp_Controller().createUser(email, displayName, phone, password);
+                                                    if(result == true) {
+                                                      // Clear text ở các textfield
+
+                                                      print("Created Account Successfully");
+                                                    }
+                                                  }
+
+                                                },
                                               ),
                                             ),
                                           ],
@@ -131,12 +158,9 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-
-
                           Center(
                             child: Padding(
                               padding: const EdgeInsets.only(top: 8),
-
                             child: RichText(
                               text: TextSpan(
                                   text: 'Already have an account? ',
