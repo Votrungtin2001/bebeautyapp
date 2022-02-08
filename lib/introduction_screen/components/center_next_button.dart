@@ -1,5 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/ui/authenication/register/register_screen.dart';
+import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class CenterNextButton extends StatelessWidget {
@@ -89,7 +91,12 @@ class CenterNextButton extends StatelessWidget {
                     child: _signUpMoveAnimation.value > 0.7
                         ? InkWell(
                       key: ValueKey('Sign Up button'),
-                      onTap: onNextClick,
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RegisterScreen()),
+                        );
+                      },
                       child: Container(
                         height: 57,
                         width: 263,
@@ -152,7 +159,12 @@ class CenterNextButton extends StatelessWidget {
                                   width: 3,
                                 ),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                                onPressed: () {},
+                                onPressed: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                                  );
+                                },
                               ),
                             ),
                             // FlatButton(
@@ -171,7 +183,9 @@ class CenterNextButton extends StatelessWidget {
                           ],
                         ),
                       ),
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.pushNamed(context, RegisterScreen.id);
+                      },
 
                     ),
                   ),
