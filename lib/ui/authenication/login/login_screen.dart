@@ -1,4 +1,4 @@
-import 'package:bebeautyapp/MVC/controller/authentication/signIn.dart';
+import 'package:bebeautyapp/repo/function/signIn.dart';
 import 'package:bebeautyapp/ui/authenication/register/register_screen.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -24,6 +24,7 @@ class LoginScreen extends StatelessWidget {
   final loginButtonController = RoundedLoadingButtonController();
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
+  final signInFunctions = SignIn_Function();
 
   String email = "";
   String password = "";
@@ -105,7 +106,7 @@ class LoginScreen extends StatelessWidget {
                 CustomRoundedLoadingButton(
                   text: 'Sign In',
                   onPress: () async {
-                   int result = await SignIn_Controller().logInWithEmailAndPassword(email, password) as int;
+                   int result = await signInFunctions.logInWithEmailAndPassword(email, password) as int;
                    if(result == 0) { // sign in as admin
                       // Open Home Page for admin
                      print("Sign in as admin");
@@ -227,4 +228,5 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
 }

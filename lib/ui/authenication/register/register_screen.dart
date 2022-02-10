@@ -1,4 +1,4 @@
-import 'package:bebeautyapp/MVC/controller/authentication/signUp.dart';
+import 'package:bebeautyapp/repo/function/signUp.dart';
 import 'package:bebeautyapp/main.dart';
 import 'package:bebeautyapp/model/login/register_view_model.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
@@ -19,6 +19,8 @@ class RegisterScreen extends StatelessWidget {
   final retypePasswordFocusNode = FocusNode();
   final phoneNumberFocusNode = FocusNode();
   final nameFocusNode = FocusNode();
+
+  final signUpFunctions = new SignUp_Function();
 
   String email = "";
   String displayName = "";
@@ -138,7 +140,7 @@ class RegisterScreen extends StatelessWidget {
                                                 onPressed: (){
                                                   //Validate
                                                   if (1==1) {
-                                                    Future<bool> result = SignUp_Controller().createUser(email, displayName, phone, password);
+                                                    Future<bool> result = signUpFunctions.createUser(email, displayName, phone, password);
                                                     if(result == true) {
                                                       // Clear text ở các textfield
 

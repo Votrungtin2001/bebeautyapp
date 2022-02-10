@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'authentication_services.dart';
+import '../services/authentication_services.dart';
 
-class SignIn_Controller {
+class SignIn_Function {
   final AuthenticationServices _auth = AuthenticationServices();
   final auth = FirebaseAuth.instance;
   late User user;

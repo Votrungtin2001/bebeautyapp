@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:bebeautyapp/MVC/model/MUser.dart';
+import 'package:bebeautyapp/model/user/MUser.dart';
+import 'package:bebeautyapp/repo/services/chat_services.dart';
+import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/repo/services/user_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../databaseManager.dart';
 
 class AuthenticationServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -18,6 +19,10 @@ class AuthenticationServices {
 
   final googleSignIn = GoogleSignIn(scopes: ['email']);
   final fb = FacebookLogin();
+
+  final UserServices userServices = new UserServices();
+  final ProductServices productServices = new ProductServices();
+  final ChatServices chatServices = new ChatServices();
 
   // create user obj based on firebase user
   MUser_IsNotLogout? _userfromFirebase(User user) {
@@ -111,9 +116,9 @@ class AuthenticationServices {
           dob: defaultDOB,
           gender: 1,
           avatarUri: "");
-      await DatabaseManager().createBeBeautyUser(user_model);
-      await DatabaseManager().createFavorites(user_model);
-      await DatabaseManager().createChatRoom(user_model.getID());
+      await userServices.createBeBeautyUser(user_model);
+      await productServices.createFavorites(user_model);
+      await chatServices.createChatRoom(user_model.getID());
       await _auth.signOut();
       Fluttertoast.showToast(msg: 'Verify email successfully. Your account was created', toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
     }
@@ -144,9 +149,9 @@ class AuthenticationServices {
               dob: DateTime.now(),
               gender: 1,
               avatarUri: "");
-          await DatabaseManager().createBeBeautyUser(user_model);
-          await DatabaseManager().createFavorites(user_model);
-          await DatabaseManager().createChatRoom(user_model.getID());
+          await userServices.createBeBeautyUser(user_model);
+          await productServices.createFavorites(user_model);
+          await chatServices.createChatRoom(user_model.getID());
         }
       }
       return user;
