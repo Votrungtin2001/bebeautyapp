@@ -35,14 +35,14 @@ class LoginViewModel extends ChangeNotifier {
     isLoading = false;
   }
 
-  String? passwordValidator(text) {
+  String passwordValidator(text) {
     if (!kPasswordRegex.hasMatch(text)) return 'Invalid password!';
-    return null;
+    return "Valid Password";
   }
 
-  String? emailValidator(text) {
+  String emailValidator(text) {
     if (!emailValidatorRegExp.hasMatch(text)) return 'Invalid email!';
-    return null;
+    return "Valid Password";
   }
 
   Future onGoogleLoginClick() async {

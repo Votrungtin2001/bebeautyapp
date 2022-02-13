@@ -7,7 +7,7 @@ class LoginWithButton extends StatelessWidget {
   final Color iconColor;
   final bool isOutLine;
   final Color textColor;
-  final Function onPress;
+  final void Function() onPress;
   const LoginWithButton({
     required this.icon,
     required this.text,
@@ -26,7 +26,7 @@ class LoginWithButton extends StatelessWidget {
           icon,
           color: iconColor,
         ),
-        onPressed: onPress(),
+        onPressed: onPress,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),

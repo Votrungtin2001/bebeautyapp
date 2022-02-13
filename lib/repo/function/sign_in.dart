@@ -1,13 +1,32 @@
+import 'package:bebeautyapp/contants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../services/authentication_services.dart';
 
-class SignIn_Function {
+class SignIn_Function extends ChangeNotifier {
   final AuthenticationServices _auth = AuthenticationServices();
   final auth = FirebaseAuth.instance;
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
   late User user;
+
+  void reset() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  String? passwordValidator(text) {
+    if (!kPasswordRegex.hasMatch(text)) return 'Invalid password!';
+    return null;
+  }
+
+  String? emailValidator(text) {
+    if (!emailValidatorRegExp.hasMatch(text)) return 'Invalid email!';
+    return null;
+  }
+
 
   Future<int> logInWithEmailAndPassword(String email, String password) async {
     dynamic result = await _auth.signInWithEmailAndPassword(email, password);
