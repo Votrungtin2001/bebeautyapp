@@ -376,63 +376,38 @@ class _RegisterScreen extends State<RegisterScreen> {
                             //   },
                             // ),
 
-                            Align(
-                              alignment: Alignment.center,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(30),
-                                        color: Colors.white,
-                                      ),
-                                      child: InkWell(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                width: 290,
-                                                height: 60,
-                                                child:   CustomRoundedLoadingButton(
-                                                  text: "Sign Up",
-                                                  onPress: () async {
-                                                    //Validate
-                                                    if (_formKey.currentState!.validate()) {
-                                                      bool result = await signUpFunctions.createUser(email, displayName, phone, password);
-                                                      if(result == true) {
-                                                        // Clear text ở các textfield
-                                                        Provider.of<SignUp_Function>(context, listen: false)
-                                                            .emailController.clear();
-                                                        Provider.of<SignUp_Function>(context, listen: false)
-                                                            .displayNameController.clear();
-                                                        Provider.of<SignUp_Function>(context, listen: false)
-                                                            .phoneNumberController.clear();
-                                                        Provider.of<SignUp_Function>(context, listen: false)
-                                                            .passwordController.clear();
-                                                        Provider.of<SignUp_Function>(context, listen: false)
-                                                            .retypePasswordController.clear();
-                                                        print("Created Account Successfully");
-                                                        registerButtonController.stop();
-                                                      }
-                                                    }
-                                                    else registerButtonController.stop();
-                                                  }, controller: registerButtonController,
-                                                  horizontalPadding: 45,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            CustomRoundedLoadingButton(
+                              text: 'Sign Up',
+                              onPress: () async {
+                                //Validate
+                                if (_formKey.currentState!.validate()) {
+                                  bool result = await signUpFunctions.createUser(email, displayName, phone, password);
+                                  if(result == true) {
+                                    // Clear text ở các textfield
+                                    Provider.of<SignUp_Function>(context, listen: false)
+                                        .emailController.clear();
+                                    Provider.of<SignUp_Function>(context, listen: false)
+                                        .displayNameController.clear();
+                                    Provider.of<SignUp_Function>(context, listen: false)
+                                        .phoneNumberController.clear();
+                                    Provider.of<SignUp_Function>(context, listen: false)
+                                        .passwordController.clear();
+                                    Provider.of<SignUp_Function>(context, listen: false)
+                                        .retypePasswordController.clear();
+                                    print("Created Account Successfully");
+                                    registerButtonController.stop();
+                                  }
+                                }
+                                else registerButtonController.stop();
+                              }, controller: registerButtonController,
+                              horizontalPadding: 45,
                             ),
+
+
+
+
+
+
                             Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 15),
