@@ -50,4 +50,12 @@ class SignIn_Function extends ChangeNotifier {
     }
     return false;
   }
+
+  Future<bool> logInWithFacebook() async {
+    dynamic result = await _auth.signInWithFacebook();
+    if(result != null) {
+      return true;
+    }
+    return false;
+  }
 }

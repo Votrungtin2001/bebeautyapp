@@ -20,14 +20,11 @@ import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.d
 class LoginScreen extends StatefulWidget {
 
   static String id = 'LoginScreen';
-  final loginButtonController = RoundedLoadingButtonController();
+
   final emailController = TextEditingController();
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
-  final signInFunctions = SignIn_Function();
 
-  String email = "";
-  String password = "";
 
   @override
   _LoginScreen createState() => new _LoginScreen();
@@ -38,6 +35,12 @@ class _LoginScreen extends State<LoginScreen> {
   bool _isInAsyncCall = false;
   bool _obscureText = true;
   final _formKey = GlobalKey<FormState>();
+  final signInFunctions = SignIn_Function();
+  final loginButtonController = RoundedLoadingButtonController();
+
+  String email = "";
+  String password = "";
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -94,7 +97,7 @@ class _LoginScreen extends State<LoginScreen> {
                TextFormField(
                     focusNode: widget.emailFocusNode,
                     onChanged: (value) {
-                      widget.email = value;
+                      email = value;
                     },
                     cursorColor: kTextColor,
                      validator: (text) {
@@ -147,7 +150,7 @@ class _LoginScreen extends State<LoginScreen> {
 
                     TextFormField(
                           obscureText: _obscureText,
-                          onChanged:   (value) {widget.password = value;},
+                          onChanged:   (value) {password = value;},
                           focusNode: widget.passwordFocusNode,
                           controller: Provider.of<SignIn_Function>(context, listen: false)
                                       .passwordController,
@@ -205,7 +208,6 @@ class _LoginScreen extends State<LoginScreen> {
                     margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                     child: GestureDetector(
                       onTap: (){
-
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
@@ -228,40 +230,32 @@ class _LoginScreen extends State<LoginScreen> {
                     text: 'Sign In',
                     onPress: () async {
                       if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        widget.loginButtonController.stop();
-                        return;
+                        print(email + " " + password);
+                        int result = await signInFunctions.logInWithEmailAndPassword(email, password);
+                        if(result == 0) { // sign in as admin
+                          // Open Home Page for admin
+                          print("Sign in as admin");
+                          Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          loginButtonController.success();
+                        }
+                        else if (result == 1) { //sign in as user
+                          // Open Home Page for user
+                          print("Sign in as user");
+                          Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          loginButtonController.success();
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => MainScreen()));
+                        }
+                        else {
+                          print("Failed sign in");
+                          loginButtonController.stop();
+                        }
+                        loginButtonController.stop();
                       }
-                      widget.loginButtonController.stop();
-                     int result = await widget.signInFunctions.logInWithEmailAndPassword(widget.email, widget.password);
-                     if(result == 0) { // sign in as admin
-                        // Open Home Page for admin
-                       print("Sign in as admin");
-                       Provider.of<SignIn_Function>(context, listen: false)
-                           .emailController.clear();
-                       Provider.of<SignIn_Function>(context, listen: false)
-                           .passwordController.clear();
-                       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                       widget.loginButtonController.success();
-                     }
-                     else if (result == 1) { //sign in as user
-                       // Open Home Page for user
-                       print("Sign in as user");
-                       Provider.of<SignIn_Function>(context, listen: false)
-                           .emailController.clear();
-                       Provider.of<SignIn_Function>(context, listen: false)
-                           .passwordController.clear();
-                       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                       widget.loginButtonController.success();
-                       Navigator.push(
-                           context, MaterialPageRoute(builder: (context) => MainScreen()));
-                     }
-                     else {
-                       print("Failed sign in");
-                       widget.loginButtonController.stop();
-                     }
+                      else loginButtonController.stop();
+
                     },
-                    controller: widget.loginButtonController,
+                    controller: loginButtonController,
                     horizontalPadding: 45,
                   ),
 
@@ -333,9 +327,15 @@ class _LoginScreen extends State<LoginScreen> {
                     isOutLine: true,
                     textColor: Colors.black54,
                     color: Colors.white,
-                    onPress: () {
-                      print("ok");
-
+                    onPress: () async {
+                      bool result = await signInFunctions.logInWithGoogle();
+                      if(result == true) {
+                        print("Sign in as user by google");
+                        Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => MainScreen()));
+                      }
+                      else Fluttertoast.showToast(msg: 'Logged failed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                     },
                   ),
                   SizedBox(
@@ -348,11 +348,16 @@ class _LoginScreen extends State<LoginScreen> {
                     isOutLine: false,
                     textColor: Colors.white,
                     color: kFacebookColor,
-                    onPress: () {
-                      //TODO fb login click
-                      // Provider.of<LoginViewModel>(context, listen: false)
-                      //     .onFacebookSignInClick();
-                    },
+                    onPress: () async {
+                      bool result = await signInFunctions.logInWithFacebook();
+                      if(result == true) {
+                        print("Sign in as user by facebook");
+                        Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                        Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => MainScreen()));
+                      }
+                      else Fluttertoast.showToast(msg: 'Logged failed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      },
                   ),
                   SizedBox(
                     height: 24,

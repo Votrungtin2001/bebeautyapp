@@ -40,6 +40,7 @@ class AuthenticationServices {
       User? user = result.user;
       return user;
     } on FirebaseAuthException catch (e) {
+      print(e.code);
       switch (e.code) {
         case "wrong-password":
           Fluttertoast.showToast(msg: 'Your password is wrong.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
@@ -159,6 +160,70 @@ class AuthenticationServices {
       print(e.toString());
     }
   }
+
+  // Sign in with Facebook
+  Future signInWithFacebook() async {
+    print('Starting Facebook Login');
+    final res = await fb.logIn(
+        permissions: [
+          FacebookPermission.publicProfile,
+          FacebookPermission.email
+        ]
+    );
+
+    if(res.status == FacebookLoginStatus.success) {
+      print('It worked');
+
+      //Get Token
+      final FacebookAccessToken? fbToken = res.accessToken;
+
+      //Convert to Auth Credential
+      final AuthCredential credential
+      = FacebookAuthProvider.credential(fbToken!.token);
+
+      //Firebase Sign In
+      UserCredential result = await _auth.signInWithCredential(credential);
+      User? user = result.user;
+
+      // Check isNewUser or Not
+      if (result.additionalUserInfo!.isNewUser) {
+        if (user != null) {
+          MUser user_model = new MUser(id: user.uid,
+              displayName: "",
+              email: "",
+              role: 1,
+              address: "",
+              phone: "",
+              dob: DateTime.now(),
+              gender: 1,
+              avatarUri: "");
+          await userServices.createBeBeautyUser(user_model);
+          await productServices.createFavorites(user_model);
+          await chatServices.createChatRoom(user_model.getID());
+        }
+      }
+      print('${result.user!.displayName} is now logged in');
+      return user;
+    }
+    else if(res.status == FacebookLoginStatus.cancel) {
+      print('The user canceled the login');
+      Fluttertoast.showToast(msg: 'The user canceled the login.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+      User? user = null;
+      return user;
+    }
+    else {
+      print('There was an error');
+      Fluttertoast.showToast(msg: 'There was an error happened.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+      User? user = null;
+      return user;
+    }
+  }
+
+  // Send email to reset password
+  Future sendPasswordResetEmail(String email) async {
+    return _auth.sendPasswordResetEmail(email: email);
+  }
+
 
 
 }
