@@ -60,7 +60,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height - 30,
+                  height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
                     color: kFourthColor.withOpacity(0.2),
 
@@ -177,7 +177,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 validator: (text) {
                                   if (text == null || text.isEmpty) {
                                     return 'Name is empty';
-                                  }
+                                  }else if (!kNameRegex.hasMatch(text)) return 'Invalid Name!';
                                   return null;
                                 },
                                 controller: Provider.of<SignUp_Function>(context, listen: false)
@@ -259,7 +259,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 validator: (text) {
                                 if (text == null || text.isEmpty) {
                                   return 'Password is empty';
-                                }
+                                }else if (!kPasswordRegex.hasMatch(text)) return 'Minimum six characters, at least one uppercase letter,\n '
+                                    'one lowercase letter, one number and one special character!';
                                 return null;
                                 },
                                 cursorColor: kTextColor,

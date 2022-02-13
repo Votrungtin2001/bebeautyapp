@@ -158,7 +158,7 @@ class _LoginScreen extends State<LoginScreen> {
                       validator: (text) {
                         if (text == null || text.isEmpty) {
                           return 'Password is empty';
-                        }
+                        } else if (!kPasswordRegex.hasMatch(text)) return 'Minimum six characters, at least one uppercase letter, one lowercase letter, one number and one special character!';
                         return null;
                       },
                           decoration: InputDecoration(
