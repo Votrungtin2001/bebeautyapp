@@ -5,14 +5,31 @@ import 'package:bebeautyapp/model/login/register_view_model.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
 import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.dart';
 import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 
 class RegisterScreen extends StatefulWidget {
   static String id = 'RegisterScreen';
+
+  @override
+  _RegisterScreen createState() => new _RegisterScreen();
+}
+class _RegisterScreen extends State<RegisterScreen> {
+  // manage state of modal progress HUD widget
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
+  final _formKey = GlobalKey<FormState>();
+
+  String email = "";
+  String displayName = "";
+  String phone = "";
+  String password = "";
+  String rePassword = "";
 
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
@@ -22,19 +39,7 @@ class RegisterScreen extends StatefulWidget {
 
   final signUpFunctions = new SignUp_Function();
 
-  String email = "";
-  String displayName = "";
-  String phone = "";
-  String password = "";
-  String rePassword = "";
-  @override
-  _RegisterScreen createState() => new _RegisterScreen();
-}
-class _RegisterScreen extends State<RegisterScreen> {
-  // manage state of modal progress HUD widget
-  bool _obscureText1 = true;
-  bool _obscureText2 = true;
-  final _formKey = GlobalKey<FormState>();
+  final registerButtonController = RoundedLoadingButtonController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -122,9 +127,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                             // ),
 
                                 TextFormField(
-                                focusNode: widget.emailFocusNode,
+                                focusNode: emailFocusNode,
                                 onChanged: (value) {
-                                  widget.email = value;
+                                  email = value;
                                 },
                                 cursorColor: kTextColor,
                                 validator: (text) {
@@ -160,16 +165,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   ),
                                 ),
 
-
-
-
                             SizedBox(
                               height: 15,
                             ),
                             TextFormField(
-                                focusNode: widget.nameFocusNode,
+                                focusNode: nameFocusNode,
                                 onChanged: (value) {
-                                  widget.displayName = value;
+                                  displayName = value;
                                 },
                                 cursorColor: kTextColor,
                                 validator: (text) {
@@ -208,9 +210,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                               height: 15,
                             ),
                            TextFormField(
-                                focusNode: widget.phoneNumberFocusNode,
+                                focusNode: phoneNumberFocusNode,
                                 onChanged: (value) {
-                                  widget.phone = value;
+                                  phone = value;
                                 },
                                 cursorColor: kTextColor,
                                 validator: (text) {
@@ -250,8 +252,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                             ),
                             TextFormField(
                                 obscureText: _obscureText1,
-                                onChanged:   (value) {widget.password = value;},
-                                focusNode: widget.passwordFocusNode,
+                                onChanged:   (value) {password = value;},
+                                focusNode: passwordFocusNode,
                                 controller: Provider.of<SignUp_Function>(context, listen: false)
                                     .passwordController,
                                 validator: (text) {
@@ -304,15 +306,15 @@ class _RegisterScreen extends State<RegisterScreen> {
                               ),
                             TextFormField(
                                 obscureText: _obscureText2,
-                                onChanged:   (value) {widget.rePassword = value;},
-                                focusNode: widget.retypePasswordFocusNode,
+                                onChanged:   (value) {rePassword = value;},
+                                focusNode: retypePasswordFocusNode,
                                 controller: Provider.of<SignUp_Function>(context, listen: false)
                                     .retypePasswordController,
                                 cursorColor: kTextColor,
                               validator: (text) {
                                 if (text == null || text.isEmpty) {
                                   return 'Re-Password is empty';
-                                }else if (text != widget.password ) return 'Password does not match!';
+                                }else if (text != password ) return 'Password does not match!';
                                 return null;
                               },
                                 decoration: InputDecoration(
@@ -394,22 +396,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                                               SizedBox(
                                                 width: 290,
                                                 height: 60,
-                                                child:   OutlineButton(
-                                                  child: Text('Sign Up', style: TextStyle(color: kPrimaryColor,fontWeight: FontWeight.bold,fontSize: 24)),
-                                                  borderSide: BorderSide(
-                                                    color: kPrimaryColor,
-                                                    style: BorderStyle.solid,
-                                                    width: 3,
-                                                  ),
-                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                                                  onPressed: (){
-
+                                                child:   CustomRoundedLoadingButton(
+                                                  text: "Sign Up",
+                                                  onPress: () async {
                                                     //Validate
                                                     if (_formKey.currentState!.validate()) {
-                                                      _formKey.currentState!.save();
-                                                    }
-                                                    if (1==1) {
-                                                      Future<bool> result = widget.signUpFunctions.createUser(widget.email, widget.displayName, widget.phone, widget.password);
+                                                      bool result = await signUpFunctions.createUser(email, displayName, phone, password);
                                                       if(result == true) {
                                                         // Clear text ở các textfield
                                                         Provider.of<SignUp_Function>(context, listen: false)
@@ -423,10 +415,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                         Provider.of<SignUp_Function>(context, listen: false)
                                                             .retypePasswordController.clear();
                                                         print("Created Account Successfully");
+                                                        registerButtonController.stop();
                                                       }
                                                     }
-
-                                                  },
+                                                    else registerButtonController.stop();
+                                                  }, controller: registerButtonController,
+                                                  horizontalPadding: 45,
                                                 ),
                                               ),
                                             ],

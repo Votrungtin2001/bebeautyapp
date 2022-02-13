@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/repo/function/forgotPassword.dart';
 import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -15,6 +16,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   final emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String email = "";
+  final forgotPasswordFunctions = new ForgotPasswordFunction();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,11 +97,12 @@ class ForgotPasswordScreen extends StatelessWidget {
 
               CustomRoundedLoadingButton(
                 text: 'Send',
-                onPress: () {
+                onPress: () async {
                   if (_formKey.currentState!.validate()) {
-                    print("not oke");
-                    _formKey.currentState!.save();
+                    await forgotPasswordFunctions.sendEmailResetPassword(email);
+                    sendEmailButtonController.stop();
                   }
+                  else sendEmailButtonController.stop();
                   //login click
                   // Provider.of<LoginViewModel>(context, listen: false)
                   //     .loginWithEmailAndPassword((message) {

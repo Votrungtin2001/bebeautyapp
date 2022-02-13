@@ -11,7 +11,7 @@ class ChatServices {
       'latestMessage': "",
       'latestMessageTime': 0,
       'isSeenByAdmin': false,
-      'latestMessageSendBy': ""})
+      'latestMessageSendBy': "Hello my new member! Please message to start our conversation."})
         .catchError((e) {
       print(e);
     });
