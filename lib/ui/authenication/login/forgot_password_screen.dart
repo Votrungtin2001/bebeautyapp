@@ -35,6 +35,9 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SizedBox(
+                height: 20,
+              ),
               SvgPicture.asset(
                 "assets/images/forgot_password.svg",
                 height: 352,
