@@ -31,6 +31,8 @@ class _RegisterScreen extends State<RegisterScreen> {
   String password = "";
   String rePassword = "";
 
+  bool checkTerm = false;
+
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final retypePasswordFocusNode = FocusNode();
@@ -45,6 +47,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Form(
@@ -60,7 +63,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     color: kFourthColor.withOpacity(0.2),
 
@@ -376,6 +379,106 @@ class _RegisterScreen extends State<RegisterScreen> {
                             //   },
                             // ),
 
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FormField<bool>(
+                                  builder: (state) {
+                                    return Column(
+                                      children: <Widget>[
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Checkbox(
+                                                value: checkTerm,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    checkTerm = value!;
+                                                    state.didChange(value);
+                                                  });
+                                                }),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top:10),
+                                              child: Text.rich(
+                                                  TextSpan(
+                                                      text: 'By clicking Sign Up, you agree to\nour ', style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      fontSize: 16, color: kTextColor
+                                                  ),
+                                                      children: <TextSpan>[
+                                                        TextSpan(
+                                                            text: 'Terms of Service', style: TextStyle(
+                                                          fontSize: 18, color: kPrimaryColor,
+                                                          fontFamily: 'Poppins',
+                                                          decoration: TextDecoration.underline,
+                                                        ),
+                                                            recognizer: TapGestureRecognizer()
+                                                              ..onTap = () {
+                                                                // code to open / launch terms of service link here
+                                                              }
+                                                        ),
+                                                        TextSpan(
+                                                            text: ' and ', style: TextStyle(
+                                                            fontFamily: 'Poppins',
+                                                            fontSize: 16, color: kTextColor
+                                                        ),
+                                                            children: <TextSpan>[
+                                                              TextSpan(
+                                                                  text: 'Privacy\nPolicy', style: TextStyle(
+                                                                  fontFamily: 'Poppins',
+                                                                  fontSize: 18, color: kPrimaryColor,
+                                                                  decoration: TextDecoration.underline
+                                                              ),
+                                                                  recognizer: TapGestureRecognizer()
+                                                                    ..onTap = () {
+                                                                      // code to open / launch privacy policy link here
+                                                                    }
+                                                              )
+
+                                                            ]
+                                                        ),
+                                                        TextSpan(
+                                                            text: '.', style: TextStyle(
+                                                            fontFamily: 'Poppins',
+                                                            fontSize: 16, color: kTextColor
+                                                        )
+                                                        )
+                                                      ]
+                                                  )
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        //display error in matching theme
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 110,top: 7),
+                                          child: Text(
+                                            state.errorText ?? '',
+                                            style: TextStyle(
+                                              color: Theme.of(context).errorColor,
+                                              fontSize: 11,
+                                              fontFamily: 'Poppins'
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                  //output from validation will be displayed in state.errorText (above)
+                                  validator: (value) {
+                                    if (!checkTerm) {
+                                      return 'You need to accept Terms & Privacy';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+
                             CustomRoundedLoadingButton(
                               text: 'Sign Up',
                               onPress: () async {
@@ -403,14 +506,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                               horizontalPadding: 45,
                             ),
 
-
-
-
-
-
                             Center(
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 15),
+                                padding: const EdgeInsets.only(bottom: 15),
                               child: RichText(
                                 text: TextSpan(
                                     text: 'Already have an account? ',
