@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/ui/authenication/login/widgets/text_field_container.dart';
-import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/constants.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String hintText;

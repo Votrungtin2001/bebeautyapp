@@ -4,7 +4,7 @@ import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.d
 
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';

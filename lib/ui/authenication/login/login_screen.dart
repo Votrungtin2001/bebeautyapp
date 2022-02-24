@@ -1,9 +1,10 @@
 import 'package:bebeautyapp/repo/function/sign_in.dart';
 import 'package:bebeautyapp/ui/authenication/register/register_screen.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
+import 'package:bebeautyapp/ui/home/homes/home.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:bebeautyapp/ui/home/main_screen.dart';
-import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -243,8 +244,14 @@ class _LoginScreen extends State<LoginScreen> {
                           print("Sign in as user");
                           Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                           loginButtonController.success();
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => MainScreen()));
+                          Future.delayed(const Duration(milliseconds: 500), () {
+                            setState(() {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) => MainScreen()),
+                                      (route) => false);
+                            });
+                          });
+
                         }
                         else {
                           print("Failed sign in");

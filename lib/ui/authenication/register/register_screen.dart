@@ -1,10 +1,9 @@
 import 'package:bebeautyapp/repo/function/sign_in.dart';
 import 'package:bebeautyapp/repo/function/sign_up.dart';
 import 'package:bebeautyapp/main.dart';
-import 'package:bebeautyapp/model/login/register_view_model.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
 import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.dart';
-import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -12,13 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-
 class RegisterScreen extends StatefulWidget {
   static String id = 'RegisterScreen';
 
   @override
   _RegisterScreen createState() => new _RegisterScreen();
 }
+
 class _RegisterScreen extends State<RegisterScreen> {
   // manage state of modal progress HUD widget
   bool _obscureText1 = true;
@@ -60,13 +59,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
                   child: kAppNameTextPink,
-
                 ),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: kFourthColor.withOpacity(0.2),
-
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
@@ -129,236 +126,255 @@ class _RegisterScreen extends State<RegisterScreen> {
                             //   },
                             // ),
 
-                                TextFormField(
-                                focusNode: emailFocusNode,
-                                onChanged: (value) {
-                                  email = value;
-                                },
-                                cursorColor: kTextColor,
-                                validator: (text) {
-                                  if (text == null || text.isEmpty) {
-                                    return 'Email is empty';
-                                  }else if (!emailValidatorRegExp.hasMatch(text)) return 'Invalid email!';
-                                  return null;
-                                },
-                                controller: Provider.of<SignUp_Function>(context, listen: false)
-                                    .emailController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  prefixIcon: Icon(
-                                    Icons.mail_outline_outlined,
-                                    color: Colors.black,
-                                  ),
-                                  hintText: "Email",
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: Colors.red, width: 1),
-                                    ),
-                                  ),
+                            TextFormField(
+                              focusNode: emailFocusNode,
+                              onChanged: (value) {
+                                email = value;
+                              },
+                              cursorColor: kTextColor,
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return 'Email is empty';
+                                } else if (!emailValidatorRegExp.hasMatch(text))
+                                  return 'Invalid email!';
+                                return null;
+                              },
+                              controller: Provider.of<SignUp_Function>(context,
+                                      listen: false)
+                                  .emailController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                prefixIcon: Icon(
+                                  Icons.mail_outline_outlined,
+                                  color: Colors.black,
                                 ),
+                                hintText: "Email",
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: kPrimaryColor, width: 1),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.black, width: 1),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1),
+                                ),
+                              ),
+                            ),
 
                             SizedBox(
                               height: 15,
                             ),
                             TextFormField(
-                                focusNode: nameFocusNode,
-                                onChanged: (value) {
-                                  displayName = value;
-                                },
-                                cursorColor: kTextColor,
-                                validator: (text) {
-                                  if (text == null || text.isEmpty) {
-                                    return 'Name is empty';
-                                  }else if (!kNameRegex.hasMatch(text)) return 'Invalid Name!';
-                                  return null;
-                                },
-                                controller: Provider.of<SignUp_Function>(context, listen: false)
-                                    .displayNameController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  prefixIcon: Icon(
-                                    Icons.person,
-                                    color: Colors.black,
-                                  ),
-                                  hintText: "Display name",
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: Colors.red, width: 1),
-                                  ),
+                              focusNode: nameFocusNode,
+                              onChanged: (value) {
+                                displayName = value;
+                              },
+                              cursorColor: kTextColor,
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return 'Name is empty';
+                                } else if (!kNameRegex.hasMatch(text))
+                                  return 'Invalid Name!';
+                                return null;
+                              },
+                              controller: Provider.of<SignUp_Function>(context,
+                                      listen: false)
+                                  .displayNameController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                prefixIcon: Icon(
+                                  Icons.person,
+                                  color: Colors.black,
+                                ),
+                                hintText: "Display name",
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: kPrimaryColor, width: 1),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.black, width: 1),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1),
                                 ),
                               ),
-                            SizedBox(
-                              height: 15,
                             ),
-                           TextFormField(
-                                focusNode: phoneNumberFocusNode,
-                                onChanged: (value) {
-                                  phone = value;
-                                },
-                                cursorColor: kTextColor,
-                                validator: (text) {
-                                  if (text == null || text.isEmpty) {
-                                    return 'Phone number is empty';
-                                  } else  if (!kPhoneNumber.hasMatch(text)) return 'Invalid Phone Number!';
-                                  return null;
-                                },
-                                controller: Provider.of<SignUp_Function>(context, listen: false)
-                                    .phoneNumberController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  prefixIcon: Icon(
-                                    Icons.phone_android_rounded,
-                                    color: Colors.black,
-                                  ),
-                                  hintText: "Phone number",
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: Colors.red, width: 1),
-                                  ),
-                                ),
-                              ),
                             SizedBox(
                               height: 15,
                             ),
                             TextFormField(
-                                obscureText: _obscureText1,
-                                onChanged:   (value) {password = value;},
-                                focusNode: passwordFocusNode,
-                                controller: Provider.of<SignUp_Function>(context, listen: false)
-                                    .passwordController,
-                                validator: (text) {
+                              focusNode: phoneNumberFocusNode,
+                              onChanged: (value) {
+                                phone = value;
+                              },
+                              cursorColor: kTextColor,
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return 'Phone number is empty';
+                                } else if (!kPhoneNumber.hasMatch(text))
+                                  return 'Invalid Phone Number!';
+                                return null;
+                              },
+                              controller: Provider.of<SignUp_Function>(context,
+                                      listen: false)
+                                  .phoneNumberController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                prefixIcon: Icon(
+                                  Icons.phone_android_rounded,
+                                  color: Colors.black,
+                                ),
+                                hintText: "Phone number",
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: kPrimaryColor, width: 1),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.black, width: 1),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              obscureText: _obscureText1,
+                              onChanged: (value) {
+                                password = value;
+                              },
+                              focusNode: passwordFocusNode,
+                              controller: Provider.of<SignUp_Function>(context,
+                                      listen: false)
+                                  .passwordController,
+                              validator: (text) {
                                 if (text == null || text.isEmpty) {
                                   return 'Password is empty';
-                                }else if (!kPasswordRegex.hasMatch(text)) return 'Minimum six characters, at least one uppercase letter,\n '
-                                    'one lowercase letter, one number and one special character!';
+                                } else if (!kPasswordRegex.hasMatch(text))
+                                  return 'Minimum six characters, at least one uppercase letter,\n '
+                                      'one lowercase letter, one number and one special character!';
                                 return null;
-                                },
-                                cursorColor: kTextColor,
-                                decoration: InputDecoration(
-                                  hintText: "Password",
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  prefixIcon: Icon(
-                                    Icons.lock,
+                              },
+                              cursorColor: kTextColor,
+                              decoration: InputDecoration(
+                                hintText: "Password",
+                                filled: true,
+                                fillColor: Colors.white,
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.black,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscureText1
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                     color: Colors.black,
                                   ),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      _obscureText1
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      // Update the state i.e. toogle the state of passwordVisible variable
-                                      setState(() {
-                                        _obscureText1 = !_obscureText1;
-                                      });
-                                    },
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: Colors.red, width: 1),
-                                  ),
+                                  onPressed: () {
+                                    // Update the state i.e. toogle the state of passwordVisible variable
+                                    setState(() {
+                                      _obscureText1 = !_obscureText1;
+                                    });
+                                  },
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: kPrimaryColor, width: 1),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.black, width: 1),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1),
                                 ),
                               ),
-                              SizedBox(
-                                height: 15,
-                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
                             TextFormField(
-                                obscureText: _obscureText2,
-                                onChanged:   (value) {rePassword = value;},
-                                focusNode: retypePasswordFocusNode,
-                                controller: Provider.of<SignUp_Function>(context, listen: false)
-                                    .retypePasswordController,
-                                cursorColor: kTextColor,
+                              obscureText: _obscureText2,
+                              onChanged: (value) {
+                                rePassword = value;
+                              },
+                              focusNode: retypePasswordFocusNode,
+                              controller: Provider.of<SignUp_Function>(context,
+                                      listen: false)
+                                  .retypePasswordController,
+                              cursorColor: kTextColor,
                               validator: (text) {
                                 if (text == null || text.isEmpty) {
                                   return 'Re-Password is empty';
-                                }else if (text != password ) return 'Password does not match!';
+                                } else if (text != password)
+                                  return 'Password does not match!';
                                 return null;
                               },
-                                decoration: InputDecoration(
-                                  hintText: "Re-Enter Password",
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  prefixIcon: Icon(
-                                    Icons.lock,
+                              decoration: InputDecoration(
+                                hintText: "Re-Enter Password",
+                                filled: true,
+                                fillColor: Colors.white,
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.black,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscureText2
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                     color: Colors.black,
                                   ),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      _obscureText2
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      // Update the state i.e. toogle the state of passwordVisible variable
-                                      setState(() {
-                                        _obscureText2 = !_obscureText2;
-                                      });
-                                    },
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(color: Colors.red, width: 1),
-                                  ),
+                                  onPressed: () {
+                                    // Update the state i.e. toogle the state of passwordVisible variable
+                                    setState(() {
+                                      _obscureText2 = !_obscureText2;
+                                    });
+                                  },
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: kPrimaryColor, width: 1),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.black, width: 1),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1),
                                 ),
                               ),
+                            ),
 
                             // RoundedPasswordField(
                             //   hintText: "Password",
@@ -390,7 +406,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     return Column(
                                       children: <Widget>[
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Checkbox(
                                                 value: checkTerm,
@@ -401,67 +418,81 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                   });
                                                 }),
                                             Padding(
-                                              padding: const EdgeInsets.only(top:10),
-                                              child: Text.rich(
-                                                  TextSpan(
-                                                      text: 'By clicking Sign Up, you agree to\nour ', style: TextStyle(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10),
+                                              child: Text.rich(TextSpan(
+                                                  text:
+                                                      'By clicking Sign Up, you agree to\nour ',
+                                                  style: TextStyle(
                                                       fontFamily: 'Poppins',
-                                                      fontSize: 16, color: kTextColor
-                                                  ),
-                                                      children: <TextSpan>[
-                                                        TextSpan(
-                                                            text: 'Terms of Service', style: TextStyle(
-                                                          fontSize: 18, color: kPrimaryColor,
+                                                      fontSize: 16,
+                                                      color: kTextColor),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                        text:
+                                                            'Terms of Service',
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: kPrimaryColor,
                                                           fontFamily: 'Poppins',
-                                                          decoration: TextDecoration.underline,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline,
                                                         ),
-                                                            recognizer: TapGestureRecognizer()
+                                                        recognizer:
+                                                            TapGestureRecognizer()
                                                               ..onTap = () {
                                                                 // code to open / launch terms of service link here
-                                                              }
-                                                        ),
-                                                        TextSpan(
-                                                            text: ' and ', style: TextStyle(
-                                                            fontFamily: 'Poppins',
-                                                            fontSize: 16, color: kTextColor
-                                                        ),
-                                                            children: <TextSpan>[
-                                                              TextSpan(
-                                                                  text: 'Privacy\nPolicy', style: TextStyle(
-                                                                  fontFamily: 'Poppins',
-                                                                  fontSize: 18, color: kPrimaryColor,
-                                                                  decoration: TextDecoration.underline
-                                                              ),
-                                                                  recognizer: TapGestureRecognizer()
-                                                                    ..onTap = () {
+                                                              }),
+                                                    TextSpan(
+                                                        text: ' and ',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            fontSize: 16,
+                                                            color: kTextColor),
+                                                        children: <TextSpan>[
+                                                          TextSpan(
+                                                              text:
+                                                                  'Privacy\nPolicy',
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      'Poppins',
+                                                                  fontSize: 18,
+                                                                  color:
+                                                                      kPrimaryColor,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .underline),
+                                                              recognizer:
+                                                                  TapGestureRecognizer()
+                                                                    ..onTap =
+                                                                        () {
                                                                       // code to open / launch privacy policy link here
-                                                                    }
-                                                              )
-
-                                                            ]
-                                                        ),
-                                                        TextSpan(
-                                                            text: '.', style: TextStyle(
-                                                            fontFamily: 'Poppins',
-                                                            fontSize: 16, color: kTextColor
-                                                        )
-                                                        )
-                                                      ]
-                                                  )
-                                              ),
+                                                                    })
+                                                        ]),
+                                                    TextSpan(
+                                                        text: '.',
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            fontSize: 16,
+                                                            color: kTextColor))
+                                                  ])),
                                             ),
                                           ],
                                         ),
                                         //display error in matching theme
                                         Padding(
-                                          padding: const EdgeInsets.only(right: 110,top: 7),
+                                          padding: const EdgeInsets.only(
+                                              right: 110, top: 7),
                                           child: Text(
                                             state.errorText ?? '',
                                             style: TextStyle(
-                                              color: Theme.of(context).errorColor,
-                                              fontSize: 11,
-                                              fontFamily: 'Poppins'
-                                            ),
+                                                color: Theme.of(context)
+                                                    .errorColor,
+                                                fontSize: 11,
+                                                fontFamily: 'Poppins'),
                                           ),
                                         )
                                       ],
@@ -484,59 +515,75 @@ class _RegisterScreen extends State<RegisterScreen> {
                               onPress: () async {
                                 //Validate
                                 if (_formKey.currentState!.validate()) {
-                                  bool result = await signUpFunctions.createUser(email, displayName, phone, password);
-                                  if(result == true) {
+                                  bool result =
+                                      await signUpFunctions.createUser(
+                                          email, displayName, phone, password);
+                                  if (result == true) {
                                     // Clear text ở các textfield
-                                    Provider.of<SignUp_Function>(context, listen: false)
-                                        .emailController.clear();
-                                    Provider.of<SignUp_Function>(context, listen: false)
-                                        .displayNameController.clear();
-                                    Provider.of<SignUp_Function>(context, listen: false)
-                                        .phoneNumberController.clear();
-                                    Provider.of<SignUp_Function>(context, listen: false)
-                                        .passwordController.clear();
-                                    Provider.of<SignUp_Function>(context, listen: false)
-                                        .retypePasswordController.clear();
+                                    Provider.of<SignUp_Function>(context,
+                                            listen: false)
+                                        .emailController
+                                        .clear();
+                                    Provider.of<SignUp_Function>(context,
+                                            listen: false)
+                                        .displayNameController
+                                        .clear();
+                                    Provider.of<SignUp_Function>(context,
+                                            listen: false)
+                                        .phoneNumberController
+                                        .clear();
+                                    Provider.of<SignUp_Function>(context,
+                                            listen: false)
+                                        .passwordController
+                                        .clear();
+                                    Provider.of<SignUp_Function>(context,
+                                            listen: false)
+                                        .retypePasswordController
+                                        .clear();
                                     print("Created Account Successfully");
                                     registerButtonController.stop();
                                   }
-                                }
-                                else registerButtonController.stop();
-                              }, controller: registerButtonController,
+                                } else
+                                  registerButtonController.stop();
+                              },
+                              controller: registerButtonController,
                               horizontalPadding: 45,
                             ),
 
                             Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 15),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: 'Already have an account? ',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: kTextColor,
-                                      fontFamily: 'Poppins',
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = (){
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => LoginScreen()),
-                                            );
-                                          },
-                                        text: 'Sign In',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: kPrimaryColor,
-                                          fontFamily: 'Poppins',
-                                          decoration: TextDecoration.underline,
-                                        ),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: 'Already have an account? ',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: kTextColor,
+                                        fontFamily: 'Poppins',
                                       ),
-                                    ]),
+                                      children: [
+                                        TextSpan(
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        LoginScreen()),
+                                              );
+                                            },
+                                          text: 'Sign In',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: kPrimaryColor,
+                                            fontFamily: 'Poppins',
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ]),
+                                ),
                               ),
-                            ),
                             ),
                           ],
                         ),
