@@ -1,5 +1,5 @@
 import 'package:animations/animations.dart';
-import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/register_screen.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
 import 'package:flutter/material.dart';

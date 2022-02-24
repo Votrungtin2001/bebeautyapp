@@ -1,4 +1,11 @@
 
+import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/ui/chat/chat_screen.dart';
+import 'package:bebeautyapp/ui/home/details/details_screen.dart';
+import 'package:bebeautyapp/ui/home/homes/home.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/categories.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
+import 'package:bebeautyapp/ui/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -9,148 +16,56 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
-  final formKey = GlobalKey<FormState>();
-
-  String phone = "";
-
-  TextEditingController _phoneController = TextEditingController();
-
+  Widget _home = HomeScreens();
+  Widget _chat = ChatScreens();
+  Widget _profile = ProfileScreens();
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    Widget finishButton = InkWell(
-      onTap:() {
-        if(formKey.currentState!.validate()) {{
-          Navigator.pop(context);
-        }}},
-      child: Container(
-        height: 45,
-        width: MediaQuery.of(context).size.width / 2,
-        decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(30.0)
-        ),
-        child: Center(
-          child: Text("FINISH",
-              style: TextStyle(
-                  fontSize: 16,
-                  letterSpacing: 2.2,
-                  color: Colors.white)),
-        ),
+    return Scaffold(
+      body: getBody(),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        iconSize: 24,
+        currentIndex: selectedIndex,
+        unselectedFontSize: 12,
+        selectedFontSize: 14,
+        selectedItemColor : kPrimaryColor,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_rounded),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          )
+        ],
+        onTap: (int index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
       ),
     );
-
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          actions: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 30,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextButton(
-                    child: Row(
-                      children: const [
-                        Icon(Icons.navigate_before, color: Colors.black, size: 35,),
-                        Text("Back",
-                          style: TextStyle(color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w400),)
-                      ],
-                    ),
-                    onPressed: () { Navigator.pop(context);},
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        body: LayoutBuilder(
-          builder: (_, viewportConstraints) => SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints:
-              BoxConstraints(minHeight: viewportConstraints.maxHeight),
-              child: Container(
-                padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: MediaQuery.of(context).padding.bottom == 0 ? 20 : MediaQuery.of(context).padding.bottom),
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height,
-                  maxWidth: MediaQuery.of(context).size.width,
-                ),
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/bg2.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child:  SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 120,),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: SvgPicture.asset("assets/images/phone.svg",
-                          height: MediaQuery.of(context).size.height*0.3,
-                        ),
-                      ),
-                      SizedBox(height: 40,),
-                      SizedBox(
-                          child: Form (
-                            key: formKey,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    controller: _phoneController,
-                                    validator: (value) {
-                                      if(value == "") {
-                                        return "Please enter your phone number";
-                                      } else return null;
-                                    },
-                                    onChanged: (value) {
-                                      setState(() {
-                                        phone = value;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
-                                        fillColor: Colors.transparent,
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(15.0),
-                                            borderSide: const BorderSide(color: Colors.black)
-                                        ),
-                                        filled: true,
-                                        hintStyle: const TextStyle(color: Colors.black38),
-                                        prefixIcon: Icon(Icons.phone,color: Colors.black,),
-                                        hintText: 'Phone number'),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-
-                      ),
-                      SizedBox(height: 40,),
-                      Center(child: finishButton)
-                    ],
-                  ),
-                ),
-
-              ),
-            ),
-          ),
-        )
-    );
+  }
+  Widget getBody( )  {
+    if(selectedIndex == 0) {
+      return _home;
+    } else if(selectedIndex==1) {
+      return _chat;
+    } else {
+      return _profile;
+    }
+  }
+  void onTapHandler(int index)  {
+    setState(() {
+      selectedIndex = index;
+    });
   }
 }
+

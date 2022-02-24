@@ -1,6 +1,4 @@
 import 'package:bebeautyapp/introduction_screen/introduction_screen.dart';
-import 'package:bebeautyapp/model/login/login_view_model.dart';
-import 'package:bebeautyapp/model/login/register_view_model.dart';
 import 'package:bebeautyapp/repo/function/sign_in.dart';
 import 'package:bebeautyapp/repo/function/sign_up.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
@@ -20,7 +18,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -37,22 +34,20 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<SignIn_Function>(
-          create: (context) => SignIn_Function()),
-          ChangeNotifierProvider<SignUp_Function>(
-          create: (context) => SignUp_Function()),
-        ],
+      providers: [
+        ChangeNotifierProvider<SignIn_Function>(
+            create: (context) => SignIn_Function()),
+        ChangeNotifierProvider<SignUp_Function>(
+            create: (context) => SignUp_Function()),
+      ],
       child: MaterialApp(
         home: IntroductionScreen(),
         debugShowCheckedModeBanner: false,
@@ -65,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
       ),
-    // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

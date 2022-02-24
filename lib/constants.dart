@@ -2,14 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-
-
 const kPrimaryColor = Color(0xFFFFA0A0);
 const kSecondaryColor = Color(0xFF262A53);
 const kThirdColor = Color(0xFF628395);
 const kFourthColor = Color(0xFFFFE3E3);
 const kTextColor = Color(0xFF333333);
+const kTextLightColor = Color(0xFFACACAC);
 const kFacebookColor = Color(0xff4267B2);
+
+const kDefaultPadding = 20.0;
 
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
@@ -23,6 +24,16 @@ const kAppNameTextPink = Text(
     fontFamily: 'Laila',
     fontWeight: FontWeight.bold,
     fontSize: 36,
+    color: kPrimaryColor,
+  ),
+);
+
+const kAppNameTextPinksm = Text(
+  'BEBEAUTY',
+  style: TextStyle(
+    fontFamily: 'Laila',
+    fontWeight: FontWeight.bold,
+    fontSize: 18,
     color: kPrimaryColor,
   ),
 );

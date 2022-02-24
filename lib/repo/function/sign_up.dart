@@ -1,4 +1,4 @@
-import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 

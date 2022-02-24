@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bebeautyapp/contants.dart';
+import 'package:bebeautyapp/constants.dart';
 
 class TextFieldContainer extends StatelessWidget {
   final Widget child;
