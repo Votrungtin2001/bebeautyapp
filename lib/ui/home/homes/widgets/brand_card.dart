@@ -1,10 +1,12 @@
+import 'package:bebeautyapp/model/MBrand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
 class BrandCard extends StatelessWidget {
-  const BrandCard({
-    Key? key,
-  }) : super(key: key);
+  late List<MBrand> brands;
+  BrandCard(List<MBrand> Brands) {
+    this.brands = Brands;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class BrandCard extends StatelessWidget {
           padding:
           EdgeInsets.symmetric(horizontal: 20),
           child: SectionTitle(
-            title: "Brands",
+            title: "Popular Brands",
             press: () {},
           ),
         ),
@@ -24,39 +26,33 @@ class BrandCard extends StatelessWidget {
           child: Row(
             children: [
               SpecialOfferCard(
-                image: "assets/images/BIODERMA.jpg",
-                category: "BIODERMA",
-                numOfBrands: 18,
+                image: brands[0].getImage(),
+                category: brands[0].getName(),
+                numOfBrands: brands[0].getProductQuantity(),
                 press: () {},
               ),
               SpecialOfferCard(
-                image: "assets/images/BIODERMA.jpg",
-                category: "BIODERMA",
-                numOfBrands: 18,
+                image: brands[1].getImage(),
+                category: brands[1].getName(),
+                numOfBrands: brands[1].getProductQuantity(),
                 press: () {},
               ),
               SpecialOfferCard(
-                image: "assets/images/BIODERMA.jpg",
-                category: "BIODERMA",
-                numOfBrands: 18,
+                image: brands[2].getImage(),
+                category: brands[2].getName(),
+                numOfBrands: brands[2].getProductQuantity(),
                 press: () {},
               ),
               SpecialOfferCard(
-                image: "assets/images/BIODERMA.jpg",
-                category: "BIODERMA",
-                numOfBrands: 18,
+                image: brands[3].getImage(),
+                category: brands[3].getName(),
+                numOfBrands: brands[3].getProductQuantity(),
                 press: () {},
               ),
               SpecialOfferCard(
-                image: "assets/images/BIODERMA.jpg",
-                category: "BIODERMA",
-                numOfBrands: 18,
-                press: () {},
-              ),
-              SpecialOfferCard(
-                image: "assets/images/BIODERMA.jpg",
-                category: "BIODERMA",
-                numOfBrands: 18,
+                image: brands[4].getImage(),
+                category: brands[4].getName(),
+                numOfBrands: brands[4].getProductQuantity(),
                 press: () {},
               ),
               SizedBox(width: 20),
@@ -94,7 +90,7 @@ class SpecialOfferCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
-                Image.asset(
+                Image.network(
                   image,
                   fit: BoxFit.cover,
                 ),

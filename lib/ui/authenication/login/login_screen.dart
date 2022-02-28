@@ -1,4 +1,5 @@
 import 'package:bebeautyapp/repo/function/sign_in.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/authenication/register/register_screen.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/home/homes/home.dart';

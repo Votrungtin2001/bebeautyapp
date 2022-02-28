@@ -1,13 +1,24 @@
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'section_title.dart';
 
 class BestSell extends StatelessWidget {
+  late List<MProduct> products;
+  BestSell(List<MProduct> Products) {
+    this.products = Products;
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,10 +34,9 @@ class BestSell extends StatelessWidget {
           child: Row(
             children: [
               ...List.generate(
-                demoProducts.length,
+                products.length,
                     (index) {
-                  if (demoProducts[index].isPopular)
-                    return ProductCard(product: demoProducts[index],
+                    return ProductCard(product: products[index],
                       // press: (){Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
@@ -57,11 +67,16 @@ class ProductCard extends StatelessWidget {
   }) : super(key: key);
 
   final double width;
-  final Product product;
+  final MProduct product;
   //final Function press;
 
   @override
   Widget build(BuildContext context) {
+    NumberFormat currencyformat = new NumberFormat("#,###,##0");
+    final productServices = new ProductServices();
+    final userProvider = Provider.of<UserProvider>(context);
+    final productProvider = Provider.of<ProductProvider>(context);
+
     return Padding(
       padding: EdgeInsets.only(left: 20),
       child: SizedBox(
@@ -82,7 +97,7 @@ class ProductCard extends StatelessWidget {
                             children: [
                               Hero(
                                 tag: product.id.toString(),
-                                child: Image.asset(product.images[0]),
+                                child: Image.network(product.getImage(0)),
                               ),
                             ],
                           ),
@@ -96,25 +111,25 @@ class ProductCard extends StatelessWidget {
                       Flexible(
                         child: RichText(
                           text: TextSpan(
-                            text: '${product.title}',
+                            text: product.getName(),
                             style: TextStyle(color: Colors.black),
                             children: <TextSpan>[
                               TextSpan(
-                                text: '\n\n\$${product.price}',
+                                text: '\n\n' + currencyformat.format(product.getMarketPrice()) + 'đ',
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
                               TextSpan(
-                                text: '\n\$3.99 ',
+                                text: '\n' + currencyformat.format(product.getPrice()) + 'đ',
                                 style: new TextStyle(
                                   color: kPrimaryColor,
                                   fontSize: 18,
                                 ),
                               ),
                           TextSpan(
-                            text: ' -43% ',
+                            text: product.defaultDiscountRate.toString(),
                             style: new TextStyle(
                               color: Colors.red,
                               fontSize: 16,
@@ -129,20 +144,29 @@ class ProductCard extends StatelessWidget {
                       ),
                       InkWell(
                         borderRadius: BorderRadius.circular(50),
-                        onTap: () {},
+                        onTap: () async {
+                          bool result = await productServices.updateFavorite(product.getID(), userProvider.user.getID());
+                          if(result == true) {
+                            productProvider.updateUserFavorite(userProvider.user.getID(), product.getID());
+                            Fluttertoast.showToast(msg: 'Add it to your favorite list successfully', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          }else {
+                            productProvider.updateUserFavorite(userProvider.user.getID(), product.getID());
+                            Fluttertoast.showToast(msg: 'Remove it in your favorite list successfully', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          }
+                        },
                         child: Container(
                           padding: EdgeInsets.all(5),
                           height: 24,
                           width: 24,
                           decoration: BoxDecoration(
-                            color: product.isFavourite
+                            color: productServices.checkFavorite(userProvider.user.id, product.getUserFavorite())
                                 ? kPrimaryColor.withOpacity(0.15)
                                 : kSecondaryColor.withOpacity(0.1),
                             shape: BoxShape.circle,
                           ),
                           child: SvgPicture.asset(
                             "assets/icons/heart.svg",
-                            color: product.isFavourite
+                            color: productServices.checkFavorite(userProvider.user.getID(), product.getUserFavorite())
                                 ? Color(0xFFFF4848)
                                 : Color(0xFFDBDEE4),
                           ),
@@ -151,7 +175,7 @@ class ProductCard extends StatelessWidget {
                     ],
                   ),
 
-              StarRating(rating: product.rating, size: 15),
+              StarRating(rating: product.totalStarRating/product.totalRating, size: 15),
                 ],
               )
         ),

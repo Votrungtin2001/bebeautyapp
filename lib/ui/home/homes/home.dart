@@ -1,4 +1,11 @@
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/repo/providers/brand_provider.dart';
+import 'package:bebeautyapp/repo/providers/category_provider.dart';
+import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/repo/services/brand_services.dart';
+import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/best_sell.dart';
@@ -8,10 +15,18 @@ import 'package:bebeautyapp/ui/home/homes/widgets/new_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreens extends StatelessWidget {
+  final productServices = new ProductServices();
+  final brandServices = new BrandServices();
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final productProvider = Provider.of<ProductProvider>(context);
+    final brandProvider = Provider.of<BrandProvider>(context);
+    final categoryProvider = Provider.of<CategoryProvider>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -72,17 +87,17 @@ class HomeScreens extends StatelessWidget {
              height: MediaQuery.of(context).size.height / 60,
            ),
 
-           Categories(),
+           Categories(categoryProvider.categories),
            SizedBox(
              height: MediaQuery.of(context).size.height / 50,
            ),
-           BrandCard(),
+           BrandCard(brandServices.getTop5Brand(brandProvider.brands)),
            SizedBox(
              height: MediaQuery.of(context).size.height / 50,
            ),
-           BestSell(),
+           BestSell(productServices.getTop10BestSellerProduct(productProvider.products)),
 
-           NewProduct(),
+           NewProduct(productServices.getTop10NewProducts(productProvider.products)),
            SizedBox(
              height: MediaQuery.of(context).size.height / 50,
            ),

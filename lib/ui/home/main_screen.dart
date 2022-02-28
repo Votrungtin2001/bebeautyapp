@@ -1,5 +1,7 @@
 
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/model/user/MUser.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/chat/chat_screen.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/home.dart';
@@ -8,6 +10,7 @@ import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
 import 'package:bebeautyapp/ui/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
 
@@ -20,8 +23,22 @@ class _MainScreenState extends State<MainScreen> {
   Widget _chat = ChatScreens();
   Widget _profile = ProfileScreens();
   int selectedIndex = 0;
+
+  String userID = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<MUser_IsNotLogout?>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+    if(user!.uid != null) userID = user.uid.toString();
+    userProvider.getUser(userID);
+
     return Scaffold(
       body: getBody(),
       bottomNavigationBar: BottomNavigationBar(

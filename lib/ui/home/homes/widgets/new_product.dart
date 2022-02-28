@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/best_sell.dart';
@@ -8,6 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NewProduct extends StatelessWidget {
+  late List<MProduct> products;
+  NewProduct(List<MProduct> Products) {
+    this.products = Products;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,10 +30,9 @@ class NewProduct extends StatelessWidget {
             runSpacing: 15, // gap between lines
             direction: Axis.horizontal,
             children: List.generate(
-              demoProducts.length,
+              products.length,
                   (index) {
-                if (demoProducts[index].isPopular)
-                  return ProductCard(product: demoProducts[index],
+                  return ProductCard(product: products[index],
                     // press: (){Navigator.push(
                     // context,
                     // MaterialPageRoute(

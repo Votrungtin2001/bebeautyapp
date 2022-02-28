@@ -1,20 +1,15 @@
+import 'package:bebeautyapp/model/MCategory.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Categories extends StatelessWidget {
+  late List<MCategory> categories = [];
+  Categories(List<MCategory> Categories) {
+    this.categories = Categories;
+  }
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> categories = [
-      {"icon": "assets/icons/Flash Icon.svg", "text": "Sữa rửa mặt"},
-      {"icon": "assets/icons/Bill Icon.svg", "text": "Sữa tắm"},
-      {"icon": "assets/icons/Game Icon.svg", "text": "Kem trộn"},
-      {"icon": "assets/icons/Gift Icon.svg", "text": "Kem dưỡng ẩm"},
-      {"icon": "assets/icons/Discover.svg", "text": "Kẻ mắt"},
-      {"icon": "assets/icons/Game Icon.svg", "text": "Son môi"},
-      {"icon": "assets/icons/Gift Icon.svg", "text": "Kem chống nắng"},
-      {"icon": "assets/icons/Discover.svg", "text": "Dầu gội"},
-    ];
     return Padding(
       padding: EdgeInsets.all(20),
       child: Column(
@@ -31,8 +26,8 @@ class Categories extends StatelessWidget {
             children: List.generate(
               categories.length,
               (index) => CategoryCard(
-                icon: categories[index]["icon"],
-                text: categories[index]["text"],
+                icon: categories[index].imageUri,
+                text: categories[index].name,
                 press: () {},
               ),
             ),
@@ -70,7 +65,7 @@ class CategoryCard extends StatelessWidget {
                 color: Color(0xFFFFECDF),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: SvgPicture.asset(icon!),
+              child: SvgPicture.network(icon!),
             ),
             SizedBox(height: 5),
             Text(text!, textAlign: TextAlign.center)
