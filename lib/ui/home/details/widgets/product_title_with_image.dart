@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class ProductTitleWithImage extends StatelessWidget {
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  final MProduct product;
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +20,15 @@ class ProductTitleWithImage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Aristocratic Hand Bag",
-            style: TextStyle(color: Colors.white),
+            product.engName,
+            style: TextStyle(color: Colors.black),
           ),
           Text(
-            product.title,
+            product.name,
             style: Theme.of(context)
                 .textTheme
                 .headline4
-                ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: kDefaultPadding),
           Row(
@@ -35,11 +36,14 @@ class ProductTitleWithImage extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(text: "Price\n"),
+                    TextSpan(text: "Price\n",
+                         style: TextStyle(
+                          color: kTextColor, fontWeight: FontWeight.bold),
+                    ),
                     TextSpan(
-                      text: "\$${product.price}",
+                      text: "${product.price}",
                       style: Theme.of(context).textTheme.headline4?.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: kTextColor, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -48,7 +52,7 @@ class ProductTitleWithImage extends StatelessWidget {
               Expanded(
                 child: Hero(
                   tag: "${product.id}",
-                  child: Image.asset(
+                  child: Image.network(
                     product.images[0],
                     fit: BoxFit.fill,
                   ),

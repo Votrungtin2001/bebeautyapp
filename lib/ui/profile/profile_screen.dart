@@ -1,5 +1,6 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_avatar_dialog.dart';
+import 'package:bebeautyapp/ui/profile/widgets/change_infomation.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -65,7 +66,18 @@ class ProfileScreens extends StatelessWidget {
         ProfileMenu(
           text: "My Profile",
           icon: "assets/icons/user_icon.svg",
-          press: () => {},
+          press: () {Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Profile()),
+          );},
+        ),
+        ProfileMenu(
+          text: "Address",
+          icon: "assets/icons/location.svg",
+          press: () {Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Profile()),
+          );},
         ),
         ProfileMenu(
           text: "Settings",
