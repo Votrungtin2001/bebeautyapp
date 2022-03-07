@@ -1,4 +1,5 @@
 import 'package:bebeautyapp/model/MBrand.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
@@ -17,47 +18,57 @@ class BrandCard extends StatelessWidget {
           EdgeInsets.symmetric(horizontal: 20),
           child: SectionTitle(
             title: "Popular Brands",
-            press: () {},
+            press: () {Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BrandScreens(),
+                ));},
           ),
         ),
         SizedBox(height: 20),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: [
-              SpecialOfferCard(
-                image: brands[0].getImage(),
-                category: brands[0].getName(),
-                numOfBrands: brands[0].getProductQuantity(),
-                press: () {},
-              ),
-              SpecialOfferCard(
-                image: brands[1].getImage(),
-                category: brands[1].getName(),
-                numOfBrands: brands[1].getProductQuantity(),
-                press: () {},
-              ),
-              SpecialOfferCard(
-                image: brands[2].getImage(),
-                category: brands[2].getName(),
-                numOfBrands: brands[2].getProductQuantity(),
-                press: () {},
-              ),
-              SpecialOfferCard(
-                image: brands[3].getImage(),
-                category: brands[3].getName(),
-                numOfBrands: brands[3].getProductQuantity(),
-                press: () {},
-              ),
-              SpecialOfferCard(
-                image: brands[4].getImage(),
-                category: brands[4].getName(),
-                numOfBrands: brands[4].getProductQuantity(),
-                press: () {},
-              ),
-              SizedBox(width: 20),
-            ],
+            children: List.generate(
+                brands.length,
+                    (index) {
+                      return SpecialOfferCard(category: brands[index].getName(), image: brands[index].getImage(), numOfBrands: brands[index].productQuantity, press: (){},);
+            },
+            // children: [
+            //   SpecialOfferCard(
+            //     image: brands[0].getImage(),
+            //     category: brands[0].getName(),
+            //     numOfBrands: brands[0].getProductQuantity(),
+            //     press: () {},
+            //   ),
+            //   SpecialOfferCard(
+            //     image: brands[1].getImage(),
+            //     category: brands[1].getName(),
+            //     numOfBrands: brands[1].getProductQuantity(),
+            //     press: () {},
+            //   ),
+            //   SpecialOfferCard(
+            //     image: brands[2].getImage(),
+            //     category: brands[2].getName(),
+            //     numOfBrands: brands[2].getProductQuantity(),
+            //     press: () {},
+            //   ),
+            //   SpecialOfferCard(
+            //     image: brands[3].getImage(),
+            //     category: brands[3].getName(),
+            //     numOfBrands: brands[3].getProductQuantity(),
+            //     press: () {},
+            //   ),
+            //   SpecialOfferCard(
+            //     image: brands[4].getImage(),
+            //     category: brands[4].getName(),
+            //     numOfBrands: brands[4].getProductQuantity(),
+            //     press: () {},
+            //   ),
+            //   SizedBox(width: 20),
+            // ],
           ),
+        ),
         ),
       ],
     );
@@ -84,7 +95,7 @@ class SpecialOfferCard extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: SizedBox(
-          width: 150,
+          width: 130,
           height: 130,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),

@@ -57,7 +57,7 @@ class _RegisterScreen extends State<RegisterScreen> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                   child: kAppNameTextPink,
                 ),
                 Container(
@@ -72,7 +72,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                           'Create Account',
                           style: kBigTitleTextStyle,
@@ -395,9 +395,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                             //   },
                             // ),
 
-                            SizedBox(
-                              height: 5,
-                            ),
+
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -425,14 +423,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                       'By clicking Sign Up, you agree to\nour ',
                                                   style: TextStyle(
                                                       fontFamily: 'Poppins',
-                                                      fontSize: 16,
+                                                      fontSize: 14,
                                                       color: kTextColor),
                                                   children: <TextSpan>[
                                                     TextSpan(
                                                         text:
                                                             'Terms of Service',
                                                         style: TextStyle(
-                                                          fontSize: 18,
+                                                          fontSize: 16,
                                                           color: kPrimaryColor,
                                                           fontFamily: 'Poppins',
                                                           decoration:
@@ -449,7 +447,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'Poppins',
-                                                            fontSize: 16,
+                                                            fontSize: 14,
                                                             color: kTextColor),
                                                         children: <TextSpan>[
                                                           TextSpan(
@@ -458,7 +456,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                               style: TextStyle(
                                                                   fontFamily:
                                                                       'Poppins',
-                                                                  fontSize: 18,
+                                                                  fontSize: 16,
                                                                   color:
                                                                       kPrimaryColor,
                                                                   decoration:
@@ -476,7 +474,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'Poppins',
-                                                            fontSize: 16,
+                                                            fontSize: 14,
                                                             color: kTextColor))
                                                   ])),
                                             ),

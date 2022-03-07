@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
@@ -9,7 +10,7 @@ import 'description.dart';
 import 'product_title_with_image.dart';
 
 class Body extends StatelessWidget {
-  final Product product;
+  final MProduct product;
 
   const Body({Key? key, required this.product}) : super(key: key);
   @override
