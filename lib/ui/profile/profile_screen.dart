@@ -1,9 +1,12 @@
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
+import 'package:bebeautyapp/ui/profile/widgets/address.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_avatar_dialog.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_infomation.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileScreens extends StatelessWidget {
@@ -72,11 +75,16 @@ class ProfileScreens extends StatelessWidget {
           );},
         ),
         ProfileMenu(
-          text: "Address",
+          text: "My Orders",
+          icon: "assets/icons/orders.svg",
+          press: () {},
+        ),
+        ProfileMenu(
+          text: "My Address",
           icon: "assets/icons/location.svg",
           press: () {Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Profile()),
+            MaterialPageRoute(builder: (context) => DeliveryAddress()),
           );},
         ),
         ProfileMenu(
@@ -90,7 +98,7 @@ class ProfileScreens extends StatelessWidget {
         ProfileMenu(
           text: "Log Out",
           icon: "assets/icons/log_out.svg",
-          press: () {},
+          press: () { signOutDrawer(context);},
         ),
           ],
         ),
@@ -139,4 +147,70 @@ class ProfileMenu extends StatelessWidget {
       ),
     );
   }
+}
+
+void signOutDrawer(BuildContext context) {
+  showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15.0),
+            topRight: Radius.circular(15.0)
+        ),
+      ),
+      isDismissible: false,
+      context: context,
+      builder: (context) {
+        return Container(
+          height: 150.0,
+          padding: EdgeInsets.symmetric(horizontal: 32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                'Are you sure you want Logout ?',
+                style: TextStyle(
+                  color:  kTextColor,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OutlineButton(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    borderSide: BorderSide(color: Colors.black, width: 1),
+                    onPressed: () {Navigator.of(context).pop();},
+                    child: Text("NO",
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.black)),
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+
+                    },
+                    color: kPrimaryColor,
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text(
+                      "YES",
+                      style: TextStyle(
+                          fontSize: 14,
+                          letterSpacing: 2.2,
+                          color: Colors.white),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        );
+      });
 }

@@ -106,7 +106,7 @@ class CategoryCard extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: SizedBox(
-          width: 55,
+         width: 55,
           child: Column(
             children: [
               Container(
@@ -119,8 +119,12 @@ class CategoryCard extends StatelessWidget {
                 ),
                 child: Image.network(icon),
               ),
-              SizedBox(height: 5),
-              Text(text, textAlign: TextAlign.center)
+
+              SizedBox(
+                height: 70,
+                child: Text(text, textAlign: TextAlign.center),
+              )
+
             ],
           ),
         ),

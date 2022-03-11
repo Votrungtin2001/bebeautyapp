@@ -7,6 +7,7 @@ import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/star_rating.dart';
+import 'package:bebeautyapp/ui/home/product_details/product_details_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,10 +46,14 @@ class BestSell extends StatelessWidget {
                       press: (){Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailsScreen(
-                            product: products[index],
+                          // builder: (context) => DetailsScreen(
+                          //   product: products[index],
+                          // ),
+                          builder: (context) => ProductDetails(
+
                           ),
-                        ));},
+                        ));
+                      },
                         ),
                     );
                 },
