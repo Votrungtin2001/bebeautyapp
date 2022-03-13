@@ -112,7 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Sữa Rửa Mặt Olay'
     });
-
     String chemicalComposition8 = 'Water, Glycerin, Myristic Acid, Stearic Acid, Palmitic Acid, Sodium Lauroyl Sarcosinate, Potassium Hydroxide, Lauric Acid, Polyquaternium-10, DMDM Hydantoin, Fragrance, Tetrasodium Etidronate, Pentasodium Pentetate, Linalool, Butylphenyl Methylpropional, Iodopropynyl Butylcarbamate.';
     String guideLine8 = '- Làm ướt mặt. \n- Lấy một lượng sản phẩm ra tay, thêm chút nước để tạo bọt thật kỹ. \n- Mát xa khắp mặt và rửa lại với nước.';
     List<String> images8 = [];
@@ -145,7 +144,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Sữa Rửa Mặt Olay'
     });
-
     String chemicalComposition9 = 'Nội dung đang được cập nhật';
     String guideLine9 = '- Đắp mặt nạ và thư giãn từ 15-20 phút. \n- Tháo bỏ mặt nạ, nhẹ nhàng massage để thấm tinh chất. \n- Không cần rửa lại với nước, tiếp tục các bước dưỡng da khác.';
     List<String> images9 = [];
@@ -178,7 +176,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Mặt Nạ Olay'
     });
-
     String chemicalComposition10 = 'Nội dung đang được cập nhật';
     String guideLine10 = '- Đắp mặt nạ và thư giãn từ 15-20 phút. \n- Tháo bỏ mặt nạ, nhẹ nhàng massage để thấm tinh chất. \n- Không cần rửa lại với nước, tiếp tục các bước dưỡng da khác.';
     List<String> images10 = [];
@@ -211,7 +208,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Mặt Nạ Olay'
     });
-
     String chemicalComposition11 = 'Nước, Cyclopentasiloxane, Glycerin, Niacinamide, nhôm bột Octenylsuccinate, Dimethicone, Panthenol, Dimenthicone Crosspolymer, polyethylene, Palmitoyl Pentapeptide-4, Sodium Hyaluronate, Camellia sinensis leaf extract, tocopheryl acetate, carnosine, Allantoin, Dimenthicone , Polyacrylamide, C13-14 isoparaffin, Laureth-4, Laureth-7, citric acid, Peg-100 Stearate, DMDM Hydantoin, BHT, Disodium Edta, Oxide tin, hương, Iodopropynyl butyl carbamate, titanium dioxide, Mica.';
     String guideLine11 = '- Dùng ngón tay lấy một lượng kem vừa đủ thoa đều lên mặt và cổ. \n- Massage nhẹ nhàng theo hình tròn từ dưới lên trên, tập trung ở vùng nhiều nếp nhăn. \n- Có thể dùng hàng ngày vào buổi sáng và tối. \n- Dùng trước khi trang điểm hoặc sau khi rửa mặt vào buổi tối.';
     List<String> images11 = [];
@@ -244,7 +240,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Tinh Chất Olay'
     });
-
     String chemicalComposition12 = 'Water, Dimethicone, Glycerin, Retinol, Retinyl Propionate, Niacinamide*, Palmitoyl Pentapeptide-4**, Dimethiconol, C13-14 Isoparaffin, Laureth-4, Polysorbate 20, Laureth-7, Disodium Edta, Dimethicone Crosspolymer, Polyacrylamide, Titanium Dioxide, Mica, Dmdm Hydantoin, Iodopropynyl Butylcarbamate.';
     String guideLine12 = '- Sử dụng sản phẩm vào buổi tối, sau bước làm sạch da. \n- Dùng đầu ngón tay lấy một lượng nhỏ sản phẩm và thoa lên mặt và vùng cổ. Sau đó, thoa đều theo hình tròn và theo chiều kim đồng hồ. \n- Kết thúc chu trình chăm sóc da với Kem Dưỡng Ẩm Đêm Olay Regenerist Retinol 24 Night Moisturiser Fragrance-Free. \n- Vào ban ngày, sử dụng kem chống nắng có chỉ số SFP từ 30 trở lên để bảo vệ da.';
     List<String> images12 = [];
@@ -277,7 +272,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Tinh Chất Olay'
     });
-
     String chemicalComposition13 = 'Nội dung đang được cập nhật.';
     String guideLine13 = '- Dùng ngón tay lấy một lượng kem vừa đủ thoa đều lên mặt và cổ. \n- Massage nhẹ nhàng theo hình tròn từ dưới lên trên, tập trung ở vùng nhiều nếp nhăn. \n- Dùng hàng ngày vào buổi sáng. \n- Dùng trước khi trang điểm.';
     List<String> images13 = [];
@@ -310,7 +304,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Dưỡng Ẩm Ban Ngày Olay'
     });
-
     String chemicalComposition14 = 'Nước, Glycerin, Isohexadecane, Niacinamide, Isopropyl, Isostearate, Dimethicone…';
     String guideLine14 = '- Dùng ngón tay lấy một lượng kem vừa đủ thoa đều lên mặt và cổ. \n- Massage nhẹ nhàng theo hình tròn từ dưới lên trên, tập trung ở vùng nhiều nếp nhăn. \n- Dùng hàng ngày vào buổi sáng. \n- Dùng trước khi trang điểm.';
     List<String> images14 = [];
@@ -343,7 +336,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Dưỡng Ẩm Ban Ngày Olay'
     });
-
     String chemicalComposition15 = 'Water, Dimethicone, Glycerin, Tapioca Starch, Dimethicone Crosspolymer, Retinol, Retinyl Propionate, Niacinamide*, Palmitoyl Pentapeptide-4**, C13-14 Isoparaffin, Dimethiconol, Polysorbate 20, Laureth-4, Laureth-7, Disodium Edta, Polyacrylamide, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Aminomethyl Propanol, Polymethylsilsesquioxane, Titanium Dioxide, Dmdm Hydantoin, Iodopropynyl Butylcarbamate.';
     String guideLine15 = '- Sử dụng sản phẩm vào buổi tối, sau bước làm sạch và tinh chất Olay Regenerist Retinol 24 Night Serum Fragrance-Free (nếu có). \n- Dùng đầu ngón tay lấy một lượng nhỏ sản phẩm, sau đó thoa lên da mặt & vùng cổ. Thoa đều theo hình tròn và theo chiều kim đồng hồ. \n- Vào ban ngày, sử dụng kem chống nắng có chỉ số SFP từ 30 trở lên để bảo vệ da.';
     List<String> images15 = [];
@@ -376,7 +368,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Dưỡng Ẩm Ban Đêm Olay'
     });
-
     String chemicalComposition16 = 'Water, Glycerin, Niacinamide, Isohexadecane, Dimethicone, Isopropyl, Polyacrylamide, Cocos Nucifera (Coconut) Oil, Stearyl Alcohol, Sucrose Polycottonseedate, C13-14 Isoparaffin, Tocopheryl Acetate, Cetyl Alcohol, Behenyl Alcohol, Panthenol, Polymethylsilsesquioxane, Titanium Dioxide, Benzyl Alcohol, Dimethiconol, Hydrolyzed Wheat Protein, Ethylparaben, Laureth-7, Fragrance, Cetearyl Alcohol, Cetearyl Glucoside, PEG-100 Stearate, Propylparaben, Sodium Ascorbyl Phosphate, Stearic Acid, Disodium EDTA, BHT, Zinc Oxide, Camellia Sinensis Leaf Extract, Ammonium Polyacrylate, Triethoxycaprylylsilane';
     String guideLine16 = '- Sử dụng sản phẩm vào buổi tối, sau bước làm sạch và tinh chất Olay Regenerist Retinol 24 Night Serum Fragrance-Free (nếu có). \n- Dùng đầu ngón tay lấy một lượng nhỏ sản phẩm, sau đó thoa lên da mặt & vùng cổ. Thoa đều theo hình tròn và theo chiều kim đồng hồ. \n- Vào ban ngày, sử dụng kem chống nắng có chỉ số SFP từ 30 trở lên để bảo vệ da.';
     List<String> images16 = [];
@@ -409,7 +400,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Dưỡng Ẩm Ban Đêm Olay'
     });
-
     String chemicalComposition17 = 'Salicylic Acid, Isopropylmethylphenol, Dipotassium Glycyrrhizate , Water, Palmitic Acid, Glycerin, Stearic Acid, Lauric Acid, Potassium Hydroxide, Myristic Acid, Butylene Glycol, Cocamidopropyl Betaine, Sorbitol, Cocamide Methyl MEA, Polyquaternium-7, Ethanol, Glyceryl Stearate, Salvia Officinalis (Sage) Leaf Extract, Algae Extract, Menthol, Hydroxypropyl Methylcellulose Stearoxy Ether, Fragrance, BHT, Disodium EDTA.';
     String guideLine17 = '- Làm ướt mặt với nước sạch. \n- Lấy một lượng kem vừa đủ (khoảng 1 hạt đậu) vào lòng bàn tay, tạo bọt rồi thoa đều lên mặt và massage nhẹ nhàng từ 30s - 1 phút. \n- Sau đó rửa lại với thật nhiều nước.';
     List<String> images17 = [];
@@ -442,7 +432,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Rửa Mặt Oxy'
     });
-
     String chemicalComposition18 = 'Hạt than (Charcoal Powder), Chiết xuất tảo biển (Algae Extract), Water, Glycerin, Palmitic Acid, Lauric Acid, Potassium Hydroxide, Myristic Acid, Stearic Acid, Maltooligosyl Glucoside, Hydrogenated Starch Hydrolysate, Polylactic Acid, Lactide, Lactic Acid, Menthol, Bambusa Arundinacea Stem Powder, Salvia Officinalis (Sage) Leaf Extract, Butylene Glycol, Disodium EDTA, Fragrance.';
     String guideLine18 = '- Làm ướt mặt với nước sạch. \n- Lấy một lượng kem vừa đủ (khoảng 1 hạt đậu) vào lòng bàn tay, tạo bọt rồi thoa đều lên mặt và massage nhẹ nhàng từ 30s - 1 phút. \n- Sau đó rửa lại với thật nhiều nước.';
     List<String> images18 = [];
@@ -475,7 +464,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Rửa Mặt Oxy'
     });
-
     String chemicalComposition19 = 'Salicylic Acid, Dipotassium Glycyrrhizate, Sodium Ascorbyl Phosphate, Water, Palmitic Acid, Glycerin, Stearic Acid, Lauric Acid, Myristic Acid, Potassium Hydroxide, Butylene Glycol, Sorbitol, Cocamide Methyl MEA, Cocamidopropyl Betaine, Ethanol, Glyceryl Stearate, Glycol Distearate, Menthol, Hydroxypropyl Methylcellulose Stearoxy Ether, Isopropylmethylphenol, BHT, Algae Extract, Salvia Officinalis Leaf Extract, Disodium EDTA, Polyquaternium-7, Methylparaben, Propylparaben, Fragrance, CI 19140, CI 42090.';
     String guideLine19 = '- Làm ướt mặt với nước sạch. \n- Lấy một lượng kem vừa đủ (khoảng 1 hạt đậu) vào lòng bàn tay, tạo bọt rồi thoa đều lên mặt và massage nhẹ nhàng từ 30s - 1 phút. \n- Sau đó rửa lại với thật nhiều nước.';
     List<String> images19 = [];
@@ -508,7 +496,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Rửa Mặt Oxy'
     });
-
     String chemicalComposition20 = 'Salicylic Acid, Water, Ethanol, Salicylic Acid, PEG-8/SMDI Copolymer (Polyolprepolymer-15), Isoceteth-20, Fragrance, Triethanolamine, Trisodium EDTA';
     String guideLine20 = 'Lau nhẹ nhàng vùng da sần sùi hay vùng da có mụn, lỗ chân lông bị dơ, mụn đầu đen bằng miếng pad. Không dùng quanh vùng mắt.';
     List<String> images20 = [];
@@ -541,7 +528,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Miếng Làm Sạch Da Oxy'
     });
-
     String chemicalComposition21 = 'Water (Aqua), Sodium Lauroamphoacetate, Sodium Cocoyl Isethionate (cleansing), Stearic Acid (texture-enhancing), Glycerin (hydration/skin replenishing), Glycol Distearate (texture-enhancing), Helianthus Annuus (Sunflower) Seed Oil (non-fragrant antioxidant plant oil), Acrylates Copolymer, Cetearyl Alcohol, Sodium Hyaluronate, Ceramide NP, Ceramide AP, Ceramide EOP (hydration/skin replenishing), Phytosphingosine (skin-restoring), Phospholipids, Sphingolipids (hydration/skin replenishing), Lecithin (skin-restoring), Arginine (amino acid/hydration/skin replenishing), Cholesterol (hydration/skin replenishing), Aloe Barbadensis Leaf Extract (hydration/skin-soothing), Disodium EDTA (stabilizer), Sodium Chloride (stabilizer), Sodium Hydroxide (pH adjuster), Sodium Lauroyl Lactylate (texture-enhancing), Xanthan Gum, Carbomer (texture-enhancing), Hexylene Glycol, Phenoxyethanol (preservatives), Caprylyl Glycol.';
     String guideLine21 = 'Làm ướt mặt và thoa một lượng kem vừa đủ lên da, massage nhẹ nhàng, sau đó rửa lại với nước và tiếp tục thực hiện các bước chăm sóc da tiếp theo.';
     List<String> images21 = [];
@@ -574,7 +560,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Sữa Rửa Mặt Paula’s Choice'
     });
-
     String chemicalComposition22 = 'Water (Aqua), Sodium Lauroyl Sarcosinate, Acrylates/Steareth-20 Methacrylate Copolymer, Glycerin, PEG-200 Hydrogenated Glyceryl Palmate, Sodium Laureth Sulfate, Arginine, Butylene Glycol, PEG-7 Glyceryl Cocoate, Panthenol, Disodium EDTA, Citric Acid, PEG-60 Hydrogenated Castor Oil, Sodium Citrate, Phenoxyethanol, Caprylyl Glycol, Chlorphenesin.';
     String guideLine22 = '- Làm ướt mặt và thoa một lượng kem vừa đủ lên da mặt và vùng quanh mắt, massage nhẹ nhàng và sau đó làm sạch với nước. \n- Nếu trên da có lớp trang điểm, bạn có thể kết hợp với dầu tẩy trang/nước tẩy trang để đạt hiệu quả làm sạch tốt nhất.';
     List<String> images22 = [];
@@ -607,7 +592,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Sữa Rửa Mặt Paula’s Choice'
     });
-
     String chemicalComposition23 = 'Water (Aqua), Methylpropanediol (hydration), Butylene Glycol (hydration), Salicylic Acid (beta hydroxy acid/exfoliant), Polysorbate 20 (stabilizer), Camellia Oleifera Leaf Extract (green tea/skin calming/antioxidant), Sodium Hydroxide (pH balancer), Tetrasodium EDTA (stabilizer).';
     String guideLine23 = '- Dùng từ 1 đến 2 lần mỗi ngày sau bước rửa mặt và toner. Nhẹ nhàng đổ ra tấm bông tẩy trang rồi thoa đều lên toàn bộ khuôn mặt, bao gồm cả vùng mắt (tránh tác động trực tiếp vào mi và lông mi), không cần rửa lại bằng nước. Bên cạnh đó, có thể dùng tay để apply trực tiếp lên da. \n- Lưu ý: vào ban ngày, sử dụng kem chống nắng có chỉ số chống nắng có SPF từ 25 đến 30 sau khi sử dụng Skin Perfecting 2% BHA Liquid.';
     List<String> images23 = [];
@@ -640,7 +624,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Dung Dịch Tẩy Da Chết Paula’s Choice'
     });
-
     String chemicalComposition24 = 'Water (Aqua), Butylene Glycol, Cetyl Alcohol, Cyclopentasiloxane, Dimethicone, Salicylic Acid, Avena Sativa (Oat) Bran Extract, Allantoin, Camellia Sinensis (Green Tea) Leaf Extract, Glycyrrhiza Glabra (Licorice) Root Extract, Epilobium Angustifolium Flower/Leaf/Stem Extract, Lauric Acid, Glycerin, Polysorbate 20, Sorbitan Stearate, Magnesium Aluminum Silicate, Ammonium Acryloyldimethyltaurate/VP Copolymer, PEG-40 Stearate, Xanthan Gum, Hexylene Glycol, Sodium Hydroxide, Ethylhexylglycerin, Disodium EDTA, Phenoxyethanol, Caprylyl Glycol.';
     String guideLine24 = '- Dùng từ 1 đến 2 lần mỗi ngày sau bước rửa mặt và toner. Nhẹ nhàng đổ ra tấm bông tẩy trang rồi thoa đều lên toàn bộ khuôn mặt, bao gồm cả vùng mắt (tránh tác động trực tiếp vào mi và lông mi), không cần rửa lại bằng nước. Bên cạnh đó, có thể dùng tay để apply trực tiếp lên da. \n- Lưu ý: vào ban ngày, sử dụng kem chống nắng có chỉ số chống nắng có SPF từ 25 đến 30 sau khi sử dụng Skin Perfecting 2% BHA Liquid.';
     List<String> images24 = [];
@@ -673,7 +656,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Tẩy Da Chết Paula’s Choice'
     });
-
     String chemicalComposition25 = 'Water, Glycerin (skin-repairing ingredient), Butylene Glycol (water-binding agent), Niacinamide (vitamin B3/cell-communcating ingredient), Adenosine Triphosphate (cell-communicating ingredient/skin conditioning agent), Anthemis Nobilis (Chamomile) Flower Extract (anti-irritant), Arctium Lappa (Burdock) Root Extract (antioxidant), Hydrolyzed Jojoba Esters, Hydrolyzed Vegetable Protein (skin conditioning agents), Sodium PCA, Panthenol, Sodium Hyaluronate (skin-repairing ingredients), Sodium Chondroitin Sulfate (skin conditioning agent), Ceramide 3, Ceramide 6 II, Ceramide 1, Phytosphingosine, Cholesterol (lipid-based skin-repairing ingredients), Tetrahexyldecyl Ascorbate (vitamin C/antioxidant), Oleth-10, DEA-Oleth-10 Phosphate, Sodium Lauroyl Lactylate (emulsifiers), Polysorbate-20 (skin conditioning agent), Caprylyl Glycol, Hexylene Glycol (preservatives), Sodium Citrate (pH adjuster), Xanthan Gum (thickener), Trisodium EDTA (chelating agent), Phenoxyethanol (preservative).';
     String guideLine25 = '- Rửa sạch mặt. Sau đó, lấy một lượng nhỏ ra bông tẩy trang, nhẹ nhàng thoa lên cổ và mặt. Không rửa lại với nước \n- Sử dụng vào buổi sáng và buổi tối. \n Nên dùng kèm kem chống nắng';
     List<String> images25 = [];
@@ -706,7 +688,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Nước Cân Bằng Paula’s Choice'
     });
-
     String chemicalComposition26 = 'Water (Aqua), Glycerin (hydration/skin replenishing), Ethoxydiglycol (hydration), Niacinamide (skin-restoring), Acetyl Glucosamine (hydration/skin replenishing), Salix Nigra (Willow) Bark Extract (skin-soothing), Resveratrol (grape-derived antioxidant), Sodium Hyaluronate (hydration/skin replenishing), Palmitoyl Tetrapeptide-7 (skin-restoring), Palmitoyl Tripeptide-1 (skin-restoring), Phospholipids (hydration/skin replenishing), Epigallocatechin Gallate (antioxidant), Carnosine (skin-restoring), Genistein (antioxidant), Glycyrrhiza Glabra (Licorice) Root Extract (skin-soothing), Adenosine (skin-restoring), Xanthan Gum (texture-enhancing), Citric Acid (pH adjuster), Polysorbate 20 (texture-enhancing), Butylene Glycol (hydration), Ethylhexylglycerin (preservative), Carbomer (texture-enhancing), Tetrasodium EDTA (stabilizer), Phenoxyethanol (preservative).';
     String guideLine26 = '- Rửa sạch mặt. Sau đó, lấy một lượng nhỏ ra bông tẩy trang, nhẹ nhàng thoa lên cổ và mặt. Không rửa lại với nước \n- Sử dụng vào buổi sáng và buổi tối. \n Nên dùng kèm kem chống nắng';
     List<String> images26 = [];
@@ -739,7 +720,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Nước Cân Bằng Paula’s Choice'
     });
-
     String chemicalComposition27 = 'Water, Glycolic Acid (alpha hydroxy acid/exfoliant), Cyclopentasiloxane (hydration), Dimethicone (hydration), Glycerin (hydration/skin replenishing), Glyceryl Stearate (texture-enhancing), Stearic Acid (texture-enhancing), Cetyl Alcohol (texture-enhancing), Butyrospermum Parkii (shea butter/emollient/antioxidant), Sodium Hydroxide (pH adjuster), PEG-100 Stearate (texture-enhancing), Tetrahexyldecyl Ascorbate (stabilized vitamin C/antioxidant), Tocopheryl Acetate (vitamin E/antioxidant), Chamomilla Recutita Matricaria Flower Extract (chamomile extract/skin-soothing), Vitis Vinifera Seed Oil (grape extract/non-fragrant oil/emollient/antioxidant), Camellia Oleifera Extract (green tea extract/antioxidant), Epilobium Angustifolium Flower/Leaf/Stem Extract (willow herb extract (skin-soothing), Allantoin (skin-soothing), Butylene Glycol (hydration), Xanthan Gum (texture-enhancing), Disodium EDTA (stabilizer), sodium benzoate (preservative), phenoxyethanol (preservative).';
     String guideLine27 = 'Lấy một lượng nhỏ sản phẩm để làm sạch da. Có thể được sử dụng hàng ngày đối với toàn bộ cơ thể hoặc loại bỏ tại chỗ với một vùng da khi cần thiết. Hãy kết hợp với các sản phẩm dưỡng ẩm tốt khác để đạt hiệu quả tốt nhất.';
     List<String> images27 = [];
@@ -772,7 +752,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Dưỡng Thể Paula’s Choice'
     });
-
     String chemicalComposition28 = 'Water (Aqua), Carthamus Tinctorius (Safflower) Seed Oil (non-fragrant antioxidant plant oil), Cetyl Alcohol, Stearyl Alcohol (texture enhancers/emollients), Glycerin (skin-replenishing), Butyrospermum Parkii (Shea) Butter Extract (emollient/antioxidant), Butylene Glycol (texture enhancer), Glyceryl Stearate, PEG-100 Stearate (texture enhancers), Dimethicone (hydration), Persea Gratissima (Avocado) Oil, Simmondsia Chinensis (Jojoba) Seed Oil (non-fragrant plant oils), Ceramide AP, Ceramide NP, Ceramide EOP (skin-replenishing), Squalane (olive-derived emollient), Cholesterol (skin-replenishing), Allantoin (skin-soothing), Tocopherol (vitamin E/antioxidant), Vitis Vinifera (Grape) Seed Oil (non-fragrant antioxidant plant oil), Camellia Oleifera (Green Tea) Leaf Extract (antioxidant), Epilobium Angustifolium (Willow Herb) Flower/Leaf/Stem Extract (skin-soothing), Hydrolyzed Acacia Macrostachya Seed Extract (antioxidant), Phytosphingosine (skin-restoring), Myristoyl Tripeptide-31 (skin-restoring), Lecithin (skin-restoring fatty acid), Panthenol (hydration), Hydrogenated Lecithin (skin-restoring fatty acid), Caprylyl Caprylate/Caprate (coconut-derived emollient), Ethylhexyl Olivate (olive-derived emollient), Lactic Acid (hydration), Cyclohexasiloxane, Cyclopentasiloxane, Cellulose Gum (texture enhancers), Maltodextrin (sugar-derived hydrator), Sodium Lauroyl Lactylate (hydration), Sodium Hydroxide (pH adjuster), Acrylates/C10-30 Alkyl Acrylate Crosspolymer (film-forming agent), Xanthan Gum, Carbomer (texture enhancer), Behenyl Alcohol, Myristyl Alcohol, Lauryl Alcohol, Arachidyl Alcohol (plant-derived emollients), Phenoxyethanol, Benzoic Acid, Dehydroacetic Acid (preservatives).';
     String guideLine28 = 'Lấy một lượng nhỏ sản phẩm để làm sạch da. Có thể được sử dụng hàng ngày đối với toàn bộ cơ thể hoặc loại bỏ tại chỗ với một vùng da khi cần thiết. Hãy kết hợp với các sản phẩm dưỡng ẩm tốt khác để đạt hiệu quả tốt nhất.';
     List<String> images28 = [];
@@ -805,7 +784,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Kem Dưỡng Thể Paula’s Choice'
     });
-
     String chemicalComposition29 = 'Water (Aqua), Dimethicone (skin-softening), Glycerin (skin-replenishing), Butylene Glycol (hydrating), Isononyl Isononanoate (emollient), Castor Isostearate Succinate (skin-softening ), Glyceryl Stearate (texture enhancer), C12-15 Alkyl Benzoate (emollient), Dimethicone Crosspolymer (texture enhancer), PEG-33 (stabilizer), Polysorbate 20 (texture enhancer), Behenyl Alcohol (texture enhancer), PEG-100 Stearate (texture enhancer), Pentaerythrityl Tetraisostearate (stabilizer), Polymethylsilsesquioxane (texture enhancer), Tetrahexyldecyl Ascorbate (vitamin C/antioxidant), Retinol (skin-restoring), Ceramide NG (skin-replenishing) , Palmitoyl Tetrapeptide-7 (skin-restoring), Palmitoyl Hexapeptide-12 (skin-restoring), Sodium Hyaluronate (skin-replenishing ), Dipotassium Glycyrrhizate (antioxidant plant extracts/skin-soothing), Glycyrrhiza Glabra Root Extract (licorice extract/antioxidant/skin-soothing), Avena Sativa Kernel Extract (oat extract/antioxidant/skin-soothing), Arctium Lappa Root Extract (burdock extract/antioxidant/skin-soothing), Salix Alba Bark Extract (willow bark extract/antioxidant/skin-soothing), Glycine Soja Sterols (antioxidant/skin-softening ), Lecithin (skin-restoring), Allantoin (skin-soothing), Tocopheryl Acetate (vitamin E/antioxidant), Hydrolyzed Soy Protein (antioxidant/skin-softening), Sorbitan Laurate (texture enhancer), Acetyl Dipeptide-1 Cetyl Ester (skin-soothing), Disodium EDTA (stabilizer), Hydroxyethylcellulose (texture enhancer), Palmitoyl Tripeptide-1 (skin-restoring), Sodium Hydroxide (pH adjuster), Tribehenin (emollient), Caprylyl Glycol (skin-softening), Ethylhexylglycerin (skin-softening), Pentylene Glycol (hydrating), PEG-75 Shea Butter Glycerides (emollient), PPG-12/SMDI Copolymer (stabilizer), PEG-10 Phytosterol (fatty acid-based emollient), PEG-8 Dimethicone (skin-softening), PEG-14 (texture enhancer), Magnesium Aluminum Silicate (texture enhancer), Arachidyl Glucoside (texture enhancer), Arachidyl Alcohol (texture enhancer), Sclerotium Gum (texture enhancer), Carbomer (gel-based texture enhancer), Phenoxyethanol (preservative), Benzoic Acid (preservative).';
     String guideLine29 = '- Với những người mới sử dụng lần đầu không nên dùng quá 3 lần/ tuần mà thoa với tần suất tăng dần để da quen dần với sản phẩm. \n– Sử dụng sau bước rửa mặt và toner. \n– Tránh sử dụng lên vùng môi, mắt. \n–  Nếu muốn giảm thiểu kích ứng, hãy thử kết hợp từ 2-3 giọt của Resist Moisturizer Renewal Oil Booster. \n– Có thể sử dụng cùng lúc với tẩy da chết AHA hoặc BHA của bạn, nhưng hãy để ý xem làn da của bạn phản ứng như thế nào. Nếu bạn nhận thấy dấu hiệu căng rát, hãy sử dụng tẩy da chết AHA hoặc BHA vào buổi sáng và cải thiện vào ban đêm hoặc giảm tần suất sử dụng Clinical 1% Retinol Treatment xuống.';
     List<String> images29 = [];
@@ -838,7 +816,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Tinh Chất Paula’s Choice'
     });
-
     String chemicalComposition30 = 'Water (Aqua), Ascorbic Acid, Butylene Glycol, Ethoxydiglycol, Glycerin, PPG-26-Buteth-26, PEG-40 Hydrogenated Castor Oil, Pentylene Glycol, Tocopherol, Sodium Hyaluronate, Hexanoyl Dipeptide-3 Norleucine Acetate, Lecithin, Ferulic Acid, Panthenol, Bisabolol, Oryza Sativa (Rice) Bran Extract, Propyl Gallate, Sodium Gluconate, Sodium Hydroxide, Phenoxyethanol, Ethylhexylglycerin.';
     String guideLine30 = '- Sử dụng từ 1 đến 2 lần một ngày sau bước sữa rửa mặt, toner và tẩy da chết. \n- Nhỏ từ 2 -3 giọt vào lòng bàn tay và thoa đều trên làn da. \n- Bạn có thể sử dụng độc lập hoặc trộn chung cùng với serum, kem dưỡng ẩm yêu thích khác. \n- Vào ban ngày, luôn luôn sử dụng kem chống nắng có chỉ số SPF 30 trở lên.';
     List<String> images30 = [];
@@ -871,7 +848,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': 'Tinh Chất Paula’s Choice'
     });
-
     String chemicalComposition31 = 'Water (Aqua), Ethyl Macadamiate (hydration), Glycerin (skin-replenishing), Cetearyl Alcohol (texture enhancer), Propanediol (hydration), Triethylhexanoin (skin-smoothing), Sodium Acrylates Copolymer (texture enhancer), Glyceryl Stearate, PEG-100 Stearate (thickeners), Glycyrrhiza Glabra (Licorice) Root Extract (skin- soothing), Hydrolyzed Pumpkin Seedcake (skin-replenishing), Vaccinium Angustifolium (Blueberry) Fruit Extract (antioxidant), Euterpe Oleracea (Acai) Fruit Extract (antioxidant), Prunus Serotina (Wild Cherry) Fruit Extract (skin-soothing/antioxidant), Niacinamide (skin-restoring),Tripeptide-29 (skin-restoring), Ceramide NP, Ceramide AP, Ceramide EOP (skin-replenishing), Sodium Hyaluronate (skin-replenishing/hydration), Phytosphingosine (skin-restoring), Cholesterol (skin-replenishing), Panthenol (hydration), Sodium PCA (skin-replenishing), Adenosine (skin-restoring), Lecithin (skin-restoring/hydration), Arginine (amino acid/hydration), Sodium Lauroyl Lactylate (emulsifier) Sodium Gluconate (hydration/chelation), Citric Acid (pH adjuster), Isohexadecane (solvent/texture enhancer), Xanthan Gum, Carbomer (thickeners), Phenoxyethanol, Ethylhexylglycerin (preservatives).';
     String guideLine31 = 'Vào ban đêm, sử dụng như bước cuối cùng trong quy trình chăm sóc da của bạn. Sản phẩm này có thể sử dụng vào ban ngày với điều kiện bắt buộc sử dụng cùng kem chống nắng phổ rộng SPF 30 trở lên.';
     List<String> images31 = [];
@@ -904,7 +880,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': "Kem Dưỡng Ẩm Paula's Choice"
     });
-
     String chemicalComposition32 = 'Water (Aqua), Cyclopentasiloxane (texture enhancer/hydration), Octyldodecyl Neopentanoate (texture enhancer), Vinyl Dimethicone/Methicone Silsesquioxane Crosspolymer (texture enhancer/film-forming agent), Glycerin (skin-replenishing), Sodium Ascorbyl Phosphate (vitamin C/antioxidant), Cetyl Alcohol (emollient), Niacinamide (skin-restoring), Dimethicone (hydration), Cetearyl Alcohol (emollient), Butylene Glycol (slip agent/hydration), Glyceryl Stearate (texture enhancer), PEG-100 Stearate (texture enhancer), Adenosine (skin-restoring), Epigallocatechin Gallate (green tea-derived antioxidant), Glucose Oxidase (hydration), Lactoperoxidase (hydration/soothing), Boerhavia Diffusa Root Extract (skin-soothing), Cocos Nucifera (Coconut) Fruit Extract (antioxidant), Lactobacillus (hydration/skin-soothing), Polysilicone-11 (texture enhancer), Sodium Chloride (texture enhancer), Potassium Thiocyanate (hydration), Glucose (hydration), Xanthan Gum (thickener), Ceteareth-20 (solubilizing agent), Decyl Glucoside (surfactant), Citric Acid (pH adjuster), Phenoxyethanol (preservative).';
     String guideLine32 = 'Vào ban đêm, sử dụng như bước cuối cùng trong quy trình chăm sóc da của bạn. Sản phẩm này có thể sử dụng vào ban ngày với điều kiện bắt buộc sử dụng cùng kem chống nắng phổ rộng SPF 30 trở lên.';
     List<String> images32 = [];
@@ -937,7 +912,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'searchCount': 0,
       'popularSearchTitle': "Kem Dưỡng Ẩm Paula's Choice"
     });
-
     String chemicalComposition33 = 'Water (Aqua), Cyclopentasiloxane (texture enhancer/hydration), Octyldodecyl Neopentanoate (texture enhancer), Vinyl Dimethicone/Methicone Silsesquioxane Crosspolymer (texture enhancer/film-forming agent), Glycerin (skin-replenishing), Sodium Ascorbyl Phosphate (vitamin C/antioxidant), Cetyl Alcohol (emollient), Niacinamide (skin-restoring), Dimethicone (hydration), Cetearyl Alcohol (emollient), Butylene Glycol (slip agent/hydration), Glyceryl Stearate (texture enhancer), PEG-100 Stearate (texture enhancer), Adenosine (skin-restoring), Epigallocatechin Gallate (green tea-derived antioxidant), Glucose Oxidase (hydration), Lactoperoxidase (hydration/soothing), Boerhavia Diffusa Root Extract (skin-soothing), Cocos Nucifera (Coconut) Fruit Extract (antioxidant), Lactobacillus (hydration/skin-soothing), Polysilicone-11 (texture enhancer), Sodium Chloride (texture enhancer), Potassium Thiocyanate (hydration), Glucose (hydration), Xanthan Gum (thickener), Ceteareth-20 (solubilizing agent), Decyl Glucoside (surfactant), Citric Acid (pH adjuster), Phenoxyethanol (preservative).';
     String guideLine33 = 'Vào ban đêm, sử dụng như bước cuối cùng trong quy trình chăm sóc da của bạn. Sản phẩm này có thể sử dụng vào ban ngày với điều kiện bắt buộc sử dụng cùng kem chống nắng phổ rộng SPF 30 trở lên.';
     List<String> images33 = [];
