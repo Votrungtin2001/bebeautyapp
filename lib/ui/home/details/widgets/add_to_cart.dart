@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,7 +11,7 @@ class AddToCart extends StatelessWidget {
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  final MProduct product;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +26,13 @@ class AddToCart extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
-                color: product.colors,
+                color: kPrimaryColor,
               ),
             ),
             child: IconButton(
               icon: SvgPicture.asset(
                 "assets/icons/add_to_cart.svg",
-                color: product.colors,
+                color: kPrimaryColor,
               ),
               onPressed: () {},
             ),
@@ -42,7 +43,7 @@ class AddToCart extends StatelessWidget {
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18)),
-                color: product.colors,
+                color: kPrimaryColor,
                 onPressed: () {},
                 child: Text(
                   "Buy  Now".toUpperCase(),

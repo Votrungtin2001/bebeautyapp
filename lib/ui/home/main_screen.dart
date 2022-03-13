@@ -5,7 +5,7 @@ import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/chat/chat_screen.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/home.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/categories.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
 import 'package:bebeautyapp/ui/profile/profile_screen.dart';
 import 'package:flutter/material.dart';

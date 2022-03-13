@@ -14,6 +14,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import '../../../home_page.dart';
 import 'forgot_password_screen.dart';
 import 'package:provider/provider.dart';
 import 'widgets/login_with_button.dart';
@@ -237,18 +238,38 @@ class _LoginScreen extends State<LoginScreen> {
                         if(result == 0) { // sign in as admin
                           // Open Home Page for admin
                           print("Sign in as admin");
-                          Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                             SnackBar(
+                              content: Text('Logged in successfully.'),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                          // Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                           loginButtonController.success();
                         }
                         else if (result == 1) { //sign in as user
                           // Open Home Page for user
                           print("Sign in as user");
-                          Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Logged in successfully.'),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                          // Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                           loginButtonController.success();
                           Future.delayed(const Duration(milliseconds: 500), () {
                             setState(() {
                               Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(builder: (context) => MainScreen()),
+                                  MaterialPageRoute(builder: (context) => HomePage()),
                                       (route) => false);
                             });
                           });
@@ -341,7 +362,7 @@ class _LoginScreen extends State<LoginScreen> {
                         print("Sign in as user by google");
                         Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => MainScreen()));
+                            context, MaterialPageRoute(builder: (context) => HomePage()));
                       }
                       else Fluttertoast.showToast(msg: 'Logged failed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                     },
@@ -362,7 +383,7 @@ class _LoginScreen extends State<LoginScreen> {
                         print("Sign in as user by facebook");
                         Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                         Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => MainScreen()));
+                        context, MaterialPageRoute(builder: (context) => HomePage()));
                       }
                       else Fluttertoast.showToast(msg: 'Logged failed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                       },

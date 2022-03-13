@@ -1,4 +1,4 @@
-import 'package:bebeautyapp/introduction_screen/introduction_screen.dart';
+import 'package:bebeautyapp/ui/introduction_screen/introduction_screen.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/function/sign_in.dart';
 import 'package:bebeautyapp/repo/function/sign_up.dart';
