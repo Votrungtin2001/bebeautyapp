@@ -59,10 +59,16 @@ class BrandServices {
 
   List<MBrand> getTop5Brand(List<MBrand> brands) {
     List<MBrand> top5 = [];
-    orderBrandsWithDesc(brands);
-    for (int i = 0; i < 5; i++)
+    List<MBrand> temp = [];
+    for (int i = 0; i < brands.length; i++)
     {
-      top5.add(brands[i]);
+      temp.add(brands[i]);
+    }
+    orderBrandsWithDesc(temp);
+    for (int i = 0; i < temp.length; i++)
+    {
+      top5.add(temp[i]);
+      if(temp.length == 5) break;
     }
     return top5;
   }

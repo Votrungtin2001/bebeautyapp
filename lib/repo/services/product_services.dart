@@ -16,8 +16,9 @@ class ProductServices {
 
   List<MProduct> getTop10NewProducts(List<MProduct> products) {
     List<MProduct> top10 = [];
-    for(int i = products.length - 10; i < products.length; i++) {
+    for(int i = products.length - 1; i > 0; i--) {
       top10.add(products[i]);
+      if(top10.length == 10) break;
     }
     return top10;
   }
@@ -45,10 +46,14 @@ class ProductServices {
 
   List<MProduct> getTop10BestSellerProduct(List<MProduct> products) {
     List<MProduct> top10 = [];
-    List<MProduct> temp = products;
+    List<MProduct> temp = [];
+    for(int i = 0; i < products.length; i++) {
+      temp.add(products[i]);
+    }
     orderProductsWithDesc(temp);
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < temp.length; i++) {
       top10.add(temp[i]);
+      if(top10.length == 10) break;
     }
     return top10;
   }
