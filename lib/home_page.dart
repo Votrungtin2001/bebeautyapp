@@ -26,26 +26,26 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       bottomNavigationBar: CurvedNavigationBar(
-        color: Color.fromRGBO(149, 227, 253, 1.0),
+        color: kFourthColor,
         backgroundColor: Colors.transparent,
         buttonBackgroundColor: Colors.white,
-        height: 70.0,
+        height: 45.0,
         items: <Widget>[
           Icon(
             Icons.home,
             size: 30.0,
-            color: kSecondaryColor,
+            color: kPrimaryColor,
           ),
 
           Icon(
             Icons.chat_bubble,
             size: 30.0,
-            color: kSecondaryColor,
+            color: kPrimaryColor,
           ),
           Icon(
             Icons.account_circle,
             size: 30.0,
-            color: kSecondaryColor,
+            color: kPrimaryColor,
           ),
         ],
         onTap: (index) {

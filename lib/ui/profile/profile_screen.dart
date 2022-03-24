@@ -1,25 +1,34 @@
+import 'package:badges/badges.dart';
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/model/user/MUser.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
+import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
+import 'package:bebeautyapp/ui/profile/widgets/address_screens.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_avatar_dialog.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_infomation.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_password.dart';
+import 'package:bebeautyapp/ui/profile/widgets/favirite_list_screens.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreens extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: kFourthColor,
         title: Text("Profile"),
-        titleTextStyle: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w700),
+        titleTextStyle: TextStyle(color: kPrimaryColor,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w500),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
+      backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
       body: SingleChildScrollView(
     padding: EdgeInsets.symmetric(vertical: 20),
     child: Center(
@@ -65,6 +74,42 @@ class ProfileScreens extends StatelessWidget {
           ],
         ),
       ),
+        SizedBox(height: 15,),
+        ProfileMenu(
+          text: "Purchase order",
+          icon: "assets/icons/menu-order.svg",
+          press: () { },
+        ),
+        SizedBox(height: 2,),
+        Container(
+         width: MediaQuery.of(context).size.width,
+          color: Colors.white,
+          height: 100,
+          child: Row(
+            children: <Widget>[
+              OrderMenu(
+                  text: "Wait for\n confirmation",
+                  icon: "assets/icons/check.svg",
+                  press: () {},
+              ),
+              OrderMenu(
+                text: "Wait for\n delivery",
+                icon: "assets/icons/package.svg",
+                press: () {},
+              ),
+              OrderMenu(
+                text: "Delivering",
+                icon: "assets/icons/delivery.svg",
+                press: () {},
+              ),
+              OrderMenu(
+                text: "Rate",
+                icon: "assets/icons/star-rate.svg",
+                press: () {},
+              ),
+            ],
+          ),
+        ),
         SizedBox(height: 20),
         ProfileMenu(
           text: "My Profile",
@@ -74,19 +119,25 @@ class ProfileScreens extends StatelessWidget {
           MaterialPageRoute(builder: (context) => Profile()),
           );},
         ),
-        ProfileMenu(
-          text: "My Orders",
-          icon: "assets/icons/orders.svg",
-          press: () {},
-        ),
+        SizedBox(height: 8),
         ProfileMenu(
           text: "My Address",
           icon: "assets/icons/location.svg",
           press: () {Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DeliveryAddress()),
+            MaterialPageRoute(builder: (context) => AddressScreens()),
           );},
         ),
+        SizedBox(height: 8),
+        ProfileMenu(
+          text: "Favorite List",
+          icon: "assets/icons/heart.svg",
+          press: () {Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FavoriteListScreens()),
+          );},
+        ),
+        SizedBox(height: 8),
         ProfileMenu(
           text: "Settings",
           icon: "assets/icons/settings.svg",
@@ -95,11 +146,13 @@ class ProfileScreens extends StatelessWidget {
             MaterialPageRoute(builder: (context) => ChangePasswordScreen()),
           );},
         ),
+        SizedBox(height: 8),
         ProfileMenu(
           text: "Log Out",
           icon: "assets/icons/log_out.svg",
           press: () { signOutDrawer(context);},
         ),
+        SizedBox(height: 30),
           ],
         ),
     ),
@@ -121,15 +174,11 @@ class ProfileMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: TextButton(
+    return TextButton(
         style: TextButton.styleFrom(
           primary: kPrimaryColor,
           padding: EdgeInsets.all(20),
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          backgroundColor: Color(0xFFF5F6F9),
+          backgroundColor: Colors.white,
         ),
         onPressed: press,
         child: Row(
@@ -142,6 +191,48 @@ class ProfileMenu extends StatelessWidget {
             SizedBox(width: 20),
             Expanded(child: Text(text)),
             Icon(Icons.arrow_forward_ios),
+          ],
+        ),
+      );
+  }
+}
+
+class OrderMenu extends StatelessWidget {
+  const OrderMenu({
+    Key? key,
+    required this.text,
+    required this.icon,
+    this.press,
+  }) : super(key: key);
+
+  final String text, icon;
+  final VoidCallback? press;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          primary: kPrimaryColor,
+        ),
+        onPressed: press,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Badge(
+              badgeColor: kPrimaryColor,
+              animationType: BadgeAnimationType.slide,
+              badgeContent: Text('3',style: TextStyle(color: Colors.white),),
+              child: SvgPicture.asset(
+                icon,
+                color: kPrimaryColor,
+                width: 24,
+              ),
+            ),
+            SizedBox(height: 8,),
+            Expanded(child: Text(text,style: TextStyle(fontSize: 14),textAlign: TextAlign.center,)),
           ],
         ),
       ),

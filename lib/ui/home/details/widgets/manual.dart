@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:bebeautyapp/constants.dart';
 
-class Description extends StatelessWidget {
-  const Description({
+class Ingredent extends StatelessWidget {
+  const Ingredent({
     Key? key,
     required this.product,
   }) : super(key: key);
@@ -17,7 +17,7 @@ class Description extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
       child: Text(
-        product.chemicalComposition,
+        product.guideLine,
         style: TextStyle(height: 1.5),
       ),
     );
