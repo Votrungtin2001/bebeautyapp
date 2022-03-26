@@ -408,6 +408,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Checkbox(
+                                              checkColor: Colors.white,
+                                                activeColor: kPrimaryColor,
                                                 value: checkTerm,
                                                 onChanged: (value) {
                                                   setState(() {
