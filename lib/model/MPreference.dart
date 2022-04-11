@@ -57,4 +57,15 @@ class MPreference {
     structureHistory = List.from(snapshot.get('structureHistory'));
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['brandHistory'] = this.brandHistory;
+    data['skinTypeHistory'] = this.skinTypeHistory;
+    data['categoryHistory'] = this.categoryHistory;
+    data['sessionHistory'] = this.sessionHistory;
+    data['structureHistory'] = this.structureHistory;
+
+    return data;
+  }
+
 }

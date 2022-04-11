@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/model/MCriteria.dart';
+import 'package:bebeautyapp/model/MDataCBR.dart';
+import 'package:bebeautyapp/model/MFactor.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
@@ -28,6 +34,7 @@ class HomeScreens extends StatelessWidget {
     final categoryProvider = Provider.of<CategoryProvider>(context);
 
     return Scaffold(
+
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
       backgroundColor: Colors.white,
@@ -37,7 +44,8 @@ class HomeScreens extends StatelessWidget {
           "assets/icons/search.svg",
           color: kTextColor,
         ),
-        onPressed: () {showSearch(context: context, delegate: DataSearch());},
+        onPressed: () {
+          showSearch(context: context, delegate: DataSearch());},
       ),
       title: kAppNameTextPinksm,
       centerTitle: true,

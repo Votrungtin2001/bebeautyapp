@@ -63,6 +63,7 @@ dependencies:
   awesome_card: ^1.1.7
   flutter_switch: ^0.3.2
   badges: ^2.0.2
+  http: ^0.13.4
 
 dependency_overrides:
   firebase_messaging_platform_interface: 3.1.6

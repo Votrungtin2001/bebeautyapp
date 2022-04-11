@@ -1,9 +1,20 @@
+import 'dart:convert';
+
+import 'package:bebeautyapp/model/MData.dart';
+import 'package:bebeautyapp/model/MDataCBR.dart';
+import 'package:bebeautyapp/model/MDataCFR.dart';
+import 'package:bebeautyapp/model/MHistory.dart';
+import 'package:bebeautyapp/model/MPreference.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
+import 'package:bebeautyapp/repo/services/user_services.dart';
+import 'package:bebeautyapp/variables.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
 class ProductServices {
   final CollectionReference refProduct= FirebaseFirestore.instance.collection('Product');
+  UserServices userServices = UserServices();
 
   Future<List<MProduct>> getProducts() async =>
       refProduct.orderBy('id', descending: false).get().then((result) {
@@ -97,4 +108,77 @@ class ProductServices {
     }
     return -1;
   }
+
+  MProduct getProductByID(List<MProduct> products, int productID) {
+    MProduct product = new MProduct(id: 0, name: "", engName: "",
+        brandID: 0, categoryID: 0, originID: 0, skinID: 0, sessionID: 0,
+        genderID: 0, structureID: 0, soldOut: 0, totalStarRating: 0, totalRating: 0,
+        marketPrice: 0, importPrice: 0, defaultDiscountRate: 0, price: 0,
+        chemicalComposition: "", guideLine: "", images: [], userFavorite: [],
+        available: 0, searchCount: 0, popularSearchTitle: "");
+
+    for(int i = 0; i < products.length; i++) {
+      if(products[i].getID() == productID) return products[i];
+    }
+    return product;
+  }
+
+  Future<List<MProduct>> getSimilarityProductsByCBR(List<MProduct> products, MUser user) async {
+    List<MProduct> results = [];
+    MDataCBR Data = new MDataCBR(products: products, user: user);
+    http.Response response =  await http.post(
+      Uri.http(Variable.url, '/api/getSimilarProductsBasedUserByCBR'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(Data),
+    );
+    var data = await json.decode(response.body);
+    for(int i = 0; i < data['result'].length; i++) {
+      int id = data['result'][i]['id'];
+      results.add(getProductByID(products, id));
+    }
+    return results;
+  }
+
+  Future<List<MProduct>> getSimilarityProductsByCFR(List<MProduct> products, MUser user) async {
+    List<MProduct> results = [];
+    List<MUser> users = await userServices.getUsers();
+
+    MDataCFR Data = new MDataCFR(products: products, users: users, user: user);
+    http.Response response =  await http.post(
+      Uri.http(Variable.url, '/api/getSimilarProductsByCFR'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(Data),
+    );
+    var data = await json.decode(response.body);
+    for(int i = 0; i < data['result'].length; i++) {
+      int id = data['result'][i]['id'];
+      results.add(getProductByID(products, id));
+    }
+    return results;
+  }
+
+  Future<List<MProduct>> getSimilarityProductsBySelectedProduct(List<MProduct> products, MProduct product) async {
+    List<MProduct> results = [];
+    List<MProduct> temp = [];
+
+    for(int i = 0; i < products.length; i++) {
+      if(products[i].getID() != product.getID()) temp.add(products[i]);
+    }
+
+    MData Data = new MData(products: temp, product: product);
+    http.Response response =  await http.post(
+      Uri.http(Variable.url, '/api/getSimilarProductBySelectedProduct'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(Data),
+    );
+    var data = await json.decode(response.body);
+    for(int i = 0; i < data['result'].length; i++) {
+      int id = data['result'][i]['id'];
+      results.add(getProductByID(products, id));
+    }
+    return results;
+  }
+
+
+
 }
