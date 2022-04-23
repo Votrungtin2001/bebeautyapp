@@ -11,7 +11,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import '../../../home_page.dart';
@@ -52,16 +51,7 @@ class _LoginScreen extends State<LoginScreen> {
         body:
         Form(
           key: _formKey,
-          child: ModalProgressHUD(
-            //inAsyncCall: Provider.of<LoginViewModel>(context).isLoading,
-            progressIndicator: Center(
-              child: SpinKitFoldingCube(
-                color: kPrimaryColor,
-                size: 50,
-              ),
-            ),
-            inAsyncCall: _isInAsyncCall,
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
               child: Column(
                 children: [
                   SizedBox(
@@ -396,7 +386,6 @@ class _LoginScreen extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

@@ -19,7 +19,13 @@ class _ReviewsState extends State<Reviews> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: AppBar(
+        backgroundColor: kFourthColor,
+        title: Text("Review"),
+        titleTextStyle: TextStyle(color: kPrimaryColor,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w500),
+        centerTitle: true,
+        automaticallyImplyLeading: true,
+      ),
       body: Column(
         children: [
           Container(

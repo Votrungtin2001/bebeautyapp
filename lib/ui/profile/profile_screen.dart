@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:badges/badges.dart';
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
@@ -17,12 +19,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreens extends StatelessWidget {
+class ProfileScreens extends StatefulWidget {
+  @override
+  _ProfileScreens createState() => _ProfileScreens();
+}
+
+class _ProfileScreens extends State<ProfileScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kFourthColor,
+        backgroundColor: Colors.white,
         title: Text("Profile"),
         titleTextStyle: TextStyle(color: kPrimaryColor,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w500),
         centerTitle: true,
@@ -63,9 +70,6 @@ class ProfileScreens extends StatelessWidget {
                       context: context,
                       builder: (context) => ChangeAvatarDialog(),
                     );
-                    if (source == null) return;
-                    // Provider.of<UserViewModel>(context, listen: false)
-                    //     .onAvatarChange(source);
                   },
                   child: SvgPicture.asset("assets/icons/camera.svg"),
                 ),

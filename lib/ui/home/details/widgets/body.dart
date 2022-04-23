@@ -6,6 +6,7 @@ import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/review_ui.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:bebeautyapp/ui/home/product_details/reviews/reviews.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
 import 'package:intl/intl.dart';
@@ -56,84 +57,94 @@ class _Body extends State<Body> {
                   },
                 ),
               ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    widget.product.images.length,
-                        (index) => AnimatedContainer(
-                      duration: Duration(milliseconds: 400),
-                      height: 8.0,
-                      width: currentIndex == index ? 24.0 : 8.0,
-                      margin: EdgeInsets.only(right: 4.0),
-                      decoration: BoxDecoration(
-                        color: currentIndex == index
-                            ? kPrimaryColor
-                            : kLightColor,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
-                ),
-          ),
-
+          //     Container(
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: List.generate(
+          //           widget.product.images.length,
+          //               (index) => AnimatedContainer(
+          //             duration: Duration(milliseconds: 400),
+          //             height: 8.0,
+          //             width: currentIndex == index ? 10.0 : 8.0,
+          //             margin: EdgeInsets.only(right: 4.0),
+          //             decoration: BoxDecoration(
+          //               color: currentIndex == index
+          //                   ? kPrimaryColor
+          //                   : kLightColor,
+          //               borderRadius: BorderRadius.circular(8.0),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          // ),
+          SizedBox(height: kDefaultPadding/2),
         Text(
         widget.product.engName,
         style: TextStyle(color: Colors.black),
       ),
       SizedBox(height: kDefaultPadding),
-      Text(
-        widget.product.name,
-        style: Theme.of(context)
-            .textTheme
-            .headline4
-            ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+      Padding(
+        padding: const EdgeInsets.only(left: 12.0),
+        child: Text(
+          widget.product.name,
+          style: Theme.of(context)
+              .textTheme
+              .headline4
+              ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
       ),
-
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Flexible(
-            child: RichText(
-              text: TextSpan(
-                style: TextStyle(color: Colors.black),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: currencyformat.format(widget.product.getMarketPrice()) + 'đ',
-                    style: new TextStyle(
-                      color: Colors.grey,
-                      fontSize: 30,
-                      decoration: TextDecoration.lineThrough,
+          SizedBox(height: kDefaultPadding),
+      Padding(
+        padding: const EdgeInsets.only(left: 12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Flexible(
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: currencyformat.format(widget.product.getMarketPrice()) + 'đ',
+                      style: new TextStyle(
+                        color: Colors.grey,
+                        fontSize: 30,
+                        decoration: TextDecoration.lineThrough,
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    text:currencyformat.format(widget.product.getPrice()) + 'đ',
-                    style: new TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
+                    TextSpan(
+                      text:' '+ currencyformat.format(widget.product.getPrice()) + 'đ',
+                      style: new TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                      ),
                     ),
-                  ),
 
-                ],
+                  ],
+                ),
               ),
             ),
+              ],
+              ),
+      ),
+          SizedBox(height: kDefaultPadding,),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 300,
+              child: DefaultTabController(
+                length: 4,
+                child: TabBarView(
+                    children: <Widget>[
+                      HomeTopTabs(widget.product),
+                      HomeTopTabs(widget.product),
+                      HomeTopTabs(widget.product),
+                      HomeTopTabs(widget.product),
+                    ],
+                ),
+              ),),
           ),
-            ],
-            ),
-
-          SizedBox(
-            height: 300,
-            child: DefaultTabController(
-              length: 4,
-              child: TabBarView(
-                children: <Widget>[
-                  HomeTopTabs(widget.product),
-                  HomeTopTabs(widget.product),
-                  HomeTopTabs(widget.product),
-                  HomeTopTabs(widget.product),
-                ],),
-            ),),
 
 
           Row(
@@ -201,7 +212,7 @@ class _Body extends State<Body> {
           bottom: TabBar(
             isScrollable: true,
             indicatorWeight: 6.0,
-            indicatorColor: Colors.red,
+            indicatorColor: kPrimaryColor,
             unselectedLabelColor: Colors.black,
             tabs: <Widget>[
               Tab(

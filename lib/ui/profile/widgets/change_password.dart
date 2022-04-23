@@ -34,7 +34,7 @@ class ChangePasswordScreen extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: Color(0xffF2F5FC),
+      backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

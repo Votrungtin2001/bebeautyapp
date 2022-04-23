@@ -100,7 +100,7 @@ class ChatScreens extends StatelessWidget {
   AppBar buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: kFourthColor,
+      backgroundColor: Colors.white,
       title: Row(
         children: [
           kAppNameTextPinksm,
