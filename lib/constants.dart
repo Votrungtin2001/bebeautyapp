@@ -20,21 +20,21 @@ const kPrimaryGradientColor = LinearGradient(
 );
 
 const kAppNameTextPink = Text(
-  'BEBEAUTY',
+  'be beauty',
   style: TextStyle(
-    fontFamily: 'Laila',
-    fontWeight: FontWeight.bold,
+    fontFamily: 'Glitten',
+    fontWeight: FontWeight.w500,
     fontSize: 36,
     color: kPrimaryColor,
   ),
 );
 
 const kAppNameTextPinksm = Text(
-  'BEBEAUTY',
+  'be beauty',
   style: TextStyle(
-    fontFamily: 'Laila',
-    fontWeight: FontWeight.bold,
-    fontSize: 18,
+    fontFamily: 'Glitten',
+    fontWeight: FontWeight.w500,
+    fontSize: 24,
     color: kPrimaryColor,
   ),
 );

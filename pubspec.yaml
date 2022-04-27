@@ -115,6 +115,11 @@ flutter:
         - asset: assets/fonts/laila/Laila-Regular.ttf
           weight: 700
 
+    - family: Glitten
+      fonts:
+            - asset: assets/fonts/glitten/Glitten-Regular.ttf
+              weight: 700
+
 
 
 
