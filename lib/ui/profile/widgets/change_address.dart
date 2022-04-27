@@ -1,12 +1,16 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
+import 'package:bebeautyapp/ui/profile/widgets/gg_map.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 class ChangeAddressScreen extends StatefulWidget {
@@ -29,6 +33,11 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
+
+
+  String location ='Null, Press Button';
+  String Address = 'search';
+
 
   @override
   Widget build(BuildContext context) {
@@ -187,12 +196,34 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         ),
                       ),
                       SizedBox(height: 20,),
-                      Container(
-                        height: 300,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.white,
-                        child: Center(child: Text("Map",style: TextStyle(fontSize: 18, fontFamily: 'Poppins',color: kTextColor,),)),
-                      ),
+
+                      ElevatedButton(onPressed: () async{
+                        Position position = await _getGeoLocationPosition();
+                        location ='Lat: ${position.latitude} , Long: ${position.longitude}';
+                        GetAddressFromLatLong(position);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GoogleMapSearch()),
+                        );
+                      }, child: Text('Get Location')),
+
+                      // GestureDetector(
+                      //   onTap: () => Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (context) => GoogleMapSearch()),
+                      //   ),
+                      //   child: Container(
+                      //     height: 300,
+                      //     width: MediaQuery.of(context).size.width,
+                      //     child: GoogleMap(
+                      //       mapType: MapType.normal,
+                      //       initialCameraPosition: _kGooglePlex,
+                      //       onMapCreated: (GoogleMapController controller) {
+                      //         _controller = controller;
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(height: 20,),
 
                       Container(
@@ -245,6 +276,8 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
     );
   }
 
+
+
   Future<void> _deleteDialog() async {
     return showDialog<void>(
       context: context,
@@ -266,6 +299,49 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
         );
       },
     );
+  }
+
+  Future<Position> _getGeoLocationPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+  Future<void> GetAddressFromLatLong(Position position)async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    print(placemarks);
+    Placemark place = placemarks[0];
+    Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    setState(()  {
+    });
   }
 
   Future<void> _backDialog() async {

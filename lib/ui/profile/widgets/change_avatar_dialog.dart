@@ -12,7 +12,6 @@ class ChangeAvatarDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -67,31 +66,6 @@ class ChangeAvatarDialog extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context, rootNavigator: true)
-                            .pop(ImageSource.camera);
-                      },
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Icon(
-                            Icons.camera,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Camera',
-                            style: kBigTitleTextStyle.copyWith(
-                                color: kPrimaryColor),
-                          ),
-                        ],
-                      ),
-                    ),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context, rootNavigator: true)

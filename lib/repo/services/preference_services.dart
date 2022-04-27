@@ -1,5 +1,6 @@
 
 import 'package:bebeautyapp/model/MPreference.dart';
+import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -29,6 +30,38 @@ class PreferenceServices {
       }
     });
     return preference;
+  }
+
+  Future<void> updatePreference(MUser user, MProduct product) async {
+    user.preference.brandHistory.add(product.brandID);
+    user.preference.skinTypeHistory.add(product.skinID);
+    user.preference.categoryHistory.add(product.categoryID);
+    user.preference.sessionHistory.add(product.sessionID);
+    user.preference.structureHistory.add(product.structureID);
+
+    if(user.preference.brandHistory.length > 50) {
+      user.preference.brandHistory.removeAt(0);
+    }
+    if(user.preference.skinTypeHistory.length > 50) {
+      user.preference.skinTypeHistory.removeAt(0);
+    }
+    if(user.preference.categoryHistory.length > 50) {
+      user.preference.categoryHistory.removeAt(0);
+    }
+    if(user.preference.sessionHistory.length > 50) {
+      user.preference.sessionHistory.removeAt(0);
+    }
+    if(user.preference.structureHistory.length > 50) {
+      user.preference.structureHistory.removeAt(0);
+    }
+
+    await refPreference.doc(user.getID().toString()).update({
+      'brandHistory': user.preference.brandHistory,
+      'categoryHistory': user.preference.categoryHistory,
+      'sessionHistory': user.preference.sessionHistory,
+      'skinTypeHistory': user.preference.skinTypeHistory,
+      'structureHistory': user.preference.structureHistory,
+    });
   }
 
 }

@@ -188,4 +188,17 @@ class MProduct {
     popularSearchTitle = snapshot.get('popularSearchTitle');
   }
 
+  Map<String, dynamic> toJson()
+  {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['brandID'] = this.brandID;
+    data['skinID'] = this.skinID;
+    data['categoryID'] = this.categoryID;
+    data['sessionID'] = this.sessionID;
+    data['structureID'] = this.structureID;
+
+    return data;
+  }
+
 }

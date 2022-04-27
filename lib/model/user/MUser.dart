@@ -103,6 +103,14 @@ class MUser {
     preference = new MPreference(userID: "", brandHistory: [], skinTypeHistory: [], categoryHistory: [], sessionHistory: [], structureHistory: []);
   }
 
+  Map<String, dynamic> toJson()
+  {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['preference'] = this.preference;
+    return data;
+  }
+
 }
 
 class MUser_IsNotLogout {

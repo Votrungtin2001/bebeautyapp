@@ -1,11 +1,14 @@
 import 'package:bebeautyapp/model/MAddress.dart';
 import 'package:bebeautyapp/model/MPreference.dart';
+import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
+import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class UserServices {
   final CollectionReference userRef = FirebaseFirestore.instance.collection('Users');
+  PreferenceServices preferenceServices = PreferenceServices();
   String defaultAvatarUri = "https://firebasestorage.googleapis.com/v0/b/be-beauty-app.appspot.com/o/avatar.jpg?alt=media&token=4cb911b2-3282-4aea-b03a-0ab9b681602a";
 
   //Create User Collection in FireStore
@@ -28,6 +31,7 @@ class UserServices {
 
   //Get User
   Future<MUser> getUser(String userID) async {
+    MPreference preference = new MPreference(userID: "", brandHistory: [], skinTypeHistory: [], categoryHistory: [], sessionHistory: [], structureHistory: []);
     MUser user = new MUser(id: "",
         displayName: "",
         email: "",
@@ -46,7 +50,39 @@ class UserServices {
         user = MUser.fromSnapshot(User);
       }
     });
+
+    preference = await preferenceServices.getPreference(userID);
+    user.preference = preference;
+
     return user;
+
+  }
+
+  Future<List<MUser>> getUsers() async {
+    MPreference preference = new MPreference(userID: "", brandHistory: [], skinTypeHistory: [], categoryHistory: [], sessionHistory: [], structureHistory: []);
+    List<MUser> users = [];
+    MUser user = new MUser(id: "",
+        displayName: "",
+        email: "",
+        phone: "",
+        dob: DateTime(2001, 1, 1),
+        gender: 1,
+        address: new MAddress(userID: "",fullStreetName: "", latitude: 0, longitude: 0),
+        point: 0,
+        totalSpending: 0,
+        role: 1,
+        avatarUri: "https://firebasestorage.googleapis.com/v0/b/be-beauty-app.appspot.com/o/avatar.jpg?alt=media&token=4cb911b2-3282-4aea-b03a-0ab9b681602a",
+        preference: new MPreference(userID: "", brandHistory: [], skinTypeHistory: [], categoryHistory: [], sessionHistory: [], structureHistory: []));
+
+    await userRef.get().then((result) async {
+      for (DocumentSnapshot User in result.docs) {
+        user = MUser.fromSnapshot(User);
+        preference = await preferenceServices.getPreference(user.id);
+        user.preference = preference;
+        users.add(user);
+      }
+    });
+    return users;
 
   }
 
@@ -63,12 +99,6 @@ class UserServices {
     return FirebaseFirestore.instance
         .collection("Users")
         .where('id', isEqualTo: id)
-        .get();
-  }
-
-  getUsers() async {
-    return FirebaseFirestore.instance
-        .collection("Users")
         .get();
   }
 
