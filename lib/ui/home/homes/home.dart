@@ -34,11 +34,9 @@ class HomeScreens extends StatelessWidget {
     final categoryProvider = Provider.of<CategoryProvider>(context);
 
     return Scaffold(
-
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
       backgroundColor: Colors.white,
-      elevation: 0,
       leading: IconButton(
         icon: SvgPicture.asset(
           "assets/icons/search.svg",

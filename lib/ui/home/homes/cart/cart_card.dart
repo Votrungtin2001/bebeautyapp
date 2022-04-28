@@ -50,7 +50,10 @@ class CartCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1),
                 ],
               ),
-            )
+            ),
+            new Divider(
+              color: kTextColor,
+            ),
           ],
         )
       ],

@@ -90,24 +90,25 @@ class _ProfileScreens extends State<ProfileScreens> {
           color: Colors.white,
           height: 100,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               OrderMenu(
-                  text: "Wait for\n confirmation",
+                  text: "To Pay",
                   icon: "assets/icons/check.svg",
                   press: () {},
               ),
               OrderMenu(
-                text: "Wait for\n delivery",
+                text: "To Ship",
                 icon: "assets/icons/package.svg",
                 press: () {},
               ),
               OrderMenu(
-                text: "Delivering",
+                text: "To Receive",
                 icon: "assets/icons/delivery.svg",
                 press: () {},
               ),
               OrderMenu(
-                text: "Rate",
+                text: "To Rate",
                 icon: "assets/icons/star-rate.svg",
                 press: () {},
               ),
