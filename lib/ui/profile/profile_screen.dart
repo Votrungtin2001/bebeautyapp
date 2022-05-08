@@ -11,7 +11,7 @@ import 'package:bebeautyapp/ui/profile/widgets/address_screens.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_avatar_dialog.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_infomation.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_password.dart';
-import 'package:bebeautyapp/ui/profile/widgets/favirite_list_screens.dart';
+import 'package:bebeautyapp/ui/profile/widgets/favorite_list_screens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

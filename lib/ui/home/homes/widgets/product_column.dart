@@ -21,7 +21,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class RecommendProductColumn extends StatelessWidget {
+class ProductColumn extends StatelessWidget {
 
   final productServices = new ProductServices();
 
