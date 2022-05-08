@@ -5,6 +5,7 @@ import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/new_product/new_product_screen.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

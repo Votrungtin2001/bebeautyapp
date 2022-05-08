@@ -8,6 +8,7 @@ import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/recommend_product/recommend_product_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/star_rating.dart';
 import 'package:bebeautyapp/ui/home/product_details/product_details_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,9 +20,9 @@ import 'package:provider/provider.dart';
 
 import '../section_title.dart';
 
-class BestSell extends StatelessWidget {
+class RecommendProduct extends StatelessWidget {
   late List<MProduct> products;
-  BestSell(List<MProduct> Products) {
+  RecommendProduct(List<MProduct> Products) {
     this.products = Products;
   }
   @override
@@ -31,11 +32,11 @@ class BestSell extends StatelessWidget {
         Padding(
           padding:
           EdgeInsets.symmetric(horizontal:20),
-          child: SectionTitle(title: "Best sell", press: () {
+          child: SectionTitle(title: "Recommend product", press: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BestSellScreen(),
+                  builder: (context) => RecommendProductScreen(),
                 ));
           }),
         ),

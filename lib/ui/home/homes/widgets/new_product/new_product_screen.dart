@@ -12,6 +12,7 @@ import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';

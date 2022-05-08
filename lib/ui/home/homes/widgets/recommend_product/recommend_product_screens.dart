@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-class BestSellScreen extends StatelessWidget {
+class RecommendProductScreen extends StatelessWidget {
 
   final productServices = new ProductServices();
 
@@ -71,7 +71,7 @@ class BestSellScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     child: Text(
-                      "Best sell",
+                      "Recommend product",
                       style: Theme.of(context)
                           .textTheme
                           .headline5

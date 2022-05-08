@@ -18,6 +18,7 @@ import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/new_product/new_product.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/recommend_product/recommend_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:carousel_pro/carousel_pro.dart';
@@ -107,7 +108,10 @@ class HomeScreens extends StatelessWidget {
            SizedBox(
              height: MediaQuery.of(context).size.height / 50,
            ),
-
+           RecommendProduct(productServices.getTop10BestSellerProduct(productProvider.products)),
+           SizedBox(
+             height: MediaQuery.of(context).size.height / 10,
+           ),
          ],
     ),
      ),

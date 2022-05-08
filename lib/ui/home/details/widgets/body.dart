@@ -1,8 +1,12 @@
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/product_column.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/recommend_product/recommend_product_screens.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/review_ui.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:bebeautyapp/ui/home/product_details/reviews/reviews.dart';
@@ -12,6 +16,7 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../homes/widgets/recommend_product/recommend_product.dart';
 import 'add_to_cart.dart';
 import 'color_and_size.dart';
 import 'counter_with_fav_btn.dart';
@@ -185,7 +190,7 @@ class _Body extends State<Body> {
               );
             },
             separatorBuilder: (context, index) {
-              return Divider(
+              return const Divider(
                 thickness: 2.0,
                 color: kAccentColor,
               );
@@ -193,6 +198,82 @@ class _Body extends State<Body> {
           ),
           kSmallDivider,
           BestSell(productServices.getTop10BestSellerProduct(productProvider.products)),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+              children: const <Widget>[
+                Expanded(
+                    child: Divider(
+                      indent: 24,
+                      endIndent: 16,
+                      thickness: 1.5,
+                    )
+                ),
+
+                Text(
+                  "You aslo may like",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Poppins",
+                      letterSpacing: -1,
+                      color: kTextColor),
+                ),
+
+                Expanded(
+                    child: Divider(
+                      indent: 24,
+                      endIndent: 16,
+                      thickness: 1.5,
+                    )
+                ),
+              ]
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height-150,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                        child: GridView.builder(
+                          itemCount: productServices.getTop10BestSellerProduct(productProvider.products).length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: kDefaultPadding,
+                            crossAxisSpacing: kDefaultPadding,
+                            childAspectRatio: 0.5,
+                          ),
+                          itemBuilder: (context, index) => ProductCard(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
+                            press: (){Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  // builder: (context) => DetailsScreen(
+                                  //   product: products[index],
+                                  // ),
+                                  builder: (context) => DetailsScreen(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
+
+                                  ),
+                                ));
+                            },
+                          ),
+                        ),
+                      ),
+
+                    ),
+                  ],
+
+
+                ),
+              ),
+            ],
+          ),
               ],
             ),
 

@@ -1,5 +1,6 @@
 import 'package:bebeautyapp/model/MBrand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_screens.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,19 @@ class BrandCard extends StatelessWidget {
             children: List.generate(
                 brands.length,
                     (index) {
-                      return SpecialOfferCard(category: brands[index].getName(), image: brands[index].getImage(), numOfBrands: brands[index].productQuantity, press: (){},);
+                      return SpecialOfferCard(
+                        category: brands[index].getName(),
+                        image: brands[index].getImage(),
+                        numOfBrands: brands[index].productQuantity,
+                        press: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailsBrand(
+                                  brand: brands[index],
+                                ),
+                              ));
+                        },);
             },
             // children: [
             //   SpecialOfferCard(
