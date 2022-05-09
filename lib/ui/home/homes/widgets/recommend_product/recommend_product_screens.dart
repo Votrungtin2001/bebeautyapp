@@ -2,21 +2,28 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
+import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-class FavoriteListScreens extends StatelessWidget {
+class RecommendProductScreen extends StatelessWidget {
+
+  final productServices = new ProductServices();
+
   @override
   Widget build(BuildContext context) {
-    final brandProvider = Provider.of<BrandProvider>(context);
+    final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +71,7 @@ class FavoriteListScreens extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     child: Text(
-                      "Favorite List",
+                      "Recommend product",
                       style: Theme.of(context)
                           .textTheme
                           .headline5
@@ -73,28 +80,29 @@ class FavoriteListScreens extends StatelessWidget {
                   ),
                   SizedBox(height: 15,),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height-150,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                       child: GridView.builder(
-                        itemCount: brandProvider.brands.length,
+                        itemCount: productServices.getTop10BestSellerProduct(productProvider.products).length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: kDefaultPadding,
                           crossAxisSpacing: kDefaultPadding,
-                          childAspectRatio: 1.15,
+                          childAspectRatio: 0.5,
                         ),
-                        itemBuilder: (context, index) => SpecialOfferCard(
-                          category: brandProvider.brands[index].getName(),
-                          image: brandProvider.brands[index].getImage(),
-                          numOfBrands: brandProvider.brands[index].productQuantity,
+                        itemBuilder: (context, index) => ProductCard(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
                           press: (){Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailsBrand(
-                                  brand: brandProvider.brands[index],
+                                // builder: (context) => DetailsScreen(
+                                //   product: products[index],
+                                // ),
+                                builder: (context) => DetailsScreen(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
+
                                 ),
-                              ));},
+                              ));
+                          },
                         ),
                       ),
                     ),

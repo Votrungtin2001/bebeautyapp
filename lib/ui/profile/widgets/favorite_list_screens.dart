@@ -7,48 +7,41 @@ import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/product_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-class BestSellScreen extends StatelessWidget {
-
-  final productServices = new ProductServices();
-
+class FavoriteListScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final productServices = new ProductServices();
+
     final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/icons/back.svg"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        title: const Text("Favourite List"),
+        titleTextStyle: TextStyle(color: kPrimaryColor,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w700),
+        centerTitle: true,
+        automaticallyImplyLeading: true,
+        leading: BackButton(
+          color: kPrimaryColor,
         ),
         actions: <Widget>[
           IconButton(
             icon: SvgPicture.asset(
-              "assets/icons/search.svg",
-              // By default our  icon color is white
-              color: kTextColor,
-            ),
-            onPressed: () {showSearch(context: context, delegate: DataSearch());},
-          ),
-          IconButton(
-            icon: SvgPicture.asset(
               "assets/icons/cart.svg",
               // By default our  icon color is white
-              color: kTextColor,
+              color: kPrimaryColor,
             ),
             onPressed: () {Navigator.push(
               context,
@@ -67,15 +60,16 @@ class BestSellScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 15,),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    padding: const EdgeInsets.only(left: 16,top:16),
                     child: Text(
-                      "Best sell",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      productServices.getTop10BestSellerProduct(productProvider.products).length.toString()+ " product",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: "Poppins",
+                        color: kTextLightColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   SizedBox(height: 15,),

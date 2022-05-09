@@ -142,11 +142,11 @@ class _CartScreen extends State<CartScreen> {
           BackButton(),
           Text(
             "Your Cart",
-            style: TextStyle(color: kTextColor,fontSize: 18,fontFamily: 'Poppins'),
+            style: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'Poppins'),
           ),
           Text(
             "${demoCarts.length} items",
-            style: TextStyle(color: kTextColor,fontSize: 18,fontFamily: 'Poppins'),
+            style: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'Poppins'),
           ),
         ],
       ),

@@ -1,4 +1,6 @@
 import 'package:bebeautyapp/ui/chat_user/chat.dart';
+import 'package:bebeautyapp/ui/home/payment/complete_order.dart';
+import 'package:bebeautyapp/ui/home/payment/error_order.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/ui/chat/chat_screen.dart';
@@ -25,38 +27,32 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      bottomNavigationBar: CurvedNavigationBar(
-        color: kFourthColor,
-        backgroundColor: Colors.transparent,
-        buttonBackgroundColor: Colors.white,
-        height: 45.0,
-        items: <Widget>[
-          Icon(
-            Icons.home,
-            size: 30.0,
-            color: kPrimaryColor,
-          ),
-
-          Icon(
-            Icons.chat_bubble,
-            size: 30.0,
-            color: kPrimaryColor,
-          ),
-          Icon(
-            Icons.account_circle,
-            size: 30.0,
-            color: kPrimaryColor,
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _page = index;
-          },
-          );
-        },
+      body: Center(
+        child: _body.elementAt(_page),
       ),
-
-      body: _body[_page],
+      bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble),
+              label: 'Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: 'Profile',
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              _page = index;
+            },);
+          },
+          selectedItemColor: kPrimaryColor,
+          currentIndex: _page,
+        ),
     );
   }
 }

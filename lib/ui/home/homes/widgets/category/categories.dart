@@ -22,7 +22,7 @@ class Categories extends StatelessWidget {
             press: () {Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CategoryScreens(),
+                  builder: (context) => CategoryScreens(category: categories.first),
                 ));},
           ),
           // SizedBox(height: 20,),
@@ -58,7 +58,13 @@ class Categories extends StatelessWidget {
                       return index.isEven ? CategoryCard(
                         icon: categories[index].imageUri,
                         text: categories[index].name,
-                        press: () {},) : Container();
+                        press: () {Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategoryScreens(category: categories[index],
+                              ),
+                            ));
+                        },)  : Container();
                     },
                   ),
                 ),
@@ -74,7 +80,14 @@ class Categories extends StatelessWidget {
                       return index.isOdd ? CategoryCard(
                         icon: categories[index].imageUri,
                         text: categories[index].name,
-                        press: () {},)  : Container();
+                        press: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CategoryScreens(category: categories[index],
+                                ),
+                              ));
+                        },)  : Container();
 
                     },
                   ),
