@@ -1,12 +1,14 @@
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_column.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/recommend_product/recommend_product_screens.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/same_brand/same_brand.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/review_ui.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:bebeautyapp/ui/home/product_details/reviews/reviews.dart';
@@ -25,25 +27,31 @@ import 'product_title_with_image.dart';
 
 class Body extends StatefulWidget {
 
-  const Body({ Key? key,required this.product }) : super(key: key);
+  const Body({ Key? key,required this.product, required this.similarProductsFromSelectedProducts}) : super(key: key);
   final MProduct product;
+  final List<MProduct> similarProductsFromSelectedProducts;
 
   @override
   _Body createState() => _Body();
 }
 
 class _Body extends State<Body> {
+  final preferenceServices= new PreferenceServices();
+  final productServices = new ProductServices();
 
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+
     int currentIndex = 0;
     NumberFormat currencyformat = new NumberFormat("#,###,##0");
     bool isMore = false;
-    final productServices = new ProductServices();
     PageController pageController = PageController(initialPage: 0);
     // It provide us total height and width
     Size size = MediaQuery.of(context).size;
+
+
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -197,7 +205,7 @@ class _Body extends State<Body> {
             },
           ),
           kSmallDivider,
-          BestSell(productServices.getTop10BestSellerProduct(productProvider.products)),
+          SameBrand(productServices.getProductsFromSameBrand(productProvider.products, widget.product)),
           const SizedBox(
             height: 16,
           ),
@@ -243,21 +251,32 @@ class _Body extends State<Body> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                         child: GridView.builder(
-                          itemCount: productServices.getTop10BestSellerProduct(productProvider.products).length,
+                          itemCount: widget.similarProductsFromSelectedProducts.length > 6 ? 6 : widget.similarProductsFromSelectedProducts.length,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: kDefaultPadding,
                             crossAxisSpacing: kDefaultPadding,
                             childAspectRatio: 0.5,
                           ),
-                          itemBuilder: (context, index) => ProductCard(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
-                            press: (){Navigator.push(
+                          itemBuilder: (context, index) => ProductCard(product: widget.similarProductsFromSelectedProducts[index],
+                            press: () async {
+                              productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR = true;
+                              await preferenceServices.updatePreference(userProvider.user, widget.similarProductsFromSelectedProducts[index]);
+
+                              //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
+                              //await preferenceServices.updatePreference(userProvider.user, widget.similarProductsFromSelectedProducts[index]);
+                              List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, widget.similarProductsFromSelectedProducts[index]);
+
+
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   // builder: (context) => DetailsScreen(
                                   //   product: products[index],
                                   // ),
-                                  builder: (context) => DetailsScreen(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
+                                  builder: (context) => DetailsScreen(
+                                    product: widget.similarProductsFromSelectedProducts[index],
+                                    similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
 
                                   ),
                                 ));

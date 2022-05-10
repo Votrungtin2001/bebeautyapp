@@ -11,8 +11,9 @@ import 'package:bebeautyapp/ui/home/details/widgets/body.dart';
 
 class DetailsScreen extends StatelessWidget {
   final MProduct product;
+  final List<MProduct> similarProductsFromSelectedProducts;
 
-  const DetailsScreen({Key? key, required this.product}) : super(key: key);
+  const DetailsScreen({Key? key, required this.product, required this.similarProductsFromSelectedProducts}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +21,7 @@ class DetailsScreen extends StatelessWidget {
       backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
       appBar: buildAppBar(context),
       drawer: Drawer(),
-      body: SingleChildScrollView(child: Body(product: product)),
+      body: SingleChildScrollView(child: Body(product: product, similarProductsFromSelectedProducts: similarProductsFromSelectedProducts)),
       bottomNavigationBar: Material(
         elevation: kLess,
         color: Colors.white,

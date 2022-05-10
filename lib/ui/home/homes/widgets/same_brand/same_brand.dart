@@ -7,23 +7,20 @@ import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/same_brand/same_brand_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../section_title.dart';
 
-class BestSell extends StatelessWidget {
+class SameBrand extends StatelessWidget {
   final preferenceServices= new PreferenceServices();
   final productServices = new ProductServices();
+
   late List<MProduct> products;
-  BestSell(List<MProduct> Products) {
+  SameBrand(List<MProduct> Products) {
     this.products = Products;
   }
   @override
@@ -35,12 +32,12 @@ class BestSell extends StatelessWidget {
         Padding(
           padding:
           EdgeInsets.symmetric(horizontal:20),
-          child: SectionTitle(title: "Best sell", press: () {
+          child: SectionTitle(title: "Other products of this brand", press: () {
 
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BestSellScreen(products),
+                  builder: (context) => SameBrandScreen(products),
                 ));
           }),
         ),
@@ -50,7 +47,7 @@ class BestSell extends StatelessWidget {
           child: Row(
             children: [
               ...List.generate(
-                products.length,
+                products.length > 5 ? 5 : products.length,
                     (index) {
                     return Padding(
                         padding: EdgeInsets.only(left: 20),
@@ -62,8 +59,8 @@ class BestSell extends StatelessWidget {
 
                         //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                         //await preferenceServices.updatePreference(userProvider.user, products[index]);
-
                         List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, products[index]);
+
 
                         Navigator.push(
                         context,
@@ -71,7 +68,9 @@ class BestSell extends StatelessWidget {
                           // builder: (context) => DetailsScreen(
                           //   product: products[index],
                           // ),
-                          builder: (context) => DetailsScreen(product: products[index], similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
+                          builder: (context) => DetailsScreen(
+                            product: products[index],
+                            similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
 
                           ),
                         ));

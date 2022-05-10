@@ -29,7 +29,6 @@ class HomeScreens extends StatelessWidget {
   final brandServices = new BrandServices();
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
     final brandProvider = Provider.of<BrandProvider>(context);
     final categoryProvider = Provider.of<CategoryProvider>(context);
@@ -103,15 +102,17 @@ class HomeScreens extends StatelessWidget {
              height: MediaQuery.of(context).size.height / 50,
            ),
            BestSell(productServices.getTop10BestSellerProduct(productProvider.products)),
+           SizedBox(
+             height: MediaQuery.of(context).size.height / 50,
+           ),
+           RecommendProduct(),
+           //RecommendProduct(productProvider.similarProductsByCFR),
 
            NewProduct(productServices.getTop10NewProducts(productProvider.products)),
            SizedBox(
              height: MediaQuery.of(context).size.height / 50,
            ),
-           RecommendProduct(productServices.getTop10BestSellerProduct(productProvider.products)),
-           SizedBox(
-             height: MediaQuery.of(context).size.height / 10,
-           ),
+
          ],
     ),
      ),

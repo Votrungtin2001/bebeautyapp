@@ -2,6 +2,8 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
+import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
@@ -14,9 +16,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class BrandScreens extends StatelessWidget {
+  final productServices = new ProductServices();
+
   @override
   Widget build(BuildContext context) {
     final brandProvider = Provider.of<BrandProvider>(context);
+    final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -115,11 +120,15 @@ class BrandScreens extends StatelessWidget {
                             category: brandProvider.brands[index].getName(),
                             image: brandProvider.brands[index].getImage(),
                             numOfBrands: brandProvider.brands[index].productQuantity,
-                            press: (){Navigator.push(
+                            press: (){
+                              List<MProduct> allProductsFromBrand = productServices.getAllProductsFromBrand(productProvider.products, brandProvider.brands[index].id);
+
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailsBrand(
                                     brand: brandProvider.brands[index],
+                                    allProductsFromBrand: allProductsFromBrand,
                                   ),
                                 ));},
                           ),

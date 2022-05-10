@@ -52,16 +52,8 @@ class ProductColumn extends StatelessWidget {
                           childAspectRatio: 0.5,
                         ),
                         itemBuilder: (context, index) => ProductCard(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
-                          press: (){Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                // builder: (context) => DetailsScreen(
-                                //   product: products[index],
-                                // ),
-                                builder: (context) => DetailsScreen(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
+                          press: () {
 
-                                ),
-                              ));
                           },
                         ),
                       ),

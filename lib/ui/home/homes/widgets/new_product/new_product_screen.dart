@@ -3,6 +3,8 @@ import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
@@ -19,10 +21,17 @@ import 'package:provider/provider.dart';
 
 class NewProductScreen extends StatelessWidget {
 
+  final preferenceServices= new PreferenceServices();
   final productServices = new ProductServices();
+
+  late List<MProduct> products;
+  NewProductScreen(List<MProduct> Products) {
+    this.products = Products;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
@@ -84,21 +93,32 @@ class NewProductScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                       child: GridView.builder(
-                        itemCount: productServices.getTop10NewProducts(productProvider.products).length,
+                        itemCount: products.length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: kDefaultPadding,
                           crossAxisSpacing: kDefaultPadding,
                           childAspectRatio: 0.5,
                         ),
-                        itemBuilder: (context, index) => ProductCard(product: productServices.getTop10NewProducts(productProvider.products)[index],
-                          press: (){Navigator.push(
+                        itemBuilder: (context, index) => ProductCard(product: products[index],
+                          press: () async {
+                            productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR = true;
+                            await preferenceServices.updatePreference(userProvider.user, products[index]);
+
+                            //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
+                            //await preferenceServices.updatePreference(userProvider.user, products[index]);
+
+                            List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, products[index]);
+
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 // builder: (context) => DetailsScreen(
                                 //   product: products[index],
                                 // ),
-                                builder: (context) => DetailsScreen(product: productServices.getTop10NewProducts(productProvider.products)[index],
+                                builder: (context) => DetailsScreen(
+                                  product: products[index],
+                                  similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
 
                                 ),
                               ));

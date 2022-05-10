@@ -64,4 +64,24 @@ class PreferenceServices {
     });
   }
 
+  MPreference createTemp(MUser user, List<MProduct> products) {
+    //List<int> brandHistory = [products[products.length - 1].getBrandID(), products[products.length - 2].getBrandID(), products[products.length - 3].getBrandID(), products[products.length - 4].getBrandID(), products[products.length - 5].getBrandID(), products[products.length - 6].getBrandID(), products[products.length - 7].getBrandID(), products[products.length - 8].getBrandID(), products[products.length - 9].getBrandID(), products[products.length - 10].getBrandID()];
+    List<int> brandHistory = [products[products.length - 1].getBrandID()];
+
+    //List<int> skinTypeHistory = [products[products.length - 1].getSkinID(), products[products.length - 2].getSkinID(), products[products.length - 3].getSkinID(), products[products.length - 4].getSkinID(), products[products.length - 5].getSkinID(), products[products.length - 6].getSkinID(), products[products.length - 7].getSkinID(), products[products.length - 8].getSkinID(), products[products.length - 9].getSkinID(), products[products.length - 10].getSkinID()];
+    List<int> skinTypeHistory = [products[products.length - 1].getSkinID()];
+
+    //List<int> categoryHistory = [products[products.length - 1].getCategoryID(), products[products.length - 2].getCategoryID(), products[products.length - 3].getCategoryID(), products[products.length - 4].getCategoryID(), products[products.length - 5].getCategoryID(), products[products.length - 6].getCategoryID(), products[products.length - 7].getCategoryID(), products[products.length - 8].getCategoryID(), products[products.length - 9].getCategoryID(), products[products.length - 10].getCategoryID()];
+    List<int> categoryHistory = [products[products.length - 1].getCategoryID()];
+
+    //List<int> sessionHistory = [products[products.length - 1].getSessionID(), products[products.length - 2].getSessionID(), products[products.length - 3].getSessionID(), products[products.length - 4].getSessionID(), products[products.length - 5].getSessionID(), products[products.length - 6].getSessionID(), products[products.length - 7].getSessionID(), products[products.length - 8].getSessionID(), products[products.length - 9].getSessionID(), products[products.length - 10].getSessionID()];
+    List<int> sessionHistory = [products[products.length - 1].getSessionID()];
+
+    //List<int> structureHistory = [products[products.length - 1].getStructureID(), products[products.length - 2].getStructureID(), products[products.length - 3].getStructureID(), products[products.length - 4].getStructureID(), products[products.length - 5].getStructureID(), products[products.length - 6].getStructureID(), products[products.length - 7].getStructureID(), products[products.length - 8].getStructureID(), products[products.length - 9].getStructureID(), products[products.length - 10].getStructureID()];
+    List<int> structureHistory = [products[products.length - 1].getStructureID()];
+
+    MPreference preference = new MPreference(userID: user.getID(), brandHistory: brandHistory, skinTypeHistory: skinTypeHistory, categoryHistory: categoryHistory, sessionHistory: sessionHistory, structureHistory: structureHistory);
+    return preference;
+  }
+
 }

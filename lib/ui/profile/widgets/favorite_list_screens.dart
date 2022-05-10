@@ -3,6 +3,7 @@ import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
@@ -12,18 +13,27 @@ import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/product_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class FavoriteListScreens extends StatelessWidget {
+
+  final productServices = new ProductServices();
+  List<MProduct> favoriteProducts = [];
   @override
   Widget build(BuildContext context) {
 
-    final productServices = new ProductServices();
+    final userProvider = Provider.of<UserProvider>(context);
 
     final productProvider = Provider.of<ProductProvider>(context);
+
+    if(productProvider.products.length > 10) {
+      if(userProvider.user.id != "") {
+
+        favoriteProducts = productServices.getFavoriteProducts(productProvider.products, userProvider.user);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +73,7 @@ class FavoriteListScreens extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 16,top:16),
                     child: Text(
-                      productServices.getTop10BestSellerProduct(productProvider.products).length.toString()+ " product",
+                      favoriteProducts.length.toString()+ " product",
                       style: const TextStyle(
                         fontSize: 16,
                         fontFamily: "Poppins",
@@ -78,21 +88,26 @@ class FavoriteListScreens extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                       child: GridView.builder(
-                        itemCount: productServices.getTop10BestSellerProduct(productProvider.products).length,
+                        itemCount: favoriteProducts.length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: kDefaultPadding,
                           crossAxisSpacing: kDefaultPadding,
                           childAspectRatio: 0.5,
                         ),
-                        itemBuilder: (context, index) => ProductCard(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
-                          press: (){Navigator.push(
+                        itemBuilder: (context, index) => ProductCard(product: favoriteProducts[index],
+                          press: () async {
+                            List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, favoriteProducts[index]);
+
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 // builder: (context) => DetailsScreen(
                                 //   product: products[index],
                                 // ),
-                                builder: (context) => DetailsScreen(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
+                                builder: (context) => DetailsScreen(
+                                  product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
+                                  similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
 
                                 ),
                               ));

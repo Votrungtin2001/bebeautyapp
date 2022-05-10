@@ -1,29 +1,32 @@
 import 'dart:ui';
 
 import 'package:bebeautyapp/model/MCategory.dart';
+import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/category_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class Categories extends StatelessWidget {
+  final productServices = new ProductServices();
   late List<MCategory> categories = [];
   Categories(List<MCategory> Categories) {
     this.categories = Categories;
   }
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
     return Padding(
       padding: EdgeInsets.all(20),
       child: Column(
         children: [
           SectionTitle(
             title: "Categories",
-            press: () {Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CategoryScreens(category: categories.first),
-                ));},
+            press: () {
+              },
           ),
           // SizedBox(height: 20,),
           // SingleChildScrollView(
@@ -58,10 +61,15 @@ class Categories extends StatelessWidget {
                       return index.isEven ? CategoryCard(
                         icon: categories[index].imageUri,
                         text: categories[index].name,
-                        press: () {Navigator.push(
+                        press: () {
+                          List<MProduct> allProductsFromCategory = productServices.getAllProductsFromCategory(productProvider.products, categories[index].getID());
+                          productProvider.updateProductsFromCategory(allProductsFromCategory);
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CategoryScreens(category: categories[index],
+                              builder: (context) => CategoryScreens(
+                                category: categories[index],
+                                allProductsFromCategory: productProvider.allProductsFromCategory,
                               ),
                             ));
                         },)  : Container();
@@ -81,10 +89,13 @@ class Categories extends StatelessWidget {
                         icon: categories[index].imageUri,
                         text: categories[index].name,
                         press: () {
+                          List<MProduct> allProductsFromCategory = productServices.getAllProductsFromCategory(productProvider.products, categories[index].getID());
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CategoryScreens(category: categories[index],
+                                builder: (context) => CategoryScreens(
+                                  category: categories[index],
+                                  allProductsFromCategory: allProductsFromCategory,
                                 ),
                               ));
                         },)  : Container();

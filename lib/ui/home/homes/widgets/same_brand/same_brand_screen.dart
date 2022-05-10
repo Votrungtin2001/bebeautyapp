@@ -19,13 +19,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-class BestSellScreen extends StatelessWidget {
+class SameBrandScreen extends StatelessWidget {
   final preferenceServices= new PreferenceServices();
-
   final productServices = new ProductServices();
 
   late List<MProduct> products;
-  BestSellScreen(List<MProduct> Products) {
+  SameBrandScreen(List<MProduct> Products) {
     this.products = Products;
   }
 
@@ -80,7 +79,7 @@ class BestSellScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     child: Text(
-                      "Best sell",
+                      "Other products of this brand",
                       style: Theme.of(context)
                           .textTheme
                           .headline5
@@ -116,7 +115,9 @@ class BestSellScreen extends StatelessWidget {
                                 // builder: (context) => DetailsScreen(
                                 //   product: products[index],
                                 // ),
-                                builder: (context) => DetailsScreen(product: products[index], similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
+                                builder: (context) => DetailsScreen(
+                                  product: products[index],
+                                  similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
 
                                 ),
                               ));

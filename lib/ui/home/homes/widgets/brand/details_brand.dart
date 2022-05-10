@@ -4,6 +4,8 @@ import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
@@ -18,11 +20,14 @@ import 'package:provider/provider.dart';
 
 class DetailsBrand extends StatelessWidget {
   final MBrand brand;
+  final List<MProduct> allProductsFromBrand;
 
-  const DetailsBrand({Key? key, required this.brand}) : super(key: key);
+  const DetailsBrand({Key? key, required this.brand, required this.allProductsFromBrand}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final preferenceServices= new PreferenceServices();
     final productProvider = Provider.of<ProductProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
     final productServices = new ProductServices();
     return Scaffold(
@@ -88,21 +93,32 @@ class DetailsBrand extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                         child: GridView.builder(
-                          itemCount: productServices.getTop10BestSellerProduct(productProvider.products).length,
+                          itemCount: allProductsFromBrand.length,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: kDefaultPadding,
                             crossAxisSpacing: kDefaultPadding,
                             childAspectRatio: 0.5,
                           ),
-                          itemBuilder: (context, index) => ProductCard(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
-                            press: (){Navigator.push(
+                          itemBuilder: (context, index) => ProductCard(product: allProductsFromBrand[index],
+                            press: () async {
+                              productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR = true;
+                              await preferenceServices.updatePreference(userProvider.user, allProductsFromBrand[index]);
+
+                              //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
+                              //await preferenceServices.updatePreference(userProvider.user, products[index]);
+
+                              List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, allProductsFromBrand[index]);
+
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   // builder: (context) => DetailsScreen(
                                   //   product: products[index],
                                   // ),
-                                  builder: (context) => DetailsScreen(product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
+                                  builder: (context) => DetailsScreen(
+                                    product: allProductsFromBrand[index],
+                                    similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
 
                                   ),
                                 ));

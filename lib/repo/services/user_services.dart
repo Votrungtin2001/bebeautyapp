@@ -86,6 +86,41 @@ class UserServices {
 
   }
 
+  //Create User Collection in FireStore
+  MUser checkAndReturnUser(MUser user, List<MProduct> products) {
+    if(products.length > 0) {
+      if(user.preference.brandHistory.length == 0 || user.preference.skinTypeHistory.length == 0 ||
+          user.preference.categoryHistory.length == 0 || user.preference.sessionHistory.length == 0 ||
+          user.preference.structureHistory.length == 0)
+      {
+        MPreference preference_temp = preferenceServices.createTemp(user, products);
+        MUser user_temp = new MUser(id: user.id, displayName: user.displayName, email: user.email,
+            phone: user.phone, dob: user.dob, gender: user.gender,
+            address: user.address, point: user.point, totalSpending: user.totalSpending,
+            role: user.role, avatarUri: user.avatarUri, preference: preference_temp);
+
+        return user_temp;
+      }
+      else return user;
+    }
+
+    else return user;
+
+  }
+
+  List<MUser> checkAndReturnUsers(List<MUser> users, MUser user, List<MProduct> products) {
+    List<MUser> results = [];
+    if(products.length > 0) {
+      for (int i = 0; i < users.length; i++) {
+        if(users[i].getID() != user.getID()) {
+          MUser user_temp = checkAndReturnUser(users[i], products);
+          results.add(user_temp);
+        }
+      }
+    }
+    return results;
+  }
+
 
 
   searchByName(String searchField) {
