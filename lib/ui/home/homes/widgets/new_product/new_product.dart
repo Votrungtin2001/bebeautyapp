@@ -16,7 +16,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class NewProduct extends StatelessWidget {
-  final preferenceServices= new PreferenceServices();
+  final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
 
   late List<MProduct> products;
@@ -42,37 +42,48 @@ class NewProduct extends StatelessWidget {
                   ));
             },
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Wrap(
             spacing: 10, // gap between adjacent chips
             runSpacing: 25, // gap between lines
             direction: Axis.horizontal,
             children: List.generate(
               products.length,
-                  (index) {
-                  return Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child:  ProductCard(product: products[index],
+              (index) {
+                return Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: ProductCard(
+                    product: products[index],
                     press: () async {
-                      productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR = true;
-                      await preferenceServices.updatePreference(userProvider.user, products[index]);
-                      await productProvider.updateSimilarProductsBasedUserByCBR(productProvider.products, userProvider.user);
+                      productProvider
+                          .isNeededUpdated_SimilarProductsBasedUserByCBR = true;
+                      await preferenceServices.updatePreference(
+                          userProvider.user, products[index]);
+                      await productProvider.updateSimilarProductsBasedUserByCBR(
+                          productProvider.products, userProvider.user);
 
                       //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                       //await preferenceServices.updatePreference(userProvider.user, products[index]);
 
-                      List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, products[index]);
+                      List<MProduct> similarProductsFromSelectedProducts =
+                          await productServices
+                              .getSimilarityProductsBySelectedProduct(
+                                  productProvider.products, products[index]);
 
                       Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailsScreen(
-                        product: products[index],
-                        similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
-                      ),
-                    ));},
-                      ),
-                  );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailsScreen(
+                              product: products[index],
+                              similarProductsFromSelectedProducts:
+                                  similarProductsFromSelectedProducts,
+                            ),
+                          ));
+                    },
+                  ),
+                );
               },
             ),
           ),

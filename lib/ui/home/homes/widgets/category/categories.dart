@@ -26,7 +26,21 @@ class Categories extends StatelessWidget {
           SectionTitle(
             title: "Categories",
             press: () {
-              },
+              List<MProduct> allProductsFromCategory =
+                  productServices.getAllProductsFromCategory(
+                      productProvider.products, categories[0].getID());
+              productProvider
+                  .updateProductsFromCategory(allProductsFromCategory);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CategoryScreens(
+                      category: categories[0],
+                      allProductsFromCategory:
+                          productProvider.allProductsFromCategory,
+                    ),
+                  ));
+            },
           ),
           // SizedBox(height: 20,),
           // SingleChildScrollView(
@@ -58,25 +72,35 @@ class Categories extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
-                      return index.isEven ? CategoryCard(
-                        icon: categories[index].imageUri,
-                        text: categories[index].name,
-                        press: () {
-                          List<MProduct> allProductsFromCategory = productServices.getAllProductsFromCategory(productProvider.products, categories[index].getID());
-                          productProvider.updateProductsFromCategory(allProductsFromCategory);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CategoryScreens(
-                                category: categories[index],
-                                allProductsFromCategory: productProvider.allProductsFromCategory,
-                              ),
-                            ));
-                        },)  : Container();
+                      return index.isEven
+                          ? CategoryCard(
+                              icon: categories[index].imageUri,
+                              text: categories[index].name,
+                              press: () {
+                                List<MProduct> allProductsFromCategory =
+                                    productServices.getAllProductsFromCategory(
+                                        productProvider.products,
+                                        categories[index].getID());
+                                productProvider.updateProductsFromCategory(
+                                    allProductsFromCategory);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CategoryScreens(
+                                        category: categories[index],
+                                        allProductsFromCategory: productProvider
+                                            .allProductsFromCategory,
+                                      ),
+                                    ));
+                              },
+                            )
+                          : Container();
                     },
                   ),
                 ),
-                SizedBox(height: 15,),
+                SizedBox(
+                  height: 15,
+                ),
                 SizedBox(
                   height: 145,
                   child: ListView.builder(
@@ -85,21 +109,27 @@ class Categories extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
-                      return index.isOdd ? CategoryCard(
-                        icon: categories[index].imageUri,
-                        text: categories[index].name,
-                        press: () {
-                          List<MProduct> allProductsFromCategory = productServices.getAllProductsFromCategory(productProvider.products, categories[index].getID());
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CategoryScreens(
-                                  category: categories[index],
-                                  allProductsFromCategory: allProductsFromCategory,
-                                ),
-                              ));
-                        },)  : Container();
-
+                      return index.isOdd
+                          ? CategoryCard(
+                              icon: categories[index].imageUri,
+                              text: categories[index].name,
+                              press: () {
+                                List<MProduct> allProductsFromCategory =
+                                    productServices.getAllProductsFromCategory(
+                                        productProvider.products,
+                                        categories[index].getID());
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CategoryScreens(
+                                        category: categories[index],
+                                        allProductsFromCategory:
+                                            allProductsFromCategory,
+                                      ),
+                                    ));
+                              },
+                            )
+                          : Container();
                     },
                   ),
                 )
@@ -130,7 +160,7 @@ class CategoryCard extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: SizedBox(
-         width: 55,
+          width: 55,
           child: Column(
             children: [
               Container(
@@ -143,12 +173,10 @@ class CategoryCard extends StatelessWidget {
                 ),
                 child: Image.network(icon),
               ),
-
               SizedBox(
                 height: 70,
                 child: Text(text, textAlign: TextAlign.center),
               )
-
             ],
           ),
         ),

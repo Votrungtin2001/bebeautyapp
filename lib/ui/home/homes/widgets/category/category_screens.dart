@@ -17,25 +17,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-
 class CategoryScreens extends StatefulWidget {
   final MCategory category;
   final List<MProduct> allProductsFromCategory;
 
-  const CategoryScreens({Key? key, required this.category, required this.allProductsFromCategory}) : super(key: key);
+  const CategoryScreens(
+      {Key? key, required this.category, required this.allProductsFromCategory})
+      : super(key: key);
 
   @override
-  _CategoryScreensState createState() => _CategoryScreensState(this.category, this.allProductsFromCategory);
+  _CategoryScreensState createState() =>
+      _CategoryScreensState(this.category, this.allProductsFromCategory);
 }
 
-
-class _CategoryScreensState extends State<CategoryScreens> with TickerProviderStateMixin {
-  final preferenceServices= new PreferenceServices();
+class _CategoryScreensState extends State<CategoryScreens>
+    with TickerProviderStateMixin {
+  final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
   int length = 0;
 
   late MCategory category;
   late List<MProduct> allProductsFromCategory;
+
+  String categoryName = '';
 
   _CategoryScreensState(MCategory Category, List<MProduct> Products) {
     this.category = Category;
@@ -44,11 +48,12 @@ class _CategoryScreensState extends State<CategoryScreens> with TickerProviderSt
   @override
   void initState() {
     super.initState();
+    categoryName = category.name;
   }
 
   @override
   Widget build(BuildContext context) {
-    final preferenceServices= new PreferenceServices();
+    final preferenceServices = new PreferenceServices();
     final productProvider = Provider.of<ProductProvider>(context);
     final categoryProvider = Provider.of<CategoryProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
@@ -71,7 +76,9 @@ class _CategoryScreensState extends State<CategoryScreens> with TickerProviderSt
               // By default our  icon color is white
               color: kTextColor,
             ),
-            onPressed: () {showSearch(context: context, delegate: DataSearch());},
+            onPressed: () {
+              showSearch(context: context, delegate: DataSearch());
+            },
           ),
           IconButton(
             icon: SvgPicture.asset(
@@ -79,10 +86,12 @@ class _CategoryScreensState extends State<CategoryScreens> with TickerProviderSt
               // By default our  icon color is white
               color: kTextColor,
             ),
-            onPressed: () {Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CartScreen()),
-            );},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartScreen()),
+              );
+            },
           ),
           SizedBox(width: kDefaultPadding / 2)
         ],
@@ -104,37 +113,37 @@ class _CategoryScreensState extends State<CategoryScreens> with TickerProviderSt
                     icon: categoryProvider.categories[index].imageUri,
                     text: categoryProvider.categories[index].name,
                     press: () {
-                      List<MProduct> results = productServices.getAllProductsFromCategory(productProvider.products, categoryProvider.categories[index].getID());
+                      List<MProduct> results =
+                          productServices.getAllProductsFromCategory(
+                              productProvider.products,
+                              categoryProvider.categories[index].getID());
                       productProvider.updateProductsFromCategory(results);
                       setState(() {
-                        allProductsFromCategory = productProvider.allProductsFromCategory;
+                        categoryName = categoryProvider.categories[index].name;
+                        allProductsFromCategory =
+                            productProvider.allProductsFromCategory;
                       });
-
                     },
                   );
                 },
               ),
             ),
           ),
-          Divider(
-              color: Colors.black
-          ),
+          Divider(color: Colors.black),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Text(
-              category.name,
+              categoryName,
               style: Theme.of(context)
                   .textTheme
                   .headline5
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              child:
-              Column(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SingleChildScrollView(
@@ -142,28 +151,38 @@ class _CategoryScreensState extends State<CategoryScreens> with TickerProviderSt
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: 15,),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height-300,
+                          height: MediaQuery.of(context).size.height - 300,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding),
                             child: GridView.builder(
                               itemCount: allProductsFromCategory.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                mainAxisSpacing: kDefaultPadding,
-                                crossAxisSpacing: kDefaultPadding,
+                                crossAxisSpacing: 15,
                                 childAspectRatio: 0.5,
                               ),
-                              itemBuilder: (context, index) => ProductCard(product: allProductsFromCategory[index],
+                              itemBuilder: (context, index) => ProductCard(
+                                product: allProductsFromCategory[index],
                                 press: () async {
-                                  productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR = true;
-                                  await preferenceServices.updatePreference(userProvider.user, allProductsFromCategory[index]);
+                                  productProvider
+                                          .isNeededUpdated_SimilarProductsBasedUserByCBR =
+                                      true;
+                                  await preferenceServices.updatePreference(
+                                      userProvider.user,
+                                      allProductsFromCategory[index]);
 
                                   //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                                   //await preferenceServices.updatePreference(userProvider.user, products[index]);
 
-                                  List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, allProductsFromCategory[index]);
+                                  List<MProduct>
+                                      similarProductsFromSelectedProducts =
+                                      await productServices
+                                          .getSimilarityProductsBySelectedProduct(
+                                              productProvider.products,
+                                              allProductsFromCategory[index]);
 
                                   Navigator.push(
                                       context,
@@ -172,8 +191,10 @@ class _CategoryScreensState extends State<CategoryScreens> with TickerProviderSt
                                         //   product: products[index],
                                         // ),
                                         builder: (context) => DetailsScreen(
-                                          product: allProductsFromCategory[index],
-                                          similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
+                                          product:
+                                              allProductsFromCategory[index],
+                                          similarProductsFromSelectedProducts:
+                                              similarProductsFromSelectedProducts,
                                         ),
                                       ));
                                 },
@@ -192,5 +213,4 @@ class _CategoryScreensState extends State<CategoryScreens> with TickerProviderSt
       ),
     );
   }
-
 }
