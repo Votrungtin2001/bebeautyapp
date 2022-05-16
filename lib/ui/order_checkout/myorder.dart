@@ -31,7 +31,6 @@ class _MyOrderScreen extends State<MyOrderScreen>
     Tab(text: 'To Receive'),
     Tab(text: 'Completed'),
     Tab(text: 'Cancelled'),
-    Tab(text: 'Return Refund'),
   ];
   static Widget not_orders = Column(
     children: [
@@ -105,29 +104,13 @@ class _MyOrderScreen extends State<MyOrderScreen>
                     ),
                   )),
     ),
-    Center(
-      child: demoProduct.isEmpty
-          ? Center(child: not_orders)
-          : ListView.builder(
-              itemCount: demoProduct.length,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 8),
-                child: GestureDetector(
-                  onTap: (() => {}),
-                  child: ProductContainer(
-                    productEx: demoProduct[index],
-                  ),
-                ),
-              ),
-            ),
-    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: widget.index,
-      length: 6,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(

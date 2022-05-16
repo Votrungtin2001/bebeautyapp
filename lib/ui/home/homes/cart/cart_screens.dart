@@ -2,6 +2,7 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Cart.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_card.dart';
+import 'package:bebeautyapp/ui/payment/payment_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -19,8 +20,7 @@ class _CartScreen extends State<CartScreen> {
     return Scaffold(
       appBar: buildAppBar(context),
       body: Padding(
-        padding:
-        EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: ListView.builder(
           itemCount: demoCarts.length,
           itemBuilder: (context, index) => Padding(
@@ -89,13 +89,18 @@ class _CartScreen extends State<CartScreen> {
                     child: SvgPicture.asset("assets/icons/receipt.svg"),
                   ),
                   Spacer(),
-                  Text("Add voucher code"),
-                  const SizedBox(width: 10),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 12,
-                    color: kTextColor,
-                  )
+                  Container(
+                    width: 200,
+                    child: TextField(
+                      style: TextStyle(color: kTextLightColor, fontSize: 14),
+                      decoration: InputDecoration(
+                        labelText: 'Add voucher code',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: 20),
@@ -113,15 +118,27 @@ class _CartScreen extends State<CartScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    width: 190,
-                    child: CustomRoundedLoadingButton(
-                      text: 'Check out',
-                      onPress: ()  {},
-                      controller: checkOutButtonController,
-                      horizontalPadding: 0,
-                    ),
-                  ),
+                  Container(
+                      width: 150,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: RaisedButton(
+                        color: kPrimaryColor,
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => PaymentDetails(),
+                          ),
+                        ),
+                        child: Text(
+                          'Check Out',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      )),
                 ],
               ),
             ],
@@ -142,11 +159,13 @@ class _CartScreen extends State<CartScreen> {
           BackButton(),
           Text(
             "Your Cart",
-            style: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'Poppins'),
+            style: TextStyle(
+                color: Colors.white, fontSize: 18, fontFamily: 'Poppins'),
           ),
           Text(
             "${demoCarts.length} items",
-            style: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'Poppins'),
+            style: TextStyle(
+                color: Colors.white, fontSize: 18, fontFamily: 'Poppins'),
           ),
         ],
       ),
