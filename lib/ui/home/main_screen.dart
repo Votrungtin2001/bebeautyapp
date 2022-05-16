@@ -1,4 +1,3 @@
-
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -32,11 +30,12 @@ class _MainScreenState extends State<MainScreen> {
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MUser_IsNotLogout?>(context);
     final userProvider = Provider.of<UserProvider>(context);
-    if(user!.uid != null) userID = user.uid.toString();
+    if (user!.uid != null) userID = user.uid.toString();
     userProvider.getUser(userID);
 
     return Scaffold(
@@ -47,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
         currentIndex: selectedIndex,
         unselectedFontSize: 12,
         selectedFontSize: 14,
-        selectedItemColor : kPrimaryColor,
+        selectedItemColor: kPrimaryColor,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -70,19 +69,20 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-  Widget getBody( )  {
-    if(selectedIndex == 0) {
+
+  Widget getBody() {
+    if (selectedIndex == 0) {
       return _home;
-    } else if(selectedIndex==1) {
+    } else if (selectedIndex == 1) {
       return _chat;
     } else {
       return _profile;
     }
   }
-  void onTapHandler(int index)  {
+
+  void onTapHandler(int index) {
     setState(() {
       selectedIndex = index;
     });
   }
 }
-

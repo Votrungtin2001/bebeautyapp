@@ -1,19 +1,25 @@
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/ui/home/details/widgets/cart_counter.dart';
-import 'package:bebeautyapp/ui/home/details/widgets/nested.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
 import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
+import 'package:bebeautyapp/ui/home/payment/check_out.dart';
+import 'package:bebeautyapp/ui/home/payment/checkout_singleproduct.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/home/details/widgets/body.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 
 class DetailsScreen extends StatelessWidget {
   final MProduct product;
   final List<MProduct> similarProductsFromSelectedProducts;
 
-  const DetailsScreen({Key? key, required this.product, required this.similarProductsFromSelectedProducts}) : super(key: key);
+  const DetailsScreen(
+      {Key? key,
+      required this.product,
+      required this.similarProductsFromSelectedProducts})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +27,11 @@ class DetailsScreen extends StatelessWidget {
       backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
       appBar: buildAppBar(context),
       drawer: Drawer(),
-      body: SingleChildScrollView(child: Body(product: product, similarProductsFromSelectedProducts: similarProductsFromSelectedProducts)),
+      body: SingleChildScrollView(
+          child: Body(
+              product: product,
+              similarProductsFromSelectedProducts:
+                  similarProductsFromSelectedProducts)),
       bottomNavigationBar: Material(
         elevation: kLess,
         color: Colors.white,
@@ -34,7 +44,7 @@ class DetailsScreen extends StatelessWidget {
               ),
               child: IconButton(
                 icon: Icon(Icons.add_shopping_cart, color: kPrimaryColor),
-                onPressed: () => {addToCartDrawer(context)},
+                onPressed: () => {addToCartDrawer(context, product)},
               ),
             ),
             Container(
@@ -44,9 +54,7 @@ class DetailsScreen extends StatelessWidget {
               ),
               child: IconButton(
                   icon: Icon(Icons.chat, color: kPrimaryColor),
-                  onPressed: () {}
-
-              ),
+                  onPressed: () {}),
             ),
             Expanded(
               child: Container(
@@ -58,9 +66,15 @@ class DetailsScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: kLessPadding),
                     color: kPrimaryColor,
                     textColor: Colors.white,
-                    child: Text("Buy now", style: TextStyle(fontSize: 18.0,fontFamily: 'Poppins')),
-                    onPressed: () {}
-                ),
+                    child: Text("Buy now",
+                        style:
+                            TextStyle(fontSize: 18.0, fontFamily: 'Poppins')),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CheckOut()),
+                      );
+                    }),
               ),
             ),
           ],
@@ -83,14 +97,18 @@ class DetailsScreen extends StatelessWidget {
       actions: <Widget>[
         IconButton(
           icon: SvgPicture.asset("assets/icons/search.svg"),
-          onPressed: () {showSearch(context: context, delegate: DataSearch());},
+          onPressed: () {
+            showSearch(context: context, delegate: DataSearch());
+          },
         ),
         IconButton(
           icon: SvgPicture.asset("assets/icons/cart.svg"),
-          onPressed: () {Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CartScreen()),
-          );},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CartScreen()),
+            );
+          },
         ),
         SizedBox(width: kDefaultPadding / 2)
       ],
@@ -98,13 +116,11 @@ class DetailsScreen extends StatelessWidget {
   }
 }
 
-void addToCartDrawer(BuildContext context) {
+void addToCartDrawer(BuildContext context, MProduct product) {
   showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15.0),
-            topRight: Radius.circular(15.0)
-        ),
+            topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
       ),
       isDismissible: false,
       context: context,
@@ -130,7 +146,11 @@ void addToCartDrawer(BuildContext context) {
                               //color: Color(0xFFF5F6F9),
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: Image.asset("assets/image/product1"),
+                            child: Image.network(
+                              product.images[0],
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
@@ -141,37 +161,68 @@ void addToCartDrawer(BuildContext context) {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Name",
-                              style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                              product.name,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
                               maxLines: 2,
                             ),
-                            SizedBox(height: 30,),
+                            SizedBox(
+                              height: 30,
+                            ),
                             Row(
                               children: [
-                                Text("10000đ"),
+                                Text(product.price.toStringAsFixed(0).toVND()),
                                 Spacer(),
-                                Text("Kho: 213"),
+                                Text('Inventory: ' +
+                                    product.available.toString()),
                               ],
                             ),
                           ],
                         ),
                       )
                     ],
-                  ) ,
+                  ),
                 ),
-                Divider(thickness: 1,),
+                Divider(
+                  thickness: 1,
+                ),
                 Row(
                   children: [
-                    Text("Số lượng: "),
+                    Text("Number: "),
                     Spacer(),
-                    CartCounter(),
+                    Container(
+                      width: 100,
+                      child: CartCounter(
+                        increaseBottonWidget: const Icon(Icons.add,
+                            color: Colors.white,
+                            size:
+                                20), // if you want to add custom add botton then here you can pass your custom widget.
+                        decreaseBottonWidget: const Icon(Icons.remove,
+                            color: Colors.white,
+                            size:
+                                20), // if you want to add custom Remove botton then here you can pass your custom widget.
+
+                        maximumValue: 10,
+                        minimumValue: 1,
+                        value: 1,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        isEnable:
+                            true, //if you want to Enter custom value then here you should be enable.
+                        onChanged: (val) {
+                          //here in val variable you'll get updated counter value.
+                          print(val);
+                        },
+                      ),
+                    ),
                   ],
                 ),
                 RaisedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => nested_tab_bar()),);
-
-                  },
+                  onPressed: () {},
                   color: kPrimaryColor,
                   padding: EdgeInsets.symmetric(horizontal: 50),
                   elevation: 2,
@@ -180,14 +231,10 @@ void addToCartDrawer(BuildContext context) {
                   child: Text(
                     "Add to cart",
                     style: TextStyle(
-                        fontSize: 14,
-                        letterSpacing: 2.2,
-                        color: Colors.white),
+                        fontSize: 14, letterSpacing: 2.2, color: Colors.white),
                   ),
                 ),
               ],
-            )
-        );
-      }
-  );
+            ));
+      });
 }

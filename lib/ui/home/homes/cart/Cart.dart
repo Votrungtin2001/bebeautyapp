@@ -16,4 +16,7 @@ List<Cart> demoCarts = [
   Cart(product: demoProducts[1], numOfItem: 1),
   Cart(product: demoProducts[2], numOfItem: 1),
   Cart(product: demoProducts[3], numOfItem: 1),
+  Cart(product: demoProducts[3], numOfItem: 1),
+  Cart(product: demoProducts[3], numOfItem: 1),
+  Cart(product: demoProducts[3], numOfItem: 1),
 ];

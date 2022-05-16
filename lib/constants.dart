@@ -10,7 +10,7 @@ const kFourthColor = Color(0xFFFFE3E3);
 const kTextColor = Color(0xFF333333);
 const kTextLightColor = Color(0xFFACACAC);
 const kFacebookColor = Color(0xff4267B2);
-
+const kCopy = Color.fromARGB(255, 14, 88, 235);
 const kDefaultPadding = 20.0;
 
 const kPrimaryGradientColor = LinearGradient(
@@ -75,9 +75,12 @@ const kPop600TextStyle = TextStyle(
 );
 
 // Form Error
-final RegExp emailValidatorRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-final kPasswordRegex = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$");
-final kPhoneNumber = RegExp(r"^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$");
+final RegExp emailValidatorRegExp =
+    RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+final kPasswordRegex = RegExp(
+    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$");
+final kPhoneNumber =
+    RegExp(r"^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$");
 final kNameRegex = RegExp(r"^[a-zA-Z]+(([ ][a-zA-Z ])?[a-zA-Z]*)*$");
 
 const String kEmailNullError = "Please Enter your email";
@@ -115,7 +118,7 @@ final reviewList = [
     rating: 3.5,
     date: "01 Jan 2021",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/girlsFashion.jpg",
@@ -123,7 +126,7 @@ final reviewList = [
     rating: 2.5,
     date: "21 Feb 2021",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user1.jpg",
@@ -131,7 +134,7 @@ final reviewList = [
     rating: 4.5,
     date: "17 Mar 2021",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user11.jpg",
@@ -139,7 +142,7 @@ final reviewList = [
     rating: 1.5,
     date: "12 Apr 2021",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
   ),
   ReviewModal(
     image: "assets/images/user2.jpg",
@@ -147,7 +150,7 @@ final reviewList = [
     rating: 2.0,
     date: "28 May 2021",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user10.jpg",
@@ -155,7 +158,7 @@ final reviewList = [
     rating: 4.0,
     date: "14 Nov 2020",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user3.jpg",
@@ -163,7 +166,7 @@ final reviewList = [
     rating: 1.0,
     date: "14 Nov 2020",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user9.jpg",
@@ -171,7 +174,7 @@ final reviewList = [
     rating: 3.0,
     date: "14 Nov 2020",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user4.jpg",
@@ -179,7 +182,7 @@ final reviewList = [
     rating: 5.0,
     date: "14 Nov 2020",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user8.jpg",
@@ -187,7 +190,7 @@ final reviewList = [
     rating: 3.5,
     date: "14 Nov 2020",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user5.jpg",
@@ -195,7 +198,7 @@ final reviewList = [
     rating: 3.5,
     date: "14 Nov 2020",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user7.jpg",
@@ -203,7 +206,7 @@ final reviewList = [
     rating: 3.5,
     date: "14 Nov 2020",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
   ReviewModal(
     image: "assets/images/user6.jpg",
@@ -211,6 +214,6 @@ final reviewList = [
     rating: 3.5,
     date: "14 Nov 2020",
     comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   ),
 ];
