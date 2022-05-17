@@ -12,7 +12,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
 class ChangeAddressScreen extends StatefulWidget {
   static String id = "ChangeAddressScreen";
   final nameFocusNode = FocusNode();
@@ -28,16 +27,11 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
   String name = "";
   String phoneNumber = "";
   String address = "";
-  bool _switchValue=true;
+  bool _switchValue = true;
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
-
-
-  String location ='Null, Press Button';
-  String Address = 'search';
-
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +40,22 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
         backgroundColor: kPrimaryColor,
         automaticallyImplyLeading: true,
         title: Text("Change Address"),
-        titleTextStyle: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w700),
+        titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w700),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete_forever_outlined),
-              color: Colors.white,
-            onPressed: () {_deleteDialog();},
+            color: Colors.white,
+            onPressed: () {
+              _deleteDialog();
+            },
           ),
         ],
       ),
-
       body: Container(
         color: kTextLightColor.withOpacity(0.15),
         child: LayoutBuilder(
@@ -69,7 +68,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                 child: IntrinsicHeight(
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
@@ -83,7 +84,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
 
                       TextFormField(
                         focusNode: widget.nameFocusNode,
@@ -106,8 +109,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                               icon: Icon(Icons.close_rounded),
                               onPressed: () => _nameController.clear()),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)
-                          ),
+                              borderSide: BorderSide(color: Colors.white)),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
@@ -116,7 +118,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 3,),
+                      SizedBox(
+                        height: 3,
+                      ),
 
                       TextFormField(
                         focusNode: widget.phoneNumberFocusNode,
@@ -139,8 +143,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                               icon: Icon(Icons.close_rounded),
                               onPressed: () => _phoneController.clear()),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)
-                          ),
+                              borderSide: BorderSide(color: Colors.white)),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
@@ -149,7 +152,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
@@ -163,7 +168,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       TextFormField(
                         focusNode: widget.addressFocusNode,
                         onChanged: (value) {
@@ -185,8 +192,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                               icon: Icon(Icons.close_rounded),
                               onPressed: () => _phoneController.clear()),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)
-                          ),
+                              borderSide: BorderSide(color: Colors.white)),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
@@ -195,17 +201,23 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
 
-                      ElevatedButton(onPressed: () async{
-                        Position position = await _getGeoLocationPosition();
-                        location ='Lat: ${position.latitude} , Long: ${position.longitude}';
-                        GetAddressFromLatLong(position);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GoogleMapSearch()),
-                        );
-                      }, child: Text('Get Location')),
+                      ElevatedButton(
+                          onPressed: () async {
+                            // Position position = await _getGeoLocationPosition();
+                            // location =
+                            //     'Lat: ${position.latitude} , Long: ${position.longitude}';
+                            // GetAddressFromLatLong(position);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapView()),
+                            );
+                          },
+                          child: Text('Get Location')),
 
                       // GestureDetector(
                       //   onTap: () => Navigator.push(
@@ -224,7 +236,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       //     ),
                       //   ),
                       // ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
 
                       Container(
                         height: 50,
@@ -233,7 +247,14 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 12.0),
-                              child: Text('Set default address',style: TextStyle(fontSize: 16, fontFamily: 'Poppins',color: kTextColor,),),
+                              child: Text(
+                                'Set default address',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Poppins',
+                                  color: kTextColor,
+                                ),
+                              ),
                             ),
                             Spacer(),
                             Padding(
@@ -256,15 +277,22 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       FlatButton(
                         color: Colors.white,
-                        minWidth: MediaQuery.of(context).size.width-30,
-                          onPressed: () => {
-                          },
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Save",style: TextStyle(fontSize: 18, fontFamily: 'Poppins',color: kTextColor),),
+                        minWidth: MediaQuery.of(context).size.width - 30,
+                        onPressed: () => {},
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Save",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Poppins',
+                              color: kTextColor),
                         ),
+                      ),
                     ],
                   ),
                 ),
@@ -275,8 +303,6 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
       ),
     );
   }
-
-
 
   Future<void> _deleteDialog() async {
     return showDialog<void>(
@@ -301,49 +327,6 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
     );
   }
 
-  Future<Position> _getGeoLocationPosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      await Geolocator.openLocationSettings();
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  }
-
-  Future<void> GetAddressFromLatLong(Position position)async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-    print(placemarks);
-    Placemark place = placemarks[0];
-    Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
-    setState(()  {
-    });
-  }
-
   Future<void> _backDialog() async {
     return showDialog<void>(
       context: context,
@@ -351,7 +334,8 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Update'),
-          content: const Text('Update has not been saved. Are you sure you want to cancel the change?'),
+          content: const Text(
+              'Update has not been saved. Are you sure you want to cancel the change?'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -367,5 +351,3 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
     );
   }
 }
-
-
