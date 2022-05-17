@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../constants.dart';
+import '../../../../constants.dart';
 
 class ErrorOrder extends StatefulWidget {
   @override
@@ -8,7 +8,6 @@ class ErrorOrder extends StatefulWidget {
 }
 
 class _ErrorOrder extends State<ErrorOrder> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +21,16 @@ class _ErrorOrder extends State<ErrorOrder> {
           onPressed: () {},
         ),
         title: Text("Check out"),
-        titleTextStyle: TextStyle(color: kPrimaryColor,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w700),
+        titleTextStyle: TextStyle(
+            color: kPrimaryColor,
+            fontSize: 18,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w700),
         centerTitle: true,
         automaticallyImplyLeading: true,
         elevation: 0,
       ),
       body: Container(
-
         child: Column(
           children: [
             const SizedBox(
@@ -36,10 +38,9 @@ class _ErrorOrder extends State<ErrorOrder> {
             ),
             Center(
               child: SizedBox(
-                height: 164,
-                width: 164,
-                child: SvgPicture.asset("assets/icons/error.svg")
-              ),
+                  height: 164,
+                  width: 164,
+                  child: SvgPicture.asset("assets/icons/error.svg")),
             ),
             const SizedBox(
               height: 32,
@@ -72,22 +73,22 @@ class _ErrorOrder extends State<ErrorOrder> {
             SizedBox(
               height: 32,
             ),
-                RaisedButton(
-                  onPressed: () {},
-                  color: kPrimaryColor,
-                  padding: EdgeInsets.symmetric(horizontal: 30,vertical: 20),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  child: const Text(
-                    "Try again",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Poppins",
-                        letterSpacing: -1,
-                        color: Colors.white),
-                  ),
-                ),
+            RaisedButton(
+              onPressed: () {},
+              color: kPrimaryColor,
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: const Text(
+                "Try again",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: "Poppins",
+                    letterSpacing: -1,
+                    color: Colors.white),
+              ),
+            ),
           ],
         ),
       ),

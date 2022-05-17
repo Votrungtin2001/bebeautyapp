@@ -5,8 +5,9 @@ import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
+
 import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
@@ -18,20 +19,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class FavoriteListScreens extends StatelessWidget {
-
   final productServices = new ProductServices();
   List<MProduct> favoriteProducts = [];
   @override
   Widget build(BuildContext context) {
-
     final userProvider = Provider.of<UserProvider>(context);
 
     final productProvider = Provider.of<ProductProvider>(context);
 
-    if(productProvider.products.length > 10) {
-      if(userProvider.user.id != "") {
-
-        favoriteProducts = productServices.getFavoriteProducts(productProvider.products, userProvider.user);
+    if (productProvider.products.length > 10) {
+      if (userProvider.user.id != "") {
+        favoriteProducts = productServices.getFavoriteProducts(
+            productProvider.products, userProvider.user);
       }
     }
 
@@ -40,7 +39,11 @@ class FavoriteListScreens extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text("Favourite List"),
-        titleTextStyle: TextStyle(color: kPrimaryColor,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w700),
+        titleTextStyle: TextStyle(
+            color: kPrimaryColor,
+            fontSize: 18,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w700),
         centerTitle: true,
         automaticallyImplyLeading: true,
         leading: BackButton(
@@ -53,10 +56,12 @@ class FavoriteListScreens extends StatelessWidget {
               // By default our  icon color is white
               color: kPrimaryColor,
             ),
-            onPressed: () {Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CartScreen()),
-            );},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartScreen()),
+              );
+            },
           ),
           SizedBox(width: kDefaultPadding / 2)
         ],
@@ -71,9 +76,9 @@ class FavoriteListScreens extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 16,top:16),
+                    padding: const EdgeInsets.only(left: 16, top: 16),
                     child: Text(
-                      favoriteProducts.length.toString()+ " product",
+                      favoriteProducts.length.toString() + " product",
                       style: const TextStyle(
                         fontSize: 16,
                         fontFamily: "Poppins",
@@ -82,44 +87,52 @@ class FavoriteListScreens extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15,),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height-150,
+                    height: 15,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height - 150,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding),
                       child: GridView.builder(
                         itemCount: favoriteProducts.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: kDefaultPadding,
                           crossAxisSpacing: kDefaultPadding,
                           childAspectRatio: 0.5,
                         ),
-                        itemBuilder: (context, index) => ProductCard(product: favoriteProducts[index],
+                        itemBuilder: (context, index) => ProductCard(
+                          product: favoriteProducts[index],
                           press: () async {
-                            List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, favoriteProducts[index]);
+                            List<MProduct> similarProductsFromSelectedProducts =
+                                await productServices
+                                    .getSimilarityProductsBySelectedProduct(
+                                        productProvider.products,
+                                        favoriteProducts[index]);
 
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                // builder: (context) => DetailsScreen(
-                                //   product: products[index],
-                                // ),
-                                builder: (context) => DetailsScreen(
-                                  product: productServices.getTop10BestSellerProduct(productProvider.products)[index],
-                                  similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
-
-                                ),
-                              ));
+                                context,
+                                MaterialPageRoute(
+                                  // builder: (context) => DetailsScreen(
+                                  //   product: products[index],
+                                  // ),
+                                  builder: (context) => DetailsScreen(
+                                    product: productServices
+                                        .getTop10BestSellerProduct(
+                                            productProvider.products)[index],
+                                    similarProductsFromSelectedProducts:
+                                        similarProductsFromSelectedProducts,
+                                  ),
+                                ));
                           },
                         ),
                       ),
                     ),
-
                   ),
                 ],
-
-
               ),
             ),
           ],

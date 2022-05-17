@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/order_checkout/widget/ProductEx.dart';
-import 'package:bebeautyapp/ui/order_checkout/widget/track_order.dart';
+import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/ProductEx.dart';
+import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/track_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im_stepper/stepper.dart';

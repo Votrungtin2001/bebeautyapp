@@ -1,6 +1,5 @@
 import 'package:bebeautyapp/model/MProduct.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
-import 'package:bebeautyapp/ui/home/payment/check_out.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -46,10 +45,10 @@ class AddToCart extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18)),
                 color: kPrimaryColor,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CheckOut()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => CheckOut()),
+                  // );
                 },
                 child: Text(
                   "Buy  Now".toUpperCase(),

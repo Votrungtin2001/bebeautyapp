@@ -1,14 +1,10 @@
-
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-
 import '../../../constants.dart';
 
 class DeliveryAddress extends StatefulWidget {
-
-
   final stateFocusNode = FocusNode();
   final cityFocusNode = FocusNode();
   final localityFocusNode = FocusNode();
@@ -30,23 +26,28 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
   TextEditingController _localityController = TextEditingController();
   TextEditingController _pinCodeController = TextEditingController();
 
-
   final sendChangePasswordButtonController = RoundedLoadingButtonController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
+        elevation: 0,
         title: Text("Delivery Address"),
-        titleTextStyle: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w700),
+        titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w700),
         centerTitle: true,
       ),
-
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text("Where are your ordered items shipped?",style: kTitleTextStyle,),
+            Text(
+              "Where are your ordered items shipped?",
+              style: kTitleTextStyle,
+            ),
             TextFormField(
               focusNode: widget.stateFocusNode,
               onChanged: (value) {
@@ -70,9 +71,7 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 1),
+                  borderSide: BorderSide(color: Colors.black, width: 1),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -106,9 +105,7 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 1),
+                  borderSide: BorderSide(color: Colors.black, width: 1),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -142,9 +139,7 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 1),
+                  borderSide: BorderSide(color: Colors.black, width: 1),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -152,7 +147,6 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
                 ),
               ),
             ),
-
             SizedBox(
               height: kFixPadding,
             ),
@@ -179,9 +173,7 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 1),
+                  borderSide: BorderSide(color: Colors.black, width: 1),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -189,13 +181,9 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
                 ),
               ),
             ),
-
             SizedBox(
               height: kDefaultPadding,
             ),
-
-
-
             CustomRoundedLoadingButton(
               text: 'Save',
               onPress: () {},

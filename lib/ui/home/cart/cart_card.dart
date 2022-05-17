@@ -1,7 +1,7 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/Cart.dart';
-import 'package:flutter/material.dart';
+import 'package:bebeautyapp/ui/home/cart/Cart.dart';
 
+import 'package:flutter/material.dart';
 
 class CartCard extends StatelessWidget {
   const CartCard({
@@ -14,6 +14,7 @@ class CartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
           width: 88,
@@ -29,7 +30,6 @@ class CartCard extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 20),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

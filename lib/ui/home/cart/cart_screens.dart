@@ -1,8 +1,10 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/Cart.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/cart_card.dart';
-import 'package:bebeautyapp/ui/payment/payment_details.dart';
+import 'package:bebeautyapp/ui/home/cart/Cart.dart';
+import 'package:bebeautyapp/ui/home/cart/cart_card.dart';
+import 'package:bebeautyapp/ui/home/cart/grid_item.dart';
+
+import 'package:bebeautyapp/ui/home/payment/payment_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -13,43 +15,73 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreen extends State<CartScreen> {
-  final checkOutButtonController = RoundedLoadingButtonController();
+  List<Cart> selectedList = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: ListView.builder(
-          itemCount: demoCarts.length,
-          itemBuilder: (context, index) => Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Dismissible(
-              key: Key(demoCarts[index].product.id.toString()),
-              direction: DismissDirection.endToStart,
-              onDismissed: (direction) {
-                setState(() {
-                  demoCarts.removeAt(index);
-                });
-              },
-              background: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  color: kFourthColor,
-                  borderRadius: BorderRadius.circular(15),
+      body: Row(
+        children: [
+          // Text(
+          //   "${demoCarts.length} items",
+          //   style: TextStyle(
+          //       color: Colors.white, fontSize: 18, fontFamily: 'Poppins'),
+          // ),
+          // ListView.builder(
+          //   itemCount: demoCarts.length,
+          //   itemBuilder: (context, index) => Padding(
+          //     padding: EdgeInsets.symmetric(vertical: 10),
+          //     child: Dismissible(
+          //       key: Key(demoCarts[index].product.id.toString()),
+          //       direction: DismissDirection.endToStart,
+          //       onDismissed: (direction) {
+          //         setState(() {
+          //           demoCarts.removeAt(index);
+          //         });
+          //       },
+          //       background: Container(
+          //         padding: EdgeInsets.symmetric(horizontal: 20),
+          //         decoration: BoxDecoration(
+          //           color: kFourthColor,
+          //           borderRadius: BorderRadius.circular(15),
+          //         ),
+          //         child: Row(
+          //           children: [
+          //             Spacer(),
+          //             SvgPicture.asset("assets/icons/trash.svg"),
+          //           ],
+          //         ),
+          //       ),
+          //       child: CartCard(cart: demoCarts[index]),
+          //     ),
+          //   ),
+          // ),
+          Expanded(
+            child: GridView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: demoCarts.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  childAspectRatio: 4,
+                  mainAxisSpacing: 8,
                 ),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    SvgPicture.asset("assets/icons/trash.svg"),
-                  ],
-                ),
-              ),
-              child: CartCard(cart: demoCarts[index]),
-            ),
+                itemBuilder: (context, index) {
+                  return GridItem(
+                      item: demoCarts[index],
+                      isSelected: (bool value) {
+                        setState(() {
+                          if (value) {
+                            selectedList.add(demoCarts[index]);
+                          } else {
+                            selectedList.remove(demoCarts[index]);
+                          }
+                        });
+                      },
+                      key: Key(demoCarts[index].toString()));
+                }),
           ),
-        ),
+        ],
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(
@@ -128,7 +160,9 @@ class _CartScreen extends State<CartScreen> {
                         color: kPrimaryColor,
                         onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => PaymentDetails(),
+                            builder: (context) => PaymentDetails(
+                              productCardEx: selectedList,
+                            ),
                           ),
                         ),
                         child: Text(
@@ -150,24 +184,20 @@ class _CartScreen extends State<CartScreen> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: kPrimaryColor,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          BackButton(),
-          Text(
-            "Your Cart",
-            style: TextStyle(
-                color: Colors.white, fontSize: 18, fontFamily: 'Poppins'),
-          ),
-          Text(
-            "${demoCarts.length} items",
-            style: TextStyle(
-                color: Colors.white, fontSize: 18, fontFamily: 'Poppins'),
-          ),
-        ],
+      backgroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: true,
+      leading: BackButton(color: kPrimaryColor),
+      title: Text(
+        selectedList.length < 1
+            ? "Cart"
+            : "${selectedList.length} item selected",
+        style: TextStyle(
+          fontFamily: "Laila",
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          color: kPrimaryColor,
+        ),
       ),
     );
   }

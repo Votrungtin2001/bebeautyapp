@@ -7,7 +7,7 @@ import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
+import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
@@ -20,7 +20,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class RecommendProductScreen extends StatelessWidget {
-  final preferenceServices= new PreferenceServices();
+  final preferenceServices = new PreferenceServices();
 
   final productServices = new ProductServices();
 
@@ -49,7 +49,9 @@ class RecommendProductScreen extends StatelessWidget {
               // By default our  icon color is white
               color: kTextColor,
             ),
-            onPressed: () {showSearch(context: context, delegate: DataSearch());},
+            onPressed: () {
+              showSearch(context: context, delegate: DataSearch());
+            },
           ),
           IconButton(
             icon: SvgPicture.asset(
@@ -57,10 +59,12 @@ class RecommendProductScreen extends StatelessWidget {
               // By default our  icon color is white
               color: kTextColor,
             ),
-            onPressed: () {Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CartScreen()),
-            );},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartScreen()),
+              );
+            },
           ),
           SizedBox(width: kDefaultPadding / 2)
         ],
@@ -74,9 +78,12 @@ class RecommendProductScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     child: Text(
                       "Recommend product",
                       style: Theme.of(context)
@@ -85,50 +92,59 @@ class RecommendProductScreen extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 15,),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height-150,
+                    height: 15,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height - 150,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding),
                       child: GridView.builder(
                         itemCount: products.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: kDefaultPadding,
                           crossAxisSpacing: kDefaultPadding,
                           childAspectRatio: 0.5,
                         ),
-                        itemBuilder: (context, index) => ProductCard(product: products[index],
+                        itemBuilder: (context, index) => ProductCard(
+                          product: products[index],
                           press: () async {
-                            productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR = true;
-                            await preferenceServices.updatePreference(userProvider.user, products[index]);
+                            productProvider
+                                    .isNeededUpdated_SimilarProductsBasedUserByCBR =
+                                true;
+                            await preferenceServices.updatePreference(
+                                userProvider.user, products[index]);
 
                             //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                             //await preferenceServices.updatePreference(userProvider.user, products[index]);
 
-                            List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, products[index]);
+                            List<MProduct> similarProductsFromSelectedProducts =
+                                await productServices
+                                    .getSimilarityProductsBySelectedProduct(
+                                        productProvider.products,
+                                        products[index]);
 
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                // builder: (context) => DetailsScreen(
-                                //   product: products[index],
-                                // ),
-                                builder: (context) => DetailsScreen(
-                                  product: products[index],
-                                  similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
-
-                                ),
-                              ));
+                                context,
+                                MaterialPageRoute(
+                                  // builder: (context) => DetailsScreen(
+                                  //   product: products[index],
+                                  // ),
+                                  builder: (context) => DetailsScreen(
+                                    product: products[index],
+                                    similarProductsFromSelectedProducts:
+                                        similarProductsFromSelectedProducts,
+                                  ),
+                                ));
                           },
                         ),
                       ),
                     ),
-
                   ),
                 ],
-
-
               ),
             ),
           ],

@@ -1,24 +1,23 @@
+import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-import '../../../constants.dart';
-
-class AddressScreens extends StatefulWidget {
+class AddressSelecion extends StatefulWidget {
   @override
-  _AddressScreens createState() => _AddressScreens();
+  _AddressSelecion createState() => _AddressSelecion();
 }
 
-class _AddressScreens extends State<AddressScreens> {
+class _AddressSelecion extends State<AddressSelecion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
-        title: Text("Delivery Address"),
+        title: Text("Address Selecion"),
         titleTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -40,11 +39,11 @@ class _AddressScreens extends State<AddressScreens> {
                     children: <Widget>[
                       const SizedBox(height: 10.0),
                       GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeAddressScreen()),
-                        ),
+                        // onTap: () => Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => ChangeAddressScreen()),
+                        // ),
                         child: Card(
                           color: Colors.white,
                           child: Padding(
@@ -61,80 +60,6 @@ class _AddressScreens extends State<AddressScreens> {
                                       const SizedBox(height: 8.0),
                                       Text('Số điện thoại'),
                                       const SizedBox(height: 8.0),
-                                      Text('Địa chỉ'),
-                                    ],
-                                  ),
-                                  trailing: Icon(
-                                    Icons.location_on_outlined,
-                                    size: 30,
-                                    color: kPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12.0),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeAddressScreen()),
-                        ),
-                        child: Card(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text('Tên'),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 8.0),
-                                      Text('Số điện thoại'),
-                                      const SizedBox(height: 8.0),
-                                      Text('Địa chỉ'),
-                                    ],
-                                  ),
-                                  trailing: Icon(
-                                    Icons.location_on_outlined,
-                                    size: 30,
-                                    color: kPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12.0),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeAddressScreen()),
-                        ),
-                        child: Card(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text('Tên'),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 8),
-                                      Text('Số điện thoại'),
-                                      const SizedBox(height: 8),
                                       Text('Địa chỉ'),
                                     ],
                                   ),

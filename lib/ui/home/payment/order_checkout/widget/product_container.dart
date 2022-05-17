@@ -1,5 +1,5 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/order_checkout/widget/order_details.dart';
+import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:intl/intl.dart';

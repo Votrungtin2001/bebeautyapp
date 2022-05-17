@@ -4,7 +4,7 @@ import 'package:bebeautyapp/repo/providers/product_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
+
 import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/star_rating.dart';
 import 'package:flutter/cupertino.dart';

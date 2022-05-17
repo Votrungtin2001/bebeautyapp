@@ -5,8 +5,8 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
-import 'package:bebeautyapp/ui/order_checkout/myorder.dart';
+
+import 'package:bebeautyapp/ui/home/payment/order_checkout/myorder.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address_screens.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_avatar_dialog.dart';
@@ -30,6 +30,7 @@ class _ProfileScreens extends State<ProfileScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         title: Text("Profile"),
         titleTextStyle: TextStyle(

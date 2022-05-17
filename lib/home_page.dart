@@ -1,8 +1,6 @@
 import 'package:bebeautyapp/ui/chat_user/chat.dart';
-import 'package:bebeautyapp/ui/home/payment/complete_order.dart';
-import 'package:bebeautyapp/ui/home/payment/error_order.dart';
-import 'package:bebeautyapp/ui/order_checkout/myorder.dart';
-import 'package:bebeautyapp/ui/order_checkout/widget/product_container.dart';
+import 'package:bebeautyapp/ui/home/payment/widget/complete_order.dart';
+import 'package:bebeautyapp/ui/home/payment/widget/error_order.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/ui/chat/chat_screen.dart';

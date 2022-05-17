@@ -1,10 +1,8 @@
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/ui/home/details/widgets/cart_counter.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
+
+import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
-import 'package:bebeautyapp/ui/home/payment/check_out.dart';
-import 'package:bebeautyapp/ui/home/payment/checkout_singleproduct.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:bebeautyapp/constants.dart';
@@ -70,10 +68,10 @@ class DetailsScreen extends StatelessWidget {
                         style:
                             TextStyle(fontSize: 18.0, fontFamily: 'Poppins')),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CheckOut()),
-                      );
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (context) => CheckOut()),
+                      //   );
                     }),
               ),
             ),

@@ -38,6 +38,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
+        elevation: 0,
         automaticallyImplyLeading: true,
         title: Text("Change Address"),
         titleTextStyle: TextStyle(

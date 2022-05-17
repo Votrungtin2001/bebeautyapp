@@ -1,7 +1,6 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/order_checkout/widget/ProductEx.dart';
-import 'package:bebeautyapp/ui/order_checkout/widget/order_details.dart';
-import 'package:bebeautyapp/ui/order_checkout/widget/product_container.dart';
+import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/ProductEx.dart';
+import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/product_container.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
