@@ -111,7 +111,7 @@ class ChatScreens extends StatelessWidget {
       actions: [
         IconButton(
           icon: Icon(Icons.local_phone),
-          color: kSecondaryColor,
+          color: kCopy,
           onPressed: () {},
         ),
         SizedBox(width: kDefaultPadding / 2),

@@ -14,7 +14,6 @@ class CartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
           width: 88,
@@ -30,31 +29,31 @@ class CartCard extends StatelessWidget {
             ),
           ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              cart.product.title,
-              style: TextStyle(color: Colors.black, fontSize: 16),
-              maxLines: 2,
-            ),
-            SizedBox(height: 10),
-            Text.rich(
-              TextSpan(
-                text: "\$${cart.product.price}",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, color: kPrimaryColor),
+        Padding(
+          padding: const EdgeInsets.only(top: 12.0, left: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                cart.product.title,
+                style: TextStyle(color: Colors.black, fontSize: 16),
+                maxLines: 2,
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextSpan(
-                      text: " x${cart.numOfItem}",
+                  Text(
+                    '\$${cart.product.price}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, color: kPrimaryColor),
+                  ),
+                  Text('x${cart.numOfItem}',
                       style: Theme.of(context).textTheme.bodyText1),
                 ],
               ),
-            ),
-            new Divider(
-              color: kTextColor,
-            ),
-          ],
+            ],
+          ),
         )
       ],
     );

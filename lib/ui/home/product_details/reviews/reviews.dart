@@ -6,8 +6,6 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import '../../../../constants.dart';
 
 class Reviews extends StatefulWidget {
-
-
   @override
   _ReviewsState createState() => _ReviewsState();
 }
@@ -20,11 +18,17 @@ class _ReviewsState extends State<Reviews> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kFourthColor,
+        backgroundColor: Colors.white,
         title: Text("Review"),
-        titleTextStyle: TextStyle(color: kPrimaryColor,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w500),
+        titleTextStyle: TextStyle(
+            color: kPrimaryColor,
+            fontSize: 18,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w500),
         centerTitle: true,
+        leading: BackButton(color: kPrimaryColor),
         automaticallyImplyLeading: true,
+        elevation: 0.15,
       ),
       body: Column(
         children: [
@@ -46,16 +50,14 @@ class _ReviewsState extends State<Reviews> {
                           TextSpan(
                             text: "4.5",
                             style: TextStyle(
-                                fontSize: 48.0,
-                                fontFamily: 'Poppins'),
+                                fontSize: 48.0, fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                             text: "/5",
                             style: TextStyle(
-                              fontSize: 24.0,
-                              color: kTextLightColor,
-                              fontFamily: 'Poppins'
-                            ),
+                                fontSize: 24.0,
+                                color: kTextLightColor,
+                                fontFamily: 'Poppins'),
                           ),
                         ],
                       ),
@@ -73,8 +75,7 @@ class _ReviewsState extends State<Reviews> {
                       style: TextStyle(
                           fontSize: 18.0,
                           color: kTextLightColor,
-                          fontFamily: 'Poppins'
-                      ),
+                          fontFamily: 'Poppins'),
                     ),
                   ],
                 ),
@@ -89,7 +90,8 @@ class _ReviewsState extends State<Reviews> {
                         children: [
                           Text(
                             "${index + 1}",
-                            style: TextStyle(fontSize: 16.0,fontFamily: 'Poppins'),
+                            style: TextStyle(
+                                fontSize: 16.0, fontFamily: 'Poppins'),
                           ),
                           SizedBox(width: 4.0),
                           Icon(Icons.star, color: Colors.orange),

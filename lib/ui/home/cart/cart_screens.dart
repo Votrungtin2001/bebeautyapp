@@ -21,42 +21,8 @@ class _CartScreen extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: Row(
+      body: Column(
         children: [
-          // Text(
-          //   "${demoCarts.length} items",
-          //   style: TextStyle(
-          //       color: Colors.white, fontSize: 18, fontFamily: 'Poppins'),
-          // ),
-          // ListView.builder(
-          //   itemCount: demoCarts.length,
-          //   itemBuilder: (context, index) => Padding(
-          //     padding: EdgeInsets.symmetric(vertical: 10),
-          //     child: Dismissible(
-          //       key: Key(demoCarts[index].product.id.toString()),
-          //       direction: DismissDirection.endToStart,
-          //       onDismissed: (direction) {
-          //         setState(() {
-          //           demoCarts.removeAt(index);
-          //         });
-          //       },
-          //       background: Container(
-          //         padding: EdgeInsets.symmetric(horizontal: 20),
-          //         decoration: BoxDecoration(
-          //           color: kFourthColor,
-          //           borderRadius: BorderRadius.circular(15),
-          //         ),
-          //         child: Row(
-          //           children: [
-          //             Spacer(),
-          //             SvgPicture.asset("assets/icons/trash.svg"),
-          //           ],
-          //         ),
-          //       ),
-          //       child: CartCard(cart: demoCarts[index]),
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: GridView.builder(
                 scrollDirection: Axis.vertical,
@@ -223,6 +189,40 @@ class _CartScreen extends State<CartScreen> {
           color: kPrimaryColor,
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () => selectedList.isNotEmpty
+              ? deleteItem
+              : showDialog(
+                  context: context,
+                  builder: (context) {
+                    Future.delayed(Duration(milliseconds: 1500), () {
+                      Navigator.of(context).pop(true);
+                    });
+                    return AlertDialog(
+                      title: Column(
+                        children: const [
+                          Icon(
+                            Icons.announcement_outlined,
+                            size: 40,
+                            color: kPrimaryColor,
+                          ),
+                          Text(
+                            'You have not select any item to delete!',
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+          icon: const Icon(
+            Icons.delete_outlined,
+            color: kPrimaryColor,
+          ),
+        )
+      ],
     );
   }
 }
+
+void deleteItem() {}

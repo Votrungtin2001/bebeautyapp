@@ -63,11 +63,8 @@ class _CategoryScreensState extends State<CategoryScreens>
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/icons/back.svg"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        leading: BackButton(
+          color: kPrimaryColor,
         ),
         actions: <Widget>[
           IconButton(

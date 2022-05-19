@@ -13,12 +13,8 @@ class _ErrorOrder extends State<ErrorOrder> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'assets/icons/back.svg',
-            color: kPrimaryColor,
-          ),
-          onPressed: () {},
+        leading: BackButton(
+          color: kPrimaryColor,
         ),
         title: Text("Check out"),
         titleTextStyle: TextStyle(
@@ -30,67 +26,65 @@ class _ErrorOrder extends State<ErrorOrder> {
         automaticallyImplyLeading: true,
         elevation: 0,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 48,
-            ),
-            Center(
-              child: SizedBox(
-                  height: 164,
-                  width: 164,
-                  child: SvgPicture.asset("assets/icons/error.svg")),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            const Text(
-              "Sorry!!!",
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 48,
+          ),
+          Center(
+            child: SizedBox(
+                height: 164,
+                width: 164,
+                child: SvgPicture.asset("assets/icons/error.svg")),
+          ),
+          const SizedBox(
+            height: 32,
+          ),
+          const Text(
+            "Sorry!!!",
+            style: TextStyle(
+                fontSize: 24,
+                fontFamily: "Laila",
+                fontWeight: FontWeight.w600,
+                letterSpacing: -1,
+                color: kTextColor),
+          ),
+          const SizedBox(
+            height: 32,
+          ),
+          const SizedBox(
+            width: 220,
+            child: Text(
+              "We are sorry, but somthing went wrong. Don’t worry. It’s not your fault. Please check your connection and try again.",
+              textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 24,
-                  fontFamily: "Laila",
-                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w400,
                   letterSpacing: -1,
                   color: kTextColor),
             ),
-            const SizedBox(
-              height: 32,
+          ),
+          SizedBox(
+            height: 32,
+          ),
+          RaisedButton(
+            onPressed: () {},
+            color: kPrimaryColor,
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            elevation: 2,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: const Text(
+              "Try again",
+              style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: "Poppins",
+                  letterSpacing: -1,
+                  color: Colors.white),
             ),
-            const SizedBox(
-              width: 220,
-              child: Text(
-                "We are sorry, but somthing went wrong. Don’t worry. It’s not your fault. Please check your connection and try again.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: -1,
-                    color: kTextColor),
-              ),
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            RaisedButton(
-              onPressed: () {},
-              color: kPrimaryColor,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              child: const Text(
-                "Try again",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Poppins",
-                    letterSpacing: -1,
-                    color: Colors.white),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
