@@ -42,8 +42,8 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
         backgroundColor: kPrimaryColor,
         elevation: 0,
         automaticallyImplyLeading: true,
-        title: Text("Change Address"),
-        titleTextStyle: TextStyle(
+        title: const Text("Change Address"),
+        titleTextStyle: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontFamily: 'Poppins',
@@ -51,7 +51,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete_forever_outlined),
+            icon: const Icon(Icons.delete_forever_outlined),
             color: Colors.white,
             onPressed: () {
               _deleteDialog();
@@ -71,7 +71,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                 child: IntrinsicHeight(
                   child: Column(
                     children: <Widget>[
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Align(
@@ -87,7 +87,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       TextFormField(
@@ -108,19 +108,19 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
-                              icon: Icon(Icons.close_rounded),
+                              icon: const Icon(Icons.close_rounded),
                               onPressed: () => _nameController.clear()),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
-                          border: UnderlineInputBorder(
+                          border: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 3,
                       ),
                       TextFormField(
@@ -141,19 +141,19 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
-                              icon: Icon(Icons.close_rounded),
+                              icon: const Icon(Icons.close_rounded),
                               onPressed: () => _phoneController.clear()),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
-                          border: UnderlineInputBorder(
+                          border: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Align(
@@ -169,7 +169,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       TextFormField(
@@ -190,19 +190,19 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
-                              icon: Icon(Icons.close_rounded),
+                              icon: const Icon(Icons.close_rounded),
                               onPressed: () => _phoneController.clear()),
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
-                          border: UnderlineInputBorder(
+                          border: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       ElevatedButton(
@@ -217,8 +217,8 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                                   builder: (context) => MapView()),
                             );
                           },
-                          child: Text('Get Location')),
-                      SizedBox(
+                          child: const Text('Get Location')),
+                      const SizedBox(
                         height: 20,
                       ),
                       Container(
@@ -226,8 +226,8 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         color: Colors.white,
                         child: Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 12.0),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 12.0),
                               child: Text(
                                 'Set default address',
                                 style: TextStyle(
@@ -237,7 +237,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                                 ),
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Padding(
                               padding: const EdgeInsets.only(right: 12.0),
                               child: FlutterSwitch(
@@ -258,15 +258,15 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       FlatButton(
                         color: Colors.white,
                         minWidth: MediaQuery.of(context).size.width - 30,
                         onPressed: () => {},
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Text(
                           "Save",
                           style: TextStyle(
                               fontSize: 18,

@@ -123,7 +123,7 @@ class _CartScreen extends State<CartScreen> {
                   Spacer(),
                   Container(
                     width: 200,
-                    child: TextField(
+                    child: const TextField(
                       style: TextStyle(color: kTextLightColor, fontSize: 14),
                       decoration: InputDecoration(
                         labelText: 'Add voucher code',
@@ -158,15 +158,6 @@ class _CartScreen extends State<CartScreen> {
                       ),
                       child: RaisedButton(
                         color: kPrimaryColor,
-                        // onPressed: selectedList.isNotEmpty
-                        //     ? Navigator.of(context).push(
-                        //         MaterialPageRoute(
-                        //           builder: (context) => PaymentDetails(
-                        //             productCardEx: selectedList,
-                        //           ),
-                        //         ),
-                        //       )
-                        //     : ,
                         onPressed: () => selectedList.isNotEmpty
                             ? Navigator.of(context).push(
                                 MaterialPageRoute(
@@ -234,25 +225,4 @@ class _CartScreen extends State<CartScreen> {
       ),
     );
   }
-}
-
-showMyAlertDialog(BuildContext context) {
-  // Create AlertDialog
-  AlertDialog dialog = AlertDialog(
-    title: Text("Election 2020"),
-    content: Text("Will you vote for Trump?"),
-    actions: [
-      ElevatedButton(
-          child: Text("Yes"),
-          onPressed: () {
-            Navigator.of(context).pop("Yes, Of course!"); // Return value
-          }),
-      ElevatedButton(
-          child: Text("No"),
-          onPressed: () {
-            Navigator.of(context)
-                .pop("No, I will vote for Biden"); // Return value
-          }),
-    ],
-  );
 }

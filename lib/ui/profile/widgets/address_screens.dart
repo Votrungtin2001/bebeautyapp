@@ -68,7 +68,7 @@ class _AddressScreens extends State<AddressScreens> {
               onPressed: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DeliveryAddress()),
+                  MaterialPageRoute(builder: (context) => AddAddressScreen()),
                 ),
               },
               padding: EdgeInsets.all(8.0),
