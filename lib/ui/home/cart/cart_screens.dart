@@ -158,13 +158,46 @@ class _CartScreen extends State<CartScreen> {
                       ),
                       child: RaisedButton(
                         color: kPrimaryColor,
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => PaymentDetails(
-                              productCardEx: selectedList,
-                            ),
-                          ),
-                        ),
+                        // onPressed: selectedList.isNotEmpty
+                        //     ? Navigator.of(context).push(
+                        //         MaterialPageRoute(
+                        //           builder: (context) => PaymentDetails(
+                        //             productCardEx: selectedList,
+                        //           ),
+                        //         ),
+                        //       )
+                        //     : ,
+                        onPressed: () => selectedList.isNotEmpty
+                            ? Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => PaymentDetails(
+                                    productCardEx: selectedList,
+                                  ),
+                                ),
+                              )
+                            : showDialog(
+                                context: context,
+                                builder: (context) {
+                                  Future.delayed(Duration(milliseconds: 1500),
+                                      () {
+                                    Navigator.of(context).pop(true);
+                                  });
+                                  return AlertDialog(
+                                    title: Column(
+                                      children: const [
+                                        Icon(
+                                          Icons.announcement_outlined,
+                                          size: 40,
+                                          color: kPrimaryColor,
+                                        ),
+                                        Text(
+                                          'You have not select any item to checkout!',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
                         child: Text(
                           'Check Out',
                           style: TextStyle(
@@ -201,4 +234,25 @@ class _CartScreen extends State<CartScreen> {
       ),
     );
   }
+}
+
+showMyAlertDialog(BuildContext context) {
+  // Create AlertDialog
+  AlertDialog dialog = AlertDialog(
+    title: Text("Election 2020"),
+    content: Text("Will you vote for Trump?"),
+    actions: [
+      ElevatedButton(
+          child: Text("Yes"),
+          onPressed: () {
+            Navigator.of(context).pop("Yes, Of course!"); // Return value
+          }),
+      ElevatedButton(
+          child: Text("No"),
+          onPressed: () {
+            Navigator.of(context)
+                .pop("No, I will vote for Biden"); // Return value
+          }),
+    ],
+  );
 }

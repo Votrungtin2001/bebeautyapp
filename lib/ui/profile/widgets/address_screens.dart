@@ -1,7 +1,10 @@
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
+import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
+import 'package:bebeautyapp/ui/profile/widgets/address_card.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../constants.dart';
@@ -26,170 +29,71 @@ class _AddressScreens extends State<AddressScreens> {
             fontWeight: FontWeight.w700),
         centerTitle: true,
       ),
-      body: Container(
-        color: kTextLightColor.withOpacity(0.15),
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 10.0),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeAddressScreen()),
-                        ),
-                        child: Card(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text('Tên'),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 8.0),
-                                      Text('Số điện thoại'),
-                                      const SizedBox(height: 8.0),
-                                      Text('Địa chỉ'),
-                                    ],
-                                  ),
-                                  trailing: Icon(
-                                    Icons.location_on_outlined,
-                                    size: 30,
-                                    color: kPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12.0),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeAddressScreen()),
-                        ),
-                        child: Card(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text('Tên'),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 8.0),
-                                      Text('Số điện thoại'),
-                                      const SizedBox(height: 8.0),
-                                      Text('Địa chỉ'),
-                                    ],
-                                  ),
-                                  trailing: Icon(
-                                    Icons.location_on_outlined,
-                                    size: 30,
-                                    color: kPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12.0),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeAddressScreen()),
-                        ),
-                        child: Card(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text('Tên'),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 8),
-                                      Text('Số điện thoại'),
-                                      const SizedBox(height: 8),
-                                      Text('Địa chỉ'),
-                                    ],
-                                  ),
-                                  trailing: Icon(
-                                    Icons.location_on_outlined,
-                                    size: 30,
-                                    color: kPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: FlatButton(
-                          onPressed: () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DeliveryAddress()),
-                            ),
-                          },
-                          padding: EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "    Add new address",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'Poppins',
-                                    color: kTextColor),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 15.0),
-                                child: Icon(
-                                  Icons.add,
-                                  size: 30,
-                                  color: kPrimaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: demoAddress.length,
+              itemBuilder: (context, index) => Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Dismissible(
+                  key: Key(demoAddress[index].toString()),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
+                    setState(() {
+                      demoAddress.removeAt(index);
+                    });
+                  },
+                  background: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: kFourthColor,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        SvgPicture.asset("assets/icons/trash.svg"),
+                      ],
+                    ),
                   ),
+                  child: AddressCard(address: demoAddress[index]),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          ),
+          Card(
+            color: Colors.white,
+            child: FlatButton(
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DeliveryAddress()),
+                ),
+              },
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "    Add new address",
+                    style: TextStyle(
+                        fontSize: 14, fontFamily: 'Poppins', color: kTextColor),
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: Icon(
+                      Icons.add,
+                      size: 30,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

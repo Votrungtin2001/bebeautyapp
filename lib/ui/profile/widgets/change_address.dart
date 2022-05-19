@@ -1,5 +1,6 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
+import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 import 'package:bebeautyapp/ui/profile/widgets/gg_map.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,10 +14,12 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ChangeAddressScreen extends StatefulWidget {
-  static String id = "ChangeAddressScreen";
-  final nameFocusNode = FocusNode();
-  final phoneNumberFocusNode = FocusNode();
-  final addressFocusNode = FocusNode();
+  const ChangeAddressScreen({
+    Key? key,
+    required this.address,
+  }) : super(key: key);
+
+  final Address address;
 
   @override
   _ChangeAddressScreen createState() => _ChangeAddressScreen();
@@ -24,11 +27,10 @@ class ChangeAddressScreen extends StatefulWidget {
 
 class _ChangeAddressScreen extends State<ChangeAddressScreen> {
   final formKey = GlobalKey<FormState>();
-  String name = "";
-  String phoneNumber = "";
-  String address = "";
-  bool _switchValue = true;
 
+  final nameFocusNode = FocusNode();
+  final phoneNumberFocusNode = FocusNode();
+  final addressFocusNode = FocusNode();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
@@ -88,11 +90,10 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       SizedBox(
                         height: 15,
                       ),
-
                       TextFormField(
-                        focusNode: widget.nameFocusNode,
+                        focusNode: nameFocusNode,
                         onChanged: (value) {
-                          name = value;
+                          widget.address.name = value;
                         },
                         cursorColor: kTextColor,
                         validator: (text) {
@@ -101,7 +102,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           }
                           return null;
                         },
-                        initialValue: 'Tên',
+                        initialValue: widget.address.name,
                         //controller: _nameController,
                         decoration: InputDecoration(
                           filled: true,
@@ -122,11 +123,10 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       SizedBox(
                         height: 3,
                       ),
-
                       TextFormField(
-                        focusNode: widget.phoneNumberFocusNode,
+                        focusNode: phoneNumberFocusNode,
                         onChanged: (value) {
-                          phoneNumber = value;
+                          widget.address.phoneNumber = value;
                         },
                         cursorColor: kTextColor,
                         validator: (text) {
@@ -135,7 +135,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           }
                           return null;
                         },
-                        initialValue: '0932106169',
+                        initialValue: widget.address.phoneNumber,
                         //controller: _phoneController,
                         decoration: InputDecoration(
                           filled: true,
@@ -173,9 +173,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         height: 15,
                       ),
                       TextFormField(
-                        focusNode: widget.addressFocusNode,
+                        focusNode: addressFocusNode,
                         onChanged: (value) {
-                          address = value;
+                          widget.address.address = value;
                         },
                         cursorColor: kTextColor,
                         validator: (text) {
@@ -184,7 +184,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           }
                           return null;
                         },
-                        initialValue: 'TG',
+                        initialValue: widget.address.address,
                         //controller: _addressController,
                         decoration: InputDecoration(
                           filled: true,
@@ -205,7 +205,6 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       SizedBox(
                         height: 20,
                       ),
-
                       ElevatedButton(
                           onPressed: () async {
                             // Position position = await _getGeoLocationPosition();
@@ -219,28 +218,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                             );
                           },
                           child: Text('Get Location')),
-
-                      // GestureDetector(
-                      //   onTap: () => Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => GoogleMapSearch()),
-                      //   ),
-                      //   child: Container(
-                      //     height: 300,
-                      //     width: MediaQuery.of(context).size.width,
-                      //     child: GoogleMap(
-                      //       mapType: MapType.normal,
-                      //       initialCameraPosition: _kGooglePlex,
-                      //       onMapCreated: (GoogleMapController controller) {
-                      //         _controller = controller;
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         height: 20,
                       ),
-
                       Container(
                         height: 50,
                         color: Colors.white,
@@ -267,10 +247,10 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                                 toggleSize: 17.5,
                                 borderRadius: 15.0,
                                 activeColor: kPrimaryColor,
-                                value: _switchValue,
+                                value: widget.address.addressDefault,
                                 onToggle: (value) {
                                   setState(() {
-                                    _switchValue = value;
+                                    widget.address.addressDefault = value;
                                   });
                                 },
                               ),

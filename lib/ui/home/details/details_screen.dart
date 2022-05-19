@@ -85,12 +85,8 @@ class DetailsScreen extends StatelessWidget {
     return AppBar(
       backgroundColor: kPrimaryColor,
       elevation: 0,
-      leading: IconButton(
-        icon: SvgPicture.asset(
-          'assets/icons/back.svg',
-          color: Colors.white,
-        ),
-        onPressed: () => Navigator.pop(context),
+      leading: BackButton(
+        color: Colors.white,
       ),
       actions: <Widget>[
         IconButton(
