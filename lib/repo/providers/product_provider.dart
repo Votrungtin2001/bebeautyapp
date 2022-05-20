@@ -7,15 +7,16 @@ import 'package:flutter/material.dart';
 class ProductProvider with ChangeNotifier {
   ProductServices productServices = ProductServices();
   List<MProduct> products = [];
+  List<MProduct> allProductsFromCategory = [];
 
   List<MProduct> similarProductsBasedUserByCBR = [];
-  bool isNeededUpdated_SimilarProductsBasedUserByCBR = false;
+  bool isNeededUpdated_SimilarProductsBasedUserByCBR = true;
 
   List<MProduct> similarProductsByCFR = [];
-  bool isNeededUpdated_SimilarProductsByCFR = false;
+  bool isNeededUpdated_SimilarProductsByCFR = true;
 
   List<MProduct> similarProductsBySelectedProduct = [];
-  bool isNeededUpdated_SimilarProductsBySelectedProduct = false;
+  bool isNeededUpdated_SimilarProductsBySelectedProduct = true;
 
   ProductProvider.initialize(){
     loadProducts();
@@ -40,7 +41,7 @@ class ProductProvider with ChangeNotifier {
       similarProductsBasedUserByCBR = await productServices.getSimilarityProductsByCBR(products, user);
       isNeededUpdated_SimilarProductsBasedUserByCBR = false;
       for (int i = 0; i < similarProductsBasedUserByCBR.length; i++) {
-        print(similarProductsBasedUserByCBR[i].name);
+        print(similarProductsBasedUserByCBR[i].getName());
       }
       notifyListeners();
     }
@@ -50,6 +51,9 @@ class ProductProvider with ChangeNotifier {
     if(isNeededUpdated_SimilarProductsByCFR == true) {
       similarProductsByCFR = await productServices.getSimilarityProductsByCFR(products, user);
       isNeededUpdated_SimilarProductsByCFR = false;
+      for (int i = 0; i < similarProductsByCFR.length; i++) {
+        print(similarProductsByCFR[i].getName());
+      }
       notifyListeners();
     }
   }
@@ -60,5 +64,13 @@ class ProductProvider with ChangeNotifier {
       isNeededUpdated_SimilarProductsBySelectedProduct = false;
       notifyListeners();
     }
+  }
+
+  void updateProductsFromCategory(List<MProduct> products) {
+    allProductsFromCategory = [];
+    for(int i = 0; i < products.length; i++) {
+      allProductsFromCategory.add(products[i]);
+    }
+    notifyListeners();
   }
 }

@@ -1,17 +1,24 @@
 import 'package:bebeautyapp/model/MBrand.dart';
+import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/section_title.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BrandCard extends StatelessWidget {
   late List<MBrand> brands;
+  final productServices = new ProductServices();
   BrandCard(List<MBrand> Brands) {
     this.brands = Brands;
   }
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+
     return Column(
       children: [
         Padding(
@@ -38,11 +45,13 @@ class BrandCard extends StatelessWidget {
                         image: brands[index].getImage(),
                         numOfBrands: brands[index].productQuantity,
                         press: (){
+                          List<MProduct> allProductsFromBrand = productServices.getAllProductsFromBrand(productProvider.products, brands[index].id);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DetailsBrand(
                                   brand: brands[index],
+                                  allProductsFromBrand: allProductsFromBrand,
                                 ),
                               ));
                         },);

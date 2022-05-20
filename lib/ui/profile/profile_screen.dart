@@ -5,7 +5,8 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/cart_screens.dart';
+
+import 'package:bebeautyapp/ui/home/payment/order_checkout/myorder.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address_screens.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_avatar_dialog.dart';
@@ -29,139 +30,184 @@ class _ProfileScreens extends State<ProfileScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         title: Text("Profile"),
-        titleTextStyle: TextStyle(color: kPrimaryColor,fontSize: 18,fontFamily: 'Poppins',fontWeight: FontWeight.w500),
+        titleTextStyle: TextStyle(
+            color: kPrimaryColor,
+            fontSize: 18,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w500),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
       body: SingleChildScrollView(
-    padding: EdgeInsets.symmetric(vertical: 20),
-    child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-        height: 115,
-        width: 115,
-        child: Stack(
-          fit: StackFit.expand,
-          clipBehavior: Clip.none,
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage("assets/images/avt.png"),
-            ),
-            Positioned(
-              right: -16,
-              bottom: 0,
-              child: SizedBox(
-                height: 46,
-                width: 46,
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: BorderSide(color: Colors.white),
-                  ),
-                  color: Color(0xFFF5F6F9),
-                  onPressed: ()async {
-                    ImageSource source = await showDialog(
-                      context: context,
-                      builder: (context) => ChangeAvatarDialog(),
-                    );
-                  },
-                  child: SvgPicture.asset("assets/icons/camera.svg"),
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 115,
+                width: 115,
+                child: Stack(
+                  fit: StackFit.expand,
+                  clipBehavior: Clip.none,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: AssetImage("assets/images/avt.png"),
+                    ),
+                    Positioned(
+                      right: -16,
+                      bottom: 0,
+                      child: SizedBox(
+                        height: 46,
+                        width: 46,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            side: BorderSide(color: Colors.white),
+                          ),
+                          color: Color(0xFFF5F6F9),
+                          onPressed: () async {
+                            ImageSource source = await showDialog(
+                              context: context,
+                              builder: (context) => ChangeAvatarDialog(),
+                            );
+                          },
+                          child: SvgPicture.asset("assets/icons/camera.svg"),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
-        ),
-      ),
-        SizedBox(height: 15,),
-        ProfileMenu(
-          text: "Purchase order",
-          icon: "assets/icons/menu-order.svg",
-          press: () { },
-        ),
-        SizedBox(height: 2,),
-        Container(
-         width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          height: 100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              OrderMenu(
-                  text: "To Pay",
-                  icon: "assets/icons/check.svg",
-                  press: () {},
+              SizedBox(
+                height: 15,
               ),
-              OrderMenu(
-                text: "To Ship",
-                icon: "assets/icons/package.svg",
+              ProfileMenu(
+                text: "Purchase order",
+                icon: "assets/icons/menu-order.svg",
                 press: () {},
               ),
-              OrderMenu(
-                text: "To Receive",
-                icon: "assets/icons/delivery.svg",
-                press: () {},
+              SizedBox(
+                height: 2,
               ),
-              OrderMenu(
-                text: "To Rate",
-                icon: "assets/icons/star-rate.svg",
-                press: () {},
+              Container(
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+                height: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    OrderMenu(
+                      text: "To Pay",
+                      icon: "assets/icons/check.svg",
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyOrderScreen(
+                                    index: 0,
+                                  )),
+                        );
+                      },
+                    ),
+                    OrderMenu(
+                      text: "To Ship",
+                      icon: "assets/icons/package.svg",
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyOrderScreen(
+                                    index: 1,
+                                  )),
+                        );
+                      },
+                    ),
+                    OrderMenu(
+                      text: "To Receive",
+                      icon: "assets/icons/delivery.svg",
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyOrderScreen(
+                                    index: 2,
+                                  )),
+                        );
+                      },
+                    ),
+                    OrderMenu(
+                      text: "To Rate",
+                      icon: "assets/icons/star-rate.svg",
+                      press: () {},
+                    ),
+                  ],
+                ),
               ),
+              SizedBox(height: 20),
+              ProfileMenu(
+                text: "My Profile",
+                icon: "assets/icons/user_icon.svg",
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Profile()),
+                  );
+                },
+              ),
+              SizedBox(height: 8),
+              ProfileMenu(
+                text: "My Address",
+                icon: "assets/icons/location.svg",
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddressScreens()),
+                  );
+                },
+              ),
+              SizedBox(height: 8),
+              ProfileMenu(
+                text: "Favorite List",
+                icon: "assets/icons/heart.svg",
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FavoriteListScreens()),
+                  );
+                },
+              ),
+              SizedBox(height: 8),
+              ProfileMenu(
+                text: "Settings",
+                icon: "assets/icons/settings.svg",
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChangePasswordScreen()),
+                  );
+                },
+              ),
+              SizedBox(height: 8),
+              ProfileMenu(
+                text: "Log Out",
+                icon: "assets/icons/log_out.svg",
+                press: () {
+                  signOutDrawer(context);
+                },
+              ),
+              SizedBox(height: 30),
             ],
           ),
         ),
-        SizedBox(height: 20),
-        ProfileMenu(
-          text: "My Profile",
-          icon: "assets/icons/user_icon.svg",
-          press: () {Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Profile()),
-          );},
-        ),
-        SizedBox(height: 8),
-        ProfileMenu(
-          text: "My Address",
-          icon: "assets/icons/location.svg",
-          press: () {Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddressScreens()),
-          );},
-        ),
-        SizedBox(height: 8),
-        ProfileMenu(
-          text: "Favorite List",
-          icon: "assets/icons/heart.svg",
-          press: () {Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FavoriteListScreens()),
-          );},
-        ),
-        SizedBox(height: 8),
-        ProfileMenu(
-          text: "Settings",
-          icon: "assets/icons/settings.svg",
-          press: () {Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ChangePasswordScreen()),
-          );},
-        ),
-        SizedBox(height: 8),
-        ProfileMenu(
-          text: "Log Out",
-          icon: "assets/icons/log_out.svg",
-          press: () { signOutDrawer(context);},
-        ),
-        SizedBox(height: 30),
-          ],
-        ),
-    ),
-    ),
+      ),
     );
   }
 }
@@ -180,25 +226,25 @@ class ProfileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        style: TextButton.styleFrom(
-          primary: kPrimaryColor,
-          padding: EdgeInsets.all(20),
-          backgroundColor: Colors.white,
-        ),
-        onPressed: press,
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              icon,
-              color: kPrimaryColor,
-              width: 22,
-            ),
-            SizedBox(width: 20),
-            Expanded(child: Text(text)),
-            Icon(Icons.arrow_forward_ios),
-          ],
-        ),
-      );
+      style: TextButton.styleFrom(
+        primary: kPrimaryColor,
+        padding: EdgeInsets.all(20),
+        backgroundColor: Colors.white,
+      ),
+      onPressed: press,
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            icon,
+            color: kPrimaryColor,
+            width: 22,
+          ),
+          SizedBox(width: 20),
+          Expanded(child: Text(text)),
+          Icon(Icons.arrow_forward_ios),
+        ],
+      ),
+    );
   }
 }
 
@@ -229,15 +275,25 @@ class OrderMenu extends StatelessWidget {
             Badge(
               badgeColor: kPrimaryColor,
               animationType: BadgeAnimationType.slide,
-              badgeContent: Text('3',style: TextStyle(color: Colors.white),),
+              badgeContent: Text(
+                '3',
+                style: TextStyle(color: Colors.white),
+              ),
               child: SvgPicture.asset(
                 icon,
                 color: kPrimaryColor,
                 width: 24,
               ),
             ),
-            SizedBox(height: 8,),
-            Expanded(child: Text(text,style: TextStyle(fontSize: 14),textAlign: TextAlign.center,)),
+            SizedBox(
+              height: 8,
+            ),
+            Expanded(
+                child: Text(
+              text,
+              style: TextStyle(fontSize: 14),
+              textAlign: TextAlign.center,
+            )),
           ],
         ),
       ),
@@ -249,9 +305,7 @@ void signOutDrawer(BuildContext context) {
   showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15.0),
-            topRight: Radius.circular(15.0)
-        ),
+            topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
       ),
       isDismissible: false,
       context: context,
@@ -266,7 +320,7 @@ void signOutDrawer(BuildContext context) {
               Text(
                 'Are you sure you want Logout ?',
                 style: TextStyle(
-                  color:  kTextColor,
+                  color: kTextColor,
                   fontSize: 18.0,
                   fontWeight: FontWeight.w600,
                 ),
@@ -279,7 +333,9 @@ void signOutDrawer(BuildContext context) {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     borderSide: BorderSide(color: Colors.black, width: 1),
-                    onPressed: () {Navigator.of(context).pop();},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     child: Text("NO",
                         style: TextStyle(
                             fontSize: 14,
@@ -287,9 +343,7 @@ void signOutDrawer(BuildContext context) {
                             color: Colors.black)),
                   ),
                   RaisedButton(
-                    onPressed: () {
-
-                    },
+                    onPressed: () {},
                     color: kPrimaryColor,
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     elevation: 2,

@@ -1,3 +1,3 @@
 class Variable {
-  static String url = "10.0.2.2:5000";
+  static String url = "be-beauty-app-flask-server.herokuapp.com";
 }

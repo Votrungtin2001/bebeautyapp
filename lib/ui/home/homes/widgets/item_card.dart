@@ -1,4 +1,4 @@
-import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
+import 'package:bebeautyapp/ui/home/cart/Product.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bebeautyapp/constants.dart';

@@ -1,5 +1,5 @@
 import 'package:bebeautyapp/model/MProduct.dart';
-import 'package:bebeautyapp/ui/home/homes/cart/Product.dart';
+
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 
@@ -46,15 +46,14 @@ class ProductTitleWithImage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     product.images.length,
-                        (index) => AnimatedContainer(
+                    (index) => AnimatedContainer(
                       duration: Duration(milliseconds: 400),
                       height: 8.0,
                       width: currentIndex == index ? 24.0 : 8.0,
                       margin: EdgeInsets.only(right: 4.0),
                       decoration: BoxDecoration(
-                        color: currentIndex == index
-                            ? kPrimaryColor
-                            : kLightColor,
+                        color:
+                            currentIndex == index ? kPrimaryColor : kLightColor,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
@@ -63,19 +62,18 @@ class ProductTitleWithImage extends StatelessWidget {
               ),
             ],
           ),
-              
-              // Expanded(
-              //   child: Hero(
-              //     tag: "${product.id}",
-              //     child: Image.network(
-              //       product.images[0],
-              //       fit: BoxFit.fill,
-              //     ),
-              //   ),
-              // )
-            ],
-          ),
-    );
 
+          // Expanded(
+          //   child: Hero(
+          //     tag: "${product.id}",
+          //     child: Image.network(
+          //       product.images[0],
+          //       fit: BoxFit.fill,
+          //     ),
+          //   ),
+          // )
+        ],
+      ),
+    );
   }
 }

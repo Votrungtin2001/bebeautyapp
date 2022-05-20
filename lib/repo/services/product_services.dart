@@ -123,11 +123,14 @@ class ProductServices {
     return product;
   }
 
-  Future<List<MProduct>> getSimilarityProductsByCBR(List<MProduct> products, MUser user) async {
+  Future<List<MProduct>> getSimilarityProductsByCBR(List<MProduct> products, MUser User) async {
     List<MProduct> results = [];
+
+    MUser user = userServices.checkAndReturnUser(User, products);
+
     MDataCBR Data = new MDataCBR(products: products, user: user);
     http.Response response =  await http.post(
-      Uri.http(Variable.url, '/api/getSimilarProductsBasedUserByCBR'),
+      Uri.https(Variable.url, '/api/getSimilarProductsBasedUserByCBR'),
       headers: {"Content-Type": "application/json"},
       body: json.encode(Data),
     );
@@ -139,13 +142,16 @@ class ProductServices {
     return results;
   }
 
-  Future<List<MProduct>> getSimilarityProductsByCFR(List<MProduct> products, MUser user) async {
+  Future<List<MProduct>> getSimilarityProductsByCFR(List<MProduct> products, MUser User) async {
     List<MProduct> results = [];
-    List<MUser> users = await userServices.getUsers();
+    List<MUser> Users = await userServices.getUsers();
+
+    List<MUser> users = userServices.checkAndReturnUsers(Users, User, products);
+    MUser user = userServices.checkAndReturnUser(User, products);
 
     MDataCFR Data = new MDataCFR(products: products, users: users, user: user);
     http.Response response =  await http.post(
-      Uri.http(Variable.url, '/api/getSimilarProductsByCFR'),
+      Uri.https(Variable.url, '/api/getSimilarProductsByCFR'),
       headers: {"Content-Type": "application/json"},
       body: json.encode(Data),
     );
@@ -167,16 +173,59 @@ class ProductServices {
 
     MData Data = new MData(products: temp, product: product);
     http.Response response =  await http.post(
-      Uri.http(Variable.url, '/api/getSimilarProductBySelectedProduct'),
+      Uri.https(Variable.url, '/api/getSimilarProductBySelectedProduct'),
       headers: {"Content-Type": "application/json"},
       body: json.encode(Data),
     );
     var data = await json.decode(response.body);
     for(int i = 0; i < data['result'].length; i++) {
       int id = data['result'][i]['id'];
-      results.add(getProductByID(products, id));
+      if(id != product.getID()) results.add(getProductByID(products, id));
     }
     return results;
+  }
+
+  List<MProduct> get10RecommendedProducts(List<MProduct> products) {
+    List<MProduct> result = [];
+    for (int i = 0; i < products.length; i++) {
+      if(result.length == 10) return result;
+      result.add(products[i]);
+    }
+    return result;
+  }
+
+  List<MProduct> getProductsFromSameBrand(List<MProduct> products, MProduct product) {
+    List<MProduct> result = [];
+    for (int i = 0; i < products.length; i++) {
+      if(product.brandID == products[i].brandID && product.id != products[i].id) result.add(products[i]);
+    }
+    return result;
+  }
+
+  List<MProduct> getAllProductsFromBrand(List<MProduct> products, int brandID) {
+    List<MProduct> result = [];
+    for (int i = 0; i < products.length; i++) {
+      if(brandID == products[i].brandID) result.add(products[i]);
+    }
+    return result;
+  }
+
+  List<MProduct> getAllProductsFromCategory(List<MProduct> products, int categoryID) {
+    List<MProduct> result = [];
+    for (int i = 0; i < products.length; i++) {
+      if(categoryID == products[i].categoryID) result.add(products[i]);
+    }
+    return result;
+  }
+
+  List<MProduct> getFavoriteProducts(List<MProduct> products, MUser user) {
+    List<MProduct> result = [];
+    for (int i = 0; i < products.length; i++) {
+      for(int j = 0; j < products[i].userFavorite.length; j++) {
+        if(products[i].userFavorite[j] == user.getID()) result.add(products[i]);
+      }
+    }
+    return result;
   }
 
 
