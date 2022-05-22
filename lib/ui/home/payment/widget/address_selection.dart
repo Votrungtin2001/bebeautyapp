@@ -9,20 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-class AddressSelecion extends StatefulWidget {
+class AddressSelection extends StatefulWidget {
   @override
-  _AddressSelecion createState() => _AddressSelecion();
+  _AddressSelection createState() => _AddressSelection();
 }
 
-class _AddressSelecion extends State<AddressSelecion> {
-  bool selectedIndex = false;
+class _AddressSelection extends State<AddressSelection> {
+  late Address address;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,
-        title: Text("Address Selecion"),
+        title: Text("Address Selection"),
         titleTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -31,26 +31,20 @@ class _AddressSelecion extends State<AddressSelecion> {
         centerTitle: true,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            child: GridView.builder(
+            child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: demoAddress.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  childAspectRatio: 4,
-                ),
                 itemBuilder: (context, index) {
-                  return AddressItem(
-                      address: demoAddress[index],
-                      isSelected: (bool value) {
-                        setState(() {
-                          if (value) {
-                            selectedIndex = value;
-                          }
-                        });
-                      },
-                      key: Key(demoAddress[index].toString()));
+                  return ListTile(
+                      title: AddressItem(
+                        address: demoAddress[index],
+                      ),
+                      onTap: () {
+                        Navigator.pop(context, demoAddress[index]);
+                      });
                 }),
           ),
           Card(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:awesome_card/awesome_card.dart';
 import 'package:bebeautyapp/repo/services/address_services.dart';
 import 'package:bebeautyapp/ui/home/cart/Cart.dart';
@@ -7,6 +9,7 @@ import 'package:bebeautyapp/ui/home/payment/widget/address_selection.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/complete_order.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:bebeautyapp/ui/home/payment/payment_screen.dart';
+import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
@@ -28,6 +31,16 @@ class _PaymentDetailsState extends State<PaymentDetails> {
       cardHolderName = "John Travolta",
       bankName = "ICICI Bank",
       cvv = "456";
+  late Address address = new Address(
+      name: 'Bui thanh phu',
+      phoneNumber: '0932131231298',
+      address: 'khu opho6 ling trunng thu ducc',
+      addressDefault: true);
+
+  FutureOr onGoBack(dynamic value) {
+    address = value;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +67,10 @@ class _PaymentDetailsState extends State<PaymentDetails> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AddressSelecion(),
-                ),
-              );
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddressSelection())).then(onGoBack);
             },
             child: Container(
               padding: EdgeInsets.all(12),
@@ -75,7 +87,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'Delivery Address',
                       style: TextStyle(fontSize: 16),
@@ -84,15 +96,15 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       height: 8,
                     ),
                     Text(
-                      'Bui Thanh Phu',
+                      address.name,
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
-                      '09321309123174701',
+                      address.phoneNumber,
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
-                      'khu pho 6 ling trung hu ducc',
+                      address.address,
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
@@ -479,11 +491,13 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         color: kPrimaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: TextButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CompleteOrder()),
-                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CompleteOrder()),
+                        );
+                      },
                       child: Text(
                         'Place Order',
                         style: TextStyle(color: Colors.white, fontSize: 18),
