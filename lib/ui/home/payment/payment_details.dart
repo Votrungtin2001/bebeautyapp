@@ -14,7 +14,10 @@ import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:math' show cos, sqrt, asin;
 import '../../../constants.dart';
 
 class PaymentDetails extends StatefulWidget {
@@ -36,6 +39,9 @@ class _PaymentDetailsState extends State<PaymentDetails> {
       phoneNumber: '0932131231298',
       address: 'khu opho6 ling trunng thu ducc',
       addressDefault: true);
+
+  List<LatLng> polylineCoordinates = [];
+  String? _placeDistance;
 
   FutureOr onGoBack(dynamic value) {
     address = value;
@@ -492,6 +498,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: TextButton(
                       onPressed: () {
+                        _calculateDistance();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -511,5 +518,87 @@ class _PaymentDetailsState extends State<PaymentDetails> {
         ),
       ),
     );
+  }
+
+  // Method for calculating the distance between two places
+  Future<bool> _calculateDistance() async {
+    try {
+      // Retrieving placemarks from addresses
+      List<Location> startPlacemark = await locationFromAddress(
+          '2 Nguyễn Bỉnh Khiêm, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh 700000, Việt Nam');
+      List<Location> destinationPlacemark =
+          await locationFromAddress(address.address);
+      print(address.address);
+
+      // Use the retrieved coordinates of the current position,
+      // instead of the address if the start position is user's
+      // current position, as it results in better accuracy.
+      double startLatitude = startPlacemark[0].latitude;
+
+      double startLongitude = startPlacemark[0].longitude;
+
+      double destinationLatitude = destinationPlacemark[0].latitude;
+      double destinationLongitude = destinationPlacemark[0].longitude;
+
+      String startCoordinatesString = '($startLatitude, $startLongitude)';
+      String destinationCoordinatesString =
+          '($destinationLatitude, $destinationLongitude)';
+
+      print(
+        'START COORDINATES: ($startLatitude, $startLongitude)',
+      );
+      print(
+        'DESTINATION COORDINATES: ($destinationLatitude, $destinationLongitude)',
+      );
+      polylineCoordinates.add(LatLng(startLatitude, startLongitude));
+      polylineCoordinates
+          .add(LatLng(destinationLatitude, destinationLongitude));
+
+      // Calculating the distance between the start and the end positions
+      // with a straight path, without considering any route
+      // double distanceInMeters = await Geolocator.bearingBetween(
+      //   startLatitude,
+      //   startLongitude,
+      //   destinationLatitude,
+      //   destinationLongitude,
+      // );
+      double khoangcanh = Geolocator.distanceBetween(startLatitude,
+              startLongitude, destinationLatitude, destinationLongitude) /
+          1000;
+      print('DISTANCE 1: ' + khoangcanh.toStringAsFixed(2) + ' km');
+
+      double totalDistance = 0.0;
+      // Calculating the total distance by adding the distance
+      // between small segments
+      for (int i = 0; i < polylineCoordinates.length - 1; i++) {
+        totalDistance += _coordinateDistance(
+          polylineCoordinates[i].latitude,
+          polylineCoordinates[i].longitude,
+          polylineCoordinates[i + 1].latitude,
+          polylineCoordinates[i + 1].longitude,
+        );
+      }
+
+      setState(() {
+        _placeDistance = totalDistance.toStringAsFixed(2);
+        print('DISTANCE: $_placeDistance km');
+      });
+
+      return true;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  // Formula for calculating distance between two coordinates
+  // https://stackoverflow.com/a/54138876/11910277
+  double _coordinateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 }
