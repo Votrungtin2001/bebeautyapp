@@ -109,13 +109,18 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       address.phoneNumber,
                       style: TextStyle(fontSize: 16),
                     ),
-                    Text(
-                      address.address,
-                      style: TextStyle(fontSize: 16),
+                    Container(
+                      width: MediaQuery.of(context).size.width - 80,
+                      child: Text(
+                        address.address,
+                        style: TextStyle(
+                          fontSize: 16,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                const Spacer(),
                 const Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.black,

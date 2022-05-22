@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/ProductEx.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/product_container.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -41,19 +44,28 @@ class _MyOrderScreen extends State<MyOrderScreen>
       Text('No Orders Yet'),
     ],
   );
+  Stream<List<ProductEx>>? _streamController;
 
   static final List<Widget> _views = [
     Center(
-      child: demoProduct.isEmpty
-          ? Center(child: not_orders)
-          : ListView.builder(
-              itemCount: demoProduct.length,
-              itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: ProductContainer(
-                      productEx: demoProduct[index],
-                    ),
-                  )),
+      child: StreamBuilder<List<ProductEx>>(
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainer(
+                        productEx: demoProduct[index],
+                      ),
+                    );
+                  })
+              : Center(child: not_orders);
+        },
+        //stream: _streamController,
+      ),
     ),
     Center(
       child: demoProduct.isEmpty

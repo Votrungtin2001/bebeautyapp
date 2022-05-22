@@ -211,6 +211,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                             GetAddressFromLatLong(position);
                             print(address);
                             _addressController.text = address;
+
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Load address success!"),
                             ));
@@ -221,6 +222,15 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                             // );
                           },
                           child: const Text('Get current location')),
+                      ElevatedButton(
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapView()),
+                            );
+                          },
+                          child: const Text('Go to Map')),
                       const SizedBox(
                         height: 20,
                       ),
@@ -328,7 +338,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
 
     Placemark place = placemarks[0];
     address =
-        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.subAdministrativeArea},${place.administrativeArea}';
+        '${place.street}, ${place.subAdministrativeArea},${place.administrativeArea}';
 
     setState(() {});
   }

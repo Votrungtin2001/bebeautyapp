@@ -15,6 +15,7 @@ import 'package:bebeautyapp/ui/home/product_details/reviews/reviews.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
+
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -52,16 +53,21 @@ class _Body extends State<Body> {
     PageController pageController = PageController(initialPage: 0);
     // It provide us total height and width
     Size size = MediaQuery.of(context).size;
+    @override
+    void initState() {
+      super.initState();
+    }
 
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           Container(
-            color: Colors.white,
+            color: kFourthColor,
             height: 300,
             child: PageView.builder(
               controller: pageController,
               itemCount: widget.product.images.length,
+              pageSnapping: true,
               itemBuilder: (context, index) {
                 return Image.network(
                   widget.product.images[index],
@@ -114,32 +120,19 @@ class _Body extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Flexible(
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(color: Colors.black),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: currencyformat
-                                  .format(widget.product.getMarketPrice()) +
-                              'đ',
-                          style: new TextStyle(
-                            color: Colors.grey,
-                            fontSize: 30,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                        TextSpan(
-                          text: ' ' +
-                              currencyformat.format(widget.product.getPrice()) +
-                              'đ',
-                          style: new TextStyle(
-                            color: Colors.black,
-                            fontSize: 30,
-                          ),
-                        ),
-                      ],
-                    ),
+                Text(
+                  currencyformat.format(widget.product.getMarketPrice()) + 'đ',
+                  style: new TextStyle(
+                    color: Colors.grey,
+                    fontSize: 30,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+                ),
+                Text(
+                  currencyformat.format(widget.product.getPrice()) + 'đ',
+                  style: new TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
                   ),
                 ),
               ],

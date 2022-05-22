@@ -18,18 +18,35 @@ class DetailsScreen extends StatelessWidget {
       required this.product,
       required this.similarProductsFromSelectedProducts})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final ScrollController _scrollController = ScrollController();
     return Scaffold(
       // each product have a color
       backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
       appBar: buildAppBar(context),
       drawer: Drawer(),
       body: SingleChildScrollView(
+          controller: _scrollController,
           child: Body(
               product: product,
               similarProductsFromSelectedProducts:
                   similarProductsFromSelectedProducts)),
+      floatingActionButton: FloatingActionButton(
+        elevation: 0.5,
+        backgroundColor: kPrimaryColor,
+        child: Icon(
+          Icons.arrow_circle_up,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          _scrollController.animateTo(
+              _scrollController.position.minScrollExtent,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.fastOutSlowIn);
+        },
+      ),
       bottomNavigationBar: Material(
         elevation: kLess,
         color: Colors.white,
@@ -83,20 +100,26 @@ class DetailsScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: kPrimaryColor,
-      elevation: 0,
+      elevation: 0.15,
+      backgroundColor: Colors.white,
       leading: BackButton(
-        color: Colors.white,
+        color: kPrimaryColor,
       ),
       actions: <Widget>[
         IconButton(
-          icon: SvgPicture.asset("assets/icons/search.svg"),
+          icon: SvgPicture.asset(
+            "assets/icons/search.svg",
+            color: kPrimaryColor,
+          ),
           onPressed: () {
             showSearch(context: context, delegate: DataSearch());
           },
         ),
         IconButton(
-          icon: SvgPicture.asset("assets/icons/cart.svg"),
+          icon: SvgPicture.asset(
+            "assets/icons/cart.svg",
+            color: kPrimaryColor,
+          ),
           onPressed: () {
             Navigator.push(
               context,

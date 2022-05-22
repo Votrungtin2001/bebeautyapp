@@ -4,7 +4,6 @@ import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 import 'package:bebeautyapp/ui/profile/widgets/gg_map.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -34,6 +33,16 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
+
+  String address = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _nameController.text = widget.address.name;
+    _phoneController.text = widget.address.phoneNumber;
+    _addressController.text = widget.address.address;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +111,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           }
                           return null;
                         },
-                        initialValue: widget.address.name,
-                        //controller: _nameController,
+                        controller: _nameController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -135,8 +143,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           }
                           return null;
                         },
-                        initialValue: widget.address.phoneNumber,
-                        //controller: _phoneController,
+                        controller: _phoneController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -184,14 +191,13 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           }
                           return null;
                         },
-                        initialValue: widget.address.address,
-                        //controller: _addressController,
+                        controller: _addressController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
                               icon: const Icon(Icons.close_rounded),
-                              onPressed: () => _phoneController.clear()),
+                              onPressed: () => _addressController.clear()),
                           focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
                           enabledBorder: const UnderlineInputBorder(
@@ -207,20 +213,25 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       ),
                       ElevatedButton(
                           onPressed: () async {
-                            // Position position = await _getGeoLocationPosition();
-                            // location =
-                            //     'Lat: ${position.latitude} , Long: ${position.longitude}';
-                            // GetAddressFromLatLong(position);
+                            Position position = await _getGeoLocationPosition();
+                            LatLng location = new LatLng(
+                                position.latitude, position.longitude);
+                            GetAddressFromLatLong(position);
+                            _addressController.text = address;
+                          },
+                          child: const Text('Get Location')),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                          onPressed: () async {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MapView()),
                             );
                           },
-                          child: const Text('Get Location')),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                          child: const Text('Go to Map')),
                       Container(
                         height: 50,
                         color: Colors.white,
@@ -283,6 +294,52 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
         ),
       ),
     );
+  }
+
+  Future<Position> _getGeoLocationPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  Future<void> GetAddressFromLatLong(position) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    Placemark place = placemarks[0];
+    print(place);
+    address =
+        '${place.street}, ${place.subAdministrativeArea},${place.administrativeArea}';
+
+    setState(() {});
   }
 
   Future<void> _deleteDialog() async {

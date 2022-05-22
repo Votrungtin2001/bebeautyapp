@@ -90,7 +90,15 @@ class _ProfileScreens extends State<ProfileScreens> {
               ProfileMenu(
                 text: "Purchase order",
                 icon: "assets/icons/menu-order.svg",
-                press: () {},
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MyOrderScreen(
+                              index: 3,
+                            )),
+                  );
+                },
               ),
               SizedBox(
                 height: 2,
