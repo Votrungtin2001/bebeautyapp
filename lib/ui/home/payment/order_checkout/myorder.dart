@@ -20,6 +20,9 @@ class MyOrderScreen extends StatefulWidget {
 class _MyOrderScreen extends State<MyOrderScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
+
+  Stream<QuerySnapshot>? order;
+
   @override
   void initState() {
     super.initState();
@@ -44,27 +47,26 @@ class _MyOrderScreen extends State<MyOrderScreen>
       Text('No Orders Yet'),
     ],
   );
-  Stream<List<ProductEx>>? _streamController;
 
   static final List<Widget> _views = [
     Center(
-      child: StreamBuilder<List<ProductEx>>(
+      child: StreamBuilder<QuerySnapshot>(
         builder: (context, snapshot) {
           return snapshot.hasData
               ? ListView.builder(
                   physics: BouncingScrollPhysics(),
-                  itemCount: snapshot.data!.length,
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: ProductContainer(
-                        productEx: demoProduct[index],
+                        productEx: snapshot.data!.docs[index]["product"],
                       ),
                     );
                   })
               : Center(child: not_orders);
         },
-        //stream: _streamController,
+        //stream: order,
       ),
     ),
     Center(

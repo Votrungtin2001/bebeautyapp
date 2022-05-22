@@ -23,8 +23,7 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ScrollController _scrollController = ScrollController();
     return Scaffold(
-      // each product have a color
-      backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
+      backgroundColor: Colors.white,
       appBar: buildAppBar(context),
       drawer: Drawer(),
       body: SingleChildScrollView(
@@ -100,7 +99,7 @@ class DetailsScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      elevation: 0.15,
+      elevation: 0,
       backgroundColor: Colors.white,
       leading: BackButton(
         color: kPrimaryColor,
@@ -108,12 +107,15 @@ class DetailsScreen extends StatelessWidget {
       actions: <Widget>[
         IconButton(
           icon: SvgPicture.asset(
-            "assets/icons/search.svg",
-            color: kPrimaryColor,
+            "assets/icons/heart.svg",
+            color: Color(0xFFFF4848),
+            // productServices.checkFavorite(
+            //         userProvider.user.getID(),
+            //         product.getUserFavorite())
+            //     ? Color(0xFFFF4848)
+            //     : Color(0xFFDBDEE4),
           ),
-          onPressed: () {
-            showSearch(context: context, delegate: DataSearch());
-          },
+          onPressed: () {},
         ),
         IconButton(
           icon: SvgPicture.asset(

@@ -40,14 +40,7 @@ class ProductCard extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Stack(
-                  children: [
-                    Hero(
-                      tag: product.id.toString(),
-                      child: Image.network(product.getImage(0)),
-                    ),
-                  ],
-                ),
+                Image.network(product.getImage(0)),
                 Positioned(
                   right: -18,
                   top: -10,
