@@ -129,7 +129,7 @@ class ProductContainer extends StatelessWidget {
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Text(
@@ -244,7 +244,7 @@ class ProductContainer extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
               ],

@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart';
+
 class ChangeAvatarDialog extends StatelessWidget {
   const ChangeAvatarDialog({
     Key? key,
@@ -73,14 +74,14 @@ class ChangeAvatarDialog extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Icon(
                             Icons.image,
                             color: Colors.black,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Text(

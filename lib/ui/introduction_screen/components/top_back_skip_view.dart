@@ -38,14 +38,17 @@ class TopBackSkipView extends StatelessWidget {
     );
 
     final _signUpMoveAnimation =
-    Tween<double>(begin: 0, end: 1.0).animate(CurvedAnimation(
+        Tween<double>(begin: 0, end: 1.0).animate(CurvedAnimation(
       parent: animationController,
-      curve: Interval(0.6, 0.8, curve: Curves.fastOutSlowIn,),
-    )
-    );
+      curve: Interval(
+        0.6,
+        0.8,
+        curve: Curves.fastOutSlowIn,
+      ),
+    ));
     final _animation =
-    Tween<Offset>(begin: Offset(0, -1), end: Offset(0.0, 0.0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(0, -1), end: Offset(0.0, 0.0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.0,
@@ -76,35 +79,37 @@ class TopBackSkipView extends StatelessWidget {
       position: _animation,
       child: AnimatedBuilder(
         animation: animationController,
-        builder: (context, child) =>  PageTransitionSwitcher(
-              duration: Duration(milliseconds: 480),
-              reverse: _signUpMoveAnimation.value < 0.7,
-              transitionBuilder: (
-                  Widget child,
-                  Animation<double> animation,
-                  Animation<double> secondaryAnimation,
-                  ) {
-                return SharedAxisTransition(
-                  fillColor: Colors.transparent,
-                  child: child,
-                  animation: animation,
-                  secondaryAnimation: secondaryAnimation,
-                  transitionType: SharedAxisTransitionType.vertical,
-                );
-              },
-              child: _signUpMoveAnimation.value > 0.7
-                  ? InkWell(
-                key: ValueKey('image slider'),
-                onTap: (){},
-                child: Padding(
-                  padding: EdgeInsets.all(0),
-                  child: image_slider_carousel,
-                ),
-              ): InkWell(
-                key: ValueKey('skip view'),
-                onTap: (){},
-                child: Padding(
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        builder: (context, child) => PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 480),
+            reverse: _signUpMoveAnimation.value < 0.7,
+            transitionBuilder: (
+              Widget child,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+            ) {
+              return SharedAxisTransition(
+                fillColor: Colors.transparent,
+                child: child,
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.vertical,
+              );
+            },
+            child: _signUpMoveAnimation.value > 0.7
+                ? InkWell(
+                    key: ValueKey('image slider'),
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: image_slider_carousel,
+                    ),
+                  )
+                : InkWell(
+                    key: ValueKey('skip view'),
+                    onTap: () {},
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top),
                       child: Container(
                         height: 58,
                         child: Padding(
@@ -112,7 +117,6 @@ class TopBackSkipView extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-
                               IconButton(
                                 onPressed: onBackClick,
                                 icon: Icon(Icons.arrow_back_ios_new_rounded),
@@ -122,7 +126,10 @@ class TopBackSkipView extends StatelessWidget {
                                 position: _skipAnimation,
                                 child: IconButton(
                                   onPressed: onSkipClick,
-                                  icon: Text('Skip',style: TextStyle(color: kTextColor),),
+                                  icon: Text(
+                                    'Skip',
+                                    style: TextStyle(color: kTextColor),
+                                  ),
                                 ),
                               ),
                             ],
@@ -130,11 +137,9 @@ class TopBackSkipView extends StatelessWidget {
                         ),
                       ),
                     ),
-              )
-
-            ),
-          ),
-        );
+                  )),
+      ),
+    );
 
     // return SlideTransition(
     //   position: _animation,

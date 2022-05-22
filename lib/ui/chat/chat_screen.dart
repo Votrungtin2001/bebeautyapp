@@ -21,7 +21,7 @@ class ChatScreens extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: kDefaultPadding,
               vertical: kDefaultPadding / 2,
             ),
@@ -40,7 +40,7 @@ class ChatScreens extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: kDefaultPadding * 0.75,
                       ),
                       decoration: BoxDecoration(
@@ -49,7 +49,7 @@ class ChatScreens extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          SizedBox(width: kDefaultPadding / 4),
+                          const SizedBox(width: kDefaultPadding / 4),
                           Expanded(
                             child: TextField(
                               decoration: InputDecoration(
@@ -67,7 +67,7 @@ class ChatScreens extends StatelessWidget {
                                 .color!
                                 .withOpacity(0.64),
                           ),
-                          SizedBox(width: kDefaultPadding / 4),
+                          const SizedBox(width: kDefaultPadding / 4),
                           Icon(
                             Icons.camera_alt_outlined,
                             color: Theme.of(context)
@@ -80,7 +80,7 @@ class ChatScreens extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: kDefaultPadding / 4),
+                  const SizedBox(width: kDefaultPadding / 4),
                   Icon(
                     Icons.send,
                     color: Theme.of(context)
@@ -114,7 +114,7 @@ class ChatScreens extends StatelessWidget {
           color: kCopy,
           onPressed: () {},
         ),
-        SizedBox(width: kDefaultPadding / 2),
+        const SizedBox(width: kDefaultPadding / 2),
       ],
     );
   }

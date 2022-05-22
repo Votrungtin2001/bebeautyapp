@@ -124,17 +124,16 @@ class _TrackOrderState extends State<TrackOrder> {
                     Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        padding: EdgeInsets.zero,
                         itemCount: trackOrderList.length,
                         itemBuilder: (context, index) {
                           return Row(
                             children: [
                               Container(
                                 width: MediaQuery.of(context).size.width / 1.3,
-                                padding: EdgeInsets.only(left: 16),
+                                padding: const EdgeInsets.only(left: 16),
                                 child: ListTile(
                                   contentPadding:
-                                      EdgeInsets.symmetric(vertical: 8.0),
+                                      const EdgeInsets.symmetric(vertical: 8.0),
                                   leading: Container(
                                     height: 48,
                                     width: 48,
@@ -167,8 +166,8 @@ class _TrackOrderState extends State<TrackOrder> {
               ),
             ),
             // Container(
-            //   margin: EdgeInsets.symmetric(horizontal: 16.0),
-            //   padding: EdgeInsets.only(left: 24.0, top: 16.0, bottom: 16.0),
+            //   margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            //   padding: const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 16.0),
             //   decoration: BoxDecoration(
             //     color: Colors.white,
             //     border: Border.all(
@@ -180,7 +179,7 @@ class _TrackOrderState extends State<TrackOrder> {
             //   child: Row(
             //     children: [
             //       Icon(Icons.home, size: 64.0, color: kPrimaryColor),
-            //       SizedBox(width: 32.0),
+            //       const SizedBox(width: 32.0),
             //       Container(
             //         child: Column(
             //           crossAxisAlignment: CrossAxisAlignment.start,

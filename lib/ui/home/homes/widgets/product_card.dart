@@ -45,7 +45,7 @@ class ProductCard extends StatelessWidget {
                   right: -18,
                   top: -10,
                   child: Container(
-                    padding: EdgeInsets.only(left: 16.0),
+                    padding: const EdgeInsets.only(left: 16.0),
                     alignment: Alignment.topRight,
                     child: Stack(
                       children: [
@@ -59,7 +59,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.only(left: 38, top: 10),
+                          padding: const EdgeInsets.only(left: 38, top: 10),
                           child: Text(
                             product.defaultDiscountRate.toString() +
                                 '%' +
@@ -136,7 +136,7 @@ class ProductCard extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     height: 24,
                     width: 24,
                     decoration: BoxDecoration(

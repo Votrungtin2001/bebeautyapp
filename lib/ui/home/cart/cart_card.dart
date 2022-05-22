@@ -20,7 +20,7 @@ class CartCard extends StatelessWidget {
           child: AspectRatio(
             aspectRatio: 0.88,
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(15),
@@ -39,7 +39,7 @@ class CartCard extends StatelessWidget {
                 style: TextStyle(color: Colors.black, fontSize: 16),
                 maxLines: 2,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

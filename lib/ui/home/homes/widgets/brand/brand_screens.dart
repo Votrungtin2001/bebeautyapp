@@ -54,7 +54,7 @@ class BrandScreens extends StatelessWidget {
               );
             },
           ),
-          SizedBox(width: kDefaultPadding / 2)
+          const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
       body: SingleChildScrollView(
@@ -93,7 +93,7 @@ class BrandScreens extends StatelessWidget {
                   //          press: (){},
                   //        ): Container();},
                   //    ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
@@ -107,7 +107,7 @@ class BrandScreens extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   SizedBox(

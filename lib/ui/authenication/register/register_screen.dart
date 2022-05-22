@@ -168,7 +168,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                               ),
                             ),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             TextFormField(
@@ -212,7 +212,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             TextFormField(
@@ -256,7 +256,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             TextFormField(
@@ -316,7 +316,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             TextFormField(
@@ -340,7 +340,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 hintText: "Re-Enter Password",
                                 filled: true,
                                 fillColor: Colors.white,
-                                prefixIcon: Icon(
+                                prefixIcon: const Icon(
                                   Icons.lock,
                                   color: Colors.black,
                                 ),
@@ -360,18 +360,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: kPrimaryColor, width: 1),
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: Colors.black, width: 1),
+                                  borderSide: const BorderSide(
+                                      color: Colors.black, width: 1),
                                 ),
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: Colors.red, width: 1),
+                                  borderSide: const BorderSide(
+                                      color: Colors.red, width: 1),
                                 ),
                               ),
                             ),
@@ -395,7 +395,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                             //   },
                             // ),
 
-
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -408,7 +407,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Checkbox(
-                                              checkColor: Colors.white,
+                                                checkColor: Colors.white,
                                                 activeColor: kPrimaryColor,
                                                 value: checkTerm,
                                                 onChanged: (value) {
@@ -423,7 +422,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                               child: Text.rich(TextSpan(
                                                   text:
                                                       'By clicking Sign Up, you agree to\nour ',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontFamily: 'Poppins',
                                                       fontSize: 14,
                                                       color: kTextColor),
@@ -431,7 +430,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                     TextSpan(
                                                         text:
                                                             'Terms of Service',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 16,
                                                           color: kPrimaryColor,
                                                           fontFamily: 'Poppins',
@@ -446,7 +445,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                               }),
                                                     TextSpan(
                                                         text: ' and ',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontFamily:
                                                                 'Poppins',
                                                             fontSize: 14,
@@ -455,7 +454,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                           TextSpan(
                                                               text:
                                                                   'Privacy\nPolicy',
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   fontFamily:
                                                                       'Poppins',
                                                                   fontSize: 16,
@@ -471,7 +470,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                                       // code to open / launch privacy policy link here
                                                                     })
                                                         ]),
-                                                    TextSpan(
+                                                    const TextSpan(
                                                         text: '.',
                                                         style: TextStyle(
                                                             fontFamily:
@@ -556,7 +555,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 child: RichText(
                                   text: TextSpan(
                                       text: 'Already have an account? ',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 15,
                                         color: kTextColor,
                                         fontFamily: 'Poppins',
@@ -573,7 +572,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                               );
                                             },
                                           text: 'Sign In',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 15,
                                             color: kPrimaryColor,
                                             fontFamily: 'Poppins',

@@ -80,7 +80,7 @@ class _Body extends State<Body> {
                       right: -18,
                       top: -10,
                       child: Container(
-                        padding: EdgeInsets.only(left: 16.0),
+                        padding: const EdgeInsets.only(left: 16.0),
                         alignment: Alignment.topRight,
                         child: Stack(
                           children: [
@@ -94,7 +94,7 @@ class _Body extends State<Body> {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.only(left: 60, top: 22),
+                              padding: const EdgeInsets.only(left: 60, top: 22),
                               child: Text(
                                 widget.product.defaultDiscountRate.toString() +
                                     '%' +
@@ -121,10 +121,10 @@ class _Body extends State<Body> {
           //     children: List.generate(
           //       widget.product.images.length,
           //       (index) => AnimatedContainer(
-          //         duration: Duration(milliseconds: 400),
+          //         duration: const Duration(milliseconds: 400),
           //         height: 8.0,
           //         width: currentIndex == index ? 10.0 : 8.0,
-          //         margin: EdgeInsets.only(right: 4.0),
+          //         margin: const EdgeInsets.only(right: 4.0),
           //         decoration: BoxDecoration(
           //           color: currentIndex == index ? kPrimaryColor : kLightColor,
           //           borderRadius: BorderRadius.circular(8.0),
@@ -133,12 +133,12 @@ class _Body extends State<Body> {
           //     ),
           //   ),
           // ),
-          SizedBox(height: kDefaultPadding / 2),
+          const SizedBox(height: kDefaultPadding / 2),
           Text(
             widget.product.engName,
             style: TextStyle(color: Colors.black),
           ),
-          SizedBox(height: kDefaultPadding),
+          const SizedBox(height: kDefaultPadding),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: Text(
@@ -147,7 +147,7 @@ class _Body extends State<Body> {
             ),
           ),
 
-          SizedBox(height: kDefaultPadding),
+          const SizedBox(height: kDefaultPadding),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: Row(
@@ -171,7 +171,7 @@ class _Body extends State<Body> {
                 ),
 
                 // Container(
-                //   padding: EdgeInsets.only(left: 38, top: 10),
+                //   padding: const EdgeInsets.only(left: 38, top: 10),
                 //   child: Text(
                 //     widget.product.defaultDiscountRate.toString() +
                 //         '%' +
@@ -185,7 +185,7 @@ class _Body extends State<Body> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: kDefaultPadding,
           ),
           Padding(
@@ -234,7 +234,7 @@ class _Body extends State<Body> {
           ListView.separated(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.only(bottom: 8.0, top: 8.0),
+            padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
             itemCount: 3,
             itemBuilder: (context, index) {
               return ReviewUI(
@@ -285,7 +285,7 @@ class _Body extends State<Body> {
               thickness: 1.5,
             )),
           ]),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           SizedBox(

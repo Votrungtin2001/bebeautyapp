@@ -63,7 +63,7 @@ class RecommendProductScreen extends StatelessWidget {
               );
             },
           ),
-          SizedBox(width: kDefaultPadding / 2)
+          const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
       body: SingleChildScrollView(
@@ -75,7 +75,7 @@ class RecommendProductScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
@@ -89,7 +89,7 @@ class RecommendProductScreen extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   SizedBox(

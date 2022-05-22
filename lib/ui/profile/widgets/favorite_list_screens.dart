@@ -63,7 +63,7 @@ class FavoriteListScreens extends StatelessWidget {
               );
             },
           ),
-          SizedBox(width: kDefaultPadding / 2)
+          const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
       body: SingleChildScrollView(
@@ -87,7 +87,7 @@ class FavoriteListScreens extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   SizedBox(

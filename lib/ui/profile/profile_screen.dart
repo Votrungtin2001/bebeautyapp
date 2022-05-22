@@ -43,7 +43,7 @@ class _ProfileScreens extends State<ProfileScreens> {
       ),
       backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +84,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ProfileMenu(
@@ -100,7 +100,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   );
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 2,
               ),
               Container(
@@ -157,7 +157,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ProfileMenu(
                 text: "My Profile",
                 icon: "assets/icons/user_icon.svg",
@@ -168,7 +168,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   );
                 },
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ProfileMenu(
                 text: "My Address",
                 icon: "assets/icons/location.svg",
@@ -179,7 +179,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   );
                 },
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ProfileMenu(
                 text: "Favorite List",
                 icon: "assets/icons/heart.svg",
@@ -191,7 +191,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   );
                 },
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ProfileMenu(
                 text: "Settings",
                 icon: "assets/icons/settings.svg",
@@ -203,7 +203,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   );
                 },
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ProfileMenu(
                 text: "Log Out",
                 icon: "assets/icons/log_out.svg",
@@ -211,7 +211,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   signOutDrawer(context);
                 },
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
             ],
           ),
         ),
@@ -236,7 +236,7 @@ class ProfileMenu extends StatelessWidget {
     return TextButton(
       style: TextButton.styleFrom(
         primary: kPrimaryColor,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         backgroundColor: Colors.white,
       ),
       onPressed: press,
@@ -247,7 +247,7 @@ class ProfileMenu extends StatelessWidget {
             color: kPrimaryColor,
             width: 22,
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Expanded(child: Text(text)),
           Icon(Icons.arrow_forward_ios),
         ],
@@ -270,7 +270,7 @@ class OrderMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: TextButton(
         style: TextButton.styleFrom(
           primary: kPrimaryColor,
@@ -293,7 +293,7 @@ class OrderMenu extends StatelessWidget {
                 width: 24,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Expanded(
@@ -320,7 +320,7 @@ void signOutDrawer(BuildContext context) {
       builder: (context) {
         return Container(
           height: 150.0,
-          padding: EdgeInsets.symmetric(horizontal: 32.0),
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.max,
@@ -337,7 +337,7 @@ void signOutDrawer(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   OutlineButton(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     borderSide: BorderSide(color: Colors.black, width: 1),
@@ -353,7 +353,7 @@ void signOutDrawer(BuildContext context) {
                   RaisedButton(
                     onPressed: () {},
                     color: kPrimaryColor,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
                     elevation: 2,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),

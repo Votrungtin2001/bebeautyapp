@@ -3,8 +3,6 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import '../../../../constants.dart';
 
-
-
 class ReviewUI extends StatelessWidget {
   final String image, name, date, comment;
   final double rating;
@@ -24,7 +22,7 @@ class ReviewUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 2.0,
         bottom: 2.0,
         left: 16.0,
@@ -41,7 +39,7 @@ class ReviewUI extends StatelessWidget {
                 child: CircleAvatar(
                   backgroundImage: AssetImage("assets/images/avt.png"),
                 ),
-                 margin: EdgeInsets.only(right: 16.0),
+                margin: const EdgeInsets.only(right: 16.0),
                 // decoration: BoxDecoration(
                 //   image: DecorationImage(
                 //     image: AssetImage(image),
@@ -54,19 +52,17 @@ class ReviewUI extends StatelessWidget {
                 child: Text(
                   name,
                   style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Poppins"
-                  ),
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Poppins"),
                 ),
               ),
               IconButton(
-                onPressed: (){},
+                onPressed: () {},
                 icon: Icon(Icons.more_vert),
               ),
             ],
           ),
-
           Row(
             children: [
               SmoothStarRating(
@@ -76,35 +72,33 @@ class ReviewUI extends StatelessWidget {
                 color: Colors.orange,
                 borderColor: Colors.orange,
               ),
-              SizedBox(width: kFixPadding),
+              const SizedBox(width: kFixPadding),
               Text(
                 date,
-                style: TextStyle(fontSize: 16.0,fontFamily: "Poppins"),
+                style: TextStyle(fontSize: 16.0, fontFamily: "Poppins"),
               ),
             ],
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           GestureDetector(
-            onTap: (){},
+            onTap: () {},
             child: isLess
                 ? Text(
-              comment,
-              style: TextStyle(
-                fontSize: 18.0,
-                color: kTextLightColor,
-                  fontFamily: "Poppins"
-              ),
-            )
+                    comment,
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        color: kTextLightColor,
+                        fontFamily: "Poppins"),
+                  )
                 : Text(
-              comment,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 16.0,
-                color: kTextLightColor,
-                  fontFamily: "Poppins"
-              ),
-            ),
+                    comment,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        color: kTextLightColor,
+                        fontFamily: "Poppins"),
+                  ),
           ),
         ],
       ),

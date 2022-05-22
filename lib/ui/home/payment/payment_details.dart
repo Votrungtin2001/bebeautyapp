@@ -79,7 +79,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       builder: (context) => AddressSelection())).then(onGoBack);
             },
             child: Container(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               color: Colors.white,
               child: Row(children: [
                 SvgPicture.asset(
@@ -98,7 +98,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       'Delivery Address',
                       style: TextStyle(fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Text(
@@ -197,7 +197,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                               fontWeight: FontWeight.w400,
                               fontSize: 14),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'Shipping Subtotal Subtotal',
                           style: TextStyle(
@@ -205,7 +205,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                               fontWeight: FontWeight.w400,
                               fontSize: 14),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'Voucher Discount',
                           style: TextStyle(
@@ -213,7 +213,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                               fontWeight: FontWeight.w400,
                               fontSize: 14),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'Total Payment',
                           style: TextStyle(
@@ -221,7 +221,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                               fontWeight: FontWeight.w400,
                               fontSize: 18),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                       ],
                     ),
                     Column(
@@ -310,7 +310,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
           //     text: "Card Information",
           //     textStyle: kBigTitleTextStyle,
           //   ),
-          //   SizedBox(height: 8.0),
+          //   const SizedBox(height: 8.0),
           //   Container(
           //     margin: EdgeInsets.symmetric(horizontal: 24.0),
           //     decoration: BoxDecoration(
@@ -453,7 +453,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
           //       ],
           //     ),
           //   ),
-          //   SizedBox(height: 8.0),
+          //   const SizedBox(height: 8.0),
         ],
       ),
       bottomNavigationBar: Container(

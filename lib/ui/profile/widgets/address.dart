@@ -240,7 +240,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                       //   child: Row(
                       //     children: [
                       //       const Padding(
-                      //         padding: EdgeInsets.only(left: 12.0),
+                      //         padding: const EdgeInsets.only(left: 12.0),
                       //         child: Text(
                       //           'Set default address',
                       //           style: TextStyle(

@@ -35,7 +35,7 @@ class _AddressScreens extends State<AddressScreens> {
             child: ListView.builder(
               itemCount: demoAddress.length,
               itemBuilder: (context, index) => Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Dismissible(
                   key: Key(demoAddress[index].toString()),
                   direction: DismissDirection.endToStart,
@@ -45,7 +45,7 @@ class _AddressScreens extends State<AddressScreens> {
                     });
                   },
                   background: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
                       color: kFourthColor,
                       borderRadius: BorderRadius.circular(15),
@@ -71,7 +71,7 @@ class _AddressScreens extends State<AddressScreens> {
                   MaterialPageRoute(builder: (context) => AddAddressScreen()),
                 ),
               },
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[

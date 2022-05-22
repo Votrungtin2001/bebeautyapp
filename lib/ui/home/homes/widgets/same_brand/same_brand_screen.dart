@@ -64,7 +64,7 @@ class SameBrandScreen extends StatelessWidget {
               );
             },
           ),
-          SizedBox(width: kDefaultPadding / 2)
+          const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
       body: SingleChildScrollView(
@@ -76,7 +76,7 @@ class SameBrandScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
@@ -90,7 +90,7 @@ class SameBrandScreen extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   SizedBox(

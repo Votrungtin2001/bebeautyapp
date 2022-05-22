@@ -34,7 +34,7 @@ class _ReviewsState extends State<Reviews> {
         children: [
           Container(
             color: kAccentColor,
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
               vertical: 16.0,
             ),
@@ -69,7 +69,7 @@ class _ReviewsState extends State<Reviews> {
                       color: Colors.orange,
                       borderColor: Colors.orange,
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     Text(
                       "${reviewList.length} Reviews",
                       style: TextStyle(
@@ -93,9 +93,9 @@ class _ReviewsState extends State<Reviews> {
                             style: TextStyle(
                                 fontSize: 16.0, fontFamily: 'Poppins'),
                           ),
-                          SizedBox(width: 4.0),
+                          const SizedBox(width: 4.0),
                           Icon(Icons.star, color: Colors.orange),
-                          SizedBox(width: 8.0),
+                          const SizedBox(width: 8.0),
                           LinearPercentIndicator(
                             lineHeight: 6.0,
                             // linearStrokeCap: LinearStrokeCap.roundAll,
@@ -115,7 +115,7 @@ class _ReviewsState extends State<Reviews> {
           ),
           Expanded(
             child: ListView.separated(
-              padding: EdgeInsets.only(bottom: 8.0, top: 8.0),
+              padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
               itemCount: reviewList.length,
               itemBuilder: (context, index) {
                 return ReviewUI(

@@ -32,7 +32,7 @@ class BestSell extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SectionTitle(
               title: "Best sell",
               press: () {
@@ -43,7 +43,7 @@ class BestSell extends StatelessWidget {
                     ));
               }),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -52,7 +52,7 @@ class BestSell extends StatelessWidget {
                 products.length,
                 (index) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20),
                     child: ProductCard(
                       product: products[index],
                       press: () async {
@@ -87,7 +87,7 @@ class BestSell extends StatelessWidget {
                   );
                 },
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
             ],
           ),
         )

@@ -66,13 +66,13 @@ class _CompleteOrder extends State<CompleteOrder> {
                   color: kTextColor),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 32,
           ),
           RaisedButton(
             onPressed: () {},
             color: kPrimaryColor,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             elevation: 2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -85,11 +85,11 @@ class _CompleteOrder extends State<CompleteOrder> {
                   color: Colors.white),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 48,
           ),
           OutlineButton(
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             borderSide: BorderSide(color: kPrimaryColor, width: 1),

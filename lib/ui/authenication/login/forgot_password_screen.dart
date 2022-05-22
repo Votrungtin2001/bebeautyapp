@@ -1,4 +1,3 @@
-
 import 'package:bebeautyapp/repo/function/forgotPassword.dart';
 import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.dart';
 
@@ -9,14 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-
 class ForgotPasswordScreen extends StatefulWidget {
   static String id = "ForgotPasswordScreen";
-
 
   @override
   _ForgotPasswordScreen createState() => new _ForgotPasswordScreen();
 }
+
 class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final sendEmailButtonController = RoundedLoadingButtonController();
@@ -35,14 +33,14 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               SvgPicture.asset(
                 "assets/images/forgot_password.svg",
                 height: 352,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
@@ -53,20 +51,18 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                 textAlign: TextAlign.center,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 50,right: 50),
+                padding: const EdgeInsets.only(left: 50, right: 50),
                 child: Text(
                   "Don’t worry! It happens. Please enter the email address associated with your account.",
                   style: kPop400TextStyle,
                   textAlign: TextAlign.center,
                 ),
               ),
-
-              SizedBox(
+              const SizedBox(
                 height: 26,
               ),
-
               Padding(
-                padding: const EdgeInsets.only(left: 50,right: 50),
+                padding: const EdgeInsets.only(left: 50, right: 50),
                 child: TextFormField(
                   focusNode: emailFocusNode,
                   onChanged: (value) {
@@ -76,7 +72,8 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Email is empty';
-                    }else if (!emailValidatorRegExp.hasMatch(text)) return 'Invalid email!';
+                    } else if (!emailValidatorRegExp.hasMatch(text))
+                      return 'Invalid email!';
                     return null;
                   },
                   controller: emailController,
@@ -94,9 +91,7 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 1),
+                      borderSide: BorderSide(color: Colors.black, width: 1),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -105,15 +100,14 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                   ),
                 ),
               ),
-
               CustomRoundedLoadingButton(
                 text: 'Send',
                 onPress: () async {
                   if (_formKey.currentState!.validate()) {
                     await forgotPasswordFunctions.sendEmailResetPassword(email);
                     sendEmailButtonController.stop();
-                  }
-                  else sendEmailButtonController.stop();
+                  } else
+                    sendEmailButtonController.stop();
                   //login click
                   // Provider.of<LoginViewModel>(context, listen: false)
                   //     .loginWithEmailAndPassword((message) {

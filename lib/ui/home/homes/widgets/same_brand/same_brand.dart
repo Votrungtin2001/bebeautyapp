@@ -1,4 +1,3 @@
-
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MPreference.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
@@ -16,7 +15,7 @@ import 'package:provider/provider.dart';
 import '../section_title.dart';
 
 class SameBrand extends StatelessWidget {
-  final preferenceServices= new PreferenceServices();
+  final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
 
   late List<MProduct> products;
@@ -30,56 +29,61 @@ class SameBrand extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding:
-          EdgeInsets.symmetric(horizontal:20),
-          child: SectionTitle(title: "Other products of this brand", press: () {
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SameBrandScreen(products),
-                ));
-          }),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SectionTitle(
+              title: "Other products of this brand",
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SameBrandScreen(products),
+                    ));
+              }),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               ...List.generate(
                 products.length > 5 ? 5 : products.length,
-                    (index) {
-                    return Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child:
-                        ProductCard(product: products[index],
+                (index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: ProductCard(
+                      product: products[index],
                       press: () async {
-                        productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR = true;
-                        await preferenceServices.updatePreference(userProvider.user, products[index]);
+                        productProvider
+                                .isNeededUpdated_SimilarProductsBasedUserByCBR =
+                            true;
+                        await preferenceServices.updatePreference(
+                            userProvider.user, products[index]);
 
                         //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                         //await preferenceServices.updatePreference(userProvider.user, products[index]);
-                        List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, products[index]);
-
+                        List<MProduct> similarProductsFromSelectedProducts =
+                            await productServices
+                                .getSimilarityProductsBySelectedProduct(
+                                    productProvider.products, products[index]);
 
                         Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          // builder: (context) => DetailsScreen(
-                          //   product: products[index],
-                          // ),
-                          builder: (context) => DetailsScreen(
-                            product: products[index],
-                            similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
-
-                          ),
-                        ));
+                            context,
+                            MaterialPageRoute(
+                              // builder: (context) => DetailsScreen(
+                              //   product: products[index],
+                              // ),
+                              builder: (context) => DetailsScreen(
+                                product: products[index],
+                                similarProductsFromSelectedProducts:
+                                    similarProductsFromSelectedProducts,
+                              ),
+                            ));
                       },
-                        ),
-                    );
+                    ),
+                  );
                 },
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
             ],
           ),
         )
@@ -87,6 +91,3 @@ class SameBrand extends StatelessWidget {
     );
   }
 }
-
-
-

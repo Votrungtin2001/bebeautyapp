@@ -56,7 +56,7 @@ class _AddressSelection extends State<AddressSelection> {
                   MaterialPageRoute(builder: (context) => AddAddressScreen()),
                 ),
               },
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[

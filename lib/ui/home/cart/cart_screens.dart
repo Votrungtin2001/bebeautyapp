@@ -50,7 +50,7 @@ class _CartScreen extends State<CartScreen> {
         ],
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 15,
           horizontal: 30,
         ),
@@ -77,7 +77,7 @@ class _CartScreen extends State<CartScreen> {
               Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     height: 40,
                     width: 40,
                     decoration: BoxDecoration(
@@ -101,7 +101,7 @@ class _CartScreen extends State<CartScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -135,8 +135,8 @@ class _CartScreen extends State<CartScreen> {
                             : showDialog(
                                 context: context,
                                 builder: (context) {
-                                  Future.delayed(Duration(milliseconds: 1500),
-                                      () {
+                                  Future.delayed(
+                                      const Duration(milliseconds: 1500), () {
                                     Navigator.of(context).pop(true);
                                   });
                                   return AlertDialog(
@@ -196,7 +196,7 @@ class _CartScreen extends State<CartScreen> {
               : showDialog(
                   context: context,
                   builder: (context) {
-                    Future.delayed(Duration(milliseconds: 1500), () {
+                    Future.delayed(const Duration(milliseconds: 1500), () {
                       Navigator.of(context).pop(true);
                     });
                     return AlertDialog(

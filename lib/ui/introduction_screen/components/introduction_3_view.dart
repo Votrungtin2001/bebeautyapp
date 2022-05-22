@@ -10,8 +10,8 @@ class MoodDiaryVew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _firstHalfAnimation =
-    Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.4,
@@ -20,8 +20,8 @@ class MoodDiaryVew extends StatelessWidget {
       ),
     ));
     final _secondHalfAnimation =
-    Tween<Offset>(begin: Offset(0, 0), end: Offset(-1, 0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(0, 0), end: Offset(-1, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.6,
@@ -31,8 +31,8 @@ class MoodDiaryVew extends StatelessWidget {
     ));
 
     final _moodFirstHalfAnimation =
-    Tween<Offset>(begin: Offset(2, 0), end: Offset(0, 0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(2, 0), end: Offset(0, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.4,
@@ -41,8 +41,8 @@ class MoodDiaryVew extends StatelessWidget {
       ),
     ));
     final _moodSecondHalfAnimation =
-    Tween<Offset>(begin: Offset(0, 0), end: Offset(-2, 0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(0, 0), end: Offset(-2, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.6,
@@ -51,8 +51,8 @@ class MoodDiaryVew extends StatelessWidget {
       ),
     ));
     final _imageFirstHalfAnimation =
-    Tween<Offset>(begin: Offset(4, 0), end: Offset(0, 0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(4, 0), end: Offset(0, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.4,
@@ -61,8 +61,8 @@ class MoodDiaryVew extends StatelessWidget {
       ),
     ));
     final _imageSecondHalfAnimation =
-    Tween<Offset>(begin: Offset(0, 0), end: Offset(-4, 0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(0, 0), end: Offset(-4, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.6,
@@ -71,7 +71,7 @@ class MoodDiaryVew extends StatelessWidget {
       ),
     ));
 
-    return  SlideTransition(
+    return SlideTransition(
       position: _firstHalfAnimation,
       child: SlideTransition(
         position: _secondHalfAnimation,
@@ -100,7 +100,7 @@ class MoodDiaryVew extends StatelessWidget {
                 child: SlideTransition(
                   position: _moodSecondHalfAnimation,
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         left: 64, right: 64, top: 16, bottom: 16),
                     child: Text(
                       "Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore",
@@ -109,7 +109,9 @@ class MoodDiaryVew extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 70,),
+              const SizedBox(
+                height: 70,
+              ),
               SlideTransition(
                 position: _imageFirstHalfAnimation,
                 child: SlideTransition(
