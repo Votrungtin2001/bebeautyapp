@@ -152,7 +152,7 @@ class _CartCounterState extends State<CartCounter> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Bounce(
-              duration: Duration(milliseconds: 110),
+              duration: const Duration(milliseconds: 110),
               onPressed: () {
                 _increase(); //calling _increase() function when user will be tap on - icon.
               },
@@ -244,7 +244,7 @@ class _CartCounterState extends State<CartCounter> {
               ),
             ),
             Bounce(
-              duration: Duration(milliseconds: 110),
+              duration: const Duration(milliseconds: 110),
               onPressed: () {
                 _decrease(); //calling _decrease() function when user will be tap on - icon.
               },

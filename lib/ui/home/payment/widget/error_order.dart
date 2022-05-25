@@ -65,13 +65,13 @@ class _ErrorOrder extends State<ErrorOrder> {
                   color: kTextColor),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 32,
           ),
           RaisedButton(
             onPressed: () {},
             color: kPrimaryColor,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             elevation: 2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

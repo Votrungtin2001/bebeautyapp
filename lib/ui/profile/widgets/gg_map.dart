@@ -81,7 +81,7 @@ class _MapViewState extends State<MapView> {
               width: 2,
             ),
           ),
-          contentPadding: EdgeInsets.all(15),
+          contentPadding: const EdgeInsets.all(15),
           hintText: hint,
         ),
       ),
@@ -361,7 +361,7 @@ class _MapViewState extends State<MapView> {
                         color: Colors.blue.shade100, // button color
                         child: InkWell(
                           splashColor: Colors.blue, // inkwell color
-                          child: SizedBox(
+                          child: const SizedBox(
                             width: 50,
                             height: 50,
                             child: Icon(Icons.add),
@@ -374,13 +374,13 @@ class _MapViewState extends State<MapView> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ClipOval(
                       child: Material(
                         color: Colors.blue.shade100, // button color
                         child: InkWell(
                           splashColor: Colors.blue, // inkwell color
-                          child: SizedBox(
+                          child: const SizedBox(
                             width: 50,
                             height: 50,
                             child: Icon(Icons.remove),
@@ -421,7 +421,7 @@ class _MapViewState extends State<MapView> {
                             'Places',
                             style: TextStyle(fontSize: 20.0),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           _textField(
                               label: 'Start',
                               hint: 'Choose starting point',
@@ -441,7 +441,7 @@ class _MapViewState extends State<MapView> {
                                   _startAddress = value;
                                 });
                               }),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Visibility(
                             visible: _placeDistance == null ? false : true,
                             child: Text(
@@ -452,7 +452,7 @@ class _MapViewState extends State<MapView> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           ElevatedButton(
                             onPressed: (_startAddress != '' &&
                                     _destinationAddress != '')
@@ -523,7 +523,7 @@ class _MapViewState extends State<MapView> {
                       color: Colors.orange.shade100, // button color
                       child: InkWell(
                         splashColor: Colors.orange, // inkwell color
-                        child: SizedBox(
+                        child: const SizedBox(
                           width: 56,
                           height: 56,
                           child: Icon(Icons.my_location),

@@ -66,7 +66,7 @@ class _ProfileState extends State<Profile> {
               fit: BoxFit.cover,
             ),
           ),
-          padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+          padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
           child: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
@@ -243,7 +243,7 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       OutlineButton(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         borderSide: BorderSide(color: kPrimaryColor, width: 1),
@@ -259,7 +259,7 @@ class _ProfileState extends State<Profile> {
                       RaisedButton(
                         onPressed: () {},
                         color: kPrimaryColor,
-                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
                         elevation: 2,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),

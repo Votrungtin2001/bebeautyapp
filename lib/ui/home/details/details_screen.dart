@@ -18,40 +18,56 @@ class DetailsScreen extends StatelessWidget {
       required this.product,
       required this.similarProductsFromSelectedProducts})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final ScrollController _scrollController = ScrollController();
     return Scaffold(
-      // each product have a color
-      backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
+      backgroundColor: Colors.white,
       appBar: buildAppBar(context),
       drawer: Drawer(),
       body: SingleChildScrollView(
+          controller: _scrollController,
           child: Body(
               product: product,
               similarProductsFromSelectedProducts:
                   similarProductsFromSelectedProducts)),
+      floatingActionButton: FloatingActionButton(
+        elevation: 0.5,
+        backgroundColor: kPrimaryColor,
+        child: const Icon(
+          Icons.arrow_circle_up,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          _scrollController.animateTo(
+              _scrollController.position.minScrollExtent,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.fastOutSlowIn);
+        },
+      ),
       bottomNavigationBar: Material(
         elevation: kLess,
         color: Colors.white,
         child: Row(
           children: [
             Container(
-              margin: EdgeInsets.only(right: 8.0, left: 8.0),
+              margin: const EdgeInsets.only(right: 8.0, left: 8.0),
               decoration: BoxDecoration(
                 border: Border.all(color: kPrimaryColor, width: 2.0),
               ),
               child: IconButton(
-                icon: Icon(Icons.add_shopping_cart, color: kPrimaryColor),
+                icon: const Icon(Icons.add_shopping_cart, color: kPrimaryColor),
                 onPressed: () => {addToCartDrawer(context, product)},
               ),
             ),
             Container(
-              margin: EdgeInsets.only(right: 8.0),
+              margin: const EdgeInsets.only(right: 8.0),
               decoration: BoxDecoration(
                 border: Border.all(color: kPrimaryColor, width: 2.0),
               ),
               child: IconButton(
-                  icon: Icon(Icons.chat, color: kPrimaryColor),
+                  icon: const Icon(Icons.chat, color: kPrimaryColor),
                   onPressed: () {}),
             ),
             Expanded(
@@ -61,10 +77,10 @@ class DetailsScreen extends StatelessWidget {
                   border: Border.all(color: kPrimaryColor, width: 2.0),
                 ),
                 child: FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: kLessPadding),
+                    padding: const EdgeInsets.symmetric(vertical: kLessPadding),
                     color: kPrimaryColor,
                     textColor: Colors.white,
-                    child: Text("Buy now",
+                    child: const Text("Buy now",
                         style:
                             TextStyle(fontSize: 18.0, fontFamily: 'Poppins')),
                     onPressed: () {
@@ -83,20 +99,29 @@ class DetailsScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: kPrimaryColor,
       elevation: 0,
-      leading: BackButton(
-        color: Colors.white,
+      backgroundColor: Colors.white,
+      leading: const BackButton(
+        color: kPrimaryColor,
       ),
       actions: <Widget>[
         IconButton(
-          icon: SvgPicture.asset("assets/icons/search.svg"),
-          onPressed: () {
-            showSearch(context: context, delegate: DataSearch());
-          },
+          icon: SvgPicture.asset(
+            "assets/icons/heart.svg",
+            color: Color(0xFFFF4848),
+            // productServices.checkFavorite(
+            //         userProvider.user.getID(),
+            //         product.getUserFavorite())
+            //     ? Color(0xFFFF4848)
+            //     : Color(0xFFDBDEE4),
+          ),
+          onPressed: () {},
         ),
         IconButton(
-          icon: SvgPicture.asset("assets/icons/cart.svg"),
+          icon: SvgPicture.asset(
+            "assets/icons/cart.svg",
+            color: kPrimaryColor,
+          ),
           onPressed: () {
             Navigator.push(
               context,
@@ -104,7 +129,7 @@ class DetailsScreen extends StatelessWidget {
             );
           },
         ),
-        SizedBox(width: kDefaultPadding / 2)
+        const SizedBox(width: kDefaultPadding / 2)
       ],
     );
   }
@@ -121,12 +146,12 @@ void addToCartDrawer(BuildContext context, MProduct product) {
       builder: (context) {
         return Container(
             height: 240.0,
-            padding: EdgeInsets.symmetric(horizontal: 32.0),
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: Row(
                     children: [
@@ -135,7 +160,7 @@ void addToCartDrawer(BuildContext context, MProduct product) {
                         child: AspectRatio(
                           aspectRatio: 0.88,
                           child: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               //color: Color(0xFFF5F6F9),
                               borderRadius: BorderRadius.circular(15),
@@ -148,7 +173,7 @@ void addToCartDrawer(BuildContext context, MProduct product) {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,13 +181,13 @@ void addToCartDrawer(BuildContext context, MProduct product) {
                           children: [
                             Text(
                               product.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
                               maxLines: 2,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             Row(
@@ -179,14 +204,14 @@ void addToCartDrawer(BuildContext context, MProduct product) {
                     ],
                   ),
                 ),
-                Divider(
+                const Divider(
                   thickness: 1,
                 ),
                 Row(
                   children: [
-                    Text("Number: "),
-                    Spacer(),
-                    Container(
+                    const Text("Number: "),
+                    const Spacer(),
+                    SizedBox(
                       width: 100,
                       child: CartCounter(
                         increaseBottonWidget: const Icon(Icons.add,
@@ -201,7 +226,7 @@ void addToCartDrawer(BuildContext context, MProduct product) {
                         maximumValue: 10,
                         minimumValue: 1,
                         value: 1,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
@@ -218,11 +243,11 @@ void addToCartDrawer(BuildContext context, MProduct product) {
                 RaisedButton(
                   onPressed: () {},
                   color: kPrimaryColor,
-                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  child: Text(
+                  child: const Text(
                     "Add to cart",
                     style: TextStyle(
                         fontSize: 14, letterSpacing: 2.2, color: Colors.white),

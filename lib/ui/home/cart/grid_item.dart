@@ -68,7 +68,7 @@ class _GridItemState extends State<GridItem> {
                     maxLines: 2,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Text(

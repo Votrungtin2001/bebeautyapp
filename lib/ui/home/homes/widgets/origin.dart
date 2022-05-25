@@ -21,7 +21,7 @@ class OriginCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(kDefaultPadding),
+              padding: const EdgeInsets.all(kDefaultPadding),
               // For  demo we use fixed height  and width
               // Now we dont need them
               // height: 180,

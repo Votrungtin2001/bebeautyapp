@@ -1,4 +1,3 @@
-
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
@@ -18,13 +17,13 @@ import 'package:provider/provider.dart';
 import '../section_title.dart';
 
 class RecommendProduct extends StatefulWidget {
-
   @override
   _RecommendProductState createState() => _RecommendProductState();
 }
 
-class _RecommendProductState extends State<RecommendProduct> with TickerProviderStateMixin {
-  final preferenceServices= new PreferenceServices();
+class _RecommendProductState extends State<RecommendProduct>
+    with TickerProviderStateMixin {
+  final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
   int length = 0;
   @override
@@ -37,13 +36,15 @@ class _RecommendProductState extends State<RecommendProduct> with TickerProvider
     final userProvider = Provider.of<UserProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
 
-    if(userProvider.user.id != "") {
-      if(productProvider.products.length > 10) {
-        if(productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR == true) {
-          productProvider.updateSimilarProductsBasedUserByCBR(productProvider.products, userProvider.user);
+    if (userProvider.user.id != "") {
+      if (productProvider.products.length > 10) {
+        if (productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR ==
+            true) {
+          productProvider.updateSimilarProductsBasedUserByCBR(
+              productProvider.products, userProvider.user);
         }
 
-        if(productProvider.similarProductsBasedUserByCBR.length > 10) {
+        if (productProvider.similarProductsBasedUserByCBR.length > 10) {
           setState(() {
             length = 10;
           });
@@ -59,72 +60,81 @@ class _RecommendProductState extends State<RecommendProduct> with TickerProvider
         //});
         //}
       }
-
     }
-
 
     return Column(
       children: [
         Padding(
-          padding:
-          EdgeInsets.symmetric(horizontal:20),
-          child: SectionTitle(title: "Recommend product", press: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RecommendProductScreen(productProvider.similarProductsBasedUserByCBR),
-                  //builder: (context) => RecommendProductScreen(productProvider.similarProductsByCFR),
-                ));
-          }),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SectionTitle(
+              title: "Recommend product",
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecommendProductScreen(
+                          productProvider.similarProductsBasedUserByCBR),
+                      //builder: (context) => RecommendProductScreen(productProvider.similarProductsByCFR),
+                    ));
+              }),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               ...List.generate(
                 length,
-                    (index) {
+                (index) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child:
-                    ProductCard(product: productProvider.similarProductsBasedUserByCBR[index],
-                    //ProductCard(product: productProvider.similarProductsByCFR[index],
+                    padding: const EdgeInsets.only(left: 20),
+                    child: ProductCard(
+                      product:
+                          productProvider.similarProductsBasedUserByCBR[index],
+                      //ProductCard(product: productProvider.similarProductsByCFR[index],
                       press: () async {
-                        productProvider.isNeededUpdated_SimilarProductsBasedUserByCBR = true;
-                        await preferenceServices.updatePreference(userProvider.user, productProvider.similarProductsBasedUserByCBR[index]);
+                        productProvider
+                                .isNeededUpdated_SimilarProductsBasedUserByCBR =
+                            true;
+                        await preferenceServices.updatePreference(
+                            userProvider.user,
+                            productProvider
+                                .similarProductsBasedUserByCBR[index]);
 
                         //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                         //await preferenceServices.updatePreference(userProvider.user, productProvider.similarProductsByCFR[index]);
 
-                        List<MProduct> similarProductsFromSelectedProducts = await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, productProvider.similarProductsBasedUserByCBR[index]);
+                        List<MProduct> similarProductsFromSelectedProducts =
+                            await productServices
+                                .getSimilarityProductsBySelectedProduct(
+                                    productProvider.products,
+                                    productProvider
+                                        .similarProductsBasedUserByCBR[index]);
 
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            // builder: (context) => DetailsScreen(
-                            //   product: products[index],
-                            // ),
-                            builder: (context) => DetailsScreen(
-                              product: productProvider.similarProductsBasedUserByCBR[index],
-                            similarProductsFromSelectedProducts: similarProductsFromSelectedProducts,
-                            //builder: (context) => DetailsScreen(product: productProvider.similarProductsByCFR[index],
-
-                            ),
-                          ));
+                            context,
+                            MaterialPageRoute(
+                              // builder: (context) => DetailsScreen(
+                              //   product: products[index],
+                              // ),
+                              builder: (context) => DetailsScreen(
+                                product: productProvider
+                                    .similarProductsBasedUserByCBR[index],
+                                similarProductsFromSelectedProducts:
+                                    similarProductsFromSelectedProducts,
+                                //builder: (context) => DetailsScreen(product: productProvider.similarProductsByCFR[index],
+                              ),
+                            ));
                       },
                     ),
                   );
                 },
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
             ],
           ),
         )
       ],
     );
   }
-
 }
-
-

@@ -20,7 +20,7 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           SectionTitle(
@@ -42,7 +42,7 @@ class Categories extends StatelessWidget {
                   ));
             },
           ),
-          // SizedBox(height: 20,),
+          // const SizedBox(height: 20,),
           // SingleChildScrollView(
           //   scrollDirection: Axis.horizontal,
           //   child: Wrap(
@@ -98,7 +98,7 @@ class Categories extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 SizedBox(
@@ -164,7 +164,7 @@ class CategoryCard extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(15),
+                padding: const EdgeInsets.all(15),
                 height: 55,
                 width: 55,
                 decoration: BoxDecoration(

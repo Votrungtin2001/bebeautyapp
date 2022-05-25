@@ -29,7 +29,7 @@ class Message extends StatelessWidget {
       padding: const EdgeInsets.only(top: kDefaultPadding),
       child: Row(
         mainAxisAlignment:
-        message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+            message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
           messageContaint(message),
           if (message.isSender) MessageStatusDot(status: message.messageStatus)
@@ -59,7 +59,7 @@ class MessageStatusDot extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.only(left: kDefaultPadding / 2),
+      margin: const EdgeInsets.only(left: kDefaultPadding / 2),
       height: 12,
       width: 12,
       decoration: BoxDecoration(

@@ -44,7 +44,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
         backgroundColor: kPrimaryColor,
         elevation: 0,
         automaticallyImplyLeading: true,
-        title: const Text("Change Address"),
+        title: const Text("Add Address"),
         titleTextStyle: const TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -189,7 +189,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
                               icon: const Icon(Icons.close_rounded),
-                              onPressed: () => _phoneController.clear()),
+                              onPressed: () => _addressController.clear()),
                           focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
                           enabledBorder: const UnderlineInputBorder(
@@ -205,17 +205,32 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                       ),
                       ElevatedButton(
                           onPressed: () async {
-                            // Position position = await _getGeoLocationPosition();
-                            // location =
-                            //     'Lat: ${position.latitude} , Long: ${position.longitude}';
-                            // GetAddressFromLatLong(position);
+                            Position position = await _getGeoLocationPosition();
+                            var location =
+                                'Lat: ${position.latitude} , Long: ${position.longitude}';
+                            GetAddressFromLatLong(position);
+                            print(address);
+                            _addressController.text = address;
+
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Load address success!"),
+                            ));
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => MapView()),
+                            // );
+                          },
+                          child: const Text('Get current location')),
+                      ElevatedButton(
+                          onPressed: () async {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MapView()),
                             );
                           },
-                          child: const Text('Get Location')),
+                          child: const Text('Go to Map')),
                       const SizedBox(
                         height: 20,
                       ),
@@ -225,7 +240,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                       //   child: Row(
                       //     children: [
                       //       const Padding(
-                      //         padding: EdgeInsets.only(left: 12.0),
+                      //         padding: const EdgeInsets.only(left: 12.0),
                       //         child: Text(
                       //           'Set default address',
                       //           style: TextStyle(
@@ -281,6 +296,51 @@ class _AddAddressScreen extends State<AddAddressScreen> {
         ),
       ),
     );
+  }
+
+  Future<Position> _getGeoLocationPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  Future<void> GetAddressFromLatLong(position) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    Placemark place = placemarks[0];
+    address =
+        '${place.street}, ${place.subAdministrativeArea},${place.administrativeArea}';
+
+    setState(() {});
   }
 
   Future<void> _deleteDialog() async {

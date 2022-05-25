@@ -29,7 +29,7 @@ class NewProduct extends StatelessWidget {
     final userProvider = Provider.of<UserProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           SectionTitle(
@@ -42,7 +42,7 @@ class NewProduct extends StatelessWidget {
                   ));
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Wrap(
@@ -53,7 +53,7 @@ class NewProduct extends StatelessWidget {
               products.length,
               (index) {
                 return Padding(
-                  padding: EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 20),
                   child: ProductCard(
                     product: products[index],
                     press: () async {

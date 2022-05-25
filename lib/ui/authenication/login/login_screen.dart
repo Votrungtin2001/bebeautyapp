@@ -20,13 +20,11 @@ import 'widgets/login_with_button.dart';
 import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.dart';
 
 class LoginScreen extends StatefulWidget {
-
   static String id = 'LoginScreen';
 
   final emailController = TextEditingController();
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
-
 
   @override
   _LoginScreen createState() => new _LoginScreen();
@@ -48,127 +46,130 @@ class _LoginScreen extends State<LoginScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body:
-        Form(
+        body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  kAppNameTextPink,
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 120,right: 120),
-                    child: kAppNameTextSlogan,
-                  ),
-
-                  SizedBox(
-                    height: 40,
-                  ),
-    Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 35),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-                        // RoundedInputField(
-                        //   hintText: "Your Email",
-                        //   inputType: TextInputType.emailAddress,
-                        //   textController: Provider.of<SignIn_Function>(context, listen: false)
-                        //       .emailController,
-                        //   icon: Icons.mail_outline_outlined,
-                        //   focusNode: widget.emailFocusNode,
-                        //   validator: (value) => value.isValidEmail() ? null : "Check your email",
-                        //   onFieldSubmitted: (value) => widget.passwordFocusNode.requestFocus(),
-                        //   onChanged: (value) {
-                        //     widget.email = value;
-                        //   },
-                        // ),
-               TextFormField(
-                    focusNode: widget.emailFocusNode,
-                    onChanged: (value) {
-                      email = value;
-                    },
-                    cursorColor: kTextColor,
-                     validator: (text) {
-                       if (text == null || text.isEmpty) {
-                         return 'Email is empty';
-                       }else if (!emailValidatorRegExp.hasMatch(text)) return 'Invalid email!';
-                       return null;
-                     },
-                    controller: Provider.of<SignIn_Function>(context, listen: false)
-                        .emailController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      prefixIcon: Icon(
-                        Icons.mail_outline_outlined,
-                        color: Colors.black,
-                      ),
-                      hintText: "Email",
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                kAppNameTextPink,
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 120, right: 120),
+                  child: kAppNameTextSlogan,
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 35),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // RoundedInputField(
+                      //   hintText: "Your Email",
+                      //   inputType: TextInputType.emailAddress,
+                      //   textController: Provider.of<SignIn_Function>(context, listen: false)
+                      //       .emailController,
+                      //   icon: Icons.mail_outline_outlined,
+                      //   focusNode: widget.emailFocusNode,
+                      //   validator: (value) => value.isValidEmail() ? null : "Check your email",
+                      //   onFieldSubmitted: (value) => widget.passwordFocusNode.requestFocus(),
+                      //   onChanged: (value) {
+                      //     widget.email = value;
+                      //   },
+                      // ),
+                      TextFormField(
+                        focusNode: widget.emailFocusNode,
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        cursorColor: kTextColor,
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'Email is empty';
+                          } else if (!emailValidatorRegExp.hasMatch(text))
+                            return 'Invalid email!';
+                          return null;
+                        },
+                        controller:
+                            Provider.of<SignIn_Function>(context, listen: false)
+                                .emailController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(
+                            Icons.mail_outline_outlined,
                             color: Colors.black,
-                            width: 1),
+                          ),
+                          hintText: "Email",
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide:
+                                BorderSide(color: kPrimaryColor, width: 1),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: Colors.red, width: 1),
+                          ),
+                        ),
                       ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.red, width: 1),
+
+                      const SizedBox(
+                        height: 15,
                       ),
-                    ),
-                  ),
+                      //
+                      // RoundedPasswordField(
+                      //   hintText: "Password",
+                      //   focusNode: widget.passwordFocusNode,
+                      //   textController: Provider.of<SignIn_Function>(context, listen: false)
+                      //       .passwordController,
+                      //   onChanged: (value) {
+                      //     widget.password = value;
+                      //   },
+                      // ),
+                      // ],),
 
-      SizedBox(
-        height: 15,
-      ),
-                        //
-                        // RoundedPasswordField(
-                        //   hintText: "Password",
-                        //   focusNode: widget.passwordFocusNode,
-                        //   textController: Provider.of<SignIn_Function>(context, listen: false)
-                        //       .passwordController,
-                        //   onChanged: (value) {
-                        //     widget.password = value;
-                        //   },
-                        // ),
-                        // ],),
-
-                    TextFormField(
-                          obscureText: _obscureText,
-                          onChanged:   (value) {password = value;},
-                          focusNode: widget.passwordFocusNode,
-                          controller: Provider.of<SignIn_Function>(context, listen: false)
-                                      .passwordController,
-                          cursorColor: kTextColor,
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'Password is empty';
-                        }
-                        return null;
-                      },
-                          decoration: InputDecoration(
+                      TextFormField(
+                        obscureText: _obscureText,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                        focusNode: widget.passwordFocusNode,
+                        controller:
+                            Provider.of<SignIn_Function>(context, listen: false)
+                                .passwordController,
+                        cursorColor: kTextColor,
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'Password is empty';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
                           hintText: "Password",
-                            filled: true,
-                            fillColor: Colors.white,
-                            prefixIcon: Icon(
+                          filled: true,
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(
                             Icons.lock,
                             color: Colors.black,
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                               color: Colors.black,
-                          ),
+                            ),
                             onPressed: () {
                               // Update the state i.e. toogle the state of passwordVisible variable
                               setState(() {
@@ -176,216 +177,226 @@ class _LoginScreen extends State<LoginScreen> {
                               });
                             },
                           ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: Colors.red, width: 1),
-                            ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide:
+                                BorderSide(color: kPrimaryColor, width: 1),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: Colors.red, width: 1),
                           ),
                         ),
-    ],
-    ),
-    ),
-
-                  Container(
-                    alignment: Alignment.centerRight,
-                    margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                    child: GestureDetector(
-                      onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
-                        );
-                      },
-                      child: const Text(
-                        "Forgot password?",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: kPrimaryColor,
-                          fontFamily: 'Poppins',
-                          decoration: TextDecoration.underline,
-                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPasswordScreen()),
+                      );
+                    },
+                    child: const Text(
+                      "Forgot password?",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: kPrimaryColor,
+                        fontFamily: 'Poppins',
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
-
-                  CustomRoundedLoadingButton(
-                    text: 'Sign In',
-                    onPress: () async {
-                      if (_formKey.currentState!.validate()) {
-                        print(email + " " + password);
-                        int result = await signInFunctions.logInWithEmailAndPassword(email, password);
-                        if(result == 0) { // sign in as admin
-                          // Open Home Page for admin
-                          print("Sign in as admin");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                             SnackBar(
-                              content: Text('Logged in successfully.'),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                              backgroundColor: Colors.green,
+                ),
+                CustomRoundedLoadingButton(
+                  text: 'Sign In',
+                  onPress: () async {
+                    if (_formKey.currentState!.validate()) {
+                      print(email + " " + password);
+                      int result = await signInFunctions
+                          .logInWithEmailAndPassword(email, password);
+                      if (result == 0) {
+                        // sign in as admin
+                        // Open Home Page for admin
+                        print("Sign in as admin");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Logged in successfully.'),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
                             ),
-                          );
-                          // Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                          loginButtonController.success();
-                        }
-                        else if (result == 1) { //sign in as user
-                          // Open Home Page for user
-                          print("Sign in as user");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Logged in successfully.'),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                              backgroundColor: Colors.green,
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        // Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                        loginButtonController.success();
+                      } else if (result == 1) {
+                        //sign in as user
+                        // Open Home Page for user
+                        print("Sign in as user");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Logged in successfully.'),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
                             ),
-                          );
-                          // Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                          loginButtonController.success();
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            setState(() {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(builder: (context) => HomePage()),
-                                      (route) => false);
-                            });
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        // Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                        loginButtonController.success();
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          setState(() {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()),
+                                (route) => false);
                           });
-
-                        }
-                        else {
-                          print("Failed sign in");
-                          loginButtonController.stop();
-                        }
+                        });
+                      } else {
+                        print("Failed sign in");
                         loginButtonController.stop();
                       }
-                      else loginButtonController.stop();
-
-                    },
-                    controller: loginButtonController,
-                    horizontalPadding: 45,
-                  ),
-
-                  RichText(
-                    text: TextSpan(
-                        text: 'Don’t have an account? ',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: kTextColor,
-                          fontFamily: 'Poppins',
-                        ),
-                        children: [
-                          TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                //register click
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => RegisterScreen()),
-                                );
-                              },
-                            text: 'Register now',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: kPrimaryColor,
-                              fontFamily: 'Poppins',
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ]),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                    child: Row(
+                      loginButtonController.stop();
+                    } else
+                      loginButtonController.stop();
+                  },
+                  controller: loginButtonController,
+                  horizontalPadding: 45,
+                ),
+                RichText(
+                  text: TextSpan(
+                      text: 'Don’t have an account? ',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: kTextColor,
+                        fontFamily: 'Poppins',
+                      ),
                       children: [
-                        Flexible(
-                          flex: 1,
-                          child: Divider(
-                            color: Colors.black54,
-                            thickness: 1,
-                          ),
-                        ),
-                        Text(
-                          '    Or    ',
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              //register click
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterScreen()),
+                              );
+                            },
+                          text: 'Register now',
                           style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
+                            fontSize: 15,
+                            color: kPrimaryColor,
+                            fontFamily: 'Poppins',
+                            decoration: TextDecoration.underline,
                           ),
                         ),
-                        Flexible(
-                          flex: 1,
-                          child: Divider(
-                            color: Colors.black54,
-                            thickness: 1,
-                          ),
+                      ]),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: Divider(
+                          color: Colors.black54,
+                          thickness: 1,
                         ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        '    Or    ',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Divider(
+                          color: Colors.black54,
+                          thickness: 1,
+                        ),
+                      ),
+                    ],
                   ),
-                  LoginWithButton(
-                    icon: FontAwesomeIcons.google,
-                    iconColor: Colors.red,
-                    text: 'Sign in with Google',
-                    isOutLine: true,
-                    textColor: Colors.black54,
-                    color: Colors.white,
-                    onPress: () async {
-                      bool result = await signInFunctions.logInWithGoogle();
-                      if(result == true) {
-                        print("Sign in as user by google");
-                        Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => HomePage()));
-                      }
-                      else Fluttertoast.showToast(msg: 'Logged failed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  LoginWithButton(
-                    icon: FontAwesomeIcons.facebook,
-                    iconColor: Colors.white,
-                    text: 'Login with Facebook',
-                    isOutLine: false,
-                    textColor: Colors.white,
-                    color: kFacebookColor,
-                    onPress: () async {
-                      bool result = await signInFunctions.logInWithFacebook();
-                      if(result == true) {
-                        print("Sign in as user by facebook");
-                        Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                        Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => HomePage()));
-                      }
-                      else Fluttertoast.showToast(msg: 'Logged failed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                      },
-                  ),
-                  SizedBox(
-                    height: 24,
-                  )
-                ],
-              ),
+                ),
+                LoginWithButton(
+                  icon: FontAwesomeIcons.google,
+                  iconColor: Colors.red,
+                  text: 'Sign in with Google',
+                  isOutLine: true,
+                  textColor: Colors.black54,
+                  color: Colors.white,
+                  onPress: () async {
+                    bool result = await signInFunctions.logInWithGoogle();
+                    if (result == true) {
+                      print("Sign in as user by google");
+                      Fluttertoast.showToast(
+                          msg: 'Logged in successfully.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    } else
+                      Fluttertoast.showToast(
+                          msg: 'Logged failed',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                LoginWithButton(
+                  icon: FontAwesomeIcons.facebook,
+                  iconColor: Colors.white,
+                  text: 'Login with Facebook',
+                  isOutLine: false,
+                  textColor: Colors.white,
+                  color: kFacebookColor,
+                  onPress: () async {
+                    bool result = await signInFunctions.logInWithFacebook();
+                    if (result == true) {
+                      print("Sign in as user by facebook");
+                      Fluttertoast.showToast(
+                          msg: 'Logged in successfully.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    } else
+                      Fluttertoast.showToast(
+                          msg: 'Logged failed',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
+                  },
+                ),
+                const SizedBox(
+                  height: 24,
+                )
+              ],
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 }

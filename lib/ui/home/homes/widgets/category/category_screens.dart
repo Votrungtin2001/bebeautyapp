@@ -90,7 +90,7 @@ class _CategoryScreensState extends State<CategoryScreens>
               );
             },
           ),
-          SizedBox(width: kDefaultPadding / 2)
+          const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
       body: Column(

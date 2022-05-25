@@ -15,12 +15,11 @@ import 'package:bebeautyapp/ui/home/product_details/reviews/reviews.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
+
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../homes/widgets/recommend_product/recommend_product.dart';
-import 'add_to_cart.dart';
-import 'color_and_size.dart';
 import 'description.dart';
 import 'product_title_with_image.dart';
 
@@ -52,6 +51,10 @@ class _Body extends State<Body> {
     PageController pageController = PageController(initialPage: 0);
     // It provide us total height and width
     Size size = MediaQuery.of(context).size;
+    @override
+    void initState() {
+      super.initState();
+    }
 
     return SingleChildScrollView(
       child: Column(
@@ -62,90 +65,127 @@ class _Body extends State<Body> {
             child: PageView.builder(
               controller: pageController,
               itemCount: widget.product.images.length,
+              pageSnapping: true,
               itemBuilder: (context, index) {
-                return Image.network(
-                  widget.product.images[index],
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.contain,
+                currentIndex = index;
+
+                return Stack(
+                  children: [
+                    Image.network(
+                      widget.product.images[index],
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.contain,
+                    ),
+                    Positioned(
+                      right: -18,
+                      top: -10,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        alignment: Alignment.topRight,
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              height: 128 * 0.5833333333333334,
+                              width: 128,
+                              child: CustomPaint(
+                                painter: RPSCustomPainter(),
+                                size: Size(
+                                    128, (128 * 0.5833333333333334).toDouble()),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 60, top: 22),
+                              child: Text(
+                                widget.product.defaultDiscountRate.toString() +
+                                    '%' +
+                                    '\nsale ',
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               },
             ),
           ),
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         children: List.generate(
-          //           widget.product.images.length,
-          //               (index) => AnimatedContainer(
-          //             duration: Duration(milliseconds: 400),
-          //             height: 8.0,
-          //             width: currentIndex == index ? 10.0 : 8.0,
-          //             margin: EdgeInsets.only(right: 4.0),
-          //             decoration: BoxDecoration(
-          //               color: currentIndex == index
-          //                   ? kPrimaryColor
-          //                   : kLightColor,
-          //               borderRadius: BorderRadius.circular(8.0),
-          //             ),
-          //           ),
+          // Container(
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: List.generate(
+          //       widget.product.images.length,
+          //       (index) => AnimatedContainer(
+          //         duration: const Duration(milliseconds: 400),
+          //         height: 8.0,
+          //         width: currentIndex == index ? 10.0 : 8.0,
+          //         margin: const EdgeInsets.only(right: 4.0),
+          //         decoration: BoxDecoration(
+          //           color: currentIndex == index ? kPrimaryColor : kLightColor,
+          //           borderRadius: BorderRadius.circular(8.0),
           //         ),
           //       ),
+          //     ),
+          //   ),
           // ),
-          SizedBox(height: kDefaultPadding / 2),
+          const SizedBox(height: kDefaultPadding / 2),
           Text(
             widget.product.engName,
             style: TextStyle(color: Colors.black),
           ),
-          SizedBox(height: kDefaultPadding),
+          const SizedBox(height: kDefaultPadding),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: Text(
               widget.product.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18),
             ),
           ),
-          SizedBox(height: kDefaultPadding),
+
+          const SizedBox(height: kDefaultPadding),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Flexible(
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(color: Colors.black),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: currencyformat
-                                  .format(widget.product.getMarketPrice()) +
-                              'đ',
-                          style: new TextStyle(
-                            color: Colors.grey,
-                            fontSize: 30,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                        TextSpan(
-                          text: ' ' +
-                              currencyformat.format(widget.product.getPrice()) +
-                              'đ',
-                          style: new TextStyle(
-                            color: Colors.black,
-                            fontSize: 30,
-                          ),
-                        ),
-                      ],
-                    ),
+                Text(
+                  currencyformat.format(widget.product.getMarketPrice()) + 'đ',
+                  style: new TextStyle(
+                    color: Colors.grey,
+                    fontSize: 30,
+                    decoration: TextDecoration.lineThrough,
                   ),
                 ),
+                Text(
+                  currencyformat.format(widget.product.getPrice()) + 'đ',
+                  style: new TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                  ),
+                ),
+
+                // Container(
+                //   padding: const EdgeInsets.only(left: 38, top: 10),
+                //   child: Text(
+                //     widget.product.defaultDiscountRate.toString() +
+                //         '%' +
+                //         '\nsale ',
+                //     style: const TextStyle(
+                //       color: Colors.red,
+                //       fontSize: 15,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: kDefaultPadding,
           ),
           Padding(
@@ -165,7 +205,6 @@ class _Body extends State<Body> {
               ),
             ),
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -195,7 +234,7 @@ class _Body extends State<Body> {
           ListView.separated(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.only(bottom: 8.0, top: 8.0),
+            padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
             itemCount: 3,
             itemBuilder: (context, index) {
               return ReviewUI(
@@ -246,81 +285,57 @@ class _Body extends State<Body> {
               thickness: 1.5,
             )),
           ]),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height - 150,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding),
-                        child: GridView.builder(
-                          itemCount: widget.similarProductsFromSelectedProducts
-                                      .length >
-                                  6
-                              ? 6
-                              : widget
-                                  .similarProductsFromSelectedProducts.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: kDefaultPadding,
-                            crossAxisSpacing: kDefaultPadding,
-                            childAspectRatio: 0.5,
-                          ),
-                          itemBuilder: (context, index) => ProductCard(
+          const SizedBox(
+            height: 15,
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 175,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              child: GridView.builder(
+                itemCount: widget.similarProductsFromSelectedProducts.length > 6
+                    ? 6
+                    : widget.similarProductsFromSelectedProducts.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: kDefaultPadding,
+                  crossAxisSpacing: kDefaultPadding,
+                  childAspectRatio: 0.5,
+                ),
+                itemBuilder: (context, index) => ProductCard(
+                  product: widget.similarProductsFromSelectedProducts[index],
+                  press: () async {
+                    productProvider
+                        .isNeededUpdated_SimilarProductsBasedUserByCBR = true;
+                    await preferenceServices.updatePreference(userProvider.user,
+                        widget.similarProductsFromSelectedProducts[index]);
+
+                    //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
+                    //await preferenceServices.updatePreference(userProvider.user, widget.similarProductsFromSelectedProducts[index]);
+                    List<MProduct> similarProductsFromSelectedProducts =
+                        await productServices
+                            .getSimilarityProductsBySelectedProduct(
+                                productProvider.products,
+                                widget.similarProductsFromSelectedProducts[
+                                    index]);
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          // builder: (context) => DetailsScreen(
+                          //   product: products[index],
+                          // ),
+                          builder: (context) => DetailsScreen(
                             product: widget
                                 .similarProductsFromSelectedProducts[index],
-                            press: () async {
-                              productProvider
-                                      .isNeededUpdated_SimilarProductsBasedUserByCBR =
-                                  true;
-                              await preferenceServices.updatePreference(
-                                  userProvider.user,
-                                  widget.similarProductsFromSelectedProducts[
-                                      index]);
-
-                              //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
-                              //await preferenceServices.updatePreference(userProvider.user, widget.similarProductsFromSelectedProducts[index]);
-                              List<MProduct>
-                                  similarProductsFromSelectedProducts =
-                                  await productServices
-                                      .getSimilarityProductsBySelectedProduct(
-                                          productProvider.products,
-                                          widget.similarProductsFromSelectedProducts[
-                                              index]);
-
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    // builder: (context) => DetailsScreen(
-                                    //   product: products[index],
-                                    // ),
-                                    builder: (context) => DetailsScreen(
-                                      product: widget
-                                              .similarProductsFromSelectedProducts[
-                                          index],
-                                      similarProductsFromSelectedProducts:
-                                          similarProductsFromSelectedProducts,
-                                    ),
-                                  ));
-                            },
+                            similarProductsFromSelectedProducts:
+                                similarProductsFromSelectedProducts,
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
+                        ));
+                  },
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
@@ -329,7 +344,7 @@ class _Body extends State<Body> {
 
   HomeTopTabs(product) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(53.0), // here the desired height
@@ -359,12 +374,6 @@ class _Body extends State<Body> {
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                Tab(
-                  child: Text(
-                    'Rate',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
               ],
             ),
           ),
@@ -380,12 +389,35 @@ class _Body extends State<Body> {
             Container(
               child: Description(product: product),
             ),
-            Container(
-              child: Description(product: product),
-            ),
           ],
         ),
       ),
     );
+  }
+}
+
+class RPSCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint0 = Paint()
+      ..color = const Color(0xffFFD839)
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 5;
+
+    Path path0 = Path();
+    path0.moveTo(size.width * 0.3750000, size.height * 0.2128571);
+    path0.lineTo(size.width * 0.3755000, size.height * 1);
+    path0.lineTo(size.width * 0.5825000, size.height * 0.8428571);
+    path0.lineTo(size.width * 0.7920000, size.height * 1);
+    path0.lineTo(size.width * 0.7910000, size.height * 0.2157143);
+    path0.lineTo(size.width * 0.3750000, size.height * 0.2128571);
+    path0.close();
+
+    canvas.drawPath(path0, paint0);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

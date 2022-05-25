@@ -43,7 +43,7 @@ class ChangePasswordScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             SvgPicture.asset(
@@ -99,7 +99,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   TextFormField(
@@ -139,7 +139,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   TextFormField(

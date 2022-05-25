@@ -25,7 +25,7 @@ class WelcomeView extends StatelessWidget {
     );
 
     final _firstHalfAnimation =
-    Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0)).animate(
+        Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0)).animate(
       CurvedAnimation(
         parent: animationController,
         curve: Interval(
@@ -36,7 +36,7 @@ class WelcomeView extends StatelessWidget {
       ),
     );
     final _secondHalfAnimation =
-    Tween<Offset>(begin: Offset(0, 0), end: Offset(-1, 0)).animate(
+        Tween<Offset>(begin: Offset(0, 0), end: Offset(-1, 0)).animate(
       CurvedAnimation(
         parent: animationController,
         curve: Interval(
@@ -48,8 +48,8 @@ class WelcomeView extends StatelessWidget {
     );
 
     final _welcomeFirstHalfAnimation =
-    Tween<Offset>(begin: Offset(2, 0), end: Offset(0, 0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(2, 0), end: Offset(0, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.6,
@@ -59,8 +59,8 @@ class WelcomeView extends StatelessWidget {
     ));
 
     final _welcomeImageAnimation =
-    Tween<Offset>(begin: Offset(4, 0), end: Offset(0, 0))
-        .animate(CurvedAnimation(
+        Tween<Offset>(begin: Offset(4, 0), end: Offset(0, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
       curve: Interval(
         0.6,
@@ -85,32 +85,41 @@ class WelcomeView extends StatelessWidget {
               //   ),
               // ),
               SlideTransition(
-                position: _welcomeFirstHalfAnimation,
-                child: Padding (
-                  padding: const EdgeInsets.only(left: 36),
-                child: Column(
-                  children: [
-                    SizedBox(height: 360,),
-                    Text.rich(
-                        TextSpan(
-                            text: 'Welcome to\n',
-                            style: TextStyle(fontSize: 24,fontFamily: 'Laila',color: kTextColor,fontWeight: FontWeight.w500),
-                            children: <InlineSpan>[
-                              TextSpan(
-                                text: 'The world of\n',
-                                style: TextStyle(fontSize: 42,fontWeight: FontWeight.w900,fontFamily: 'Laila',color: kTextColor),
-                              ),
-                              TextSpan(
-                                text: 'LaMuse',
-                                style: TextStyle(fontSize: 42,fontWeight: FontWeight.w900,fontFamily: 'Laila',color: kPrimaryColor),
-                              )
-                            ]
-                        )
-                    ),
-                  ],
-                )
-                )
-              ),
+                  position: _welcomeFirstHalfAnimation,
+                  child: Padding(
+                      padding: const EdgeInsets.only(left: 36),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 360,
+                          ),
+                          Text.rich(TextSpan(
+                              text: 'Welcome to\n',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: 'Laila',
+                                  color: kTextColor,
+                                  fontWeight: FontWeight.w500),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  text: 'The world of\n',
+                                  style: TextStyle(
+                                      fontSize: 42,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Laila',
+                                      color: kTextColor),
+                                ),
+                                TextSpan(
+                                  text: 'LaMuse',
+                                  style: TextStyle(
+                                      fontSize: 42,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Laila',
+                                      color: kPrimaryColor),
+                                )
+                              ])),
+                        ],
+                      ))),
             ],
           ),
         ),

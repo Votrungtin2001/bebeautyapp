@@ -24,7 +24,7 @@ class ProductTitleWithImage extends StatelessWidget {
         children: <Widget>[
           Stack(
             children: [
-              Container(
+              SizedBox(
                 height: 400,
                 child: PageView.builder(
                   controller: pageController,
@@ -47,10 +47,10 @@ class ProductTitleWithImage extends StatelessWidget {
                   children: List.generate(
                     product.images.length,
                     (index) => AnimatedContainer(
-                      duration: Duration(milliseconds: 400),
+                      duration: const Duration(milliseconds: 400),
                       height: 8.0,
                       width: currentIndex == index ? 24.0 : 8.0,
-                      margin: EdgeInsets.only(right: 4.0),
+                      margin: const EdgeInsets.only(right: 4.0),
                       decoration: BoxDecoration(
                         color:
                             currentIndex == index ? kPrimaryColor : kLightColor,
