@@ -154,7 +154,7 @@ class _CartCounterState extends State<CartCounter> {
             Bounce(
               duration: const Duration(milliseconds: 110),
               onPressed: () {
-                _increase(); //calling _increase() function when user will be tap on - icon.
+                _decrease(); //calling _decrease() function when user will be tap on - icon.
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -172,7 +172,7 @@ class _CartCounterState extends State<CartCounter> {
                   child: Padding(
                     padding: const EdgeInsets.all(3),
                     child: Icon(
-                      Icons.add,
+                      Icons.remove,
                       size: 30,
                       color: Colors.white,
                     ),
@@ -246,7 +246,7 @@ class _CartCounterState extends State<CartCounter> {
             Bounce(
               duration: const Duration(milliseconds: 110),
               onPressed: () {
-                _decrease(); //calling _decrease() function when user will be tap on - icon.
+                _increase(); //calling _increase() function when user will be tap on + icon.
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -262,7 +262,7 @@ class _CartCounterState extends State<CartCounter> {
                     ],
                   ),
                   child: Icon(
-                    Icons.remove,
+                    Icons.add,
                     size: 30,
                     color: Colors.white,
                   )),

@@ -7,7 +7,13 @@ import 'package:bebeautyapp/ui/profile/widgets/address_card.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+
+import '../../../../repo/providers/savedAddress_provider.dart';
+import '../../../../repo/providers/user_provider.dart';
+import '../../../../repo/services/savedAddress_services.dart';
 
 class AddressSelection extends StatefulWidget {
   @override
@@ -15,9 +21,14 @@ class AddressSelection extends StatefulWidget {
 }
 
 class _AddressSelection extends State<AddressSelection> {
-  late Address address;
+  final savedAddressServices = new SavedAddressServices();
+
+
   @override
   Widget build(BuildContext context) {
+    final savedAddressProvider = Provider.of<SavedAddressProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -36,14 +47,21 @@ class _AddressSelection extends State<AddressSelection> {
           Expanded(
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: demoAddress.length,
+                itemCount: savedAddressProvider.savedAddresses.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                       title: AddressItem(
-                        address: demoAddress[index],
+                        savedAddress: savedAddressProvider.savedAddresses[index],
                       ),
-                      onTap: () {
-                        Navigator.pop(context, demoAddress[index]);
+                      onTap: () async {
+                        bool result = await savedAddressServices.updateDefaultSavedAddress(
+                            savedAddressProvider.savedAddresses[index].getID(), userProvider.user.id);
+                        if(result == true) {
+                          savedAddressProvider.updateDefaultSavedAddress(savedAddressProvider.savedAddresses[index].getID(), userProvider.user.id);
+                          Fluttertoast.showToast(msg: 'Updated default address successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          Navigator.pop(context, savedAddressProvider.savedAddresses[index]);
+                        }
+
                       });
                 }),
           ),
@@ -53,7 +71,7 @@ class _AddressSelection extends State<AddressSelection> {
               onPressed: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddAddressScreen()),
+                  MaterialPageRoute(builder: (context) => AddAddressScreen(userID: userProvider.user.id)),
                 ),
               },
               padding: const EdgeInsets.all(8.0),

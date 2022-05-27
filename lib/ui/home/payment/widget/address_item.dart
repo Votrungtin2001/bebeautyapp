@@ -1,12 +1,13 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/home/cart/Cart.dart';
 import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 import 'package:flutter/material.dart';
 
-class AddressItem extends StatefulWidget {
-  final Address address;
+import '../../../../model/MSavedAddress.dart';
 
-  const AddressItem({Key? key, required this.address}) : super(key: key);
+class AddressItem extends StatefulWidget {
+  final MSavedAddress savedAddress;
+
+  const AddressItem({Key? key, required this.savedAddress}) : super(key: key);
 
   @override
   _AddressItemState createState() => _AddressItemState();
@@ -20,16 +21,16 @@ class _AddressItemState extends State<AddressItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.address.name,
+            widget.savedAddress.fullUserName,
             style: TextStyle(color: Colors.black, fontSize: 16),
           ),
           Text(
-            widget.address.phoneNumber,
+            widget.savedAddress.userPhone,
             style:
                 TextStyle(fontWeight: FontWeight.w600, color: kTextLightColor),
           ),
           Text(
-            widget.address.address,
+            widget.savedAddress.fullAddressName,
             style:
                 TextStyle(fontWeight: FontWeight.w600, color: kTextLightColor),
           ),

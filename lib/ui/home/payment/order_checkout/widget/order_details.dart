@@ -1,21 +1,25 @@
 import 'dart:ui';
 
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/ProductEx.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/track_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im_stepper/stepper.dart';
 
+import '../../../../../model/MOrder.dart';
+import '../../../../../repo/services/order_services.dart';
+
 class TrackOrder extends StatefulWidget {
-  const TrackOrder({Key? key, required this.productEx}) : super(key: key);
+  const TrackOrder({Key? key, required this.order}) : super(key: key);
 
   @override
   _TrackOrderState createState() => _TrackOrderState();
-  final ProductEx productEx;
+  final MOrder order;
 }
 
 class _TrackOrderState extends State<TrackOrder> {
+  final orderServices = new OrderServices();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +57,7 @@ class _TrackOrderState extends State<TrackOrder> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        widget.productEx.time,
+                        widget.order.getDate(),
                         style: TextStyle(
                           fontSize: 18.0,
                           color: kLightColor,
@@ -71,7 +75,7 @@ class _TrackOrderState extends State<TrackOrder> {
                       ),
                     ),
                     SelectableText(
-                      widget.productEx.id.toString(),
+                      widget.order.getID(),
                       toolbarOptions: ToolbarOptions(
                           copy: true,
                           selectAll: true,

@@ -159,19 +159,21 @@ class CenterNextButton extends StatelessWidget {
                             SizedBox(
                               width: 263,
                               height: 57,
-                              child: OutlineButton(
+                              child: OutlinedButton(
                                 child: Text('Login',
                                     style: TextStyle(
                                         color: kPrimaryColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 24)),
-                                borderSide: BorderSide(
-                                  color: kPrimaryColor,
-                                  style: BorderStyle.solid,
-                                  width: 3,
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                    color: kPrimaryColor,
+                                    style: BorderStyle.solid,
+                                    width: 3,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0)),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
                                 onPressed: () {
                                   Navigator.push(
                                     context,

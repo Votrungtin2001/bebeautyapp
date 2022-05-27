@@ -3,8 +3,6 @@ import 'package:bebeautyapp/home_page.dart';
 import 'package:bebeautyapp/ui/introduction_screen/introduction_screen.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
-import 'package:bebeautyapp/ui/home/homes/home.dart';
-import 'package:bebeautyapp/ui/home/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

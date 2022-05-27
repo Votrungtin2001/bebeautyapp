@@ -13,6 +13,7 @@ import 'package:bebeautyapp/ui/home/product_details/components/review_ui.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:bebeautyapp/ui/home/product_details/reviews/reviews.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
 
@@ -51,10 +52,6 @@ class _Body extends State<Body> {
     PageController pageController = PageController(initialPage: 0);
     // It provide us total height and width
     Size size = MediaQuery.of(context).size;
-    @override
-    void initState() {
-      super.initState();
-    }
 
     return SingleChildScrollView(
       child: Column(
@@ -344,7 +341,7 @@ class _Body extends State<Body> {
 
   HomeTopTabs(product) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(53.0), // here the desired height
@@ -358,19 +355,25 @@ class _Body extends State<Body> {
               tabs: <Widget>[
                 Tab(
                   child: Text(
-                    'Product specifications',
+                    'Description',
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'Main ingredient',
+                    'Product Specifications',
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'User manual',
+                    'Chemical Composition',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Guideline',
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
@@ -381,13 +384,16 @@ class _Body extends State<Body> {
         body: TabBarView(
           children: <Widget>[
             Container(
-              child: Description(product: product),
+              child: Description(product: product, type: "description"),
             ),
             Container(
-              child: Description(product: product),
+              child: Description(product: product, type: "product specifications"),
             ),
             Container(
-              child: Description(product: product),
+              child: Description(product: product, type: "chemical composition"),
+            ),
+            Container(
+              child: Description(product: product, type: "guideline"),
             ),
           ],
         ),

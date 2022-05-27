@@ -1,15 +1,16 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/home/cart/Cart.dart';
+import 'package:bebeautyapp/model/MProductInCart.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 
 class CartCard extends StatelessWidget {
   const CartCard({
     Key? key,
-    required this.cart,
+    required this.productInCart,
   }) : super(key: key);
 
-  final Cart cart;
+  final MProductInCart productInCart;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class CartCard extends StatelessWidget {
                 color: Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Image.asset(cart.product.images[0]),
+              child: Image.network(productInCart.getImage()),
             ),
           ),
         ),
@@ -35,7 +36,7 @@ class CartCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                cart.product.title,
+                productInCart.getName(),
                 style: TextStyle(color: Colors.black, fontSize: 16),
                 maxLines: 2,
               ),
@@ -44,11 +45,11 @@ class CartCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '\$${cart.product.price}',
+                    productInCart.getPrice().toStringAsFixed(0).toVND(unit: 'đ'),
                     style: TextStyle(
                         fontWeight: FontWeight.w600, color: kPrimaryColor),
                   ),
-                  Text('x${cart.numOfItem}',
+                  Text('x${productInCart.getQuantity()}',
                       style: Theme.of(context).textTheme.bodyText1),
                 ],
               ),
