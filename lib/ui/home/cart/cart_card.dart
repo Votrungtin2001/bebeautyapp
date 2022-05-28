@@ -30,8 +30,9 @@ class CartCard extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 12.0, left: 12),
+        Container(
+          width: 300,
+          padding: const EdgeInsets.only(left: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -39,17 +40,20 @@ class CartCard extends StatelessWidget {
                 productInCart.getName(),
                 style: TextStyle(color: Colors.black, fontSize: 16),
                 maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 10),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    productInCart.getPrice().toStringAsFixed(0).toVND(unit: 'đ'),
+                    productInCart
+                        .getPrice()
+                        .toStringAsFixed(0)
+                        .toVND(unit: 'đ'),
                     style: TextStyle(
                         fontWeight: FontWeight.w600, color: kPrimaryColor),
                   ),
-                  Text('x${productInCart.getQuantity()}',
+                  Text('   x${productInCart.getQuantity()}',
                       style: Theme.of(context).textTheme.bodyText1),
                 ],
               ),

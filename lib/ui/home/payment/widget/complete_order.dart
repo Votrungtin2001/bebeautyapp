@@ -91,14 +91,12 @@ class _CompleteOrder extends State<CompleteOrder> {
           OutlinedButton(
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-              shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               side: BorderSide(color: kPrimaryColor, width: 1),
             ),
             onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (c) => HomeScreens()),
-                  (route) => false);
+              Navigator.of(context).popUntil((route) => route.isFirst);
             },
             child: const Text("Continue shopping",
                 style: TextStyle(

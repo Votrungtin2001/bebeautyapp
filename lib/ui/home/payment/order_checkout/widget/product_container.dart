@@ -11,25 +11,20 @@ import '../../../../../repo/services/cart_services.dart';
 import '../../../../../repo/services/order_services.dart';
 
 class ProductContainer extends StatefulWidget {
-  ProductContainer({
-    Key? key,
-    required this.order,
-    required this.products
-  }) : super(key: key);
+  ProductContainer({Key? key, required this.order, required this.products})
+      : super(key: key);
 
   final MOrder order;
   final List<MProduct> products;
 
-
   @override
   _ProductContainerState createState() => _ProductContainerState();
-
 }
 
 class _ProductContainerState extends State<ProductContainer> {
   bool isUpdate = true;
-  MOrder order = new MOrder("", "", "", 0.0, 0.0, 0.0, 0, 0, "", 0.0, 0.0,
-      "", "", 0, 0);
+  MOrder order =
+      new MOrder("", "", "", 0.0, 0.0, 0.0, 0, 0, "", 0.0, 0.0, "", "", 0, 0);
 
   final cartServices = new CartServices();
 
@@ -44,24 +39,34 @@ class _ProductContainerState extends State<ProductContainer> {
   }
 
   getProductsInOrder() async {
-    if(widget.products.length > 0) {
-      List<MProductInCart> temp = await orderServices.getProductsInOrder(widget.order.id, widget.products);
+    if (widget.products.length > 0) {
+      List<MProductInCart> temp = await orderServices.getProductsInOrder(
+          widget.order.id, widget.products);
       setState(() {
         productsInCart = temp;
-        order.updateOrder(widget.order.id, widget.order.userID, widget.order.voucherCode,
-            widget.order.discountValue, widget.order.shippingValue, widget.order.totalPayment,
-            widget.order.totalQuantity, widget.order.numOfProducts, widget.order.address,
-            widget.order.latitude, widget.order.longitude, widget.order.userName,
-            widget.order.phone, widget.order.time, widget.order.status);
+        order.updateOrder(
+            widget.order.id,
+            widget.order.userID,
+            widget.order.voucherCode,
+            widget.order.discountValue,
+            widget.order.shippingValue,
+            widget.order.totalPayment,
+            widget.order.totalQuantity,
+            widget.order.numOfProducts,
+            widget.order.address,
+            widget.order.latitude,
+            widget.order.longitude,
+            widget.order.userName,
+            widget.order.phone,
+            widget.order.time,
+            widget.order.status);
         order.setProductsInOrder(productsInCart);
       });
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
       child: GestureDetector(
@@ -70,12 +75,12 @@ class _ProductContainerState extends State<ProductContainer> {
             context,
             MaterialPageRoute(
                 builder: (context) => TrackOrder(
-                  order: order,
-                )),
+                      order: order,
+                    )),
           );
         },
         child: Container(
-          height: 368,
+          height: 380,
           color: Colors.transparent,
           child: Container(
             padding: const EdgeInsets.only(left: 16, top: 8.0, right: 16),
@@ -107,8 +112,9 @@ class _ProductContainerState extends State<ProductContainer> {
                       ),
                     ),
                     Text(
-                      order.getNumOfProducts() > 1 ? order.getNumOfProducts().toString() + ' items'
-                      : order.getNumOfProducts().toString() + ' item',
+                      order.getNumOfProducts() > 1
+                          ? order.getNumOfProducts().toString() + ' items'
+                          : order.getNumOfProducts().toString() + ' item',
                       style: const TextStyle(
                         fontFamily: 'Popppins',
                         fontSize: 18,
@@ -152,13 +158,11 @@ class _ProductContainerState extends State<ProductContainer> {
                 Row(
                   children: [
                     Container(
-                      height: 80,
-                      width: 80,
-                      child:
-                      order.productsInCart.length > 0
-                          ? Image.network(order.productsInCart[0].getImage())
-                          : Image.asset('assets/images/loading.png')
-                    ),
+                        height: 80,
+                        width: 80,
+                        child: order.productsInCart.length > 0
+                            ? Image.network(order.productsInCart[0].getImage())
+                            : Image.asset('assets/images/loading.png')),
                     const SizedBox(
                       width: 16,
                     ),
@@ -167,9 +171,10 @@ class _ProductContainerState extends State<ProductContainer> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(order.productsInCart.length > 0
-                            ? order.productsInCart[0].getName()
-                            : "No information",
+                          Text(
+                            order.productsInCart.length > 0
+                                ? order.productsInCart[0].getName()
+                                : "No information",
                             textAlign: TextAlign.right,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -177,24 +182,25 @@ class _ProductContainerState extends State<ProductContainer> {
                                 .textTheme
                                 .bodyText1
                                 ?.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
                             height: 16,
                           ),
-                          Text(order.productsInCart.length > 0
-                              ?  'x' +
-                              order.productsInCart[0].getQuantity()
-                                  .toString()
-                              : "No information",
-
+                          Text(
+                            order.productsInCart.length > 0
+                                ? 'x' +
+                                    order.productsInCart[0]
+                                        .getQuantity()
+                                        .toString()
+                                : "No information",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1
                                 ?.copyWith(
-                                color: kTextColor,
-                                fontWeight: FontWeight.w600),
+                                    color: kTextColor,
+                                    fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
@@ -203,22 +209,22 @@ class _ProductContainerState extends State<ProductContainer> {
                 ),
                 order.getNumOfProducts() > 1
                     ? Column(
-                  children: [
-                    Divider(
-                      color: kTextLightColor,
-                      thickness: 1,
-                    ),
-                    Text('View more product'),
-                    Divider(
-                      color: kTextLightColor,
-                      thickness: 1,
-                    ),
-                  ],
-                )
+                        children: [
+                          Divider(
+                            color: kTextLightColor,
+                            thickness: 1,
+                          ),
+                          Text('View more product'),
+                          Divider(
+                            color: kTextLightColor,
+                            thickness: 1,
+                          ),
+                        ],
+                      )
                     : Divider(
-                  color: kTextLightColor,
-                  thickness: 1,
-                ),
+                        color: kTextLightColor,
+                        thickness: 1,
+                      ),
                 Row(
                   children: [
                     Column(
@@ -259,15 +265,9 @@ class _ProductContainerState extends State<ProductContainer> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          cartServices.totalValueOfSelectedProductsInCart(order.productsInCart).toStringAsFixed(0).toVND(unit: 'đ'),
-                          style: const TextStyle(
-                              fontFamily: 'Popppins',
-                              fontSize: 18,
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          order.getShippingValue()
+                          cartServices
+                              .totalValueOfSelectedProductsInCart(
+                                  order.productsInCart)
                               .toStringAsFixed(0)
                               .toVND(unit: 'đ'),
                           style: const TextStyle(
@@ -277,7 +277,19 @@ class _ProductContainerState extends State<ProductContainer> {
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          order.getDiscountValue()
+                          order
+                              .getShippingValue()
+                              .toStringAsFixed(0)
+                              .toVND(unit: 'đ'),
+                          style: const TextStyle(
+                              fontFamily: 'Popppins',
+                              fontSize: 18,
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          order
+                              .getDiscountValue()
                               .toStringAsFixed(0)
                               .toVND(unit: 'đ'),
                           style: const TextStyle(
@@ -307,7 +319,10 @@ class _ProductContainerState extends State<ProductContainer> {
                     ),
                     Spacer(),
                     Text(
-                      order.getTotalPayment().toStringAsFixed(0).toVND(unit: 'đ'),
+                      order
+                          .getTotalPayment()
+                          .toStringAsFixed(0)
+                          .toVND(unit: 'đ'),
                       style: const TextStyle(
                           fontFamily: 'Popppins',
                           fontSize: 18,

@@ -16,26 +16,40 @@ class AddressItem extends StatefulWidget {
 class _AddressItemState extends State<AddressItem> {
   @override
   Widget build(BuildContext context) {
-    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-      Column(
+    return Container(
+      padding: const EdgeInsets.all(12),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        border: Border.all(color: kFourthColor),
+      ),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.savedAddress.fullUserName,
-            style: TextStyle(color: Colors.black, fontSize: 16),
+            style: TextStyle(color: Colors.black, fontSize: 22),
+          ),
+          SizedBox(
+            height: 8,
           ),
           Text(
             widget.savedAddress.userPhone,
             style:
                 TextStyle(fontWeight: FontWeight.w600, color: kTextLightColor),
           ),
+          SizedBox(
+            height: 8,
+          ),
           Text(
             widget.savedAddress.fullAddressName,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style:
                 TextStyle(fontWeight: FontWeight.w600, color: kTextLightColor),
           ),
         ],
       ),
-    ]);
+    );
   }
 }

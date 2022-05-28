@@ -31,7 +31,8 @@ import '../../../repo/services/user_services.dart';
 import '../../../repo/services/voucher_services.dart';
 
 class PaymentDetails extends StatefulWidget {
-  const PaymentDetails({Key? key, required this.productsInCart, required this.voucher})
+  const PaymentDetails(
+      {Key? key, required this.productsInCart, required this.voucher})
       : super(key: key);
   final List<MProductInCart> productsInCart;
   final MVoucher voucher;
@@ -51,7 +52,8 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   double shippingValue = 0;
   double totalPayment = 0;
 
-  MSavedAddress savedAddress = new MSavedAddress("", "", "", "", "", true, false, 0.0, 0.0);
+  MSavedAddress savedAddress =
+      new MSavedAddress("", "", "", "", "", true, false, 0.0, 0.0);
 
   List<LatLng> polylineCoordinates = [];
   String? _placeDistance;
@@ -75,27 +77,27 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
   @override
   Widget build(BuildContext context) {
-    totalValue = cartServices.totalValueOfSelectedProductsInCart(widget.productsInCart);
+    totalValue =
+        cartServices.totalValueOfSelectedProductsInCart(widget.productsInCart);
     final savedAddressProvider = Provider.of<SavedAddressProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
     savedAddressProvider.getSavedAddresses(userProvider.user.id);
 
-    if(isCalculate == true) {
-      if(savedAddressProvider.store_SavedAddress.latitude != 0.0 &&
+    if (isCalculate == true) {
+      if (savedAddressProvider.store_SavedAddress.latitude != 0.0 &&
           savedAddressProvider.store_SavedAddress.longitude != 0.0 &&
           savedAddressProvider.defaultSavedAddress.latitude != 0.0 &&
-          savedAddressProvider.defaultSavedAddress.longitude!= 0.0) {
-          _calculateDistance(savedAddressProvider.store_SavedAddress, savedAddressProvider.defaultSavedAddress);
-          totalPayment = totalValue + shippingValue + voucherDiscount;
-      }
-      else {
+          savedAddressProvider.defaultSavedAddress.longitude != 0.0) {
+        _calculateDistance(savedAddressProvider.store_SavedAddress,
+            savedAddressProvider.defaultSavedAddress);
+        totalPayment = totalValue + shippingValue + voucherDiscount;
+      } else {
         setState(() {
           shippingValue = 0;
-         });
+        });
       }
     }
-
 
     return Scaffold(
       appBar: AppBar(
@@ -149,20 +151,28 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       height: 8,
                     ),
                     Text(
-                      savedAddressProvider.defaultSavedAddress.fullUserName != "" ?
-                      savedAddressProvider.defaultSavedAddress.fullUserName : "No information about user's full name",
+                      savedAddressProvider.defaultSavedAddress.fullUserName !=
+                              ""
+                          ? savedAddressProvider
+                              .defaultSavedAddress.fullUserName
+                          : "No information about user's full name",
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
-                      savedAddressProvider.defaultSavedAddress.userPhone != "" ?
-                      savedAddressProvider.defaultSavedAddress.userPhone : "No information about user's phone number",
+                      savedAddressProvider.defaultSavedAddress.userPhone != ""
+                          ? savedAddressProvider.defaultSavedAddress.userPhone
+                          : "No information about user's phone number",
                       style: TextStyle(fontSize: 16),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width - 80,
                       child: Text(
-                        savedAddressProvider.defaultSavedAddress.fullAddressName != "" ?
-                        savedAddressProvider.defaultSavedAddress.fullAddressName : "No information about user's address",
+                        savedAddressProvider
+                                    .defaultSavedAddress.fullAddressName !=
+                                ""
+                            ? savedAddressProvider
+                                .defaultSavedAddress.fullAddressName
+                            : "No information about user's address",
                         style: TextStyle(
                           fontSize: 16,
                           overflow: TextOverflow.ellipsis,
@@ -278,7 +288,11 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          cartServices.totalValueOfSelectedProductsInCart(this.widget.productsInCart).toStringAsFixed(0).toVND(unit: 'đ'),
+                          cartServices
+                              .totalValueOfSelectedProductsInCart(
+                                  this.widget.productsInCart)
+                              .toStringAsFixed(0)
+                              .toVND(unit: 'đ'),
                           style: const TextStyle(
                               color: kTextLightColor,
                               fontWeight: FontWeight.w400,
@@ -343,167 +357,6 @@ class _PaymentDetailsState extends State<PaymentDetails> {
               ],
             ),
           ),
-
-          //   CreditCard(
-          //     cardNumber: cardNumber,
-          //     cardExpiry: cardExpiry,
-          //     cardHolderName: cardHolderName,
-          //     bankName: bankName,
-          //     cvv: cvv,
-          //     // showBackSide: true,
-          //     frontBackground: CardBackgrounds.black,
-          //     backBackground: CardBackgrounds.white,
-          //     cardType: CardType.masterCard,
-          //     showShadow: true,
-          //   ),
-          //   StickyLabel(
-          //     text: "Card Information",
-          //     textStyle: kBigTitleTextStyle,
-          //   ),
-          //   const SizedBox(height: 8.0),
-          //   Container(
-          //     margin: EdgeInsets.symmetric(horizontal: 24.0),
-          //     decoration: BoxDecoration(
-          //       color: Colors.white,
-          //       border: Border.all(
-          //         width: 0.5,
-          //         color: kLightColor,
-          //       ),
-          //       borderRadius: BorderRadius.circular(10.0),
-          //     ),
-          //     child: Column(
-          //       children: [
-          //         Padding(
-          //           padding: const EdgeInsets.symmetric(
-          //             horizontal: 24.0,
-          //             vertical: 8.0,
-          //           ),
-          //           child: Row(
-          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //             children: [
-          //               Text("My Perosnal Card",
-          //                   style: TextStyle(fontSize: 18.0)),
-          //               Container(
-          //                   width: 60.0,
-          //                   child: Icon(Icons.payment,
-          //                       color: kPrimaryColor, size: 40.0)),
-          //             ],
-          //           ),
-          //         ),
-          //         Padding(
-          //           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          //           child: Row(
-          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //             children: [
-          //               Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   Text(
-          //                     "Card Number",
-          //                     style: TextStyle(
-          //                       fontSize: 16.0,
-          //                       color: kLightColor,
-          //                     ),
-          //                   ),
-          //                   Text(
-          //                     cardNumber,
-          //                     style: TextStyle(fontSize: 16.0),
-          //                   ),
-          //                 ],
-          //               ),
-          //               Container(
-          //                 width: 45.0,
-          //                 child: Column(
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text(
-          //                       "Exp.",
-          //                       style: TextStyle(
-          //                         fontSize: 16.0,
-          //                         color: kLightColor,
-          //                       ),
-          //                     ),
-          //                     Text(
-          //                       cardExpiry,
-          //                       style: TextStyle(fontSize: 16.0),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //         Padding(
-          //           padding: const EdgeInsets.symmetric(
-          //             horizontal: 24.0,
-          //             vertical: 8.0,
-          //           ),
-          //           child: Row(
-          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //             children: [
-          //               Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   Text(
-          //                     "Card Name",
-          //                     style: TextStyle(
-          //                       fontSize: 16.0,
-          //                       color: kLightColor,
-          //                     ),
-          //                   ),
-          //                   Text(
-          //                     cardHolderName,
-          //                     style: TextStyle(fontSize: 16.0),
-          //                   ),
-          //                 ],
-          //               ),
-          //               Container(
-          //                 width: 45.0,
-          //                 child: Column(
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text(
-          //                       "CVV",
-          //                       style: TextStyle(
-          //                         fontSize: 16.0,
-          //                         color: kLightColor,
-          //                       ),
-          //                     ),
-          //                     Text(
-          //                       cvv,
-          //                       style: TextStyle(fontSize: 16.0),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //         Container(
-          //           height: 48.0,
-          //           width: MediaQuery.of(context).size.width,
-          //           child: FlatButton(
-          //             shape: RoundedRectangleBorder(
-          //               borderRadius: BorderRadius.only(
-          //                 bottomLeft: Radius.circular(10.0),
-          //                 bottomRight: Radius.circular(10.0),
-          //               ),
-          //             ),
-          //             color: kDarkColor.withOpacity(0.2),
-          //             child: Text(
-          //               "Edit Detail",
-          //               style: TextStyle(fontSize: 16.0),
-          //             ),
-          //             onPressed: () => Navigator.push(
-          //               context,
-          //               MaterialPageRoute(builder: (context) => Payment()),
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          //   const SizedBox(height: 8.0),
         ],
       ),
       bottomNavigationBar: Container(
@@ -539,7 +392,8 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                       text: "Total Payment:\n",
                       children: [
                         TextSpan(
-                          text: totalPayment.toStringAsFixed(0).toVND(unit: 'đ'),
+                          text:
+                              totalPayment.toStringAsFixed(0).toVND(unit: 'đ'),
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ],
@@ -554,33 +408,56 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     child: TextButton(
                       onPressed: () async {
                         EasyLoading.show(status: 'Adding new order...');
-                        double total = cartServices.totalValueOfSelectedProductsInCart(widget.productsInCart);
-                        if(widget.voucher.getID() == "") {
+                        double total =
+                            cartServices.totalValueOfSelectedProductsInCart(
+                                widget.productsInCart);
+                        if (widget.voucher.getID() == "") {
                           //Update the current number of products
-                          bool checkUpdateAvailableOfProducts = await productServices.checkUpdateAvailableByProductID(widget.productsInCart);
+                          bool checkUpdateAvailableOfProducts =
+                              await productServices
+                                  .checkUpdateAvailableByProductID(
+                                      widget.productsInCart);
 
                           if (checkUpdateAvailableOfProducts == true) {
                             //Add New Order
                             int time = DateTime.now().millisecondsSinceEpoch;
-                            bool result = await orderServices.addOrder(userProvider.user.id,
-                                widget.voucher.getVoucherCode(), voucherDiscount, shippingValue,
-                                totalPayment, cartServices.totalQuantityOfSelectedProductsInCart(widget.productsInCart),
-                                widget.productsInCart.length, savedAddressProvider.defaultSavedAddress.fullAddressName,
-                                savedAddressProvider.defaultSavedAddress.latitude,
-                                savedAddressProvider.defaultSavedAddress.longitude,
-                                savedAddressProvider.defaultSavedAddress.fullUserName,
-                                savedAddressProvider.defaultSavedAddress.userPhone,
-                                time, widget.productsInCart);
+                            bool result = await orderServices.addOrder(
+                                userProvider.user.id,
+                                widget.voucher.getVoucherCode(),
+                                voucherDiscount,
+                                shippingValue,
+                                totalPayment,
+                                cartServices
+                                    .totalQuantityOfSelectedProductsInCart(widget
+                                        .productsInCart),
+                                widget.productsInCart.length,
+                                savedAddressProvider
+                                    .defaultSavedAddress.fullAddressName,
+                                savedAddressProvider
+                                    .defaultSavedAddress.latitude,
+                                savedAddressProvider
+                                    .defaultSavedAddress.longitude,
+                                savedAddressProvider
+                                    .defaultSavedAddress.fullUserName,
+                                savedAddressProvider
+                                    .defaultSavedAddress.userPhone,
+                                time,
+                                widget.productsInCart);
 
-                            if(result == true) {
+                            if (result == true) {
                               cartProvider.resetCart();
                               double bonus = totalValue / 100000;
                               int intBonus = bonus.round();
-                              await userServices.updatePoint(userProvider.user.id, userProvider.user.point,
-                                  intBonus, "asc");
+                              await userServices.updatePoint(
+                                  userProvider.user.id,
+                                  userProvider.user.point,
+                                  intBonus,
+                                  "asc");
 
-                              EasyLoading.showSuccess('Added this book successfully');
-                              Future.delayed(const Duration(milliseconds: 1000), () {
+                              EasyLoading.showSuccess(
+                                  'Added this book successfully');
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
                                 EasyLoading.dismiss();
                               });
 
@@ -589,64 +466,90 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                                 MaterialPageRoute(
                                     builder: (context) => CompleteOrder()),
                               );
-                            }
-                            else {
+                            } else {
                               EasyLoading.showError(
                                   'Some errors happened when adding this order.');
-                              Future.delayed(
-                                  const Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
                                 EasyLoading.dismiss();
                               });
                             }
-
-                          }
-                          else {
+                          } else {
                             EasyLoading.showError(
                                 'Some errors happened when updating available of products.');
-                            Future.delayed(
-                                const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               EasyLoading.dismiss();
                             });
                           }
-                        }
-                        else {
-                          MVoucher isValidVoucher = await voucherServices.isValidVoucher(widget.voucher.voucherCode,
-                              total, userProvider.user.point);
+                        } else {
+                          MVoucher isValidVoucher =
+                              await voucherServices.isValidVoucher(
+                                  widget.voucher.voucherCode,
+                                  total,
+                                  userProvider.user.point);
 
-                          if(isValidVoucher.getID() != "") {
+                          if (isValidVoucher.getID() != "") {
                             //Update the current number of products
-                            bool checkUpdateAvailableOfProducts = await productServices.checkUpdateAvailableByProductID(widget.productsInCart);
+                            bool checkUpdateAvailableOfProducts =
+                                await productServices
+                                    .checkUpdateAvailableByProductID(
+                                        widget.productsInCart);
 
                             //Update the available number of voucher
-                            bool checkUpdateAvailableOfVoucher = await voucherServices.updateAvailableByVoucherID(isValidVoucher.getID());
+                            bool checkUpdateAvailableOfVoucher =
+                                await voucherServices
+                                    .updateAvailableByVoucherID(
+                                        isValidVoucher.getID());
 
-                            if (checkUpdateAvailableOfVoucher == true && checkUpdateAvailableOfProducts == true) {
+                            if (checkUpdateAvailableOfVoucher == true &&
+                                checkUpdateAvailableOfProducts == true) {
                               //Add New Order
                               int time = DateTime.now().millisecondsSinceEpoch;
-                              bool result = await orderServices.addOrder(userProvider.user.id,
-                                  widget.voucher.getVoucherCode(), voucherDiscount, shippingValue,
-                                  totalPayment, cartServices.totalQuantityOfSelectedProductsInCart(widget.productsInCart),
-                                  widget.productsInCart.length, savedAddressProvider.defaultSavedAddress.fullAddressName,
-                                  savedAddressProvider.defaultSavedAddress.latitude,
-                                  savedAddressProvider.defaultSavedAddress.longitude,
-                                  savedAddressProvider.defaultSavedAddress.fullUserName,
-                                  savedAddressProvider.defaultSavedAddress.userPhone,
-                                  time, widget.productsInCart);
+                              bool result = await orderServices.addOrder(
+                                  userProvider.user.id,
+                                  widget.voucher.getVoucherCode(),
+                                  voucherDiscount,
+                                  shippingValue,
+                                  totalPayment,
+                                  cartServices.totalQuantityOfSelectedProductsInCart(
+                                      widget.productsInCart),
+                                  widget.productsInCart.length,
+                                  savedAddressProvider
+                                      .defaultSavedAddress.fullAddressName,
+                                  savedAddressProvider
+                                      .defaultSavedAddress.latitude,
+                                  savedAddressProvider
+                                      .defaultSavedAddress.longitude,
+                                  savedAddressProvider
+                                      .defaultSavedAddress.fullUserName,
+                                  savedAddressProvider
+                                      .defaultSavedAddress.userPhone,
+                                  time,
+                                  widget.productsInCart);
 
-                              if(result == true) {
+                              if (result == true) {
                                 cartProvider.resetCart();
                                 double bonus = totalValue / 100000;
                                 int intBonus = bonus.round();
-                                await userServices.updatePoint(userProvider.user.id, userProvider.user.point,
-                                    intBonus, "asc");
+                                await userServices.updatePoint(
+                                    userProvider.user.id,
+                                    userProvider.user.point,
+                                    intBonus,
+                                    "asc");
 
-                                if(widget.voucher.getVoucherType() == 5) {
-                                  await userServices.updatePoint(userProvider.user.id, userProvider.user.point,
-                                      0, "desc");
+                                if (widget.voucher.getVoucherType() == 5) {
+                                  await userServices.updatePoint(
+                                      userProvider.user.id,
+                                      userProvider.user.point,
+                                      0,
+                                      "desc");
                                 }
 
-                                EasyLoading.showSuccess('Added this book successfully');
-                                Future.delayed(const Duration(milliseconds: 1000), () {
+                                EasyLoading.showSuccess(
+                                    'Added this book successfully');
+                                Future.delayed(
+                                    const Duration(milliseconds: 1000), () {
                                   EasyLoading.dismiss();
                                 });
 
@@ -655,8 +558,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                                   MaterialPageRoute(
                                       builder: (context) => CompleteOrder()),
                                 );
-                              }
-                              else {
+                              } else {
                                 EasyLoading.showError(
                                     'Some errors happened when adding this order.');
                                 Future.delayed(
@@ -664,23 +566,16 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                                   EasyLoading.dismiss();
                                 });
                               }
-
-                            }
-                            else {
+                            } else {
                               EasyLoading.showError(
                                   'Some errors happened when updating available of products or voucher.');
-                              Future.delayed(
-                                  const Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
                                 EasyLoading.dismiss();
                               });
                             }
-
                           }
-
-
-                       }
-
-
+                        }
                       },
                       child: Text(
                         'Place Order',
@@ -698,7 +593,8 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   }
 
   // Method for calculating the distance between two places
-  Future<bool> _calculateDistance(MSavedAddress store_SavedAdress, MSavedAddress default_SavedAddress) async {
+  Future<bool> _calculateDistance(MSavedAddress store_SavedAdress,
+      MSavedAddress default_SavedAddress) async {
     try {
       setState(() {
         polylineCoordinates = [];
@@ -711,6 +607,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
       double destinationLatitude = default_SavedAddress.latitude;
       double destinationLongitude = default_SavedAddress.longitude;
+      print(default_SavedAddress.fullAddressName);
 
       String startCoordinatesString = '($startLatitude, $startLongitude)';
       String destinationCoordinatesString =
@@ -756,7 +653,9 @@ class _PaymentDetailsState extends State<PaymentDetails> {
         _placeDistance = totalDistance.toStringAsFixed(2);
         print('DISTANCE: $_placeDistance km');
         shippingValue = cartServices.calculateShippingValue(totalDistance);
-        voucherDiscount = 0 - voucherServices.calculateVoucherDiscount(widget.voucher, shippingValue, totalValue);
+        voucherDiscount = 0 -
+            voucherServices.calculateVoucherDiscount(
+                widget.voucher, shippingValue, totalValue);
       });
 
       return true;

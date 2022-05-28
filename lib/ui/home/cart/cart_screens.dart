@@ -29,7 +29,6 @@ class _CartScreen extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -45,25 +44,25 @@ class _CartScreen extends State<CartScreen> {
         leading: BackButton(color: kPrimaryColor),
         title: Text(
           selectedList.length < 1
-          ? "Cart"
-          : "${selectedList.length} item selected",
+              ? "Cart"
+              : "${selectedList.length} item selected",
           style: TextStyle(
             fontFamily: "Laila",
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: kPrimaryColor,
           ),
-          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
-              if(selectedList.length > 0) {
-                cartProvider.removeProductsInCart(cartProvider.cart, selectedList);
+              if (selectedList.length > 0) {
+                cartProvider.removeProductsInCart(
+                    cartProvider.cart, selectedList);
                 setState(() {
                   selectedList = [];
                 });
-              }
-              else {
+              } else {
                 showDialogForRemove(context);
               }
             },
@@ -77,28 +76,45 @@ class _CartScreen extends State<CartScreen> {
       body: Column(
         children: [
           Expanded(
-            child: GridView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: cartProvider.cart.products.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  childAspectRatio: 4,
-                  mainAxisSpacing: 8,
-                ),
-                itemBuilder: (context, index) {
-                  return GridItem(
-                      productInCart: cartProvider.cart.products[index],
-                      isSelected: (bool value) {
-                        setState(() {
-                          if (value) {
-                            selectedList.add(cartProvider.cart.products[index]);
-                          } else {
-                            selectedList.remove(cartProvider.cart.products[index]);
-                          }
-                        });
-                      },
-                      key: Key(cartProvider.cart.products[index].getID().toString()));
-                }),
+            child: cartProvider.cart.products.isNotEmpty
+                ? GridView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: cartProvider.cart.products.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      childAspectRatio: 4,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemBuilder: (context, index) {
+                      return GridItem(
+                          productInCart: cartProvider.cart.products[index],
+                          isSelected: (bool value) {
+                            setState(() {
+                              if (value) {
+                                selectedList
+                                    .add(cartProvider.cart.products[index]);
+                              } else {
+                                selectedList
+                                    .remove(cartProvider.cart.products[index]);
+                              }
+                            });
+                          },
+                          key: Key(cartProvider.cart.products[index]
+                              .getID()
+                              .toString()));
+                    })
+                : Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 200,
+                          width: 200,
+                          child: SvgPicture.asset('assets/icons/not_order.svg'),
+                        ),
+                        Text('No Product In Cart!'),
+                      ],
+                    ),
+                  ),
           ),
         ],
       ),
@@ -168,7 +184,12 @@ class _CartScreen extends State<CartScreen> {
                       text: "Total:\n",
                       children: [
                         TextSpan(
-                          text: "\n" + cartServices.totalValueOfSelectedProductsInCart(selectedList).toStringAsFixed(0).toVND(),
+                          text: "\n" +
+                              cartServices
+                                  .totalValueOfSelectedProductsInCart(
+                                      selectedList)
+                                  .toStringAsFixed(0)
+                                  .toVND(),
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ],
@@ -183,12 +204,18 @@ class _CartScreen extends State<CartScreen> {
                       child: RaisedButton(
                         color: kPrimaryColor,
                         onPressed: () async {
-                          if(selectedList.length > 0) {
+                          if (selectedList.length > 0) {
                             MVoucher defaultVoucher = MVoucher();
-                            if(voucherCode != "") {
-                              double totalValue = cartServices.totalValueOfSelectedProductsInCart(selectedList);
-                              MVoucher voucher = await voucherServices.isValidVoucher(voucherCode, totalValue, userProvider.user.point);
-                              if(voucher.getID() != "") {
+                            if (voucherCode != "") {
+                              double totalValue = cartServices
+                                  .totalValueOfSelectedProductsInCart(
+                                      selectedList);
+                              MVoucher voucher =
+                                  await voucherServices.isValidVoucher(
+                                      voucherCode,
+                                      totalValue,
+                                      userProvider.user.point);
+                              if (voucher.getID() != "") {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => PaymentDetails(
@@ -198,20 +225,16 @@ class _CartScreen extends State<CartScreen> {
                                   ),
                                 );
                               }
-
-                            }
-
-                            else  Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => PaymentDetails(
-                                  productsInCart: selectedList,
-                                  voucher: defaultVoucher,
+                            } else
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => PaymentDetails(
+                                    productsInCart: selectedList,
+                                    voucher: defaultVoucher,
+                                  ),
                                 ),
-                              ),
-                            );
-
+                              );
                           }
-
                         },
                         child: Text(
                           'Check Out',
@@ -252,12 +275,11 @@ class _CartScreen extends State<CartScreen> {
               ],
             ),
           );
-        }
-    );
+        });
   }
 
-    void showDialogForRemove(BuildContext) {
-      showDialog(
+  void showDialogForRemove(BuildContext) {
+    showDialog(
         context: context,
         builder: (context) {
           Future.delayed(const Duration(milliseconds: 1500), () {
@@ -278,10 +300,6 @@ class _CartScreen extends State<CartScreen> {
               ],
             ),
           );
-        }
-      );
-    }
+        });
   }
-
-
-
+}
