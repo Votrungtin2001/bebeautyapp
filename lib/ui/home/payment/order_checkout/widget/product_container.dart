@@ -1,18 +1,70 @@
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/model/MProductInCart.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
-import 'package:intl/intl.dart';
 
-import 'ProductEx.dart';
+import '../../../../../model/MOrder.dart';
+import '../../../../../model/MProduct.dart';
+import '../../../../../repo/providers/product_provider.dart';
+import '../../../../../repo/services/cart_services.dart';
+import '../../../../../repo/services/order_services.dart';
 
-class ProductContainer extends StatelessWidget {
-  const ProductContainer({
-    Key? key,
-    required this.productEx,
-  }) : super(key: key);
+class ProductContainer extends StatefulWidget {
+  ProductContainer({Key? key, required this.order, required this.products})
+      : super(key: key);
 
-  final ProductEx productEx;
+  final MOrder order;
+  final List<MProduct> products;
+
+  @override
+  _ProductContainerState createState() => _ProductContainerState();
+}
+
+class _ProductContainerState extends State<ProductContainer> {
+  bool isUpdate = true;
+  MOrder order =
+      new MOrder("", "", "", 0.0, 0.0, 0.0, 0, 0, "", 0.0, 0.0, "", "", 0, 0);
+
+  final cartServices = new CartServices();
+
+  OrderServices orderServices = OrderServices();
+
+  List<MProductInCart> productsInCart = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getProductsInOrder();
+  }
+
+  getProductsInOrder() async {
+    if (widget.products.length > 0) {
+      List<MProductInCart> temp = await orderServices.getProductsInOrder(
+          widget.order.id, widget.products);
+      setState(() {
+        productsInCart = temp;
+        order.updateOrder(
+            widget.order.id,
+            widget.order.userID,
+            widget.order.voucherCode,
+            widget.order.discountValue,
+            widget.order.shippingValue,
+            widget.order.totalPayment,
+            widget.order.totalQuantity,
+            widget.order.numOfProducts,
+            widget.order.address,
+            widget.order.latitude,
+            widget.order.longitude,
+            widget.order.userName,
+            widget.order.phone,
+            widget.order.time,
+            widget.order.status);
+        order.setProductsInOrder(productsInCart);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,12 +75,12 @@ class ProductContainer extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => TrackOrder(
-                      productEx: productEx,
+                      order: order,
                     )),
           );
         },
         child: Container(
-          height: 368,
+          height: 380,
           color: Colors.transparent,
           child: Container(
             padding: const EdgeInsets.only(left: 16, top: 8.0, right: 16),
@@ -52,7 +104,7 @@ class ProductContainer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '#' + productEx.id.toString(),
+                      '#' + order.getID().toString(),
                       style: const TextStyle(
                         fontFamily: 'Popppins',
                         fontSize: 18,
@@ -60,7 +112,9 @@ class ProductContainer extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      productEx.numOfItems.toString() + ' item',
+                      order.getNumOfProducts() > 1
+                          ? order.getNumOfProducts().toString() + ' items'
+                          : order.getNumOfProducts().toString() + ' item',
                       style: const TextStyle(
                         fontFamily: 'Popppins',
                         fontSize: 18,
@@ -74,7 +128,7 @@ class ProductContainer extends StatelessWidget {
                   thickness: 1,
                 ),
                 Text(
-                  productEx.name,
+                  order.getUserName(),
                   style: const TextStyle(
                     fontFamily: 'Popppins',
                     fontSize: 20,
@@ -83,7 +137,7 @@ class ProductContainer extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  productEx.phoneNumber,
+                  order.getPhone(),
                   style: const TextStyle(
                     fontFamily: 'Popppins',
                     fontSize: 16,
@@ -91,7 +145,7 @@ class ProductContainer extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  productEx.address,
+                  order.getAddress(),
                   style: const TextStyle(
                     fontSize: 16,
                     color: kTextLightColor,
@@ -104,11 +158,11 @@ class ProductContainer extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      height: 80,
-                      width: 80,
-                      child:
-                          Image.asset(productEx.productTemp.first.imgProduct),
-                    ),
+                        height: 80,
+                        width: 80,
+                        child: order.productsInCart.length > 0
+                            ? Image.network(order.productsInCart[0].getImage())
+                            : Image.asset('assets/images/loading.png')),
                     const SizedBox(
                       width: 16,
                     ),
@@ -118,7 +172,9 @@ class ProductContainer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            productEx.productTemp.first.nameProduct,
+                            order.productsInCart.length > 0
+                                ? order.productsInCart[0].getName()
+                                : "No information",
                             textAlign: TextAlign.right,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -133,9 +189,12 @@ class ProductContainer extends StatelessWidget {
                             height: 16,
                           ),
                           Text(
-                            'x' +
-                                productEx.productTemp.first.numProduct
-                                    .toString(),
+                            order.productsInCart.length > 0
+                                ? 'x' +
+                                    order.productsInCart[0]
+                                        .getQuantity()
+                                        .toString()
+                                : "No information",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1
@@ -148,7 +207,7 @@ class ProductContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-                productEx.numOfItems > 1
+                order.getNumOfProducts() > 1
                     ? Column(
                         children: [
                           Divider(
@@ -190,6 +249,15 @@ class ProductContainer extends StatelessWidget {
                               color: kTextColor,
                               fontWeight: FontWeight.w500),
                         ),
+                        Text(
+                          'Discount:',
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                              fontFamily: 'Popppins',
+                              fontSize: 18,
+                              color: kTextColor,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ],
                     ),
                     Spacer(),
@@ -197,7 +265,11 @@ class ProductContainer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          productEx.price.toStringAsFixed(0).toVND(unit: 'đ'),
+                          cartServices
+                              .totalValueOfSelectedProductsInCart(
+                                  order.productsInCart)
+                              .toStringAsFixed(0)
+                              .toVND(unit: 'đ'),
                           style: const TextStyle(
                               fontFamily: 'Popppins',
                               fontSize: 18,
@@ -205,7 +277,19 @@ class ProductContainer extends StatelessWidget {
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          productEx.delivery
+                          order
+                              .getShippingValue()
+                              .toStringAsFixed(0)
+                              .toVND(unit: 'đ'),
+                          style: const TextStyle(
+                              fontFamily: 'Popppins',
+                              fontSize: 18,
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          order
+                              .getDiscountValue()
                               .toStringAsFixed(0)
                               .toVND(unit: 'đ'),
                           style: const TextStyle(
@@ -235,7 +319,10 @@ class ProductContainer extends StatelessWidget {
                     ),
                     Spacer(),
                     Text(
-                      productEx.total.toStringAsFixed(0).toVND(unit: 'đ'),
+                      order
+                          .getTotalPayment()
+                          .toStringAsFixed(0)
+                          .toVND(unit: 'đ'),
                       style: const TextStyle(
                           fontFamily: 'Popppins',
                           fontSize: 18,

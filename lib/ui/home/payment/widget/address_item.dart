@@ -1,12 +1,13 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/home/cart/Cart.dart';
 import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 import 'package:flutter/material.dart';
 
-class AddressItem extends StatefulWidget {
-  final Address address;
+import '../../../../model/MSavedAddress.dart';
 
-  const AddressItem({Key? key, required this.address}) : super(key: key);
+class AddressItem extends StatefulWidget {
+  final MSavedAddress savedAddress;
+
+  const AddressItem({Key? key, required this.savedAddress}) : super(key: key);
 
   @override
   _AddressItemState createState() => _AddressItemState();
@@ -15,26 +16,40 @@ class AddressItem extends StatefulWidget {
 class _AddressItemState extends State<AddressItem> {
   @override
   Widget build(BuildContext context) {
-    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-      Column(
+    return Container(
+      padding: const EdgeInsets.all(12),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        border: Border.all(color: kFourthColor),
+      ),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.address.name,
-            style: TextStyle(color: Colors.black, fontSize: 16),
+            widget.savedAddress.fullUserName,
+            style: TextStyle(color: Colors.black, fontSize: 22),
+          ),
+          SizedBox(
+            height: 8,
           ),
           Text(
-            widget.address.phoneNumber,
+            widget.savedAddress.userPhone,
             style:
                 TextStyle(fontWeight: FontWeight.w600, color: kTextLightColor),
           ),
+          SizedBox(
+            height: 8,
+          ),
           Text(
-            widget.address.address,
+            widget.savedAddress.fullAddressName,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style:
                 TextStyle(fontWeight: FontWeight.w600, color: kTextLightColor),
           ),
         ],
       ),
-    ]);
+    );
   }
 }

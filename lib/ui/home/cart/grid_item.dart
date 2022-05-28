@@ -1,12 +1,14 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/home/cart/Cart.dart';
+import 'package:bebeautyapp/model/MProductInCart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 
 class GridItem extends StatefulWidget {
-  final Cart item;
+  final MProductInCart productInCart;
   final ValueChanged<bool> isSelected;
 
-  const GridItem({Key? key, required this.item, required this.isSelected})
+  const GridItem(
+      {Key? key, required this.productInCart, required this.isSelected})
       : super(key: key);
 
   @override
@@ -48,36 +50,37 @@ class _GridItemState extends State<GridItem> {
           ),
           Container(
             width: 120,
-            child: Image.asset(
-              widget.item.product.images[0],
+            child: Image.network(
+              widget.productInCart.getImage(),
               fit: BoxFit.fill,
               colorBlendMode: BlendMode.color,
             ),
           ),
           Container(
             width: MediaQuery.of(context).size.width - 162,
+            padding: const EdgeInsets.only(top: 8, left: 8),
             //color: kPrimaryColor.withOpacity(isSelected ? 0.05 : 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    widget.item.product.title,
-                    style: TextStyle(color: Colors.black, fontSize: 16),
-                    maxLines: 2,
-                  ),
+                Text(
+                  widget.productInCart.getName(),
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                  maxLines: 2,
                 ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
                     Text(
-                      "\$${widget.item.product.price}",
+                      widget.productInCart
+                          .getPrice()
+                          .toStringAsFixed(0)
+                          .toVND(unit: 'đ'),
                       style: TextStyle(
                           fontWeight: FontWeight.w600, color: kPrimaryColor),
                     ),
                     Spacer(),
-                    Text(" x${widget.item.numOfItem}",
+                    Text(" x${widget.productInCart.getQuantity()}",
                         style: Theme.of(context).textTheme.bodyText1),
                   ],
                 ),

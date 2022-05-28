@@ -108,6 +108,21 @@ class UserServices {
 
   }
 
+  Future<bool> updatePoint(String userID, int point, int bonus, String sign) async {
+    try {
+      if(sign == 'desc') {
+        await userRef.doc(userID).update({'point': point - 100});
+      }
+      else if(sign == 'asc') {
+        await userRef.doc(userID).update({'point': point + bonus});
+      }
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   List<MUser> checkAndReturnUsers(List<MUser> users, MUser user, List<MProduct> products) {
     List<MUser> results = [];
     if(products.length > 0) {

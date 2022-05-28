@@ -10,20 +10,54 @@ import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/services/user_services.dart';
 import 'package:bebeautyapp/variables.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+
+import '../../model/MProductInCart.dart';
 
 class ProductServices {
   final CollectionReference refProduct= FirebaseFirestore.instance.collection('Product');
   UserServices userServices = UserServices();
 
   Future<List<MProduct>> getProducts() async =>
-      refProduct.orderBy('id', descending: false).get().then((result) {
+      await refProduct.orderBy('id', descending: false).get().then((result) {
         List<MProduct> products = [];
         for (DocumentSnapshot Product in result.docs) {
           products.add(MProduct.fromSnapshot(Product));
         }
         return products;
       });
+
+  Future<int> getAvailableByProductID(int productID) async =>
+      await refProduct.doc(productID.toString()).get().then((result) {
+        if(result.exists == true) return result.get('available');
+        return -1;
+      });
+
+  Future<bool> updateAvailableByProductID(int productID, int quantity) async {
+    int available = await getAvailableByProductID(productID);
+    if(available == -1) return false;
+    else if(available - quantity < 0) {
+      Fluttertoast.showToast(msg: 'Some products were out of stock.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+      return false;
+    }
+    else {
+      int now_available = available - quantity;
+      await refProduct.doc(productID.toString()).update({'available': now_available});
+      return true;
+    }
+  }
+
+  Future<bool> checkUpdateAvailableByProductID(List<MProductInCart> products) async {
+    int iCount = 0;
+    for(int i = 0; i < products.length; i++) {
+      bool result = await updateAvailableByProductID(products[i].getID(), products[i].getQuantity());
+      if(result == true) iCount++;
+    }
+    if(iCount == products.length) return true;
+    else return false;
+  }
+
 
   List<MProduct> getTop10NewProducts(List<MProduct> products) {
     List<MProduct> top10 = [];
@@ -115,12 +149,31 @@ class ProductServices {
         genderID: 0, structureID: 0, soldOut: 0, totalStarRating: 0, totalRating: 0,
         marketPrice: 0, importPrice: 0, defaultDiscountRate: 0, price: 0,
         chemicalComposition: "", guideLine: "", images: [], userFavorite: [],
-        available: 0, searchCount: 0, popularSearchTitle: "");
+        available: 0, searchCount: 0, popularSearchTitle: "", description: "");
 
     for(int i = 0; i < products.length; i++) {
       if(products[i].getID() == productID) return products[i];
     }
     return product;
+  }
+
+  //Get Product
+  Future<MProduct> getProductForRealTime(MProduct product) async {
+    List<MProduct> products = [];
+    await refProduct.where('id', isEqualTo: product.getID()).get().then((result) {
+      for (DocumentSnapshot Product in result.docs) {
+        MProduct temp = MProduct.fromSnapshot(Product);
+        products.add(temp);
+      }
+    });
+
+    if(product.available != products[0].available) {
+      print('here');
+      print(products[0].available);
+      return products[0];
+    }
+    else return product;
+
   }
 
   Future<List<MProduct>> getSimilarityProductsByCBR(List<MProduct> products, MUser User) async {

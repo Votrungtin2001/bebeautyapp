@@ -5,9 +5,11 @@ import 'package:bebeautyapp/ui/profile/widgets/address_card.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../constants.dart';
+import '../../../repo/providers/user_provider.dart';
 
 class AddressScreens extends StatefulWidget {
   @override
@@ -15,8 +17,10 @@ class AddressScreens extends StatefulWidget {
 }
 
 class _AddressScreens extends State<AddressScreens> {
+
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -68,7 +72,7 @@ class _AddressScreens extends State<AddressScreens> {
               onPressed: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddAddressScreen()),
+                  MaterialPageRoute(builder: (context) => AddAddressScreen(userID: userProvider.user.id)),
                 ),
               },
               padding: const EdgeInsets.all(8.0),

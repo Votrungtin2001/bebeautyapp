@@ -1,13 +1,19 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
-import 'package:bebeautyapp/ui/home/cart/Cart.dart';
-import 'package:bebeautyapp/ui/home/cart/cart_card.dart';
+import 'package:bebeautyapp/model/MProductInCart.dart';
+import 'package:bebeautyapp/model/MVoucher.dart';
+import 'package:bebeautyapp/repo/providers/cart_provider.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/repo/services/cart_services.dart';
 import 'package:bebeautyapp/ui/home/cart/grid_item.dart';
 
 import 'package:bebeautyapp/ui/home/payment/payment_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:provider/provider.dart';
+
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
+
+import '../../../repo/services/voucher_services.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -15,37 +21,100 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreen extends State<CartScreen> {
-  List<Cart> selectedList = [];
+  List<MProductInCart> selectedList = [];
+  final cartServices = new CartServices();
+  final voucherServices = new VoucherServices();
+  String voucherCode = "";
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        leading: BackButton(color: kPrimaryColor),
+        title: Text(
+          selectedList.length < 1
+              ? "Cart"
+              : "${selectedList.length} item selected",
+          style: TextStyle(
+            fontFamily: "Laila",
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: kPrimaryColor,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              if (selectedList.length > 0) {
+                cartProvider.removeProductsInCart(
+                    cartProvider.cart, selectedList);
+                setState(() {
+                  selectedList = [];
+                });
+              } else {
+                showDialogForRemove(context);
+              }
+            },
+            icon: const Icon(
+              Icons.delete_outlined,
+              color: kPrimaryColor,
+            ),
+          )
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
-            child: GridView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: demoCarts.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  childAspectRatio: 4,
-                  mainAxisSpacing: 8,
-                ),
-                itemBuilder: (context, index) {
-                  return GridItem(
-                      item: demoCarts[index],
-                      isSelected: (bool value) {
-                        setState(() {
-                          if (value) {
-                            selectedList.add(demoCarts[index]);
-                          } else {
-                            selectedList.remove(demoCarts[index]);
-                          }
-                        });
-                      },
-                      key: Key(demoCarts[index].toString()));
-                }),
+            child: cartProvider.cart.products.isNotEmpty
+                ? GridView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: cartProvider.cart.products.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      childAspectRatio: 4,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemBuilder: (context, index) {
+                      return GridItem(
+                          productInCart: cartProvider.cart.products[index],
+                          isSelected: (bool value) {
+                            setState(() {
+                              if (value) {
+                                selectedList
+                                    .add(cartProvider.cart.products[index]);
+                              } else {
+                                selectedList
+                                    .remove(cartProvider.cart.products[index]);
+                              }
+                            });
+                          },
+                          key: Key(cartProvider.cart.products[index]
+                              .getID()
+                              .toString()));
+                    })
+                : Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 200,
+                          width: 200,
+                          child: SvgPicture.asset('assets/icons/not_order.svg'),
+                        ),
+                        Text('No Product In Cart!'),
+                      ],
+                    ),
+                  ),
           ),
         ],
       ),
@@ -89,7 +158,7 @@ class _CartScreen extends State<CartScreen> {
                   Spacer(),
                   Container(
                     width: 200,
-                    child: const TextField(
+                    child: TextField(
                       style: TextStyle(color: kTextLightColor, fontSize: 14),
                       decoration: InputDecoration(
                         labelText: 'Add voucher code',
@@ -97,6 +166,11 @@ class _CartScreen extends State<CartScreen> {
                           borderSide: BorderSide(),
                         ),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          voucherCode = value;
+                        });
+                      },
                     ),
                   ),
                 ],
@@ -110,7 +184,12 @@ class _CartScreen extends State<CartScreen> {
                       text: "Total:\n",
                       children: [
                         TextSpan(
-                          text: "\$337.15",
+                          text: "\n" +
+                              cartServices
+                                  .totalValueOfSelectedProductsInCart(
+                                      selectedList)
+                                  .toStringAsFixed(0)
+                                  .toVND(),
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ],
@@ -124,37 +203,39 @@ class _CartScreen extends State<CartScreen> {
                       ),
                       child: RaisedButton(
                         color: kPrimaryColor,
-                        onPressed: () => selectedList.isNotEmpty
-                            ? Navigator.of(context).push(
+                        onPressed: () async {
+                          if (selectedList.length > 0) {
+                            MVoucher defaultVoucher = MVoucher();
+                            if (voucherCode != "") {
+                              double totalValue = cartServices
+                                  .totalValueOfSelectedProductsInCart(
+                                      selectedList);
+                              MVoucher voucher =
+                                  await voucherServices.isValidVoucher(
+                                      voucherCode,
+                                      totalValue,
+                                      userProvider.user.point);
+                              if (voucher.getID() != "") {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => PaymentDetails(
+                                      productsInCart: selectedList,
+                                      voucher: voucher,
+                                    ),
+                                  ),
+                                );
+                              }
+                            } else
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => PaymentDetails(
-                                    productCardEx: selectedList,
+                                    productsInCart: selectedList,
+                                    voucher: defaultVoucher,
                                   ),
                                 ),
-                              )
-                            : showDialog(
-                                context: context,
-                                builder: (context) {
-                                  Future.delayed(
-                                      const Duration(milliseconds: 1500), () {
-                                    Navigator.of(context).pop(true);
-                                  });
-                                  return AlertDialog(
-                                    title: Column(
-                                      children: const [
-                                        Icon(
-                                          Icons.announcement_outlined,
-                                          size: 40,
-                                          color: kPrimaryColor,
-                                        ),
-                                        Text(
-                                          'You have not select any item to checkout!',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
+                              );
+                          }
+                        },
                         child: Text(
                           'Check Out',
                           style: TextStyle(
@@ -172,57 +253,53 @@ class _CartScreen extends State<CartScreen> {
     );
   }
 
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      centerTitle: true,
-      leading: BackButton(color: kPrimaryColor),
-      title: Text(
-        selectedList.length < 1
-            ? "Cart"
-            : "${selectedList.length} item selected",
-        style: TextStyle(
-          fontFamily: "Laila",
-          fontSize: 18,
-          fontWeight: FontWeight.w700,
-          color: kPrimaryColor,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () => selectedList.isNotEmpty
-              ? deleteItem
-              : showDialog(
-                  context: context,
-                  builder: (context) {
-                    Future.delayed(const Duration(milliseconds: 1500), () {
-                      Navigator.of(context).pop(true);
-                    });
-                    return AlertDialog(
-                      title: Column(
-                        children: const [
-                          Icon(
-                            Icons.announcement_outlined,
-                            size: 40,
-                            color: kPrimaryColor,
-                          ),
-                          Text(
-                            'You have not select any item to delete!',
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-          icon: const Icon(
-            Icons.delete_outlined,
-            color: kPrimaryColor,
-          ),
-        )
-      ],
-    );
+  void showDialogForCheckOut(BuildContext) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(milliseconds: 1500), () {
+            Navigator.of(context).pop(true);
+          });
+          return AlertDialog(
+            title: Column(
+              children: const [
+                Icon(
+                  Icons.announcement_outlined,
+                  size: 40,
+                  color: kPrimaryColor,
+                ),
+                Text(
+                  'You have not select any item to delete!',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void showDialogForRemove(BuildContext) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(milliseconds: 1500), () {
+            Navigator.of(context).pop(true);
+          });
+          return AlertDialog(
+            title: Column(
+              children: const [
+                Icon(
+                  Icons.announcement_outlined,
+                  size: 40,
+                  color: kPrimaryColor,
+                ),
+                Text(
+                  'You have not select any item to delete!',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
-
-void deleteItem() {}

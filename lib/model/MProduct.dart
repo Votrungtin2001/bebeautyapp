@@ -26,6 +26,7 @@ class MProduct {
   late int available;
   late int searchCount;
   late String popularSearchTitle;
+  late String description;
 
   MProduct(
       {required this.id,
@@ -51,7 +52,8 @@ class MProduct {
         required this.userFavorite,
         required this.available,
         required this.searchCount,
-        required this.popularSearchTitle});
+        required this.popularSearchTitle,
+        required this.description});
 
   static MProductcopyFrom(MProduct product) {
     return MProduct(
@@ -78,7 +80,8 @@ class MProduct {
         userFavorite: product.userFavorite,
         available: product.available,
         searchCount: product.searchCount,
-        popularSearchTitle: product.popularSearchTitle
+        popularSearchTitle: product.popularSearchTitle,
+        description: product.description,
     );
   }
 
@@ -157,6 +160,9 @@ class MProduct {
   String getPopularSearchTitle() {return this.popularSearchTitle;}
   void setPopularSearchTitle(String PopularSearchTitle) {this.popularSearchTitle = PopularSearchTitle;}
 
+  String getDescription() {return this.description;}
+  void setDescription(String Description) {this.description = Description;}
+
   MProduct.fromSnapshot(DocumentSnapshot snapshot) {
     id = snapshot.get('id');
     name = snapshot.get('name');
@@ -186,6 +192,7 @@ class MProduct {
     available = snapshot.get('available');
     searchCount = snapshot.get('searchCount');
     popularSearchTitle = snapshot.get('popularSearchTitle');
+    description = snapshot.get('description');
   }
 
   Map<String, dynamic> toJson()

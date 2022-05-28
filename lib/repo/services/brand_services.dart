@@ -22,6 +22,54 @@ class BrandServices {
 
   }
 
+  //Get New Brand ID
+  int getNewBrandID(List<MBrand> brands) {
+    return brands[brands.length - 1].getID() + 1;
+  }
+
+  //Add brand
+  Future<bool> addBrand(MBrand brand) async {
+    try {
+      await refBrand
+          .doc(brand.getID().toString())
+          .set({'id': brand.getID(), 'image': brand.getImage(), 'name': brand.getName()
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  //Update Brand Image
+  Future<bool> updateBrandImage(MBrand brand) async {
+    try {
+      await refBrand
+          .doc(brand.getID().toString())
+          .update({'image': brand.getImage()});
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  //Update Brand Name
+  Future<bool> updateBrandName(MBrand brand) async {
+    try {
+      await refBrand
+          .doc(brand.getID().toString())
+          .update({'name': brand.getName()});
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   void getTotalQuantity(List<MBrand> brands, List<MProduct> products) {
     for(int i = 0; i < products.length; i++) {
       int brandID = products[i].getBrandID();
@@ -71,5 +119,12 @@ class BrandServices {
       if(temp.length == 5) break;
     }
     return top5;
+  }
+
+  String getBrandName(List<MBrand> brands, int brandID) {
+    for(int i = 0; i < brands.length; i++) {
+      if(brands[i].getID() == brandID) return brands[i].getName();
+    }
+    return "";
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/chat_user/chat.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/complete_order.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/error_order.dart';
@@ -7,6 +8,9 @@ import 'package:bebeautyapp/ui/chat/chat_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/home.dart';
 import 'package:bebeautyapp/ui/profile/profile_screen.dart';
 import 'package:bebeautyapp/constants.dart';
+import 'package:provider/provider.dart';
+
+import 'model/user/MUser.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,8 +19,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _page = 0;
+  String userID = "";
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<MUser_IsNotLogout?>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+    if (user!.uid != null) userID = user.uid.toString();
+    if(userID == "") userProvider.getUser(userID);
+
     List<Widget> _body = [
       HomeScreens(),
       ChatScreens(),
@@ -49,6 +60,7 @@ class _HomePageState extends State<HomePage> {
             () {
               _page = index;
             },
+
           );
         },
         selectedItemColor: kPrimaryColor,

@@ -1,21 +1,25 @@
 import 'dart:ui';
 
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/ProductEx.dart';
-import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/track_order.dart';
+import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/MTrackOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:im_stepper/stepper.dart';
 
+import '../../../../../model/MOrder.dart';
+import '../../../../../repo/services/order_services.dart';
+
 class TrackOrder extends StatefulWidget {
-  const TrackOrder({Key? key, required this.productEx}) : super(key: key);
+  const TrackOrder({Key? key, required this.order}) : super(key: key);
 
   @override
   _TrackOrderState createState() => _TrackOrderState();
-  final ProductEx productEx;
+  final MOrder order;
 }
 
 class _TrackOrderState extends State<TrackOrder> {
+  final orderServices = new OrderServices();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +44,7 @@ class _TrackOrderState extends State<TrackOrder> {
           children: [
             Container(
               padding: const EdgeInsets.only(left: 16, top: 8.0, right: 16),
-              height: 50,
+              height: 74,
               width: 400,
               color: Colors.transparent,
               child: Container(
@@ -48,41 +52,43 @@ class _TrackOrderState extends State<TrackOrder> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        widget.productEx.time,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.order.getDate(),
                         style: TextStyle(
                           fontSize: 18.0,
                           color: kLightColor,
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: Text(
-                        "Order ID : ",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: kLightColor,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "Order ID : ",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: kLightColor,
+                            ),
+                          ),
+                          SelectableText(
+                            widget.order.getID(),
+                            toolbarOptions: ToolbarOptions(
+                                copy: true,
+                                selectAll: true,
+                                cut: false,
+                                paste: false),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: kCopy,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SelectableText(
-                      widget.productEx.id.toString(),
-                      toolbarOptions: ToolbarOptions(
-                          copy: true,
-                          selectAll: true,
-                          cut: false,
-                          paste: false),
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: kCopy,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

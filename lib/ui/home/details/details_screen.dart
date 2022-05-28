@@ -8,12 +8,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/home/details/widgets/body.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
+import '../../../repo/providers/cart_provider.dart';
+import '../../../repo/providers/product_provider.dart';
+import '../../../repo/providers/user_provider.dart';
+import '../../../repo/services/product_services.dart';
 
 class DetailsScreen extends StatelessWidget {
   final MProduct product;
   final List<MProduct> similarProductsFromSelectedProducts;
 
-  const DetailsScreen(
+  final productServices = new ProductServices();
+
+  DetailsScreen(
       {Key? key,
       required this.product,
       required this.similarProductsFromSelectedProducts})
@@ -22,9 +31,171 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScrollController _scrollController = ScrollController();
+
+    final userProvider = Provider.of<UserProvider>(context);
+
+
+    final cartProvider = Provider.of<CartProvider>(context);
+
+
+    bool isFavorite = productServices.checkFavorite(
+                                userProvider.user.getID(),
+                                product.getUserFavorite());
+
+
+    void addToCartDrawer(BuildContext context, MProduct product) {
+      ProductServices productServices = new ProductServices();
+      int quantity = 1;
+
+      showModalBottomSheet(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+          ),
+          isDismissible: false,
+          context: context,
+          builder: (context) {
+            return Container(
+                height: 240.0,
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 100,
+                            child: AspectRatio(
+                              aspectRatio: 0.88,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  //color: Color(0xFFF5F6F9),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Image.network(
+                                  product.images[0],
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  product.name,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  maxLines: 2,
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(product.price.toStringAsFixed(0).toVND()),
+                                    Spacer(),
+                                    Text('Inventory: ' +
+                                        product.available.toString()),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      thickness: 1,
+                    ),
+                    Row(
+                      children: [
+                        const Text("Number: "),
+                        const Spacer(),
+                        SizedBox(
+                          width: 100,
+                          child: CartCounter(
+                            increaseBottonWidget: const Icon(Icons.add,
+                                color: Colors.white,
+                                size:
+                                20), // if you want to add custom add botton then here you can pass your custom widget.
+                            decreaseBottonWidget: const Icon(Icons.remove,
+                                color: Colors.white,
+                                size:
+                                20), // if you want to add custom Remove botton then here you can pass your custom widget.
+
+                            maximumValue: product.available,
+                            minimumValue: 1,
+                            value: 1,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                            isEnable:
+                            true, //if you want to Enter custom value then here you should be enable.
+                            onChanged: (val) {
+                              //here in val variable you'll get updated counter value.
+                              print(val);
+                              quantity = val;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    RaisedButton(
+                      onPressed: () async {
+                        MProduct currentProduct = await productServices.getProductForRealTime(product);
+                        if(currentProduct.available < quantity) {
+                          Fluttertoast.showToast(
+                              msg: "Sorry, this product don't have enough quantity in invertory to supply you.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM);
+                        }
+                        else {
+                          int totalQuantity = cartProvider.cart.getQuantityOfProductInCart(product);
+                          if(totalQuantity + quantity <= currentProduct.available) {
+                            cartProvider.addProductInCart(product, quantity);
+                            Fluttertoast.showToast(
+                                msg: "Add this product successfully.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM);
+                          }
+                          else Fluttertoast.showToast(
+                              msg: "Sorry but the total quantity of this product you have added to your cart exceeds the quantity in stock we can supply.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM);
+
+                        }
+                      },
+                      color: kPrimaryColor,
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: const Text(
+                        "Add to cart",
+                        style: TextStyle(
+                            fontSize: 14, letterSpacing: 2.2, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ));
+          });
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context),
+      appBar: buildAppBar(context, isFavorite, userProvider.user.id),
       drawer: Drawer(),
       body: SingleChildScrollView(
           controller: _scrollController,
@@ -58,7 +229,10 @@ class DetailsScreen extends StatelessWidget {
               ),
               child: IconButton(
                 icon: const Icon(Icons.add_shopping_cart, color: kPrimaryColor),
-                onPressed: () => {addToCartDrawer(context, product)},
+                onPressed: () async {
+                  MProduct recheck_product  = await productServices.getProductForRealTime(product);
+                  addToCartDrawer(context, recheck_product);
+                },
               ),
             ),
             Container(
@@ -80,7 +254,7 @@ class DetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: kLessPadding),
                     color: kPrimaryColor,
                     textColor: Colors.white,
-                    child: const Text("Buy now",
+                    child: const Text("Buy Now",
                         style:
                             TextStyle(fontSize: 18.0, fontFamily: 'Poppins')),
                     onPressed: () {
@@ -97,7 +271,8 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 
-  AppBar buildAppBar(BuildContext context) {
+  AppBar buildAppBar(BuildContext context, bool isFavorite, String userID) {
+    final productProvider = Provider.of<ProductProvider>(context);
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.white,
@@ -108,14 +283,34 @@ class DetailsScreen extends StatelessWidget {
         IconButton(
           icon: SvgPicture.asset(
             "assets/icons/heart.svg",
-            color: Color(0xFFFF4848),
+            color: isFavorite
+                ? Color(0xFFFF4848)
+                : Color(0xFFDBDEE4),
             // productServices.checkFavorite(
             //         userProvider.user.getID(),
             //         product.getUserFavorite())
             //     ? Color(0xFFFF4848)
             //     : Color(0xFFDBDEE4),
           ),
-          onPressed: () {},
+          onPressed: () async {
+            bool result = await productServices.updateFavorite(
+                product.getID(), userID);
+            if (result == true) {
+              productProvider.updateUserFavorite(
+                  userID, product.getID());
+              Fluttertoast.showToast(
+                  msg: 'Add it to your favorite list successfully',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM);
+            } else {
+              productProvider.updateUserFavorite(
+                  userID, product.getID());
+              Fluttertoast.showToast(
+                  msg: 'Remove it in your favorite list successfully',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM);
+            }
+          },
         ),
         IconButton(
           icon: SvgPicture.asset(
@@ -135,125 +330,4 @@ class DetailsScreen extends StatelessWidget {
   }
 }
 
-void addToCartDrawer(BuildContext context, MProduct product) {
-  showModalBottomSheet(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
-      ),
-      isDismissible: false,
-      context: context,
-      builder: (context) {
-        return Container(
-            height: 240.0,
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 100,
-                        child: AspectRatio(
-                          aspectRatio: 0.88,
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              //color: Color(0xFFF5F6F9),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Image.network(
-                              product.images[0],
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              product.name,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                              maxLines: 2,
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            Row(
-                              children: [
-                                Text(product.price.toStringAsFixed(0).toVND()),
-                                Spacer(),
-                                Text('Inventory: ' +
-                                    product.available.toString()),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const Divider(
-                  thickness: 1,
-                ),
-                Row(
-                  children: [
-                    const Text("Number: "),
-                    const Spacer(),
-                    SizedBox(
-                      width: 100,
-                      child: CartCounter(
-                        increaseBottonWidget: const Icon(Icons.add,
-                            color: Colors.white,
-                            size:
-                                20), // if you want to add custom add botton then here you can pass your custom widget.
-                        decreaseBottonWidget: const Icon(Icons.remove,
-                            color: Colors.white,
-                            size:
-                                20), // if you want to add custom Remove botton then here you can pass your custom widget.
 
-                        maximumValue: 10,
-                        minimumValue: 1,
-                        value: 1,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                        isEnable:
-                            true, //if you want to Enter custom value then here you should be enable.
-                        onChanged: (val) {
-                          //here in val variable you'll get updated counter value.
-                          print(val);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                RaisedButton(
-                  onPressed: () {},
-                  color: kPrimaryColor,
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: const Text(
-                    "Add to cart",
-                    style: TextStyle(
-                        fontSize: 14, letterSpacing: 2.2, color: Colors.white),
-                  ),
-                ),
-              ],
-            ));
-      });
-}

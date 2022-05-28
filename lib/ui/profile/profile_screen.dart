@@ -28,6 +28,8 @@ class ProfileScreens extends StatefulWidget {
 class _ProfileScreens extends State<ProfileScreens> {
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -57,7 +59,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   clipBehavior: Clip.none,
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage("assets/images/avt.png"),
+                      backgroundImage: NetworkImage(userProvider.user.getAvatarUri()),
                     ),
                     Positioned(
                       right: -16,
@@ -95,7 +97,8 @@ class _ProfileScreens extends State<ProfileScreens> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MyOrderScreen(
-                              index: 3,
+                              index: 0,
+                              userID: userProvider.user.id,
                             )),
                   );
                 },
@@ -119,6 +122,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
                                     index: 0,
+                                    userID: userProvider.user.id
                                   )),
                         );
                       },
@@ -132,6 +136,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
                                     index: 1,
+                                    userID: userProvider.user.id
                                   )),
                         );
                       },
@@ -145,6 +150,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
                                     index: 2,
+                                    userID: userProvider.user.id
                                   )),
                         );
                       },
@@ -336,11 +342,13 @@ void signOutDrawer(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  OutlineButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    borderSide: BorderSide(color: Colors.black, width: 1),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      side: BorderSide(color: Colors.black, width: 1),
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

@@ -14,4 +14,20 @@ class BrandProvider with ChangeNotifier {
     brands = await brandServices.getBrands();
     notifyListeners();
   }
+
+  addBrand(MBrand brand) {
+    brands.add(brand);
+    notifyListeners();
+  }
+
+  updateBrand(MBrand brand) {
+    for(int i = 0; i < brands.length; i++) {
+      if(brands[i].getID() == brand.getID()) {
+        brands[i].setID(brand.getID());
+        brands[i].setImage(brand.getImage());
+        brands[i].setName(brand.getName());
+        brands[i].setTotalSoldOut(0);
+      }
+    }
+  }
 }

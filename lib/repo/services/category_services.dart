@@ -17,4 +17,11 @@ class CategoryServices {
     });
     return categories;
   }
+
+  String getCategoryName(List<MCategory> categories, int categoryID) {
+    for(int i = 0; i < categories.length; i++) {
+      if(categories[i].getID() == categoryID) return categories[i].getName();
+    }
+    return "";
+  }
 }
