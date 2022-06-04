@@ -93,7 +93,7 @@ class _ProfileState extends State<Profile> {
                           child: SizedBox(
                             height: 46,
                             width: 46,
-                            child: FlatButton(
+                            child: MaterialButton(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                                 side: BorderSide(color: Colors.white),
@@ -258,7 +258,7 @@ class _ProfileState extends State<Profile> {
                                 letterSpacing: 2.2,
                                 color: Colors.black)),
                       ),
-                      RaisedButton(
+                      MaterialButton(
                         onPressed: () {},
                         color: kPrimaryColor,
                         padding: const EdgeInsets.symmetric(horizontal: 50),

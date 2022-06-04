@@ -201,7 +201,7 @@ class _CartScreen extends State<CartScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: RaisedButton(
+                      child: MaterialButton(
                         color: kPrimaryColor,
                         onPressed: () async {
                           if (selectedList.length > 0) {

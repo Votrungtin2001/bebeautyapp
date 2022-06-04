@@ -15,14 +15,16 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({
+  ProductCard({
     Key? key,
     required this.product,
     required this.press,
+    required this.rating,
   }) : super(key: key);
 
   final MProduct product;
   final GestureTapCallback press;
+  bool rating;
 
   @override
   Widget build(BuildContext context) {
@@ -108,56 +110,61 @@ class ProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            Row(
-              children: [
-                StarRating(
-                    rating: product.totalStarRating / product.totalRating,
-                    size: 15),
-                Spacer(),
-                InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () async {
-                    bool result = await productServices.updateFavorite(
-                        product.getID(), userProvider.user.getID());
-                    if (result == true) {
-                      productProvider.updateUserFavorite(
-                          userProvider.user.getID(), product.getID());
-                      Fluttertoast.showToast(
-                          msg: 'Add it to your favorite list successfully',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM);
-                    } else {
-                      productProvider.updateUserFavorite(
-                          userProvider.user.getID(), product.getID());
-                      Fluttertoast.showToast(
-                          msg: 'Remove it in your favorite list successfully',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM);
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      color: productServices.checkFavorite(
-                              userProvider.user.id, product.getUserFavorite())
-                          ? kPrimaryColor.withOpacity(0.15)
-                          : kSecondaryColor.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: SvgPicture.asset(
-                      "assets/icons/heart.svg",
-                      color: productServices.checkFavorite(
-                              userProvider.user.getID(),
-                              product.getUserFavorite())
-                          ? Color(0xFFFF4848)
-                          : Color(0xFFDBDEE4),
-                    ),
-                  ),
-                ),
-              ],
-            )
+            rating
+                ? Row(
+                    children: [
+                      StarRating(
+                          rating: product.totalStarRating / product.totalRating,
+                          size: 15),
+                      Spacer(),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(50),
+                        onTap: () async {
+                          bool result = await productServices.updateFavorite(
+                              product.getID(), userProvider.user.getID());
+                          if (result == true) {
+                            productProvider.updateUserFavorite(
+                                userProvider.user.getID(), product.getID());
+                            Fluttertoast.showToast(
+                                msg:
+                                    'Add it to your favorite list successfully',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM);
+                          } else {
+                            productProvider.updateUserFavorite(
+                                userProvider.user.getID(), product.getID());
+                            Fluttertoast.showToast(
+                                msg:
+                                    'Remove it in your favorite list successfully',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM);
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          height: 24,
+                          width: 24,
+                          decoration: BoxDecoration(
+                            color: productServices.checkFavorite(
+                                    userProvider.user.id,
+                                    product.getUserFavorite())
+                                ? kPrimaryColor.withOpacity(0.15)
+                                : kSecondaryColor.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: SvgPicture.asset(
+                            "assets/icons/heart.svg",
+                            color: productServices.checkFavorite(
+                                    userProvider.user.getID(),
+                                    product.getUserFavorite())
+                                ? Color(0xFFFF4848)
+                                : Color(0xFFDBDEE4),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Container(),
           ],
         ),
       ),

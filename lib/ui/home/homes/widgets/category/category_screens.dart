@@ -162,6 +162,7 @@ class _CategoryScreensState extends State<CategoryScreens>
                                 childAspectRatio: 0.5,
                               ),
                               itemBuilder: (context, index) => ProductCard(
+                                rating: true,
                                 product: allProductsFromCategory[index],
                                 press: () async {
                                   productProvider

@@ -8,53 +8,75 @@ import '../../model/MProduct.dart';
 import '../../model/MProductInCart.dart';
 
 class OrderServices {
-  final CollectionReference refOrder = FirebaseFirestore.instance.collection('Order');
+  final CollectionReference refOrder =
+      FirebaseFirestore.instance.collection('Order');
   ProductServices productServices = ProductServices();
 
   //Add Order
-  Future<bool> addOrder(String userID, String voucherCode, double discountValue,
-      double shippingValue, double totalPayment, int totalQuantity,  int numOfProducts,
-      String address, double latitude,  double longitude,  String userName, String phone,
-      int time, List<MProductInCart> productsInCart) async {
-
+  Future<bool> addOrder(
+      String userID,
+      String voucherCode,
+      double discountValue,
+      double shippingValue,
+      double totalPayment,
+      int totalQuantity,
+      int numOfProducts,
+      String address,
+      double latitude,
+      double longitude,
+      String userName,
+      String phone,
+      int time,
+      List<MProductInCart> productsInCart) async {
     String orderID = "";
-    
+
     try {
-      await refOrder
-          .doc()
-          .set({'orderID': "", 'userID': userID, 'voucherCode': voucherCode,
-        'discountValue': discountValue, 'shippingValue': shippingValue, 'totalPayment': totalPayment,
-        'totalQuantity': totalQuantity, 'numOfProducts': numOfProducts, 'address': address,
-        'latitude': latitude, 'longitude': longitude, 'userName': userName, 'phone': phone,
-        'time': time, 'status': 0
+      await refOrder.doc().set({
+        'orderID': "",
+        'userID': userID,
+        'voucherCode': voucherCode,
+        'discountValue': discountValue,
+        'shippingValue': shippingValue,
+        'totalPayment': totalPayment,
+        'totalQuantity': totalQuantity,
+        'numOfProducts': numOfProducts,
+        'address': address,
+        'latitude': latitude,
+        'longitude': longitude,
+        'userName': userName,
+        'phone': phone,
+        'time': time,
+        'status': 0
       });
 
       await refOrder.where('userID', isEqualTo: userID).get().then((result) {
         for (DocumentSnapshot Order in result.docs) {
-          if(Order.get('orderID') == "") orderID = Order.id;
+          if (Order.get('orderID') == "") orderID = Order.id;
         }
       });
 
-      if(orderID != "") {
+      if (orderID != "") {
         bool isUpdateID = await updateOrderID(orderID);
-        if(isUpdateID == true) {
-          bool checkAddProductInOrder = await addProductsInOrder(orderID, productsInCart);
-          if(checkAddProductInOrder == true) {
+        if (isUpdateID == true) {
+          bool checkAddProductInOrder =
+              await addProductsInOrder(orderID, productsInCart);
+          if (checkAddProductInOrder == true) {
             //MOrder result_Order = await getOrderByOrderID(orderID, products);
             return true;
-          }
-          else return false;
-        }
-        else return false;
-      }
-      else return false;
+          } else
+            return false;
+        } else
+          return false;
+      } else
+        return false;
     } catch (e) {
       print(e.toString());
       return false;
     }
   }
 
-  Future<MOrder> getOrderByOrderID(String orderID, List<MProduct> products) async {
+  Future<MOrder> getOrderByOrderID(
+      String orderID, List<MProduct> products) async {
     List<MOrder> orders = [];
     await refOrder.where('orderID', isEqualTo: orderID).get().then((result) {
       for (DocumentSnapshot Order in result.docs) {
@@ -66,23 +88,34 @@ class OrderServices {
         int productID = Order.get('productID');
         int quantity = Order.get('quantity');
         MProduct product = productServices.getProductByID(products, productID);
-        MProductInCart productInCart = new MProductInCart(id: productID, name: product.getName(),
-            engName: product.getEngName(), quantity: quantity, displayImage: product.getImage(0), price: product.getPrice());
+        MProductInCart productInCart = new MProductInCart(
+            id: productID,
+            name: product.getName(),
+            engName: product.getEngName(),
+            quantity: quantity,
+            displayImage: product.getImage(0),
+            price: product.getPrice());
         orders[0].productsInCart.add(productInCart);
       }
     });
     return orders[0];
   }
 
-  Future<List<MProductInCart>> getProductsInOrder(String orderID, List<MProduct> products) async {
+  Future<List<MProductInCart>> getProductsInOrder(
+      String orderID, List<MProduct> products) async {
     List<MProductInCart> productsInOrder = [];
     await refOrder.doc(orderID).collection('Products').get().then((result) {
       for (DocumentSnapshot Order in result.docs) {
         int productID = Order.get('productID');
         int quantity = Order.get('quantity');
         MProduct product = productServices.getProductByID(products, productID);
-        MProductInCart productInCart = new MProductInCart(id: productID, name: product.getName(),
-            engName: product.getEngName(), quantity: quantity, displayImage: product.getImage(0), price: product.getPrice());
+        MProductInCart productInCart = new MProductInCart(
+            id: productID,
+            name: product.getName(),
+            engName: product.getEngName(),
+            quantity: quantity,
+            displayImage: product.getImage(0),
+            price: product.getPrice());
         productsInOrder.add(productInCart);
       }
     });
@@ -113,7 +146,18 @@ class OrderServices {
   }*/
 
   getOrderByUserID(String userID, int status) async {
-    return refOrder.where('userID', isEqualTo: userID).where('status', isEqualTo: status).orderBy('time', descending: true).snapshots();
+    return refOrder
+        .where('userID', isEqualTo: userID)
+        .where('status', isEqualTo: status)
+        .orderBy('time', descending: true)
+        .snapshots();
+  }
+
+  getOrderByStatus(int status) async {
+    return refOrder
+        .where('status', isEqualTo: status)
+        .orderBy('time', descending: true)
+        .snapshots();
   }
 
   Future<bool> updateOrderID(String orderID) async {
@@ -126,10 +170,11 @@ class OrderServices {
     }
   }
 
-  Future<bool> addProductsInOrder(String orderID, List<MProductInCart> products) async {
+  Future<bool> addProductsInOrder(
+      String orderID, List<MProductInCart> products) async {
     try {
       int iCount = 0;
-      for(int i = 0; i < products.length; i++) {
+      for (int i = 0; i < products.length; i++) {
         Map<String, dynamic> product = {
           "productID": products[i].getID(),
           "quantity": products[i].getQuantity()
@@ -137,14 +182,16 @@ class OrderServices {
         await refOrder.doc(orderID).collection('Products').add(product);
         iCount++;
       }
-      if(iCount == products.length) return true;
-      else return false;
+      if (iCount == products.length)
+        return true;
+      else
+        return false;
     } catch (e) {
       print(e.toString());
       return false;
     }
-
   }
+
   String getDate(int time) {
     var date = DateTime.fromMillisecondsSinceEpoch(time);
     return DateFormat('EEEE, d MMM, yyyy').format(date);

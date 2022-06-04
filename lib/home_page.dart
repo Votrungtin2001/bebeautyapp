@@ -1,4 +1,5 @@
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/ui/admin/home_admin.dart';
 import 'package:bebeautyapp/ui/chat_user/chat.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/complete_order.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/error_order.dart';
@@ -26,11 +27,11 @@ class _HomePageState extends State<HomePage> {
     final user = Provider.of<MUser_IsNotLogout?>(context);
     final userProvider = Provider.of<UserProvider>(context);
     if (user!.uid != null) userID = user.uid.toString();
-    if(userID == "") userProvider.getUser(userID);
+    if (userID == "") userProvider.getUser(userID);
 
     List<Widget> _body = [
       HomeScreens(),
-      ChatScreens(),
+      HomeAdmin(),
       ProfileScreens(),
     ];
 
@@ -60,7 +61,6 @@ class _HomePageState extends State<HomePage> {
             () {
               _page = index;
             },
-
           );
         },
         selectedItemColor: kPrimaryColor,

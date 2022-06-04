@@ -69,7 +69,7 @@ class _CompleteOrder extends State<CompleteOrder> {
           const SizedBox(
             height: 32,
           ),
-          RaisedButton(
+          MaterialButton(
             onPressed: () {},
             color: kPrimaryColor,
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),

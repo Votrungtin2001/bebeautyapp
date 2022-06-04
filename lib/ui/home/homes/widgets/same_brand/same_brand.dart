@@ -51,6 +51,7 @@ class SameBrand extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: ProductCard(
+                      rating: true,
                       product: products[index],
                       press: () async {
                         productProvider

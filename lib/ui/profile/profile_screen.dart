@@ -59,7 +59,8 @@ class _ProfileScreens extends State<ProfileScreens> {
                   clipBehavior: Clip.none,
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(userProvider.user.getAvatarUri()),
+                      backgroundImage:
+                          NetworkImage(userProvider.user.getAvatarUri()),
                     ),
                     Positioned(
                       right: -16,
@@ -67,7 +68,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                       child: SizedBox(
                         height: 46,
                         width: 46,
-                        child: FlatButton(
+                        child: MaterialButton(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
                             side: BorderSide(color: Colors.white),
@@ -121,9 +122,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
-                                    index: 0,
-                                    userID: userProvider.user.id
-                                  )),
+                                  index: 0, userID: userProvider.user.id)),
                         );
                       },
                     ),
@@ -135,9 +134,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
-                                    index: 1,
-                                    userID: userProvider.user.id
-                                  )),
+                                  index: 1, userID: userProvider.user.id)),
                         );
                       },
                     ),
@@ -149,9 +146,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
-                                    index: 2,
-                                    userID: userProvider.user.id
-                                  )),
+                                  index: 2, userID: userProvider.user.id)),
                         );
                       },
                     ),
@@ -358,7 +353,7 @@ void signOutDrawer(BuildContext context) {
                             letterSpacing: 2.2,
                             color: Colors.black)),
                   ),
-                  RaisedButton(
+                  MaterialButton(
                     onPressed: () {},
                     color: kPrimaryColor,
                     padding: const EdgeInsets.symmetric(horizontal: 50),

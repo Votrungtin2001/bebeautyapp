@@ -23,7 +23,6 @@ class AddressSelection extends StatefulWidget {
 class _AddressSelection extends State<AddressSelection> {
   final savedAddressServices = new SavedAddressServices();
 
-
   @override
   Widget build(BuildContext context) {
     final savedAddressProvider = Provider.of<SavedAddressProvider>(context);
@@ -51,27 +50,39 @@ class _AddressSelection extends State<AddressSelection> {
                 itemBuilder: (context, index) {
                   return ListTile(
                       title: AddressItem(
-                        savedAddress: savedAddressProvider.savedAddresses[index],
+                        savedAddress:
+                            savedAddressProvider.savedAddresses[index],
                       ),
                       onTap: () async {
-                        bool result = await savedAddressServices.updateDefaultSavedAddress(
-                            savedAddressProvider.savedAddresses[index].getID(), userProvider.user.id);
-                        if(result == true) {
-                          savedAddressProvider.updateDefaultSavedAddress(savedAddressProvider.savedAddresses[index].getID(), userProvider.user.id);
-                          Fluttertoast.showToast(msg: 'Updated default address successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                          Navigator.pop(context, savedAddressProvider.savedAddresses[index]);
+                        bool result = await savedAddressServices
+                            .updateDefaultSavedAddress(
+                                savedAddressProvider.savedAddresses[index]
+                                    .getID(),
+                                userProvider.user.id);
+                        if (result == true) {
+                          savedAddressProvider.updateDefaultSavedAddress(
+                              savedAddressProvider.savedAddresses[index]
+                                  .getID(),
+                              userProvider.user.id);
+                          Fluttertoast.showToast(
+                              msg: 'Updated default address successfully.',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM);
+                          Navigator.pop(context,
+                              savedAddressProvider.savedAddresses[index]);
                         }
-
                       });
                 }),
           ),
           Card(
             color: Colors.white,
-            child: FlatButton(
+            child: MaterialButton(
               onPressed: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddAddressScreen(userID: userProvider.user.id)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddAddressScreen(userID: userProvider.user.id)),
                 ),
               },
               padding: const EdgeInsets.all(8.0),

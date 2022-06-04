@@ -272,7 +272,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      FlatButton(
+                      MaterialButton(
                         color: Colors.white,
                         minWidth: MediaQuery.of(context).size.width - 30,
                         onPressed: () => {},
