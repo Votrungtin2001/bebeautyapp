@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/ui/admin/order/order_container_manage.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/product_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
 
                     return Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
-                      child: ProductContainer(
+                      child: ProductContainerManage(
                         order: order,
                         products: products,
                       ),
@@ -156,7 +157,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
 
                     return Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
-                      child: ProductContainer(
+                      child: ProductContainerManage(
                         order: order,
                         products: products,
                       ),
@@ -194,7 +195,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
 
                     return Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
-                      child: ProductContainer(
+                      child: ProductContainerManage(
                         order: order,
                         products: products,
                       ),
@@ -232,7 +233,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
 
                     return Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
-                      child: ProductContainer(
+                      child: ProductContainerManage(
                         order: order,
                         products: products,
                       ),
@@ -269,7 +270,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
                         snapshot.data!.docs[index]["status"]);
                     return Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
-                      child: ProductContainer(
+                      child: ProductContainerManage(
                         order: order,
                         products: products,
                       ),

@@ -66,7 +66,7 @@ class HomeAdmin extends StatelessWidget {
             children: [
               ProfileMenu(
                 text: "Brand",
-                icon: "assets/icons/menu-order.svg",
+                icon: "assets/icons/brand.svg",
                 press: () {
                   Navigator.push(
                     context,
@@ -77,7 +77,7 @@ class HomeAdmin extends StatelessWidget {
               const SizedBox(height: 8),
               ProfileMenu(
                 text: "Product ",
-                icon: "assets/icons/menu-order.svg",
+                icon: "assets/icons/package.svg",
                 press: () {
                   Navigator.push(
                     context,
@@ -88,7 +88,7 @@ class HomeAdmin extends StatelessWidget {
               const SizedBox(height: 8),
               ProfileMenu(
                 text: "Order ",
-                icon: "assets/icons/menu-order.svg",
+                icon: "assets/icons/orders.svg",
                 press: () {
                   Navigator.push(
                     context,
@@ -100,7 +100,7 @@ class HomeAdmin extends StatelessWidget {
               const SizedBox(height: 8),
               ProfileMenu(
                 text: "Chat",
-                icon: "assets/icons/menu-order.svg",
+                icon: "assets/icons/chat.svg",
                 press: () {
                   Navigator.push(
                     context,

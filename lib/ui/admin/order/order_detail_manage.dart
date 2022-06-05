@@ -9,15 +9,15 @@ import 'package:im_stepper/stepper.dart';
 import '../../../../../model/MOrder.dart';
 import '../../../../../repo/services/order_services.dart';
 
-class TrackOrder extends StatefulWidget {
-  const TrackOrder({Key? key, required this.order}) : super(key: key);
+class TrackOrderManage extends StatefulWidget {
+  const TrackOrderManage({Key? key, required this.order}) : super(key: key);
 
   @override
-  _TrackOrderState createState() => _TrackOrderState();
+  _TrackOrderManageState createState() => _TrackOrderManageState();
   final MOrder order;
 }
 
-class _TrackOrderState extends State<TrackOrder> {
+class _TrackOrderManageState extends State<TrackOrderManage> {
   final orderServices = new OrderServices();
 
   @override

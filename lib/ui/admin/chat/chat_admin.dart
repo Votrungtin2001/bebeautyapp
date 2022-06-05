@@ -230,55 +230,54 @@ class _ChatAdminState extends State<ChatAdmin> {
         ),
       ),
       body: Container(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Stack(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height - 115,
-                child: chatMessages(),
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  padding: EdgeInsets.only(left: 16, bottom: 10),
-                  height: 70,
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                          controller: messageEditingController,
-                          decoration: InputDecoration(
-                              hintText: "Type message...",
-                              hintStyle: TextStyle(color: Colors.grey.shade500),
-                              border: InputBorder.none),
-                        ),
+        padding: const EdgeInsets.only(top: 10.0),
+        color: kFourthColor.withOpacity(0.1),
+        child: Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height - 115,
+              child: chatMessages(),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                padding: EdgeInsets.only(left: 16, bottom: 10),
+                height: 70,
+                width: double.infinity,
+                color: Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        controller: messageEditingController,
+                        decoration: InputDecoration(
+                            hintText: "Type message...",
+                            hintStyle: TextStyle(color: Colors.grey.shade500),
+                            border: InputBorder.none),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  padding: EdgeInsets.only(right: 30, bottom: 40),
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      addMessage();
-                    },
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
                     ),
-                    backgroundColor: Colors.pink.shade300,
-                    elevation: 0,
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                padding: EdgeInsets.only(right: 30, bottom: 40),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    addMessage();
+                  },
+                  child: Icon(
+                    Icons.send,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Colors.pink.shade300,
+                  elevation: 0,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

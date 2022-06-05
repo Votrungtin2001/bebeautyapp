@@ -1,5 +1,6 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProductInCart.dart';
+import 'package:bebeautyapp/ui/admin/order/order_detail_manage.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
@@ -10,18 +11,19 @@ import '../../../../../repo/providers/product_provider.dart';
 import '../../../../../repo/services/cart_services.dart';
 import '../../../../../repo/services/order_services.dart';
 
-class ProductContainer extends StatefulWidget {
-  ProductContainer({Key? key, required this.order, required this.products})
+class ProductContainerManage extends StatefulWidget {
+  ProductContainerManage(
+      {Key? key, required this.order, required this.products})
       : super(key: key);
 
   final MOrder order;
   final List<MProduct> products;
 
   @override
-  _ProductContainerState createState() => _ProductContainerState();
+  _ProductContainerManageState createState() => _ProductContainerManageState();
 }
 
-class _ProductContainerState extends State<ProductContainer> {
+class _ProductContainerManageState extends State<ProductContainerManage> {
   bool isUpdate = true;
   MOrder order =
       new MOrder("", "", "", 0.0, 0.0, 0.0, 0, 0, "", 0.0, 0.0, "", "", 0, 0);
@@ -74,7 +76,7 @@ class _ProductContainerState extends State<ProductContainer> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => TrackOrder(
+                builder: (context) => TrackOrderManage(
                       order: order,
                     )),
           );
