@@ -160,9 +160,8 @@ class _ProductContainerState extends State<ProductContainer> {
                     Container(
                         height: 80,
                         width: 80,
-                        child: order.productsInCart.length > 0
-                            ? Image.network(order.productsInCart[0].getImage())
-                            : Image.asset('assets/images/loading.png')),
+                        child:
+                            Image.network(order.productsInCart[0].getImage())),
                     const SizedBox(
                       width: 16,
                     ),

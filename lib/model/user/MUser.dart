@@ -19,17 +19,17 @@ class MUser {
 
   MUser(
       {required this.id,
-        required this.displayName,
-        required this.email,
-        required this.phone,
-        required this.dob,
-        required this.gender,
-        required this.address,
-        required this.point,
-        required this.totalSpending,
-        required this.role,
-        required this.avatarUri,
-        required this.preference});
+      required this.displayName,
+      required this.email,
+      required this.phone,
+      required this.dob,
+      required this.gender,
+      required this.address,
+      required this.point,
+      required this.totalSpending,
+      required this.role,
+      required this.avatarUri,
+      required this.preference});
 
   static MUser copyFrom(MUser user) {
     return MUser(
@@ -48,44 +48,109 @@ class MUser {
     );
   }
 
-  String getID() {return this.id;}
-  void setID(String ID) {this.id = ID;}
+  String getID() {
+    return this.id;
+  }
 
-  String getName() {return this.displayName;}
-  void setName(String Name) {this.displayName = displayName;}
+  void setID(String ID) {
+    this.id = ID;
+  }
 
-  String getEmail() {return this.email;}
-  void setEmail(String Email) {this.email = Email;}
+  String getName() {
+    return this.displayName;
+  }
 
-  String getPhone() {return this.phone;}
-  void setPhone(String Phone) {this.phone = Phone;}
+  void setName(String Name) {
+    this.displayName = displayName;
+  }
 
-  DateTime getDob() {return this.dob;}
-  void setDob(DateTime Dob) {this.dob = Dob;}
+  String getEmail() {
+    return this.email;
+  }
 
-  int getGender() {return this.gender;}
-  void setGender(int Gender) {this.gender = Gender;}
+  void setEmail(String Email) {
+    this.email = Email;
+  }
 
-  MAddress getAddress() {return this.address;}
-  void setAddress(MAddress Address) {this.address = Address;}
+  String getPhone() {
+    return this.phone;
+  }
 
-  MPreference getPreference() {return this.preference;}
-  void setPreference(MPreference Preference) {this.preference = Preference;}
+  void setPhone(String Phone) {
+    this.phone = Phone;
+  }
 
-  int getPoint() {return this.point;}
-  void setPoint(int Point) {this.point = Point;}
+  DateTime getDob() {
+    return this.dob;
+  }
 
-  double getTotalSpending() {return this.totalSpending;}
-  void setTotalSpending(double TotalSpending) {this.totalSpending = TotalSpending;}
+  void setDob(DateTime Dob) {
+    this.dob = Dob;
+  }
 
-  int getRole() {return this.role;}
-  void setRole(int Role) {this.role = Role;}
+  int getGender() {
+    return this.gender;
+  }
 
-  String getAvatarUri() {return this.avatarUri;}
-  void setAvatarURi(String newAvatarUri) {this.avatarUri = newAvatarUri;}
+  void setGender(int Gender) {
+    this.gender = Gender;
+  }
 
-  MPreference getBrandHistory() {return this.preference;}
-  void setBrandHistory(MPreference Preference) {this.preference = Preference;}
+  MAddress getAddress() {
+    return this.address;
+  }
+
+  void setAddress(MAddress Address) {
+    this.address = Address;
+  }
+
+  MPreference getPreference() {
+    return this.preference;
+  }
+
+  void setPreference(MPreference Preference) {
+    this.preference = Preference;
+  }
+
+  int getPoint() {
+    return this.point;
+  }
+
+  void setPoint(int Point) {
+    this.point = Point;
+  }
+
+  double getTotalSpending() {
+    return this.totalSpending;
+  }
+
+  void setTotalSpending(double TotalSpending) {
+    this.totalSpending = TotalSpending;
+  }
+
+  int getRole() {
+    return this.role;
+  }
+
+  void setRole(int Role) {
+    this.role = Role;
+  }
+
+  String getAvatarUri() {
+    return this.avatarUri;
+  }
+
+  void setAvatarURi(String newAvatarUri) {
+    this.avatarUri = newAvatarUri;
+  }
+
+  MPreference getBrandHistory() {
+    return this.preference;
+  }
+
+  void setBrandHistory(MPreference Preference) {
+    this.preference = Preference;
+  }
 
   MUser.fromSnapshot(DocumentSnapshot snapshot) {
     Timestamp timestamp = snapshot.get('dob');
@@ -95,29 +160,31 @@ class MUser {
     phone = snapshot.get('phone');
     dob = timestamp.toDate();
     gender = snapshot.get('gender');
-    address = new MAddress(userID: "",fullStreetName: "", latitude: 0, longitude: 0);
+    address =
+        new MAddress(userID: "", fullStreetName: "", latitude: 0, longitude: 0);
     point = snapshot.get('point');
     totalSpending = snapshot.get('totalSpending');
     role = snapshot.get('role');
     avatarUri = snapshot.get('avatarUri');
-    preference = new MPreference(userID: "", brandHistory: [], skinTypeHistory: [], categoryHistory: [], sessionHistory: [], structureHistory: []);
+    preference = new MPreference(
+        userID: "",
+        brandHistory: [],
+        skinTypeHistory: [],
+        categoryHistory: [],
+        sessionHistory: [],
+        structureHistory: []);
   }
 
-  Map<String, dynamic> toJson()
-  {
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['preference'] = this.preference;
     return data;
   }
-
 }
 
 class MUser_IsNotLogout {
-
   final String? uid;
 
   MUser_IsNotLogout({this.uid});
-
 }
-

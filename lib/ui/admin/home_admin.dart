@@ -6,6 +6,7 @@ import 'package:bebeautyapp/repo/services/brand_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/admin/Brand/brand_manage.dart';
 import 'package:bebeautyapp/ui/admin/Product/product_manage.dart';
+import 'package:bebeautyapp/ui/admin/chat/chat_room.dart';
 import 'package:bebeautyapp/ui/admin/order/order_manage_screen.dart';
 
 import 'package:bebeautyapp/ui/profile/profile_screen.dart';
@@ -93,6 +94,17 @@ class HomeAdmin extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => OrderManageScreen()),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              ProfileMenu(
+                text: "Chat",
+                icon: "assets/icons/menu-order.svg",
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatRoomAdmin()),
                   );
                 },
               ),
