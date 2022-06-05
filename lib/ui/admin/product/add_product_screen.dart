@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bebeautyapp/model/MBrand.dart';
 import 'package:bebeautyapp/model/MCategory.dart';
 import 'package:bebeautyapp/model/MGender.dart';
@@ -14,27 +16,23 @@ import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loa
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../repo/services/product_services.dart';
 
-class DetailsProductManageScreen extends StatefulWidget {
-  final MProduct products;
-
+class AddProductScreen extends StatefulWidget {
   final productServices = ProductServices();
 
-  DetailsProductManageScreen({
+  AddProductScreen({
     Key? key,
-    required this.products,
   }) : super(key: key);
   @override
-  _DetailsProductManageScreenState createState() =>
-      _DetailsProductManageScreenState();
+  _AddProductScreenState createState() => _AddProductScreenState();
 }
 
-class _DetailsProductManageScreenState
-    extends State<DetailsProductManageScreen> {
+class _AddProductScreenState extends State<AddProductScreen> {
   final formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -61,27 +59,13 @@ class _DetailsProductManageScreenState
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.products.name;
-    _nameController.text = widget.products.name;
-    _engNameController.text = widget.products.engName;
-    _guideLineController.text = widget.products.guideLine;
-    _descriptionController.text = widget.products.description;
-    _popularSearchTitleController.text = widget.products.popularSearchTitle;
-    _marketPriceController.text =
-        widget.products.marketPrice.toStringAsFixed(0);
-    _importPriceController.text =
-        widget.products.importPrice.toStringAsFixed(0);
-    _priceController.text = widget.products.price.toStringAsFixed(0);
-    _discountRateController.text =
-        widget.products.defaultDiscountRate.toStringAsFixed(0);
-    _quantityController.text = widget.products.available.toStringAsFixed(0);
-    brandId = widget.products.getBrandID();
-    categoryId = widget.products.getCategoryID();
-    genderId = widget.products.getGenderID();
-    originId = widget.products.getOriginID();
-    skinId = widget.products.getSkinID();
-    structureId = widget.products.getStructureID();
-    sesstionId = widget.products.getSessionID();
+    brandId = 1;
+    categoryId = 1;
+    genderId = 1;
+    originId = 1;
+    skinId = 1;
+    structureId = 1;
+    sesstionId = 1;
   }
 
   @override
@@ -137,6 +121,17 @@ class _DetailsProductManageScreenState
       MStructure(id: 10, name: "Dạng dầu"),
       MStructure(id: 11, name: "Dạng rắn")
     ];
+    final ImagePicker imagePicker = ImagePicker();
+    List<XFile>? imageFileList = [];
+    List<File> images = [];
+    void selectImages() async {
+      final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+      if (selectedImages!.isNotEmpty) {
+        imageFileList!.addAll(selectedImages);
+      }
+      print("Image List Length:" + imageFileList!.length.toString());
+      setState(() {});
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -161,6 +156,26 @@ class _DetailsProductManageScreenState
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
               children: [
+                ElevatedButton(
+                  onPressed: () {
+                    selectImages();
+                  },
+                  child: Text('Select Images'),
+                ),
+                Container(
+                  height: 200,
+                  child: GridView.count(
+                    scrollDirection: Axis.horizontal,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    children: List.generate(images.length, (index) {
+                      return Image.file(
+                        File(imageFileList[index].path),
+                        fit: BoxFit.cover,
+                      );
+                    }),
+                  ),
+                ),
                 StickyLabel(text: 'Name', textStyle: TextStyle(fontSize: 14)),
                 TextFormField(
                   onChanged: (value) {
@@ -699,21 +714,6 @@ class _DetailsProductManageScreenState
                   controller: editButtonController,
                   onPress: () {},
                 ),
-                Container(
-                    width: 400,
-                    height: 40,
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(28.0),
-                                      side: BorderSide(color: kPrimaryColor)))),
-                      onPressed: () {},
-                      child: Text('Delete',
-                          style: TextStyle(
-                              color: kPrimaryColor, fontSize: 20, height: 1.5)),
-                    )),
                 SizedBox(
                   height: 16.0,
                 )

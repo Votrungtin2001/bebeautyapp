@@ -1,12 +1,13 @@
+import 'dart:io';
+
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/admin/Brand/detail_brand_manage.dart';
-import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
+import 'package:bebeautyapp/ui/admin/brand/add_brand_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
-import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,9 +15,28 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-class BrandManage extends StatelessWidget {
-  final productServices = new ProductServices();
+class BrandManage extends StatefulWidget {
   BrandManage({Key? key}) : super(key: key);
+
+  @override
+  _BrandManageState createState() => new _BrandManageState();
+}
+
+class _BrandManageState extends State<BrandManage> {
+  final productServices = new ProductServices();
+  late File? imageFile = null;
+  _getFromGallery() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +58,20 @@ class BrandManage extends StatelessWidget {
             fontWeight: FontWeight.w700),
         centerTitle: true,
         automaticallyImplyLeading: true,
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddBrand(),
+              ),
+            ),
+            icon: const Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -78,114 +112,6 @@ class BrandManage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-      floatingActionButton: MaterialButton(
-        shape: CircleBorder(),
-        elevation: 2.0,
-        padding: EdgeInsets.all(12.0),
-        color: kPrimaryColor,
-        textColor: Colors.white,
-        onPressed: () => showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            insetPadding:
-                EdgeInsets.symmetric(horizontal: 30.0, vertical: 170.0),
-            contentPadding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0.0),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(18.0),
-              ),
-            ),
-            title: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Center(child: Text('Add Brand')),
-                CloseButton(
-                  color: kPrimaryColor,
-                )
-              ],
-            ),
-            content: Column(
-              children: [
-                StickyLabel(text: 'Name', textStyle: TextStyle(fontSize: 14)),
-                TextFormField(
-                  onChanged: (value) {
-                    name = value;
-                  },
-                  cursorColor: kTextColor,
-                  validator: (text) {
-                    if (text == null || text.isEmpty) {
-                      return 'Name is empty';
-                    } else
-                      return null;
-                  },
-                  // controller:
-                  //     Provider.of<SignIn_Function>(context, listen: false)
-                  //         .emailController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.black, width: 1),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.red, width: 1),
-                    ),
-                  ),
-                ),
-                StickyLabel(
-                    text: 'Image URL', textStyle: TextStyle(fontSize: 14)),
-                TextFormField(
-                  onChanged: (value) {
-                    url = value;
-                  },
-                  cursorColor: kTextColor,
-                  validator: (text) {
-                    if (text == null || text.isEmpty) {
-                      return 'URL is empty';
-                    } else
-                      return null;
-                  },
-                  // controller:
-                  //     Provider.of<SignIn_Function>(context, listen: false)
-                  //         .emailController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.black, width: 1),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.red, width: 1),
-                    ),
-                  ),
-                ),
-                CustomRoundedLoadingButton(
-                  text: 'Add',
-                  controller: addButtonController,
-                  onPress: () {},
-                ),
-              ],
-            ),
-          ),
-        ),
-        child: const Icon(
-          Icons.add,
-          size: 35,
         ),
       ),
     );

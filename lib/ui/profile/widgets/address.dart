@@ -3,7 +3,7 @@ import 'package:bebeautyapp/model/MSavedAddress.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
-import 'package:bebeautyapp/ui/profile/widgets/gg_map.dart';
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,7 +15,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../repo/providers/savedAddress_provider.dart';
 import '../../../repo/providers/user_provider.dart';
@@ -254,15 +253,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                 // );
                               },
                               child: const Text('Get current location')),
-                          ElevatedButton(
-                              onPressed: () async {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MapView()),
-                                );
-                              },
-                              child: const Text('Go to Map')),
+
                           const SizedBox(
                             height: 20,
                           ),

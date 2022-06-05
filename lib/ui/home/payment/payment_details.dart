@@ -14,8 +14,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:intl/intl.dart';
+import 'package:latlng/latlng.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' show cos, sqrt, asin;
 import '../../../constants.dart';

@@ -1,5 +1,4 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/model/MBrand.dart';
 
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
@@ -7,10 +6,8 @@ import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/admin/Product/detail_product_manage.dart';
-import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
-import 'package:bebeautyapp/ui/home/details/details_screen.dart';
+import 'package:bebeautyapp/ui/admin/product/add_product_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
-import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -29,32 +26,7 @@ class _ProductManage extends State<ProductManage> {
     final preferenceServices = new PreferenceServices();
     final userProvider = Provider.of<UserProvider>(context);
     final editButtonController = RoundedLoadingButtonController();
-    MProduct tempt = new MProduct(
-        id: 0,
-        name: '',
-        engName: '',
-        brandID: 0,
-        categoryID: 0,
-        originID: 0,
-        skinID: 0,
-        sessionID: 0,
-        genderID: 0,
-        structureID: 0,
-        soldOut: 0,
-        totalStarRating: 0,
-        totalRating: 0,
-        marketPrice: 0,
-        importPrice: 0,
-        defaultDiscountRate: 0,
-        price: 0,
-        chemicalComposition: '',
-        guideLine: '',
-        images: [],
-        userFavorite: [],
-        available: 0,
-        searchCount: 0,
-        popularSearchTitle: '',
-        description: '');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -72,12 +44,8 @@ class _ProductManage extends State<ProductManage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DetailsProductManageScreen(
-                            product: tempt,
-                          )));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddProductScreen()));
             },
             icon: const Icon(
               Icons.add,
@@ -126,7 +94,7 @@ class _ProductManage extends State<ProductManage> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           DetailsProductManageScreen(
-                                            product:
+                                            products:
                                                 productProvider.products[index],
                                           )));
                             },

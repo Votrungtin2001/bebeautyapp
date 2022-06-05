@@ -1,7 +1,7 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
-import 'package:bebeautyapp/ui/profile/widgets/gg_map.dart';
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +9,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlng/latlng.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ChangeAddressScreen extends StatefulWidget {
   const ChangeAddressScreen({
@@ -223,15 +223,6 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                          onPressed: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapView()),
-                            );
-                          },
-                          child: const Text('Go to Map')),
                       Container(
                         height: 50,
                         color: Colors.white,
