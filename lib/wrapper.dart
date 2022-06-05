@@ -1,4 +1,5 @@
 import 'package:bebeautyapp/home_page.dart';
+import 'package:bebeautyapp/ui/admin/home_admin.dart';
 import 'package:bebeautyapp/ui/introduction_screen/introduction_screen.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
@@ -17,7 +18,7 @@ class Wrapper extends StatelessWidget {
       if (user.uid != null) user_id = user.uid.toString();
       user_model.getUser(user_id);
       if (user.uid == "DESCqkYmeTa4krec99myZe7p0rE2")
-        return HomePage();
+        return HomeAdmin();
       else
         return HomePage();
     } else
