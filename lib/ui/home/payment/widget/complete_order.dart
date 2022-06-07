@@ -80,9 +80,8 @@ class _CompleteOrder extends State<CompleteOrder> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => MyOrderScreen(
-                        index: 0,
-                        userID: userProvider.user.id)),
+                    builder: (context) =>
+                        MyOrderScreen(index: 0, userID: userProvider.user.id)),
               );
             },
             color: kPrimaryColor,

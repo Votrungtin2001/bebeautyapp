@@ -68,7 +68,7 @@ class _ErrorOrder extends State<ErrorOrder> {
           const SizedBox(
             height: 32,
           ),
-          RaisedButton(
+          MaterialButton(
             onPressed: () {},
             color: kPrimaryColor,
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),

@@ -105,6 +105,7 @@ class FavoriteListScreens extends StatelessWidget {
                           childAspectRatio: 0.5,
                         ),
                         itemBuilder: (context, index) => ProductCard(
+                          rating: true,
                           product: favoriteProducts[index],
                           press: () async {
                             List<MProduct> similarProductsFromSelectedProducts =

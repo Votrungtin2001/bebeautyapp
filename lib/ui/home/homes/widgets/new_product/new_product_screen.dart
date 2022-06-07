@@ -106,6 +106,7 @@ class NewProductScreen extends StatelessWidget {
                           childAspectRatio: 0.5,
                         ),
                         itemBuilder: (context, index) => ProductCard(
+                          rating: true,
                           product: products[index],
                           press: () async {
                             productProvider

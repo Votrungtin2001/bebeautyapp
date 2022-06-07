@@ -21,7 +21,6 @@ class AddressScreens extends StatefulWidget {
 }
 
 class _AddressScreens extends State<AddressScreens> {
-
   @override
   Widget build(BuildContext context) {
     final savedAddressProvider = Provider.of<SavedAddressProvider>(context);
@@ -77,11 +76,13 @@ class _AddressScreens extends State<AddressScreens> {
           ),
           Card(
             color: Colors.white,
-            child: FlatButton(
+            child: MaterialButton(
               onPressed: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddAddressScreen(userID: userProvider.user.id)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddAddressScreen(userID: userProvider.user.id)),
                 ),
               },
               padding: const EdgeInsets.all(8.0),

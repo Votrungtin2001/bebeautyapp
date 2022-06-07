@@ -381,6 +381,7 @@ class _Body extends State<Body> {
                   childAspectRatio: 0.5,
                 ),
                 itemBuilder: (context, index) => ProductCard(
+                  rating: true,
                   product: widget.similarProductsFromSelectedProducts[index],
                   press: () async {
                     productProvider
@@ -468,10 +469,12 @@ class _Body extends State<Body> {
               child: Description(product: product, type: "description"),
             ),
             Container(
-              child: Description(product: product, type: "product specifications"),
+              child:
+                  Description(product: product, type: "product specifications"),
             ),
             Container(
-              child: Description(product: product, type: "chemical composition"),
+              child:
+                  Description(product: product, type: "chemical composition"),
             ),
             Container(
               child: Description(product: product, type: "guideline"),

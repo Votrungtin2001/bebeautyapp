@@ -35,29 +35,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String collection = "Users";
 
-
   File? image;
   String? filename;
   late String user_id;
   late String url;
 
-  Future _getImage() async{
-    try{
-      final image = await ImagePicker().pickImage(
-          source: ImageSource.gallery
-      );
+  Future _getImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       final imageTemporaty = File(image!.path);
       setState(() {
         this.image = imageTemporaty;
         this.filename = basename(image.path);
         selectedPhoto = basename(image.path);
-      }) ;
-    }
-    on PlatformException catch(e){
+      });
+    } on PlatformException catch (e) {
       print('Failed o pick image: $e');
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     final user_model = Provider.of<UserProvider>(context);
@@ -82,7 +78,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 15,),
+              const SizedBox(
+                height: 15,
+              ),
               SizedBox(
                 height: 115,
                 width: 115,
@@ -91,7 +89,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   clipBehavior: Clip.none,
                   children: [
                     CircleAvatar(
-                      backgroundImage: image!= null ? Image.file(image!, fit:BoxFit.cover).image
+                      backgroundImage: image != null
+                          ? Image.file(image!, fit: BoxFit.cover).image
                           : Image.network(photo, fit: BoxFit.cover).image,
                     ),
                     Positioned(
@@ -109,16 +108,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             primary: Colors.white,
                             backgroundColor: Color(0xFFF5F6F9),
                           ),
-                          onPressed: ()  {
-                            _getImage()    ;                   },
-                          child: const Icon( Icons.camera_alt, color: Colors.black,),
+                          onPressed: () {
+                            _getImage();
+                          },
+                          child: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 50,
+              ),
               SizedBox(
                 child: Form(
                   key: formKey,
@@ -126,7 +131,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("   Full name",style: TextStyle(color:Colors.black,fontSize: 17),),
+                        Text(
+                          "   Full name",
+                          style: TextStyle(color: Colors.black, fontSize: 17),
+                        ),
                         Container(
                           padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
                           child: TextFormField(
@@ -137,23 +145,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: const BorderSide(color: Colors.black)
-                                ),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black)),
                                 filled: true,
-                                hintStyle: const TextStyle(color: Colors.black38),
-                                prefixIcon: Icon(Icons.person,color:Colors.black),
-                                hintText: user_model.user.getName()
-                            ),
+                                hintStyle:
+                                    const TextStyle(color: Colors.black38),
+                                prefixIcon:
+                                    Icon(Icons.person, color: Colors.black),
+                                hintText: user_model.user.getName()),
                           ),
                         ),
-                        const SizedBox(height: 15,),
-                        Text("   Phone number",style: TextStyle(color:Colors.black,fontSize: 17),),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          "   Phone number",
+                          style: TextStyle(color: Colors.black, fontSize: 17),
+                        ),
                         Container(
-                          padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
+                          padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
                           child: TextFormField(
                             controller: _phoneController,
                             keyboardType: TextInputType.number,
@@ -163,23 +178,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10),
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: const BorderSide(color: Colors.black)
-                                ),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black)),
                                 filled: true,
-                                hintStyle: const TextStyle(color: Colors.black38),
-                                prefixIcon: Icon(Icons.phone,color:Colors.black),
-                                hintText: user_model.user.getPhone()
-                            ),
+                                hintStyle:
+                                    const TextStyle(color: Colors.black38),
+                                prefixIcon:
+                                    Icon(Icons.phone, color: Colors.black),
+                                hintText: user_model.user.getPhone()),
                           ),
                         ),
-                        const SizedBox(height: 15,),
-                        Text("   Email",style: TextStyle(color:Colors.black,fontSize: 17),),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          "   Email",
+                          style: TextStyle(color: Colors.black, fontSize: 17),
+                        ),
                         Container(
-                          padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
+                          padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
                           child: TextFormField(
                             readOnly: true,
                             controller: _addressController,
@@ -189,24 +211,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
-                                fillColor: Colors.transparent,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: const BorderSide(color: Colors.black)
-                                ),
-                                filled: true,
-                                hintStyle: const TextStyle(color: Colors.black),
-                                prefixIcon: Icon(Icons.email,color:Colors.black),
-                                hintText: user_model.user.email,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                              fillColor: Colors.transparent,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black)),
+                              filled: true,
+                              hintStyle: const TextStyle(color: Colors.black),
+                              prefixIcon:
+                                  Icon(Icons.email, color: Colors.black),
+                              hintText: user_model.user.email,
+                            ),
                           ),
-                        ),
                         )
-                      ]
-                  ),
+                      ]),
                 ),
               ),
-              const SizedBox(height: 35,),
+              const SizedBox(
+                height: 35,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -214,7 +239,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {Navigator.of(context).pop();},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     child: Text("CANCEL",
                         style: TextStyle(
                             fontSize: 14,
@@ -224,33 +251,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   RaisedButton(
                     onPressed: () {
                       // Store image in storage
-                      if(selectedPhoto != "") {
+                      if (selectedPhoto != "") {
                         firebase_storage.FirebaseStorage storage =
                             firebase_storage.FirebaseStorage.instance;
-                        firebase_storage.Reference ref = storage.ref().child(filename!);
-                        firebase_storage.UploadTask uploadTask = ref.putFile(image!);
+                        firebase_storage.Reference ref =
+                            storage.ref().child(filename!);
+                        firebase_storage.UploadTask uploadTask =
+                            ref.putFile(image!);
                         uploadTask.whenComplete(() async {
                           url = await ref.getDownloadURL();
-                          if(url != "") {
+                          if (url != "") {
                             //Save image in firestore
-                            _firestore.collection(collection).doc(user_id).update({'ava': url});
+                            _firestore
+                                .collection(collection)
+                                .doc(user_id)
+                                .update({'ava': url});
                             user_model.user.setAvatarURi(url);
                           }
                         });
                       }
                       ////
-                      if(name != "") {
-                        _firestore.collection(collection).doc(user_model.user.getID()).update({'displayName': name});
+                      if (name != "") {
+                        _firestore
+                            .collection(collection)
+                            .doc(user_model.user.getID())
+                            .update({'displayName': name});
                         user_model.user.setName(name);
-
                       }
-                      if(phone != "") {
-                        _firestore.collection(collection).doc(user_model.user.getID()).update({'phone': phone});
+                      if (phone != "") {
+                        _firestore
+                            .collection(collection)
+                            .doc(user_model.user.getID())
+                            .update({'phone': phone});
                         user_model.user.setPhone(phone);
-
                       }
-                      if(address != "") {
-                        _firestore.collection(collection).doc(user_model.user.getID()).update({'address': address});
+                      if (address != "") {
+                        _firestore
+                            .collection(collection)
+                            .doc(user_model.user.getID())
+                            .update({'address': address});
                         // user_model.user.setAddress(address);
 
                       }
@@ -258,7 +297,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       _phoneController.text = "";
                       _addressController.text = "";
 
-                      Fluttertoast.showToast(msg: 'Updated your information successfully', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      Fluttertoast.showToast(
+                          msg: 'Updated your information successfully',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
                       Navigator.of(context).pop();
                     },
                     color: kPrimaryColor,
@@ -280,7 +322,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ),
       ),
-
     );
   }
 }

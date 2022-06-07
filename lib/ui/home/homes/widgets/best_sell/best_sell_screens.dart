@@ -117,6 +117,7 @@ class BestSellScreen extends StatelessWidget {
                         ),
                         itemBuilder: (context, index) => ProductCard(
                           product: products[index],
+                          rating: true,
                           press: () async {
                             productProvider
                                     .isNeededUpdated_SimilarProductsBasedUserByCBR =

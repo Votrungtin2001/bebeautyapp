@@ -1,59 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatServices {
-
   // Create Chat Room Collection in FireStore
   Future<void> createChatRoom(chatRoomId) async {
     return await FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
-        .set({'chatRoomID': chatRoomId,
+        .set({
+      'chatRoomID': chatRoomId,
       'latestMessage': "",
       'latestMessageTime': 0,
       'isSeenByAdmin': false,
-      'latestMessageSendBy': ""})
-        .catchError((e) {
+      'latestMessageSendBy': ""
+    }).catchError((e) {
       print(e);
     });
   }
 
-  Future<void> addMessage(chatRoomId, chatMessageData, message, time, isSeenByAdmin, idSender, isAdmin) async {
-
+  Future<void> addMessage(chatRoomId, chatMessageData, message, time,
+      isSeenByAdmin, idSender, isAdmin) async {
     FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
         .collection("Chat")
         .add(chatMessageData)
-        .catchError((e){
+        .catchError((e) {
       print(e.toString());
     });
 
-    FirebaseFirestore.instance
-        .collection("ChatRoom")
-        .doc(chatRoomId)
-        .update({'isSeenByAdmin': isSeenByAdmin,
+    FirebaseFirestore.instance.collection("ChatRoom").doc(chatRoomId).update({
+      'isSeenByAdmin': isSeenByAdmin,
       'latestMessage': message,
       'latestMessageTime': time,
-      'latestMessageSendBy': idSender})
-        .catchError((e){
+      'latestMessageSendBy': idSender
+    }).catchError((e) {
       print(e.toString());
     });
-
-
-
   }
 
   seen(String chatRoomId) async {
     return FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
-        .update({'isSeenByAdmin': true})
-        .catchError((e){
+        .update({'isSeenByAdmin': true}).catchError((e) {
       print(e.toString());
     });
   }
 
-  getChats(String chatRoomId) async{
+  getChats(String chatRoomId) async {
     return FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
@@ -63,11 +57,13 @@ class ChatServices {
   }
 
   Future<String> getFirstMesageUserID(String chatRoomId) async =>
-      FirebaseFirestore.instance.collection("ChatRoom")
+      FirebaseFirestore.instance
+          .collection("ChatRoom")
           .doc(chatRoomId)
           .collection("Chat")
           .orderBy('time')
-          .get().then(((result) {
+          .get()
+          .then(((result) {
         String id = "";
         id = result.docs[0].get("sendBy");
         return id;
@@ -80,4 +76,14 @@ class ChatServices {
         .snapshots();
   }
 
+  searchByName(String searchField) {
+    return FirebaseFirestore.instance
+        .collection("Users")
+        .where('name', isEqualTo: searchField)
+        .get();
+  }
+
+  getUsers() async {
+    return FirebaseFirestore.instance.collection("Users").get();
+  }
 }

@@ -89,6 +89,7 @@ class _RecommendProductState extends State<RecommendProduct>
                   return Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: ProductCard(
+                      rating: true,
                       product:
                           productProvider.similarProductsBasedUserByCBR[index],
                       //ProductCard(product: productProvider.similarProductsByCFR[index],

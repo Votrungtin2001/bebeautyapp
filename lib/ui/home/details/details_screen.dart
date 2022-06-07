@@ -35,14 +35,10 @@ class DetailsScreen extends StatelessWidget {
 
     final userProvider = Provider.of<UserProvider>(context);
 
-
     final cartProvider = Provider.of<CartProvider>(context);
 
-
     bool isFavorite = productServices.checkFavorite(
-                                userProvider.user.getID(),
-                                product.getUserFavorite());
-
+        userProvider.user.getID(), product.getUserFavorite());
 
     void addToCartDrawer(BuildContext context, MProduct product) {
       ProductServices productServices = new ProductServices();
@@ -51,7 +47,8 @@ class DetailsScreen extends StatelessWidget {
       showModalBottomSheet(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+                topLeft: Radius.circular(15.0),
+                topRight: Radius.circular(15.0)),
           ),
           isDismissible: false,
           context: context,
@@ -104,7 +101,9 @@ class DetailsScreen extends StatelessWidget {
                                 ),
                                 Row(
                                   children: [
-                                    Text(product.price.toStringAsFixed(0).toVND()),
+                                    Text(product.price
+                                        .toStringAsFixed(0)
+                                        .toVND()),
                                     Spacer(),
                                     Text('Inventory: ' +
                                         product.available.toString()),
@@ -129,11 +128,11 @@ class DetailsScreen extends StatelessWidget {
                             increaseBottonWidget: const Icon(Icons.add,
                                 color: Colors.white,
                                 size:
-                                20), // if you want to add custom add botton then here you can pass your custom widget.
+                                    20), // if you want to add custom add botton then here you can pass your custom widget.
                             decreaseBottonWidget: const Icon(Icons.remove,
                                 color: Colors.white,
                                 size:
-                                20), // if you want to add custom Remove botton then here you can pass your custom widget.
+                                    20), // if you want to add custom Remove botton then here you can pass your custom widget.
 
                             maximumValue: product.available,
                             minimumValue: 1,
@@ -143,7 +142,7 @@ class DetailsScreen extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold),
                             isEnable:
-                            true, //if you want to Enter custom value then here you should be enable.
+                                true, //if you want to Enter custom value then here you should be enable.
                             onChanged: (val) {
                               //here in val variable you'll get updated counter value.
                               print(val);
@@ -153,29 +152,32 @@ class DetailsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    RaisedButton(
+                    MaterialButton(
                       onPressed: () async {
-                        MProduct currentProduct = await productServices.getProductForRealTime(product);
-                        if(currentProduct.available < quantity) {
+                        MProduct currentProduct = await productServices
+                            .getProductForRealTime(product);
+                        if (currentProduct.available < quantity) {
                           Fluttertoast.showToast(
-                              msg: "Sorry, this product don't have enough quantity in invertory to supply you.",
+                              msg:
+                                  "Sorry, this product don't have enough quantity in invertory to supply you.",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM);
-                        }
-                        else {
-                          int totalQuantity = cartProvider.cart.getQuantityOfProductInCart(product);
-                          if(totalQuantity + quantity <= currentProduct.available) {
+                        } else {
+                          int totalQuantity = cartProvider.cart
+                              .getQuantityOfProductInCart(product);
+                          if (totalQuantity + quantity <=
+                              currentProduct.available) {
                             cartProvider.addProductInCart(product, quantity);
                             Fluttertoast.showToast(
                                 msg: "Add this product successfully.",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM);
-                          }
-                          else Fluttertoast.showToast(
-                              msg: "Sorry but the total quantity of this product you have added to your cart exceeds the quantity in stock we can supply.",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM);
-
+                          } else
+                            Fluttertoast.showToast(
+                                msg:
+                                    "Sorry but the total quantity of this product you have added to your cart exceeds the quantity in stock we can supply.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM);
                         }
                       },
                       color: kPrimaryColor,
@@ -186,7 +188,9 @@ class DetailsScreen extends StatelessWidget {
                       child: const Text(
                         "Add to cart",
                         style: TextStyle(
-                            fontSize: 14, letterSpacing: 2.2, color: Colors.white),
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.white),
                       ),
                     ),
                   ],
@@ -200,12 +204,11 @@ class DetailsScreen extends StatelessWidget {
       drawer: Drawer(),
       body: SingleChildScrollView(
           controller: _scrollController,
-          child: Column(
-            children:[
-              Body(
-              product: product,
-              similarProductsFromSelectedProducts:
-                  similarProductsFromSelectedProducts),
+          child: Column(children: [
+            Body(
+                product: product,
+                similarProductsFromSelectedProducts:
+                    similarProductsFromSelectedProducts),
           ])),
       floatingActionButton: FloatingActionButton(
         elevation: 0.5,
@@ -234,7 +237,8 @@ class DetailsScreen extends StatelessWidget {
               child: IconButton(
                 icon: const Icon(Icons.add_shopping_cart, color: kPrimaryColor),
                 onPressed: () async {
-                  MProduct recheck_product  = await productServices.getProductForRealTime(product);
+                  MProduct recheck_product =
+                      await productServices.getProductForRealTime(product);
                   addToCartDrawer(context, recheck_product);
                 },
               ),
@@ -259,7 +263,7 @@ class DetailsScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border.all(color: kPrimaryColor, width: 2.0),
                 ),
-                child: FlatButton(
+                child: MaterialButton(
                     padding: const EdgeInsets.symmetric(vertical: kLessPadding),
                     color: kPrimaryColor,
                     textColor: Colors.white,
@@ -269,9 +273,9 @@ class DetailsScreen extends StatelessWidget {
                     onPressed: () {
                       cartProvider.addProductInCart(product, 1);
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CartScreen()),
-                        );
+                        context,
+                        MaterialPageRoute(builder: (context) => CartScreen()),
+                      );
                     }),
               ),
             ),
@@ -293,9 +297,7 @@ class DetailsScreen extends StatelessWidget {
         IconButton(
           icon: SvgPicture.asset(
             "assets/icons/heart.svg",
-            color: isFavorite
-                ? Color(0xFFFF4848)
-                : Color(0xFFDBDEE4),
+            color: isFavorite ? Color(0xFFFF4848) : Color(0xFFDBDEE4),
             // productServices.checkFavorite(
             //         userProvider.user.getID(),
             //         product.getUserFavorite())
@@ -303,18 +305,16 @@ class DetailsScreen extends StatelessWidget {
             //     : Color(0xFFDBDEE4),
           ),
           onPressed: () async {
-            bool result = await productServices.updateFavorite(
-                product.getID(), userID);
+            bool result =
+                await productServices.updateFavorite(product.getID(), userID);
             if (result == true) {
-              productProvider.updateUserFavorite(
-                  userID, product.getID());
+              productProvider.updateUserFavorite(userID, product.getID());
               Fluttertoast.showToast(
                   msg: 'Add it to your favorite list successfully',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM);
             } else {
-              productProvider.updateUserFavorite(
-                  userID, product.getID());
+              productProvider.updateUserFavorite(userID, product.getID());
 
               Fluttertoast.showToast(
                   msg: 'Remove it in your favorite list successfully',
@@ -340,5 +340,3 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 }
-
-

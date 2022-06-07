@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:installLocation="preferExternal" 
     package="com.example.bebeautyapp">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -9,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    
+    
    <application
         android:label="bebeautyapp"
         android:icon="@mipmap/ic_launcher">

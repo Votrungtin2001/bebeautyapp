@@ -111,6 +111,7 @@ class DetailsBrand extends StatelessWidget {
                             childAspectRatio: 0.5,
                           ),
                           itemBuilder: (context, index) => ProductCard(
+                            rating: true,
                             product: allProductsFromBrand[index],
                             press: () async {
                               productProvider

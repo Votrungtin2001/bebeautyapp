@@ -172,7 +172,8 @@ class CenterNextButton extends StatelessWidget {
                                     width: 3,
                                   ),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0)),
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
                                 ),
                                 onPressed: () {
                                   Navigator.push(
@@ -183,7 +184,7 @@ class CenterNextButton extends StatelessWidget {
                                 },
                               ),
                             ),
-                            // FlatButton(
+                            // MaterialButton(
                             //   child: Text("Button text"),
                             //       onPressed: null,
                             //       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))

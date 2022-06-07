@@ -3,7 +3,7 @@ import 'package:bebeautyapp/model/MSavedAddress.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
-import 'package:bebeautyapp/ui/profile/widgets/gg_map.dart';
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,16 +15,13 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../repo/providers/savedAddress_provider.dart';
 import '../../../repo/providers/user_provider.dart';
 import '../../../repo/services/savedAddress_services.dart';
 
 class AddAddressScreen extends StatefulWidget {
-  const AddAddressScreen({
-    Key? key, required this.userID
-  }) : super(key: key);
+  const AddAddressScreen({Key? key, required this.userID}) : super(key: key);
 
   final String userID;
   @override
@@ -53,325 +50,339 @@ class _AddAddressScreen extends State<AddAddressScreen> {
     final savedAddressServices = new SavedAddressServices();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        elevation: 0,
-        automaticallyImplyLeading: true,
-        title: const Text("Add Address"),
-        titleTextStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700),
-        centerTitle: true,
-      ),
-      body: Form(
-        key: formKey,
-        child: Container(
-          color: kTextLightColor.withOpacity(0.15),
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints viewportConstraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: viewportConstraints.maxHeight,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 12.0),
-                            child: Text(
-                              'Contact',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1
-                                  ?.copyWith(color: kTextColor),
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          elevation: 0,
+          automaticallyImplyLeading: true,
+          title: const Text("Add Address"),
+          titleTextStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w700),
+          centerTitle: true,
+        ),
+        body: Form(
+          key: formKey,
+          child: Container(
+            color: kTextLightColor.withOpacity(0.15),
+            child: LayoutBuilder(
+              builder:
+                  (BuildContext context, BoxConstraints viewportConstraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: viewportConstraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Text(
+                                'Contact',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(color: kTextColor),
+                              ),
                             ),
                           ),
-                        ),
-
-                        StickyLabel(
-                            text: 'Name',
-                            textStyle: const TextStyle(
-                              color: kTextLightColor,
-                            )),
-                        TextFormField(
-                          focusNode: nameFocusNode,
-                          onChanged: (value) {
-                            setState(() {
-                              name = value;
-                            });
-                          },
-                          cursorColor: kTextColor,
-                          validator: (text) {
-                            if (text == null || text.isEmpty) {
-                              return 'Name is empty';
-                            }
-                            return null;
-                          },
-                          controller: _nameController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            suffixIcon: IconButton(
-                                icon: const Icon(Icons.close_rounded),
-                                onPressed: () => _nameController.clear()),
-                            focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            border: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 3,
-                        ),
-                        StickyLabel(
-                            text: 'Phone Number',
-                            textStyle: const TextStyle(
-                              color: kTextLightColor,
-                            )),
-                        TextFormField(
-                          focusNode: phoneNumberFocusNode,
-                          onChanged: (value) {
-                            setState(() {
-                              phoneNumber = value;
-                            });
-                          },
-                          cursorColor: kTextColor,
-                          validator: (text) {
-                            if (text == null || text.isEmpty) {
-                              return 'Phone Number is empty';
-                            }
-                            return null;
-                          },
-                          controller: _phoneController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            suffixIcon: IconButton(
-                                icon: const Icon(Icons.close_rounded),
-                                onPressed: () => _phoneController.clear()),
-                            focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            border: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 12.0),
-                            child: Text(
-                              'Address',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1
-                                  ?.copyWith(color: kTextColor),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          focusNode: addressFocusNode,
-                          onChanged: (value) {
-                            address = value;
-                          },
-                          cursorColor: kTextColor,
-                          validator: (text) {
-                            if (text == null || text.isEmpty) {
-                              return 'Address is empty';
-                            }
-                            return null;
-                          },
-                          controller: _addressController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            suffixIcon: IconButton(
-                                icon: const Icon(Icons.close_rounded),
-                                onPressed: () => _addressController.clear()),
-                            focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            border: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        RaisedButton(
-                            color: kThirdColor,
-                            padding: const EdgeInsets.symmetric(horizontal: 50),
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            onPressed: () async {
-                              Position position = await _getGeoLocationPosition();
-                              List<Placemark> placemarks =
-                              await placemarkFromCoordinates(position.latitude, position.longitude);
-
-                              Placemark place = placemarks[0];
+                          StickyLabel(
+                              text: 'Name',
+                              textStyle: const TextStyle(
+                                color: kTextLightColor,
+                              )),
+                          TextFormField(
+                            focusNode: nameFocusNode,
+                            onChanged: (value) {
                               setState(() {
-                                latitude = position.latitude;
-                                longitude = position.longitude;
-
-                                address =
-                                '${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}';
+                                name = value;
                               });
-
-                              var location =
-                                  'Lat: ${position.latitude} , Long: ${position.longitude}';
-
-                              _addressController.text = address;
-
-
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text("Load address success!"),
-                              ));
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => MapView()),
-                              // );
                             },
-                            child: const Text('Get current location')),
-                        RaisedButton(
-                            onPressed: () async {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapView()),
-                              );
+                            cursorColor: kTextColor,
+                            validator: (text) {
+                              if (text == null || text.isEmpty) {
+                                return 'Name is empty';
+                              }
+                              return null;
                             },
-                            color: kThirdColor,
-                            padding: const EdgeInsets.symmetric(horizontal: 50),
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            child: const Text('Go to Map')),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 50,
-                          color: Colors.white,
-                          child: Row(
-                            children: [
-                              const Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Text(
-                                  'Set default address',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'Poppins',
-                                    color: kTextColor,
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.close_rounded),
+                                  onPressed: () => _nameController.clear()),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 3,
+                          ),
+                          StickyLabel(
+                              text: 'Phone Number',
+                              textStyle: const TextStyle(
+                                color: kTextLightColor,
+                              )),
+                          TextFormField(
+                            focusNode: phoneNumberFocusNode,
+                            onChanged: (value) {
+                              setState(() {
+                                phoneNumber = value;
+                              });
+                            },
+                            cursorColor: kTextColor,
+                            validator: (text) {
+                              if (text == null || text.isEmpty) {
+                                return 'Phone Number is empty';
+                              }
+                              return null;
+                            },
+                            controller: _phoneController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.close_rounded),
+                                  onPressed: () => _phoneController.clear()),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Text(
+                                'Address',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(color: kTextColor),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          TextFormField(
+                            focusNode: addressFocusNode,
+                            onChanged: (value) {
+                              address = value;
+                            },
+                            cursorColor: kTextColor,
+                            validator: (text) {
+                              if (text == null || text.isEmpty) {
+                                return 'Address is empty';
+                              }
+                              return null;
+                            },
+                            controller: _addressController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.close_rounded),
+                                  onPressed: () => _addressController.clear()),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          RaisedButton(
+                              color: kThirdColor,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 50),
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                              onPressed: () async {
+                                Position position =
+                                    await _getGeoLocationPosition();
+                                List<Placemark> placemarks =
+                                    await placemarkFromCoordinates(
+                                        position.latitude, position.longitude);
+
+                                Placemark place = placemarks[0];
+                                setState(() {
+                                  latitude = position.latitude;
+                                  longitude = position.longitude;
+
+                                  address =
+                                      '${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}';
+                                });
+
+                                var location =
+                                    'Lat: ${position.latitude} , Long: ${position.longitude}';
+
+                                _addressController.text = address;
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("Load address success!"),
+                                ));
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => MapView()),
+                                // );
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("Load address success!"),
+                                ));
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => MapView()),
+                                // );
+                              },
+                              child: const Text('Get current location')),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            height: 50,
+                            color: Colors.white,
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text(
+                                    'Set default address',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Poppins',
+                                      color: kTextColor,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12.0),
-                                child: FlutterSwitch(
-                                  height: 25.0,
-                                  width: 50.0,
-                                  padding: 4.0,
-                                  toggleSize: 17.5,
-                                  borderRadius: 15.0,
-                                  activeColor: kPrimaryColor,
-                                  value: savedAddressProvider.defaultSavedAddress.isDefault,
-                                  onToggle: (value) {
-                                    setState(() {
-                                      savedAddressProvider.defaultSavedAddress.isDefault = value;
-                                    });
-                                  },
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 12.0),
+                                  child: FlutterSwitch(
+                                    height: 25.0,
+                                    width: 50.0,
+                                    padding: 4.0,
+                                    toggleSize: 17.5,
+                                    borderRadius: 15.0,
+                                    activeColor: kPrimaryColor,
+                                    value: savedAddressProvider
+                                        .defaultSavedAddress.isDefault,
+                                    onToggle: (value) {
+                                      setState(() {
+                                        savedAddressProvider.defaultSavedAddress
+                                            .isDefault = value;
+                                      });
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        RaisedButton(
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          RaisedButton(
+                            onPressed: () async {
+                              //Validate
+                              if (formKey.currentState!.validate()) {
+                                if (latitude == 0.0 && longitude == 0.0) {
+                                  Fluttertoast.showToast(
+                                      msg: 'This address is not vaid.',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM);
+                                } else {
+                                  MSavedAddress result =
+                                      await savedAddressServices
+                                          .addSavedAddress(
+                                              name,
+                                              phoneNumber,
+                                              address,
+                                              this.widget.userID,
+                                              false,
+                                              latitude,
+                                              longitude);
+                                  if (result.id != "") {
+                                    savedAddressProvider
+                                        .addSavedAddress(result);
+                                    setState(() {
+                                      address = "";
+                                      _addressController.text = address;
 
-                          onPressed: () async {
-                            //Validate
-                            if (formKey.currentState!.validate()) {
-                              if(latitude == 0.0 && longitude == 0.0) {
-                                Fluttertoast.showToast(msg: 'This address is not vaid.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                              }
-                              else {
-                                MSavedAddress result = await savedAddressServices.addSavedAddress(name, phoneNumber, address, this.widget.userID, false, latitude, longitude);
-                                if(result.id != "") {
-                                  savedAddressProvider.addSavedAddress(result);
-                                  setState(() {
-                                    address = "";
-                                    _addressController.text = address;
+                                      phoneNumber = "";
+                                      _phoneController.text = phoneNumber;
 
-                                    phoneNumber = "";
-                                    _phoneController.text = phoneNumber;
+                                      name = "";
+                                      _nameController.text = name;
 
-                                    name = "";
-                                    _nameController.text = name;
-
-                                    latitude = 0.0;
-                                    longitude = 0.0;
-                                  });
-                                  Fluttertoast.showToast(msg: 'Add new address succesfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                                      latitude = 0.0;
+                                      longitude = 0.0;
+                                    });
+                                    Fluttertoast.showToast(
+                                        msg: 'Add new address succesfully.',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM);
+                                  } else
+                                    Fluttertoast.showToast(
+                                        msg: 'Some errors happened.',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM);
                                 }
-                                else
-                                  Fluttertoast.showToast(msg: 'Some errors happened.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-
                               }
-                             }
-                          },
-                          color: kPrimaryColor,
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-
-                          child: const Text(
-                            "Save",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'Poppins',
-                                color: kTextColor),
-                          ),
-                        ),
-                      ],
+                            },
+                            color: kPrimaryColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: const Text(
+                              "Save",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'Poppins',
+                                  color: kTextColor),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 
   Future<Position> _getGeoLocationPosition() async {

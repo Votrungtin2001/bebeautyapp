@@ -1,7 +1,7 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
-import 'package:bebeautyapp/ui/profile/widgets/gg_map.dart';
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +9,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlng/latlng.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../model/MAddress.dart';
 import '../../../model/MSavedAddress.dart';
@@ -121,7 +121,6 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         controller: _nameController,
                         decoration: InputDecoration(
                           hintText: widget.address.fullUserName,
-
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
@@ -204,7 +203,6 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         controller: _addressController,
                         decoration: InputDecoration(
                           hintText: widget.address.fullAddressName,
-
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
@@ -240,21 +238,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      RaisedButton(
-                          onPressed: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapView()),
-                            );
-                          },
-                          color: kThirdColor,
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          child: const Text('Go to Map')),
-                      Container(height:30),
+                      Container(height: 30),
                       Container(
                         height: 50,
                         color: Colors.white,
@@ -296,15 +280,12 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         height: 20,
                       ),
                       RaisedButton(
-                        onPressed: () => {
-
-                        },
+                        onPressed: () => {},
                         color: kPrimaryColor,
                         padding: const EdgeInsets.symmetric(horizontal: 50),
                         elevation: 2,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
-
                         child: const Text(
                           "Save",
                           style: TextStyle(
