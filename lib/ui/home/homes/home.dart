@@ -25,16 +25,35 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:provider/provider.dart';
 
-import '../../../repo/providers/savedAddress_provider.dart';
+import '../../../model/MBrand.dart';
 
 class HomeScreens extends StatelessWidget {
   final productServices = new ProductServices();
   final brandServices = new BrandServices();
+
+  List<MProduct> products = [];
+  List<MProduct> suggestProducts =[];
+  List<MBrand> brands =[];
+
+
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
     final brandProvider = Provider.of<BrandProvider>(context);
     final categoryProvider = Provider.of<CategoryProvider>(context);
+
+    List<MBrand> getBrandList() {
+      return brandProvider.brands;
+    }
+
+    List<MProduct> getSuggestionProductList() {
+      productProvider.loadSuggestionBooks();
+      return productProvider.sugesstionProducts;
+    }
+
+    List<MProduct> getProductList() {
+      return productProvider.products;
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -47,7 +66,7 @@ class HomeScreens extends StatelessWidget {
             color: kTextColor,
           ),
           onPressed: () {
-            showSearch(context: context, delegate: DataSearch());
+            showSearch(context: context, delegate: DataSearch(getProductList(),getSuggestionProductList(),getBrandList()));
           },
         ),
         title: kAppNameTextPinksm,

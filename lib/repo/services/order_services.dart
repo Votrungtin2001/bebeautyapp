@@ -196,4 +196,16 @@ class OrderServices {
     var date = DateTime.fromMillisecondsSinceEpoch(time);
     return DateFormat('EEEE, d MMM, yyyy').format(date);
   }
+  //Delete Order
+
+  Future<bool> deleteOrder(String orderID) async {
+    try {
+      await refOrder.doc(orderID.toString()).delete();
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }

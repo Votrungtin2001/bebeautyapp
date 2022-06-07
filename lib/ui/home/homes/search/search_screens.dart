@@ -1,117 +1,117 @@
-import 'package:bebeautyapp/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../../constants.dart';
+import '../../../../model/MBrand.dart';
+import '../../../../model/MProduct.dart';
+import '../../../../repo/providers/product_provider.dart';
+import '../../../../repo/services/product_services.dart';
+import '../../details/details_screen.dart';
 
-class DataSearch extends SearchDelegate<String>{
+class DataSearch extends SearchDelegate<String> {
 
-  final cities = [
-  "Bhandup",
-  "Mumbai",
-  "Visakhapatnam",
-  "Coimbatore",
-  "Delhi",
-  "Bangalore",
-  "Pune",
-  "Nagpur",
-  "Lucknow"
-  "Vadodara"
-  "Indore",
-  "Jalalpur",
-  "Bhopal",
-  "Kolkata"
-  "Kanpur",
-  "New Delhi",
-  "Faridabad",
-  "Rajkot",
-  "Ghaziabad",
-  "Chennai",
-  "Meerut",
-  "Agra",
-  "Jaipur",
-  "Jabalpur",
-  "Varanasi",
-  "Allahabad",
-  "Hyderabad",
-  "Noida",
-  "Howrah",
-  "Thane"
-  ];
+  List<MProduct> products = [];
+  List<MProduct> suggestProducts = [];
+  List<MBrand> brands = [];
 
-  final recent = [
-  "New Delhi",
-  "Faridabad",
-  "Rajkot",
-  "Ghaziabad",
-  ];
+  DataSearch(List<MProduct> list1, List<MProduct> list2, List<MBrand> list3) {
+    this.products = list1;
+    this.suggestProducts = list2;
+    this.brands = list3;
+  }
+
+  String getBrands(List<MBrand> list, int ID) {
+    for(int i = 0; i < list.length; i++) {
+      if(list[i].getID() == ID) return list[i].getName();
+    }
+    return "";
+  }
 
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-  return[ IconButton(onPressed: (){query="";}, icon: Icon(Icons.close))];
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+        },)
+    ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
+        onPressed: () => Navigator.pop(context),
         icon: AnimatedIcon(
           icon: AnimatedIcons.menu_arrow,
-          progress: transitionAnimation,
-        ),
-        onPressed: (){
-          Navigator.pop(context);
-        });
+          progress: transitionAnimation,)
+    );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Container(
-        height: 100.0,
-        width: 100.0,
-        child: Card(
-            color: Colors.red,
-            child: Center(
-            child: Text(query),
-      ), // Center
-    ), // Card
-    ), // Container
-    ); // Center
+    return Card(
+      color: Colors.red,
+      child: Center(
+        child: Text(query),
+      ),
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty
-        ? recent
-        : cities.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: (){showResults(context);},
-        trailing: new Column(
-          children: <Widget>[
-            new Container(
-              child: new IconButton(
-                icon: new Icon(Icons.close_rounded),
-                onPressed: () {},
-              ),
-            ),
-          ],
-        ),
-          title: RichText(
-              text: TextSpan(
-                text: suggestionList[index].substring(0, query.length),
-                style: TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold
-                ),
-                  children: [
-                    TextSpan(
-                      text: suggestionList[index].substring(query.length),
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ]
-              ),
-          ),
-      ),
-      itemCount: suggestionList.length,
-    );
+    final productProvider = Provider.of<ProductProvider>(context);
+    final productServices = new ProductServices();
+
+    List<MProduct> results = [];
+
+    if(query.isEmpty) {
+      results = suggestProducts ;
     }
+    else {
+      List<MProduct> list = [];
+      for (int i = 0; i < products.length; i++) {
+        String search_text = query.toLowerCase();
+        String name = products[i].getName().toLowerCase();
+        if(name.startsWith(search_text))
+          list.add(products[i]);
+      }
+      results = list;
+    }
+    return ListView.builder(
+        itemCount: results.length,
+        itemBuilder: (context, index) => ListTile(
+          onTap: () async {
+            List<MProduct> similarProductsFromSelectedProducts =
+            await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, results[index]);
+            Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => DetailsScreen( product: results[index],
+                similarProductsFromSelectedProducts:
+                similarProductsFromSelectedProducts,),
+            ),
+          );
+          },
+            leading: Image.network(results[index].images[1], fit: BoxFit.cover), // image book
+          title: RichText(
+            text: TextSpan(
+                text: results[index].getName().substring(0, query.length),
+                style:TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                children: [
+                  TextSpan(
+                    text: results[index].getName().substring(query.length),
+                    style:TextStyle(color: Colors.grey,),
+                  ),
+                  TextSpan(
+                      text: '\n' + getBrands(brands, results[index].getBrandID()) + '\n \n',
+                      style: TextStyle(color: kPrimaryColor,fontSize:16)
+                  ),
+                ]
+            ),
+          )
+      )
+    );
+  }
 
 }

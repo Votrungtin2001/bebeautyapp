@@ -3,17 +3,23 @@ import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../model/MAddress.dart';
+import '../../../model/MSavedAddress.dart';
+import '../../../repo/providers/user_provider.dart';
 
 class AddressCard extends StatelessWidget {
-  const AddressCard({
-    Key? key,
+  const AddressCard({Key? key,
     required this.address,
   }) : super(key: key);
 
-  final Address address;
+  final MSavedAddress address;
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       color: Colors.white,
@@ -22,8 +28,7 @@ class AddressCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChangeAddressScreen(
-                      address: address,
+                builder: (context) => ChangeAddressScreen(address: address,
                     )),
           ),
         },
@@ -33,7 +38,7 @@ class AddressCard extends StatelessWidget {
           color: kPrimaryColor,
         ),
         minLeadingWidth: 24,
-        trailing: address.addressDefault == true
+        trailing: address.isDefault == true
             ? const Text(
                 '[Default]',
                 style: TextStyle(
@@ -41,13 +46,14 @@ class AddressCard extends StatelessWidget {
                 ),
               )
             : Text(''),
-        title: Text(address.name),
+        title: Text(address.fullUserName),
         subtitle:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(address.phoneNumber),
-          Text(address.address),
+          Text(address.userPhone),
+           Text(address.fullAddressName),
         ]),
       ),
     );
   }
 }
+

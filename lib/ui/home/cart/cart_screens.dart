@@ -190,7 +190,7 @@ class _CartScreen extends State<CartScreen> {
                                       selectedList)
                                   .toStringAsFixed(0)
                                   .toVND(),
-                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),

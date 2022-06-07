@@ -29,5 +29,6 @@ class BrandProvider with ChangeNotifier {
         brands[i].setTotalSoldOut(0);
       }
     }
+    notifyListeners();
   }
 }

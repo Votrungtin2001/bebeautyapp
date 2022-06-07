@@ -1,28 +1,26 @@
 import 'dart:io';
-
-import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/profile/widgets/change_avatar_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-class Profile extends StatefulWidget {
-  Profile({Key? key}) : super(key: key);
-  final nameFocusNode = FocusNode();
-  final phoneFocusNode = FocusNode();
-  final addressFocusNode = FocusNode();
+import '../../../constants.dart';
+import '../../../repo/providers/user_provider.dart';
+import 'change_avatar_dialog.dart';
+
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({Key? key}) : super(key: key);
+
   @override
-  _ProfileState createState() => _ProfileState();
+  _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
-class _ProfileState extends State<Profile> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   final formKey = GlobalKey<FormState>();
   String name = "";
   String phone = "";
@@ -37,248 +35,293 @@ class _ProfileState extends State<Profile> {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String collection = "Users";
 
+  File? image;
+  String? filename;
   late String user_id;
   late String url;
 
+  Future _getImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final imageTemporaty = File(image!.path);
+      setState(() {
+        this.image = imageTemporaty;
+        this.filename = basename(image.path);
+        selectedPhoto = basename(image.path);
+      });
+    } on PlatformException catch (e) {
+      print('Failed o pick image: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: kPrimaryColor,
-          title: Text("Change Profile"),
-          titleTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w700),
-          centerTitle: true,
-          automaticallyImplyLeading: true,
+    final user_model = Provider.of<UserProvider>(context);
+    String photo = user_model.user.avatarUri;
+    user_id = user_model.user.getID();
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height,
+        maxWidth: MediaQuery.of(context).size.width,
+      ),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/bg2.png"),
+          fit: BoxFit.cover,
         ),
-        body: Container(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-            maxWidth: MediaQuery.of(context).size.width,
-          ),
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/bg2.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                    height: 115,
-                    width: 115,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      clipBehavior: Clip.none,
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: AssetImage("assets/images/avt.png"),
+      ),
+      padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                height: 115,
+                width: 115,
+                child: Stack(
+                  fit: StackFit.expand,
+                  clipBehavior: Clip.none,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: image != null
+                          ? Image.file(image!, fit: BoxFit.cover).image
+                          : Image.network(photo, fit: BoxFit.cover).image,
+                    ),
+                    Positioned(
+                      right: -16,
+                      bottom: 0,
+                      child: SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: const BorderSide(color: Colors.white),
+                            ),
+                            primary: Colors.white,
+                            backgroundColor: Color(0xFFF5F6F9),
+                          ),
+                          onPressed: () {
+                            _getImage();
+                          },
+                          child: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.black,
+                          ),
                         ),
-                        Positioned(
-                          right: -16,
-                          bottom: 0,
-                          child: SizedBox(
-                            height: 46,
-                            width: 46,
-                            child: MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                side: BorderSide(color: Colors.white),
-                              ),
-                              color: Color(0xFFF5F6F9),
-                              onPressed: () async {
-                                ImageSource source = await showDialog(
-                                  context: context,
-                                  builder: (context) => ChangeAvatarDialog(),
-                                );
-                                if (source == null) return;
-                                // Provider.of<UserViewModel>(context, listen: false)
-                                //     .onAvatarChange(source);
-                              },
-                              child:
-                                  SvgPicture.asset("assets/icons/camera.svg"),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              SizedBox(
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "   Full name",
+                          style: TextStyle(color: Colors.black, fontSize: 17),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
+                          child: TextFormField(
+                            controller: _nameController,
+                            onChanged: (value) {
+                              setState(() {
+                                name = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black)),
+                                filled: true,
+                                hintStyle:
+                                    const TextStyle(color: Colors.black38),
+                                prefixIcon:
+                                    Icon(Icons.person, color: Colors.black),
+                                hintText: user_model.user.getName()),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          "   Phone number",
+                          style: TextStyle(color: Colors.black, fontSize: 17),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
+                          child: TextFormField(
+                            controller: _phoneController,
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              setState(() {
+                                phone = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10),
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black)),
+                                filled: true,
+                                hintStyle:
+                                    const TextStyle(color: Colors.black38),
+                                prefixIcon:
+                                    Icon(Icons.phone, color: Colors.black),
+                                hintText: user_model.user.getPhone()),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          "   Email",
+                          style: TextStyle(color: Colors.black, fontSize: 17),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
+                          child: TextFormField(
+                            readOnly: true,
+                            controller: _addressController,
+                            onChanged: (value) {
+                              setState(() {
+                                address = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                              fillColor: Colors.transparent,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black)),
+                              filled: true,
+                              hintStyle: const TextStyle(color: Colors.black),
+                              prefixIcon:
+                                  Icon(Icons.email, color: Colors.black),
+                              hintText: user_model.user.email,
                             ),
                           ),
                         )
-                      ],
+                      ]),
+                ),
+              ),
+              const SizedBox(
+                height: 35,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RaisedButton(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("CANCEL",
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.black)),
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+                      // Store image in storage
+                      if (selectedPhoto != "") {
+                        firebase_storage.FirebaseStorage storage =
+                            firebase_storage.FirebaseStorage.instance;
+                        firebase_storage.Reference ref =
+                            storage.ref().child(filename!);
+                        firebase_storage.UploadTask uploadTask =
+                            ref.putFile(image!);
+                        uploadTask.whenComplete(() async {
+                          url = await ref.getDownloadURL();
+                          if (url != "") {
+                            //Save image in firestore
+                            _firestore
+                                .collection(collection)
+                                .doc(user_id)
+                                .update({'ava': url});
+                            user_model.user.setAvatarURi(url);
+                          }
+                        });
+                      }
+                      ////
+                      if (name != "") {
+                        _firestore
+                            .collection(collection)
+                            .doc(user_model.user.getID())
+                            .update({'displayName': name});
+                        user_model.user.setName(name);
+                      }
+                      if (phone != "") {
+                        _firestore
+                            .collection(collection)
+                            .doc(user_model.user.getID())
+                            .update({'phone': phone});
+                        user_model.user.setPhone(phone);
+                      }
+                      if (address != "") {
+                        _firestore
+                            .collection(collection)
+                            .doc(user_model.user.getID())
+                            .update({'address': address});
+                        // user_model.user.setAddress(address);
+
+                      }
+                      _nameController.text = "";
+                      _phoneController.text = "";
+                      _addressController.text = "";
+
+                      Fluttertoast.showToast(
+                          msg: 'Updated your information successfully',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
+                      Navigator.of(context).pop();
+                    },
+                    color: kPrimaryColor,
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text(
+                      "SAVE",
+                      style: TextStyle(
+                          fontSize: 14,
+                          letterSpacing: 2.2,
+                          color: Colors.white),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  SizedBox(
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            TextFormField(
-                              controller: _nameController,
-                              focusNode: widget.nameFocusNode,
-                              onChanged: (value) {
-                                name = value;
-                              },
-                              cursorColor: kTextColor,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                prefixIcon: Icon(
-                                  Icons.person,
-                                  color: Colors.black,
-                                ),
-                                hintText: "Full Name",
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                      color: kPrimaryColor, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: Colors.black, width: 1),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: Colors.red, width: 1),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              focusNode: widget.phoneFocusNode,
-                              controller: _phoneController,
-                              keyboardType: TextInputType.number,
-                              onChanged: (value) {
-                                setState(() {
-                                  phone = value;
-                                });
-                              },
-                              cursorColor: kTextColor,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                prefixIcon: Icon(
-                                  Icons.phone,
-                                  color: Colors.black,
-                                ),
-                                hintText: "Phone Number",
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                      color: kPrimaryColor, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: Colors.black, width: 1),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: Colors.red, width: 1),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              focusNode: widget.addressFocusNode,
-                              controller: _addressController,
-                              onChanged: (value) {
-                                setState(() {
-                                  address = value;
-                                });
-                              },
-                              cursorColor: kTextColor,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                prefixIcon: Icon(
-                                  Icons.edit_location,
-                                  color: Colors.black,
-                                ),
-                                hintText: "Address",
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                      color: kPrimaryColor, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: Colors.black, width: 1),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: Colors.red, width: 1),
-                                ),
-                              ),
-                            ),
-                          ]),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 35,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          side: BorderSide(color: kPrimaryColor, width: 1),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text("CANCEL",
-                            style: TextStyle(
-                                fontSize: 14,
-                                letterSpacing: 2.2,
-                                color: Colors.black)),
-                      ),
-                      MaterialButton(
-                        onPressed: () {},
-                        color: kPrimaryColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(
-                          "SAVE",
-                          style: TextStyle(
-                              fontSize: 14,
-                              letterSpacing: 2.2,
-                              color: Colors.white),
-                        ),
-                      )
-                    ],
                   )
                 ],
-              ),
-            ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -4,6 +4,8 @@ import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class UserServices {
@@ -151,5 +153,65 @@ class UserServices {
         .where('id', isEqualTo: id)
         .get();
   }
+  Future<bool> updateUserInformation(MUser user) async {
+    try {
+      await userRef.doc(user.getID().toString()).update({'dob': user.getDob()});
+      if(user.getName() != "") {
+        await userRef.doc(user.getID().toString()).update({'displayName': user.getName()});
+      }
+      else if(user.getAvatarUri() != "") {
+        await userRef.doc(user.getID().toString()).update({'avatarUri': user.getAvatarUri()});
+      }
+      // else if(user.getGender() > 0) {
+      //   await userRef.doc(user.getID().toString()).update({'gender': user.getGender()});
+      // }
+       if(user.getPhone() != "") {
+        await userRef.doc(user.getID().toString()).update({'phone': user.getPhone()});
+      }
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 
+  Future<bool> updateUserAvatar(String userID, String imageUrl) async {
+    try {
+      if(imageUrl != "") {
+        await userRef.doc(userID).update({'avatarUri': imageUrl});
+      }
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> changePassword(String currentPassword, String newPassword) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    User user = _auth.currentUser!;
+    String email = user.email.toString();
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: currentPassword,
+      );
+
+      user.updatePassword(newPassword).then((_){
+        Fluttertoast.showToast(msg: 'Your password changed successfully', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+      }).catchError((error){
+        Fluttertoast.showToast(msg: 'Some errors occur. Your password not changed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+        //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
+      });
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(msg: 'No user found for that email', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(msg: 'Not match with your current password', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+      }
+      return false;
+    }
+  }
 }

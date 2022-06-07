@@ -93,7 +93,6 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                               ),
                             ),
                           ),
-
                           StickyLabel(
                               text: 'Name',
                               textStyle: const TextStyle(
@@ -220,7 +219,13 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          ElevatedButton(
+                          RaisedButton(
+                              color: kThirdColor,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 50),
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
                               onPressed: () async {
                                 Position position =
                                     await _getGeoLocationPosition();
@@ -251,55 +256,64 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                 //   MaterialPageRoute(
                                 //       builder: (context) => MapView()),
                                 // );
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("Load address success!"),
+                                ));
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => MapView()),
+                                // );
                               },
                               child: const Text('Get current location')),
-
                           const SizedBox(
                             height: 20,
                           ),
-                          // Container(
-                          //   height: 50,
-                          //   color: Colors.white,
-                          //   child: Row(
-                          //     children: [
-                          //       const Padding(
-                          //         padding: const EdgeInsets.only(left: 12.0),
-                          //         child: Text(
-                          //           'Set default address',
-                          //           style: TextStyle(
-                          //             fontSize: 16,
-                          //             fontFamily: 'Poppins',
-                          //             color: kTextColor,
-                          //           ),
-                          //         ),
-                          //       ),
-                          //       const Spacer(),
-                          //       Padding(
-                          //         padding: const EdgeInsets.only(right: 12.0),
-                          //         child: FlutterSwitch(
-                          //           height: 25.0,
-                          //           width: 50.0,
-                          //           padding: 4.0,
-                          //           toggleSize: 17.5,
-                          //           borderRadius: 15.0,
-                          //           activeColor: kPrimaryColor,
-                          //           value: addressDefault,
-                          //           onToggle: (value) {
-                          //             setState(() {
-                          //               addressDefault = value;
-                          //             });
-                          //           },
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          MaterialButton(
+                          Container(
+                            height: 50,
                             color: Colors.white,
-                            minWidth: MediaQuery.of(context).size.width - 30,
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text(
+                                    'Set default address',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Poppins',
+                                      color: kTextColor,
+                                    ),
+                                  ),
+                                ),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 12.0),
+                                  child: FlutterSwitch(
+                                    height: 25.0,
+                                    width: 50.0,
+                                    padding: 4.0,
+                                    toggleSize: 17.5,
+                                    borderRadius: 15.0,
+                                    activeColor: kPrimaryColor,
+                                    value: savedAddressProvider
+                                        .defaultSavedAddress.isDefault,
+                                    onToggle: (value) {
+                                      setState(() {
+                                        savedAddressProvider.defaultSavedAddress
+                                            .isDefault = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          RaisedButton(
                             onPressed: () async {
                               //Validate
                               if (formKey.currentState!.validate()) {
@@ -347,7 +361,11 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                 }
                               }
                             },
-                            padding: const EdgeInsets.all(8.0),
+                            color: kPrimaryColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
                             child: const Text(
                               "Save",
                               style: TextStyle(
@@ -355,7 +373,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                   fontFamily: 'Poppins',
                                   color: kTextColor),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),

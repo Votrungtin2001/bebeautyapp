@@ -9,17 +9,17 @@ import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_column.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/recommend_product/recommend_product_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/same_brand/same_brand.dart';
-import 'package:bebeautyapp/ui/home/product_details/components/review_ui.dart';
-import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
-import 'package:bebeautyapp/ui/home/product_details/reviews/reviews.dart';
-import 'package:carousel_pro/carousel_pro.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../model/MReview.dart';
+import '../../../../repo/providers/review_provider.dart';
+import '../../../review/components/review_card.dart';
+import '../../../review/reviews.dart';
 import '../../homes/widgets/recommend_product/recommend_product.dart';
 import 'description.dart';
 import 'product_title_with_image.dart';
@@ -45,7 +45,14 @@ class _Body extends State<Body> {
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
+    final reviewProvider = Provider.of<ReviewProvider>(context);
+    List<ReviewModel> reviewPro =[];
 
+    for (int i = 0;i < reviewProvider.reviews.length ; i++){
+      if (reviewProvider.reviews[i].idPro == widget.product.id.toString()){
+        reviewPro.add(reviewProvider.reviews[i]);
+      }
+    }
     int currentIndex = 0;
     NumberFormat currencyformat = new NumberFormat("#,###,##0");
     bool isMore = false;
@@ -202,45 +209,90 @@ class _Body extends State<Body> {
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              StickyLabel(
-                text: "Review",
-                textStyle: kPop600TextStyle,
-              ),
-              GestureDetector(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Reviews(),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     StickyLabel(
+          //       text: "Review",
+          //       textStyle: kPop600TextStyle,
+          //     ),
+          //     GestureDetector(
+          //       onTap: () => Navigator.of(context).push(
+          //         MaterialPageRoute(
+          //           builder: (context) => Reviews(),
+          //         ),
+          //       ),
+          //       child: Padding(
+          //         padding: const EdgeInsets.only(right: kDefaultPadding),
+          //         child: StickyLabel(
+          //           text: "View All",
+          //           textStyle: TextStyle(
+          //               color: kTextLightColor,
+          //               fontSize: 16.0,
+          //               fontFamily: "Poppins"),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // ListView.separated(
+          //   shrinkWrap: true,
+          //   physics: NeverScrollableScrollPhysics(),
+          //   padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
+          //   itemCount: 3,
+          //   itemBuilder: (context, index) {
+          //     return ReviewUI(
+          //       image: reviewList[index].image,
+          //       name: reviewList[index].name,
+          //       date: reviewList[index].date,
+          //       comment: reviewList[index].comment,
+          //       rating: reviewList[index].rating,
+          //       onPressed: () => print("More Action $index"),
+          //       onTap: () => setState(() {
+          //         isMore = !isMore;
+          //       }),
+          //       isLess: isMore,
+          //     );
+          //   },
+          //   separatorBuilder: (context, index) {
+          //     return const Divider(
+          //       thickness: 2.0,
+          //       color: kAccentColor,
+          //     );
+          //   },
+          // ),
+          Padding(
+            padding:
+            EdgeInsets.only(left: (20), right: (20),bottom: (0)),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Reviews",
+                    style: TextStyle(
+                      fontSize: (18),
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: kDefaultPadding),
-                  child: StickyLabel(
-                    text: "View All",
-                    textStyle: TextStyle(
-                        color: kTextLightColor,
-                        fontSize: 16.0,
-                        fontFamily: "Poppins"),
+
+                  Text(
+                    reviewPro.length == 0 ? " " : reviewPro.length.toString() + " reviews",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: kSecondaryColor,
+                    ),
                   ),
-                ),
-              ),
-            ],
+                ]
+            ),
           ),
-          ListView.separated(
+          reviewPro.length != 0 ? ListView.separated(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
-            itemCount: 3,
+            padding: EdgeInsets.all((15)),
+            itemCount: reviewPro.length,
             itemBuilder: (context, index) {
-              return ReviewUI(
-                image: reviewList[index].image,
-                name: reviewList[index].name,
-                date: reviewList[index].date,
-                comment: reviewList[index].comment,
-                rating: reviewList[index].rating,
-                onPressed: () => print("More Action $index"),
+              return ReviewCard(
+                review: reviewPro[index],
                 onTap: () => setState(() {
                   isMore = !isMore;
                 }),
@@ -248,19 +300,48 @@ class _Body extends State<Body> {
               );
             },
             separatorBuilder: (context, index) {
-              return const Divider(
+              return Divider(
                 thickness: 2.0,
                 color: kAccentColor,
               );
             },
+          ) : Padding(
+            padding:
+
+            EdgeInsets.all((15)),
+            child: Align(
+              child: Text(
+                  "No reviews yet.",
+                  style: TextStyle(color: kSecondaryColor)
+              ),
+              alignment: Alignment.center,),
           ),
+
+
+          reviewPro.length != 0 ? Padding(
+            padding:
+
+            EdgeInsets.all((15)),
+            child: Align(child: GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Reviews(id: widget.product.id)));
+              },
+              child: Text(
+                  "See More",
+                  style: TextStyle(color: Color.fromARGB(255, 125, 133, 151))
+              ),
+            ),
+              alignment: Alignment.center,),
+
+          ) : SizedBox.shrink(),
           kSmallDivider,
           SameBrand(productServices.getProductsFromSameBrand(
               productProvider.products, widget.product)),
           const SizedBox(
             height: 16,
           ),
-          Row(children: const <Widget>[
+          Row(
+              children: const <Widget>[
             Expanded(
                 child: Divider(
               indent: 24,

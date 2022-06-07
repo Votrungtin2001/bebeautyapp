@@ -15,6 +15,7 @@ import '../../../repo/providers/cart_provider.dart';
 import '../../../repo/providers/product_provider.dart';
 import '../../../repo/providers/user_provider.dart';
 import '../../../repo/services/product_services.dart';
+import '../../chat_user/chat.dart';
 
 class DetailsScreen extends StatelessWidget {
   final MProduct product;
@@ -203,10 +204,12 @@ class DetailsScreen extends StatelessWidget {
       drawer: Drawer(),
       body: SingleChildScrollView(
           controller: _scrollController,
-          child: Body(
-              product: product,
-              similarProductsFromSelectedProducts:
-                  similarProductsFromSelectedProducts)),
+          child: Column(children: [
+            Body(
+                product: product,
+                similarProductsFromSelectedProducts:
+                    similarProductsFromSelectedProducts),
+          ])),
       floatingActionButton: FloatingActionButton(
         elevation: 0.5,
         backgroundColor: kPrimaryColor,
@@ -240,15 +243,20 @@ class DetailsScreen extends StatelessWidget {
                 },
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(right: 8.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: kPrimaryColor, width: 2.0),
-              ),
-              child: IconButton(
-                  icon: const Icon(Icons.chat, color: kPrimaryColor),
-                  onPressed: () {}),
-            ),
+            // Container(
+            //   margin: const EdgeInsets.only(right: 8.0),
+            //   decoration: BoxDecoration(
+            //     border: Border.all(color: kPrimaryColor, width: 2.0),
+            //   ),
+            //   child: IconButton(
+            //       icon: const Icon(Icons.chat, color: kPrimaryColor),
+            //       onPressed: () {
+            //           Navigator.push(
+            //             context,
+            //             MaterialPageRoute(builder: (context) => Chat(user_id: '', chatRoomId: '', user_name: '',)),
+            //           );
+            //       }),
+            // ),
             Expanded(
               child: Container(
                 height: 52.0,
@@ -263,10 +271,11 @@ class DetailsScreen extends StatelessWidget {
                         style:
                             TextStyle(fontSize: 18.0, fontFamily: 'Poppins')),
                     onPressed: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => CheckOut()),
-                      //   );
+                      cartProvider.addProductInCart(product, 1);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CartScreen()),
+                      );
                     }),
               ),
             ),
@@ -306,6 +315,7 @@ class DetailsScreen extends StatelessWidget {
                   gravity: ToastGravity.BOTTOM);
             } else {
               productProvider.updateUserFavorite(userID, product.getID());
+
               Fluttertoast.showToast(
                   msg: 'Remove it in your favorite list successfully',
                   toastLength: Toast.LENGTH_SHORT,

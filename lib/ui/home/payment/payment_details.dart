@@ -108,7 +108,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
         automaticallyImplyLeading: false,
         leading: BackButton(color: kPrimaryColor),
         title: Text(
-          'Checkout',
+          'Check out',
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'Poppins',
@@ -260,7 +260,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Shipping Subtotal Subtotal',
+                          'Shipping Subtotal',
                           style: TextStyle(
                               color: kTextLightColor,
                               fontWeight: FontWeight.w400,
