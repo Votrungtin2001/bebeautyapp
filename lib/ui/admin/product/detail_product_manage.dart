@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bebeautyapp/model/MBrand.dart';
 import 'package:bebeautyapp/model/MCategory.dart';
 import 'package:bebeautyapp/model/MGender.dart';
@@ -14,6 +16,7 @@ import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loa
 import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
@@ -56,8 +59,8 @@ class _DetailsProductManageScreenState
       originId,
       skinId,
       structureId,
-      sesstionId;
-
+      sessionId;
+  List<String> imageProduct = [];
   @override
   void initState() {
     super.initState();
@@ -74,6 +77,7 @@ class _DetailsProductManageScreenState
     _priceController.text = widget.products.price.toStringAsFixed(0);
     _discountRateController.text =
         widget.products.defaultDiscountRate.toStringAsFixed(0);
+
     _quantityController.text = widget.products.available.toStringAsFixed(0);
     brandId = widget.products.getBrandID();
     categoryId = widget.products.getCategoryID();
@@ -81,13 +85,14 @@ class _DetailsProductManageScreenState
     originId = widget.products.getOriginID();
     skinId = widget.products.getSkinID();
     structureId = widget.products.getStructureID();
-    sesstionId = widget.products.getSessionID();
+    sessionId = widget.products.getSessionID();
+    imageProduct = widget.products.images;
   }
 
   @override
   Widget build(BuildContext context) {
     final ScrollController _scrollController = ScrollController();
-    final _formKey = GlobalKey<FormState>();
+
     final editButtonController = RoundedLoadingButtonController();
 
     final brandProvider = Provider.of<BrandProvider>(context);
@@ -137,6 +142,21 @@ class _DetailsProductManageScreenState
       MStructure(id: 10, name: "Dạng dầu"),
       MStructure(id: 11, name: "Dạng rắn")
     ];
+
+    final ImagePicker imagePicker = ImagePicker();
+    List<XFile>? imageFileList = [];
+    List<dynamic> images = [];
+    void selectImages() async {
+      final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+      if (selectedImages!.isNotEmpty) {
+        imageFileList.addAll(selectedImages);
+      }
+      setState(() {
+        images = imageFileList.map((e) => e.name).toList();
+      });
+      print("Image List Length:" + imageFileList.length.toString());
+      setState(() {});
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -382,10 +402,10 @@ class _DetailsProductManageScreenState
                             fontSize: 16,
                           ),
                           underline: SizedBox(),
-                          value: sesstionId.toString(),
+                          value: sessionId.toString(),
                           onChanged: (String? newValue) {
                             setState(() {
-                              sesstionId = int.parse(newValue.toString());
+                              sessionId = int.parse(newValue.toString());
                             });
                           },
                           items: session
@@ -694,26 +714,49 @@ class _DetailsProductManageScreenState
                     ),
                   ),
                 ),
+                MaterialButton(
+                  color: kPrimaryColor,
+                  onPressed: () {
+                    selectImages();
+                  },
+                  child: Text(
+                    'Select Images',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                images.isNotEmpty
+                    ? Container(
+                        height: 200,
+                        child: GridView.count(
+                          scrollDirection: Axis.horizontal,
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 10,
+                          children: List.generate(images.length, (index) {
+                            return Image.file(
+                              File(imageFileList[index].path),
+                              fit: BoxFit.cover,
+                            );
+                          }),
+                        ),
+                      )
+                    : Container(
+                        height: 200,
+                        child: GridView.count(
+                          scrollDirection: Axis.horizontal,
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 0,
+                          children: List.generate(imageProduct.length, (index) {
+                            return Image.network(
+                              imageProduct[index],
+                              fit: BoxFit.cover,
+                            );
+                          }),
+                        )),
                 CustomRoundedLoadingButton(
                   text: 'Save',
                   controller: editButtonController,
                   onPress: () {},
                 ),
-                Container(
-                    width: 400,
-                    height: 40,
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(28.0),
-                                      side: BorderSide(color: kPrimaryColor)))),
-                      onPressed: () {},
-                      child: Text('Delete',
-                          style: TextStyle(
-                              color: kPrimaryColor, fontSize: 20, height: 1.5)),
-                    )),
                 SizedBox(
                   height: 16.0,
                 )

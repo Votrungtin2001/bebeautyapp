@@ -67,7 +67,7 @@ class _BrandManageState extends State<BrandManage> {
               ),
             ),
             icon: const Icon(
-              Icons.edit,
+              Icons.add,
               color: Colors.white,
             ),
           ),

@@ -24,11 +24,13 @@ class _OrderManageScreen extends State<OrderManageScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
+  Stream<QuerySnapshot>? pendingOrders;
   Stream<QuerySnapshot>? payOrders;
   Stream<QuerySnapshot>? shippingOrders;
   Stream<QuerySnapshot>? receivedOrders;
   Stream<QuerySnapshot>? completedOrders;
   Stream<QuerySnapshot>? ratingOrders;
+  Stream<QuerySnapshot>? cancelledOrders;
   final orderServices = new OrderServices();
 
   @override
@@ -43,40 +45,54 @@ class _OrderManageScreen extends State<OrderManageScreen>
   getOrders() async {
     await orderServices.getOrderByStatus(0).then((snapshots) {
       setState(() {
-        payOrders = snapshots;
+        pendingOrders = snapshots;
       });
     });
 
     await orderServices.getOrderByStatus(1).then((snapshots) {
       setState(() {
-        shippingOrders = snapshots;
+        payOrders = snapshots;
       });
     });
 
     await orderServices.getOrderByStatus(2).then((snapshots) {
       setState(() {
-        receivedOrders = snapshots;
+        shippingOrders = snapshots;
       });
     });
 
     await orderServices.getOrderByStatus(3).then((snapshots) {
       setState(() {
-        completedOrders = snapshots;
+        receivedOrders = snapshots;
       });
     });
 
     await orderServices.getOrderByStatus(4).then((snapshots) {
       setState(() {
+        completedOrders = snapshots;
+      });
+    });
+
+    await orderServices.getOrderByStatus(5).then((snapshots) {
+      setState(() {
         ratingOrders = snapshots;
+      });
+    });
+
+    await orderServices.getOrderByStatus(-1).then((snapshots) {
+      setState(() {
+        cancelledOrders = snapshots;
       });
     });
   }
 
   static const List<Tab> _tabs = [
+    Tab(text: 'Pending'),
     Tab(text: 'To Pay'),
     Tab(text: 'To Ship'),
     Tab(text: 'To Receive'),
     Tab(text: 'Completed'),
+    Tab(text: 'Rating'),
     Tab(text: 'Cancelled'),
   ];
 
@@ -90,6 +106,44 @@ class _OrderManageScreen extends State<OrderManageScreen>
       Text('No Orders Yet'),
     ],
   );
+
+  Widget PendingOrderList(List<MProduct> products) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: pendingOrders,
+        builder: (context, snapshot) {
+          return snapshot.hasData && snapshot.data!.docs.length > 0
+              ? ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
+
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainerManage(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
+              : Center(child: not_orders);
+        });
+  }
 
   Widget PayOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
@@ -243,6 +297,43 @@ class _OrderManageScreen extends State<OrderManageScreen>
         });
   }
 
+  Widget RatingOrderList(List<MProduct> products) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: ratingOrders,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainerManage(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
+              : Center(child: not_orders);
+        });
+  }
+
   Widget CancelledOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
         stream: ratingOrders,
@@ -285,7 +376,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
     final productProvider = Provider.of<ProductProvider>(context);
 
     return DefaultTabController(
-      length: 5,
+      length: 7,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -332,10 +423,12 @@ class _OrderManageScreen extends State<OrderManageScreen>
           // Uncomment the line below and remove DefaultTabController if you want to use a custom TabController
           // controller: _tabController,
           children: [
+            PendingOrderList(productProvider.products),
             PayOrderList(productProvider.products),
             ShippingOrderList(productProvider.products),
             ReceivedOrderList(productProvider.products),
             CompletedOrderList(productProvider.products),
+            RatingOrderList(productProvider.products),
             CancelledOrderList(productProvider.products),
           ],
         ),

@@ -24,11 +24,13 @@ class TrackOrderManage extends StatefulWidget {
 class _TrackOrderManageState extends State<TrackOrderManage> {
   final orderServices = new OrderServices();
   List<MStatus> status = [
-    MStatus(id: 0, name: "To Pay"),
-    MStatus(id: 1, name: "To Ship"),
-    MStatus(id: 2, name: "To Receive"),
-    MStatus(id: 3, name: "Completed"),
-    MStatus(id: 4, name: "Cancelled"),
+    MStatus(id: 0, name: "Pending"),
+    MStatus(id: 1, name: "To Pay"),
+    MStatus(id: 2, name: "To Ship"),
+    MStatus(id: 3, name: "To Receive"),
+    MStatus(id: 4, name: "Completed"),
+    MStatus(id: 5, name: "Rating"),
+    MStatus(id: -1, name: "Cancelled"),
   ];
 
   late int statusId;
@@ -57,12 +59,28 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
-          IconButton(
-              icon: const Icon(
-                Icons.delete,
-                color: kPrimaryColor,
-              ),
-              onPressed: () => {}),
+          widget.order.status == 0
+              ? TextButton(
+                  onPressed: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Cancell',
+                      style: TextStyle(color: kPrimaryColor),
+                    ),
+                  ))
+              : widget.order.status == 1
+                  ? TextButton(
+                      onPressed: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Cancell',
+                          style: TextStyle(color: kPrimaryColor),
+                        ),
+                      ),
+                    )
+                  : Container(),
         ],
       ),
       body: SingleChildScrollView(
@@ -146,42 +164,54 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                           color: kTextLightColor,
                         ),
                       ),
-                      StickyLabel(
-                          text: 'Status', textStyle: TextStyle(fontSize: 14)),
-                      Padding(
-                          padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
-                          child: Container(
-                              padding: EdgeInsets.only(left: 10, right: 10),
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.black, width: 1),
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: DropdownButton<String>(
-                                hint: Text("Select"),
-                                dropdownColor: Colors.white,
-                                icon: Icon(Icons.arrow_drop_down),
-                                iconSize: 36,
-                                isExpanded: true,
-                                style: TextStyle(
-                                  color: Colors.black38,
-                                  fontSize: 16,
-                                ),
-                                underline: SizedBox(),
-                                value: statusId.toString(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    statusId = int.parse(newValue.toString());
-                                  });
-                                },
-                                items: status.map<DropdownMenuItem<String>>(
-                                    (MStatus value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value.id.toString(),
-                                    child: Text(value.getName()),
-                                  );
-                                }).toList(),
-                              ))),
+                      widget.order.status != 5
+                          ? Column(
+                              children: [
+                                StickyLabel(
+                                    text: 'Status',
+                                    textStyle: TextStyle(fontSize: 14)),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 4.0, bottom: 4.0),
+                                    child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.black, width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: DropdownButton<String>(
+                                          hint: Text("Select"),
+                                          dropdownColor: Colors.white,
+                                          icon: Icon(Icons.arrow_drop_down),
+                                          iconSize: 36,
+                                          isExpanded: true,
+                                          style: TextStyle(
+                                            color: Colors.black38,
+                                            fontSize: 16,
+                                          ),
+                                          underline: SizedBox(),
+                                          value: statusId.toString(),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              statusId = int.parse(
+                                                  newValue.toString());
+                                            });
+                                          },
+                                          items: status
+                                              .map<DropdownMenuItem<String>>(
+                                                  (MStatus value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value.id.toString(),
+                                              child: Text(value.getName()),
+                                            );
+                                          }).toList(),
+                                        ))),
+                              ],
+                            )
+                          : Container(),
                       Row(
                         children: [
                           Column(

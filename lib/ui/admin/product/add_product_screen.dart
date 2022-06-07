@@ -47,14 +47,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _discountRateController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
-
+  final TextEditingController _searchCountController = TextEditingController();
   late int brandId,
       categoryId,
       genderId,
       originId,
       skinId,
       structureId,
-      sesstionId;
+      sessionId;
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     originId = 1;
     skinId = 1;
     structureId = 1;
-    sesstionId = 1;
+    sessionId = 1;
   }
 
   @override
@@ -121,15 +121,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
       MStructure(id: 10, name: "Dạng dầu"),
       MStructure(id: 11, name: "Dạng rắn")
     ];
+
     final ImagePicker imagePicker = ImagePicker();
     List<XFile>? imageFileList = [];
     List<File> images = [];
     void selectImages() async {
       final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
       if (selectedImages!.isNotEmpty) {
-        imageFileList!.addAll(selectedImages);
+        imageFileList.addAll(selectedImages);
       }
-      print("Image List Length:" + imageFileList!.length.toString());
+
+      print("Image List Length:" + imageFileList.length.toString());
       setState(() {});
     }
 
@@ -156,26 +158,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    selectImages();
-                  },
-                  child: Text('Select Images'),
-                ),
-                Container(
-                  height: 200,
-                  child: GridView.count(
-                    scrollDirection: Axis.horizontal,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    children: List.generate(images.length, (index) {
-                      return Image.file(
-                        File(imageFileList[index].path),
-                        fit: BoxFit.cover,
-                      );
-                    }),
-                  ),
-                ),
                 StickyLabel(text: 'Name', textStyle: TextStyle(fontSize: 14)),
                 TextFormField(
                   onChanged: (value) {
@@ -397,10 +379,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             fontSize: 16,
                           ),
                           underline: SizedBox(),
-                          value: sesstionId.toString(),
+                          value: sessionId.toString(),
                           onChanged: (String? newValue) {
                             setState(() {
-                              sesstionId = int.parse(newValue.toString());
+                              sessionId = int.parse(newValue.toString());
                             });
                           },
                           items: session
@@ -480,6 +462,38 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             );
                           }).toList(),
                         ))),
+                StickyLabel(
+                    text: 'Price(đ)', textStyle: TextStyle(fontSize: 14)),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    _priceController.text = value;
+                  },
+                  controller: _priceController,
+                  cursorColor: kTextColor,
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Price is empty';
+                    } else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: kPrimaryColor, width: 1),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.black, width: 1),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.red, width: 1),
+                    ),
+                  ),
+                ),
                 StickyLabel(
                     text: 'Market Price(đ)',
                     textStyle: TextStyle(fontSize: 14)),
@@ -707,6 +721,61 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide(color: Colors.red, width: 1),
                     ),
+                  ),
+                ),
+                StickyLabel(
+                    text: 'Search Count', textStyle: TextStyle(fontSize: 14)),
+                TextFormField(
+                  onChanged: (value) {
+                    _searchCountController.text = value;
+                  },
+                  controller: _searchCountController,
+                  cursorColor: kTextColor,
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Search Count is empty';
+                    } else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: kPrimaryColor, width: 1),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.black, width: 1),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.red, width: 1),
+                    ),
+                  ),
+                ),
+                MaterialButton(
+                  color: kPrimaryColor,
+                  onPressed: () {
+                    selectImages();
+                  },
+                  child: Text(
+                    'Select Images',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                Container(
+                  height: 200,
+                  child: GridView.count(
+                    scrollDirection: Axis.horizontal,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    children: List.generate(images.length, (index) {
+                      return Image.file(
+                        File(imageFileList[index].path),
+                        fit: BoxFit.cover,
+                      );
+                    }),
                   ),
                 ),
                 CustomRoundedLoadingButton(
