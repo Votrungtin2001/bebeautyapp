@@ -12,6 +12,7 @@ class ProductProvider with ChangeNotifier {
   final orderServices = new OrderServices();
   List<MProduct> products = [];
   List<MProduct> allProductsFromCategory = [];
+  List<MProduct> sugesstionProducts = [];
 
   List<MProduct> similarProductsBasedUserByCBR = [];
   bool isNeededUpdated_SimilarProductsBasedUserByCBR = true;
@@ -82,6 +83,43 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> getProductsInOrder(List<MProduct> products, String orderID) async {
     productsInOrder = await orderServices.getProductsInOrder(orderID, products);
+    notifyListeners();
+  }
+  void addProduct(MProduct product) {
+    products.add(product);
+    notifyListeners();
+  }
+
+  void updateProduct(MProduct product) {
+    for(int i = 0; i < products.length; i++) {
+      if(products[i].getID() == product.getID()) {
+        products[i].setName(product.getName());
+        products[i].setEngName(product.getEngName());
+        products[i].setBrandID(product.getBrandID());
+        products[i].setCategoryID(product.getCategoryID());
+        products[i].setOriginID(product.getOriginID());
+        products[i].setSkinID(product.getSkinID());
+        products[i].setSessionID(product.getSessionID());
+        products[i].setGenderID(product.getGenderID());
+        products[i].setStructureID(product.getStructureID());
+        products[i].setMarketPrice(product.getMarketPrice());
+        products[i].setImportPrice(product.getImportPrice());
+        products[i].setDefaultDiscountRate(product.getDefaultDiscountRate());
+        products[i].setPrice(product.getPrice());
+        products[i].setChemicalComposition(product.getChemicalComposition());
+        products[i].setGuideLine(product.getGuideLine());
+        products[i].setImages(product.getImages());
+        products[i].setUserFavorite(product.getUserFavorite());
+        products[i].setAvailable(product.getAvailable());
+        products[i].setPopularSearchTitle(product.getPopularSearchTitle());
+        products[i].setDescription(product.getDescription());
+      }
+    }
+    notifyListeners();
+  }
+
+  loadSuggestionBooks({int? id})async{
+    sugesstionProducts = await productServices.getSuggestionBooks();
     notifyListeners();
   }
 }

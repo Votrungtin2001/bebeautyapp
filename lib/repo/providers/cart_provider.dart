@@ -15,7 +15,9 @@ class CartProvider with ChangeNotifier {
 
   void addProductInCart(MProduct product, int quantity) {
     cartServices.addProductInCart(this.cart, product, quantity);
+
     notifyListeners();
+
   }
 
   void removeProductsInCart(MCart cart, List<MProductInCart> selectedProducts) {

@@ -9,8 +9,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../../model/MAddress.dart';
+import '../../../model/MSavedAddress.dart';
+import '../../../repo/providers/user_provider.dart';
 
 class ChangeAddressScreen extends StatefulWidget {
   const ChangeAddressScreen({
@@ -18,7 +23,7 @@ class ChangeAddressScreen extends StatefulWidget {
     required this.address,
   }) : super(key: key);
 
-  final Address address;
+  final MSavedAddress address;
 
   @override
   _ChangeAddressScreen createState() => _ChangeAddressScreen();
@@ -39,13 +44,15 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _nameController.text = widget.address.name;
-    _phoneController.text = widget.address.phoneNumber;
-    _addressController.text = widget.address.address;
+    // _nameController.text = widget.address.name;
+    // _phoneController.text = widget.address.;
+    // _addressController.text = widget.address.address;
   }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -102,7 +109,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       TextFormField(
                         focusNode: nameFocusNode,
                         onChanged: (value) {
-                          widget.address.name = value;
+                          userProvider.user.displayName = value;
                         },
                         cursorColor: kTextColor,
                         validator: (text) {
@@ -113,6 +120,8 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         },
                         controller: _nameController,
                         decoration: InputDecoration(
+                          hintText: widget.address.fullUserName,
+
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
@@ -134,7 +143,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       TextFormField(
                         focusNode: phoneNumberFocusNode,
                         onChanged: (value) {
-                          widget.address.phoneNumber = value;
+                          userProvider.user.phone = value;
                         },
                         cursorColor: kTextColor,
                         validator: (text) {
@@ -145,6 +154,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         },
                         controller: _phoneController,
                         decoration: InputDecoration(
+                          hintText: widget.address.userPhone,
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
@@ -181,9 +191,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       ),
                       TextFormField(
                         focusNode: addressFocusNode,
-                        onChanged: (value) {
-                          widget.address.address = value;
-                        },
+                        // onChanged: (value) {
+                        //   userProvider.user.address = value;
+                        // },
                         cursorColor: kTextColor,
                         validator: (text) {
                           if (text == null || text.isEmpty) {
@@ -193,6 +203,8 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         },
                         controller: _addressController,
                         decoration: InputDecoration(
+                          hintText: widget.address.fullAddressName,
+
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
@@ -211,7 +223,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
+                      RaisedButton(
                           onPressed: () async {
                             Position position = await _getGeoLocationPosition();
                             LatLng location = new LatLng(
@@ -219,11 +231,16 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                             GetAddressFromLatLong(position);
                             _addressController.text = address;
                           },
+                          color: kThirdColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
                           child: const Text('Get Location')),
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
+                      RaisedButton(
                           onPressed: () async {
                             Navigator.push(
                               context,
@@ -231,7 +248,13 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                                   builder: (context) => MapView()),
                             );
                           },
+                          color: kThirdColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
                           child: const Text('Go to Map')),
+                      Container(height:30),
                       Container(
                         height: 50,
                         color: Colors.white,
@@ -258,10 +281,10 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                                 toggleSize: 17.5,
                                 borderRadius: 15.0,
                                 activeColor: kPrimaryColor,
-                                value: widget.address.addressDefault,
+                                value: widget.address.isDefault,
                                 onToggle: (value) {
                                   setState(() {
-                                    widget.address.addressDefault = value;
+                                    widget.address.isDefault = value;
                                   });
                                 },
                               ),
@@ -272,11 +295,16 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      FlatButton(
-                        color: Colors.white,
-                        minWidth: MediaQuery.of(context).size.width - 30,
-                        onPressed: () => {},
-                        padding: const EdgeInsets.all(8.0),
+                      RaisedButton(
+                        onPressed: () => {
+
+                        },
+                        color: kPrimaryColor,
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+
                         child: const Text(
                           "Save",
                           style: TextStyle(

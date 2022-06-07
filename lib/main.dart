@@ -1,5 +1,6 @@
 import 'package:bebeautyapp/repo/providers/cart_provider.dart';
 import 'package:bebeautyapp/repo/providers/origin_provider.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
 import 'package:bebeautyapp/repo/providers/savedAddress_provider.dart';
 import 'package:bebeautyapp/repo/providers/voucher_provider.dart';
 import 'package:bebeautyapp/ui/introduction_screen/introduction_screen.dart';
@@ -39,6 +40,7 @@ Future<void> main() async {
       ChangeNotifierProvider.value(value: OriginProvider.initialize()),
       ChangeNotifierProvider.value(value: VoucherProvider.initialize()),
       ChangeNotifierProvider.value(value: SavedAddressProvider.initialize()),
+      ChangeNotifierProvider.value(value: ReviewProvider.initialize()),
     ],
     child: const MyApp(),
   ));

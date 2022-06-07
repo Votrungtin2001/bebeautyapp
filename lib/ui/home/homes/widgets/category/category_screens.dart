@@ -67,16 +67,16 @@ class _CategoryScreensState extends State<CategoryScreens>
           color: kPrimaryColor,
         ),
         actions: <Widget>[
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/icons/search.svg",
-              // By default our  icon color is white
-              color: kTextColor,
-            ),
-            onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
-            },
-          ),
+          // IconButton(
+          //   icon: SvgPicture.asset(
+          //     "assets/icons/search.svg",
+          //     // By default our  icon color is white
+          //     color: kTextColor,
+          //   ),
+          //   onPressed: () {
+          //     // showSearch(context: context, delegate: DataSearch(products, suggestProducts, brands));
+          //   },
+          // ),
           IconButton(
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",

@@ -20,16 +20,25 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../repo/services/authentication_services.dart';
+import '../../repo/services/order_services.dart';
+
 class ProfileScreens extends StatefulWidget {
+
+
   @override
   _ProfileScreens createState() => _ProfileScreens();
 }
 
 class _ProfileScreens extends State<ProfileScreens> {
+
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
+    final orderServices = OrderServices();
 
+    String user_id = userProvider.user.getID();
+    final MUser user;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -61,28 +70,28 @@ class _ProfileScreens extends State<ProfileScreens> {
                     CircleAvatar(
                       backgroundImage: NetworkImage(userProvider.user.getAvatarUri()),
                     ),
-                    Positioned(
-                      right: -16,
-                      bottom: 0,
-                      child: SizedBox(
-                        height: 46,
-                        width: 46,
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            side: BorderSide(color: Colors.white),
-                          ),
-                          color: Color(0xFFF5F6F9),
-                          onPressed: () async {
-                            ImageSource source = await showDialog(
-                              context: context,
-                              builder: (context) => ChangeAvatarDialog(),
-                            );
-                          },
-                          child: SvgPicture.asset("assets/icons/camera.svg"),
-                        ),
-                      ),
-                    )
+                    // Positioned(
+                    //   right: -16,
+                    //   bottom: 0,
+                    //   child: SizedBox(
+                    //     height: 46,
+                    //     width: 46,
+                    //     child: FlatButton(
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(50),
+                    //         side: BorderSide(color: Colors.white),
+                    //       ),
+                    //       color: Color(0xFFF5F6F9),
+                    //       onPressed: () async {
+                    //         ImageSource source = await showDialog(
+                    //           context: context,
+                    //           builder: (context) => ChangeAvatarDialog(),
+                    //         );
+                    //       },
+                    //       child: SvgPicture.asset("assets/icons/camera.svg"),
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ),
@@ -114,6 +123,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     OrderMenu(
+
                       text: "To Pay",
                       icon: "assets/icons/check.svg",
                       press: () {
@@ -128,6 +138,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                       },
                     ),
                     OrderMenu(
+
                       text: "To Ship",
                       icon: "assets/icons/package.svg",
                       press: () {
@@ -156,9 +167,19 @@ class _ProfileScreens extends State<ProfileScreens> {
                       },
                     ),
                     OrderMenu(
+
                       text: "To Rate",
                       icon: "assets/icons/star-rate.svg",
-                      press: () {},
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyOrderScreen(
+                                  index: 4,
+                                  userID: userProvider.user.id
+                              )),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -170,7 +191,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                 press: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Profile()),
+                    MaterialPageRoute(builder: (context) => EditProfileScreen()),
                   );
                 },
               ),
@@ -271,10 +292,12 @@ class OrderMenu extends StatelessWidget {
   }) : super(key: key);
 
   final String text, icon;
+
   final VoidCallback? press;
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: TextButton(
@@ -286,19 +309,20 @@ class OrderMenu extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Badge(
-              badgeColor: kPrimaryColor,
-              animationType: BadgeAnimationType.slide,
-              badgeContent: Text(
-                '3',
-                style: TextStyle(color: Colors.white),
-              ),
-              child: SvgPicture.asset(
+            // Badge(
+            //   // badgeColor: kPrimaryColor,
+            //   // animationType: BadgeAnimationType.slide,
+            //   // badgeContent: Text(
+            //   //   orderCount,
+            //   //   style: TextStyle(color: Colors.white),
+            //   // ),
+            //   child:
+          SvgPicture.asset(
                 icon,
                 color: kPrimaryColor,
                 width: 24,
               ),
-            ),
+
             const SizedBox(
               height: 8,
             ),
@@ -316,6 +340,7 @@ class OrderMenu extends StatelessWidget {
 }
 
 void signOutDrawer(BuildContext context) {
+  final authServices = new AuthenticationServices();
   showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -359,7 +384,12 @@ void signOutDrawer(BuildContext context) {
                             color: Colors.black)),
                   ),
                   RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      authServices.signOut();
+                      Fluttertoast.showToast(msg: 'Logged out successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginScreen()));
+                    },
                     color: kPrimaryColor,
                     padding: const EdgeInsets.symmetric(horizontal: 50),
                     elevation: 2,

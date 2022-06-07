@@ -281,6 +281,146 @@ class ProductServices {
     return result;
   }
 
+  //Get New Product ID
+  int getNewProductID(List<MProduct> products) {
+    return products[products.length - 1].getID() + 1;
+  }
 
+  //Add Product
+  Future<bool> addProduct(MProduct product, String newProductID) async {
+    try {
+      await refProduct
+          .doc(newProductID.toString())
+          .set({'id': newProductID, 'name': product.getName(), 'engName': product.getEngName(),
+        'brandID': product.getBrandID(), 'categoryID': product.getCategoryID(),
+        'originID': product.getOriginID(), 'skinID': product.getSkinID(), 'sessionID': product.getSessionID(),
+        'genderID': product.getGenderID(), 'structureID': product.getStructureID(),
+        'soldOut': product.getSoldOut(), 'totalStarRating': product.getTotalStarRating(),
+        'totalRating': product.getTotalRating(), 'marketPrice': product.getMarketPrice(),
+        'importPrice': product.getImportPrice(), 'defaultDiscountRate': product.getDefaultDiscountRate(),
+        'price': product.getPrice(), 'chemicalComposition': product.getChemicalComposition(),
+        'guideLine': product.getGuideLine(), 'image': product.getImages(),
+        'userFavorite': product.getUserFavorite(), 'available': product.getAvailable(),
+        'searchCount': product.getSearchCount(), 'popularSearchTitle': product.getPopularSearchTitle(),
+        'description': product.getDescription()
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+//Update Product
+  Future<bool> updateProduct(MProduct product) async {
+    try {
+      if(product.getName() != "") {
+        await refProduct.doc(product.getID().toString()).update({'name': product.getName()});
+      }
+      if(product.getEngName() != "") {
+        await refProduct.doc(product.getID().toString()).update({'engName': product.getEngName()});
+      }
+      if(product.getBrandID() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'brandID': product.getBrandID()});
+      }
+      if(product.getCategoryID() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'categoryID': product.getCategoryID()});
+      }
+      if(product.getOriginID() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'originID': product.getOriginID()});
+      }
+      if(product.getSkinID() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'skinID': product.getSkinID()});
+      }
+      if(product.getSessionID() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'sessionID': product.getSessionID()});
+      }
+      if(product.getGenderID() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'genderID': product.getGenderID()});
+      }
+      if(product.getStructureID() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'structureID': product.getStructureID()});
+      }
+      if(product.getMarketPrice() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'marketPrice': product.getMarketPrice()});
+      }
+      if(product.getImportPrice() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'importPrice': product.getImportPrice()});
+      }
+      if(product.getDefaultDiscountRate() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'defaultDiscountRate': product.getDefaultDiscountRate()});
+      }
+      if(product.getPrice() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'price': product.getPrice()});
+      }
+      if(product.getChemicalComposition() != "") {
+        await refProduct.doc(product.getID().toString()).update({'chemicalComposition': product.getChemicalComposition()});
+      }
+      if(product.getGuideLine() != "") {
+        await refProduct.doc(product.getID().toString()).update({'guideLine': product.getGuideLine()});
+      }
+      if(product.getImages().length > 0) {
+        await refProduct.doc(product.getID().toString()).update({'image': product.getImages()});
+      }
+      if(product.getUserFavorite().length > 0) {
+        await refProduct.doc(product.getID().toString()).update({'userFavorite': product.getUserFavorite()});
+      }
+      if(product.getAvailable() > 0) {
+        await refProduct.doc(product.getID().toString()).update({'available': product.getAvailable()});
+      }
+      if(product.getPopularSearchTitle() != "") {
+        await refProduct.doc(product.getID().toString()).update({'popularSearchTitle': product.getPopularSearchTitle()});
+      }
+      if(product.getDescription() != "") {
+        await refProduct.doc(product.getID().toString()).update({'description': product.getDescription()});
+      }
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+//Get sold out
+  Future<int> getSoldOutByProductID(int productID) async =>
+      await refProduct.doc(productID.toString()).get().then((result) {
+        if(result.exists == true) return result.get('soldOut');
+        return -1;
+      });
+
+  //Update Sold out
+  Future<bool> updateSoldOutByProductID(int productID, int quantity) async {
+    int soldOut = await getSoldOutByProductID(productID);
+    if(soldOut == -1) return false;
+    else {
+      int now_soldOut = soldOut + quantity;
+      await refProduct.doc(productID.toString()).update({'soldOut': now_soldOut});
+      return true;
+    }
+  }
+
+  //Check update sold out
+  Future<bool> checkUpdateSoldOutByProductID(List<MProductInCart> products) async {
+    int iCount = 0;
+    for(int i = 0; i < products.length; i++) {
+      bool result = await updateSoldOutByProductID(products[i].getID(), products[i].getQuantity());
+      if(result == true) iCount++;
+    }
+    if(iCount == products.length) return true;
+    else return false;
+  }
+
+  Future<List<MProduct>> getSuggestionBooks() async =>
+      FirebaseFirestore.instance.collection('Product').get().then((result) {
+        List<MProduct> products = [];
+        int count = 0;
+        for (DocumentSnapshot product in result.docs) {
+          count++;
+          products.add(MProduct.fromSnapshot(product));
+          if (count > 4) return products;
+        }
+        return products;
+      });
 
 }

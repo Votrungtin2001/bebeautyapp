@@ -20,12 +20,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../model/MBrand.dart';
+
 class BestSellScreen extends StatelessWidget {
   final preferenceServices = new PreferenceServices();
 
   final productServices = new ProductServices();
 
   late List<MProduct> products;
+  late List<MProduct> suggestProducts;
+  late List<MBrand> brands;
+
+
   BestSellScreen(List<MProduct> Products) {
     this.products = Products;
   }
@@ -43,16 +49,16 @@ class BestSellScreen extends StatelessWidget {
           color: kPrimaryColor,
         ),
         actions: <Widget>[
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/icons/search.svg",
-              // By default our  icon color is white
-              color: kTextColor,
-            ),
-            onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
-            },
-          ),
+          // IconButton(
+          //   icon: SvgPicture.asset(
+          //     "assets/icons/search.svg",
+          //     // By default our  icon color is white
+          //     color: kTextColor,
+          //   ),
+          //   onPressed: () {
+          //     showSearch(context: context, delegate: DataSearch(products, suggestProducts, brands));
+          //   },
+          // ),
           IconButton(
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",

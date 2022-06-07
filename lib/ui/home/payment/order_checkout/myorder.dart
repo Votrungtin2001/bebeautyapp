@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../model/MOrder.dart';
 import '../../../../model/MProduct.dart';
-import '../../../../model/MProductInCart.dart';
 import '../../../../repo/providers/product_provider.dart';
 import '../../../../repo/services/order_services.dart';
 
@@ -82,6 +81,7 @@ class _MyOrderScreen extends State<MyOrderScreen>
     Tab(text: 'To Ship'),
     Tab(text: 'To Receive'),
     Tab(text: 'Completed'),
+    Tab(text: 'To Rate'),
     Tab(text: 'Cancelled'),
   ];
 
@@ -248,6 +248,43 @@ class _MyOrderScreen extends State<MyOrderScreen>
     );
   }
 
+  Widget RatingOrderList(List<MProduct> products) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: ratingOrders,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                MOrder order = new MOrder(snapshot.data!.docs[index]["orderID"],
+                    snapshot.data!.docs[index]["userID"],
+                    snapshot.data!.docs[index]["voucherCode"],
+                    snapshot.data!.docs[index]["discountValue"],
+                    snapshot.data!.docs[index]["shippingValue"],
+                    snapshot.data!.docs[index]["totalPayment"],
+                    snapshot.data!.docs[index]["totalQuantity"],
+                    snapshot.data!.docs[index]["numOfProducts"],
+                    snapshot.data!.docs[index]["address"],
+                    snapshot.data!.docs[index]["latitude"],
+                    snapshot.data!.docs[index]["longitude"],
+                    snapshot.data!.docs[index]["userName"],
+                    snapshot.data!.docs[index]["phone"],
+                    snapshot.data!.docs[index]["time"],
+                    snapshot.data!.docs[index]["status"]);
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  child: ProductContainer(
+                    order: order,
+                    products: products,
+                  ),
+                );
+              })
+              : Center(child: not_orders);
+        }
+    );
+  }
+
   Widget CancelledOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
         stream: ratingOrders,
@@ -291,7 +328,7 @@ class _MyOrderScreen extends State<MyOrderScreen>
 
     return DefaultTabController(
       initialIndex: widget.index,
-      length: 5,
+      length: 6,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -342,6 +379,7 @@ class _MyOrderScreen extends State<MyOrderScreen>
             ShippingOrderList(productProvider.products),
             ReceivedOrderList(productProvider.products),
             CompletedOrderList(productProvider.products),
+            RatingOrderList(productProvider.products),
             CancelledOrderList(productProvider.products),
           ],
         ),

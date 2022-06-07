@@ -52,7 +52,7 @@ class MUser {
   void setID(String ID) {this.id = ID;}
 
   String getName() {return this.displayName;}
-  void setName(String Name) {this.displayName = displayName;}
+  void setName(String Name) {this.displayName = Name;}
 
   String getEmail() {return this.email;}
   void setEmail(String Email) {this.email = Email;}

@@ -1,7 +1,11 @@
 import 'package:bebeautyapp/ui/home/homes/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../../../../constants.dart';
+import '../../../../repo/providers/user_provider.dart';
+import '../order_checkout/myorder.dart';
+import '../order_checkout/widget/order_details.dart';
 
 class CompleteOrder extends StatefulWidget {
   @override
@@ -11,6 +15,8 @@ class CompleteOrder extends StatefulWidget {
 class _CompleteOrder extends State<CompleteOrder> {
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -70,7 +76,15 @@ class _CompleteOrder extends State<CompleteOrder> {
             height: 32,
           ),
           RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyOrderScreen(
+                        index: 0,
+                        userID: userProvider.user.id)),
+              );
+            },
             color: kPrimaryColor,
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             elevation: 2,

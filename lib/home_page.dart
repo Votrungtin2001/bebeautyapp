@@ -12,7 +12,8 @@ import 'package:provider/provider.dart';
 
 import 'model/user/MUser.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatefulWidget{
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -27,10 +28,11 @@ class _HomePageState extends State<HomePage> {
     final userProvider = Provider.of<UserProvider>(context);
     if (user!.uid != null) userID = user.uid.toString();
     if(userID == "") userProvider.getUser(userID);
+    userID = userProvider.user.getID();
 
     List<Widget> _body = [
       HomeScreens(),
-      ChatScreens(),
+      Chat(chatRoomId: userID, user_id: userID, user_name: "Be Beauty",),
       ProfileScreens(),
     ];
 

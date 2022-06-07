@@ -9,9 +9,13 @@ import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../constants.dart';
+import '../../../model/MAddress.dart';
+import '../../../repo/providers/savedAddress_provider.dart';
 import '../../../repo/providers/user_provider.dart';
+import '../../../repo/services/address_services.dart';
 
 class AddressScreens extends StatefulWidget {
+
   @override
   _AddressScreens createState() => _AddressScreens();
 }
@@ -20,7 +24,11 @@ class _AddressScreens extends State<AddressScreens> {
 
   @override
   Widget build(BuildContext context) {
+    final savedAddressProvider = Provider.of<SavedAddressProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
+    String userId = userProvider.user.id;
+    final addressServices = new AddressServices();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -37,15 +45,16 @@ class _AddressScreens extends State<AddressScreens> {
         children: <Widget>[
           Expanded(
             child: ListView.builder(
-              itemCount: demoAddress.length,
+              itemCount: savedAddressProvider.savedAddresses.length,
               itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Dismissible(
-                  key: Key(demoAddress[index].toString()),
+                  key: Key(
+                      savedAddressProvider.savedAddresses[index].toString()),
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) {
                     setState(() {
-                      demoAddress.removeAt(index);
+                      savedAddressProvider.savedAddresses.removeAt(index);
                     });
                   },
                   background: Container(
@@ -61,7 +70,7 @@ class _AddressScreens extends State<AddressScreens> {
                       ],
                     ),
                   ),
-                  child: AddressCard(address: demoAddress[index]),
+                  child: AddressCard(address: savedAddressProvider.savedAddresses[index]),
                 ),
               ),
             ),

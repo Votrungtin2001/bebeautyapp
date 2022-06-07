@@ -116,6 +116,7 @@ class OrderServices {
     return refOrder.where('userID', isEqualTo: userID).where('status', isEqualTo: status).orderBy('time', descending: true).snapshots();
   }
 
+
   Future<bool> updateOrderID(String orderID) async {
     try {
       await refOrder.doc(orderID).update({'orderID': orderID});
@@ -148,5 +149,19 @@ class OrderServices {
   String getDate(int time) {
     var date = DateTime.fromMillisecondsSinceEpoch(time);
     return DateFormat('EEEE, d MMM, yyyy').format(date);
+  }
+  //Delete Order
+
+  Future<bool> deleteOrder(String orderID) async {
+    try {
+      await refOrder
+          .doc(orderID.toString())
+          .delete();
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 }

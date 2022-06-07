@@ -222,7 +222,12 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        ElevatedButton(
+                        RaisedButton(
+                            color: kThirdColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
                             onPressed: () async {
                               Position position = await _getGeoLocationPosition();
                               List<Placemark> placemarks =
@@ -253,7 +258,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                               // );
                             },
                             child: const Text('Get current location')),
-                        ElevatedButton(
+                        RaisedButton(
                             onPressed: () async {
                               Navigator.push(
                                 context,
@@ -261,53 +266,57 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                     builder: (context) => MapView()),
                               );
                             },
+                            color: kThirdColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
                             child: const Text('Go to Map')),
                         const SizedBox(
                           height: 20,
                         ),
-                        // Container(
-                        //   height: 50,
-                        //   color: Colors.white,
-                        //   child: Row(
-                        //     children: [
-                        //       const Padding(
-                        //         padding: const EdgeInsets.only(left: 12.0),
-                        //         child: Text(
-                        //           'Set default address',
-                        //           style: TextStyle(
-                        //             fontSize: 16,
-                        //             fontFamily: 'Poppins',
-                        //             color: kTextColor,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //       const Spacer(),
-                        //       Padding(
-                        //         padding: const EdgeInsets.only(right: 12.0),
-                        //         child: FlutterSwitch(
-                        //           height: 25.0,
-                        //           width: 50.0,
-                        //           padding: 4.0,
-                        //           toggleSize: 17.5,
-                        //           borderRadius: 15.0,
-                        //           activeColor: kPrimaryColor,
-                        //           value: addressDefault,
-                        //           onToggle: (value) {
-                        //             setState(() {
-                        //               addressDefault = value;
-                        //             });
-                        //           },
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
+                        Container(
+                          height: 50,
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: const EdgeInsets.only(left: 12.0),
+                                child: Text(
+                                  'Set default address',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Poppins',
+                                    color: kTextColor,
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 12.0),
+                                child: FlutterSwitch(
+                                  height: 25.0,
+                                  width: 50.0,
+                                  padding: 4.0,
+                                  toggleSize: 17.5,
+                                  borderRadius: 15.0,
+                                  activeColor: kPrimaryColor,
+                                  value: savedAddressProvider.defaultSavedAddress.isDefault,
+                                  onToggle: (value) {
+                                    setState(() {
+                                      savedAddressProvider.defaultSavedAddress.isDefault = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
-                        FlatButton(
-                          color: Colors.white,
-                          minWidth: MediaQuery.of(context).size.width - 30,
+                        RaisedButton(
+
                           onPressed: () async {
                             //Validate
                             if (formKey.currentState!.validate()) {
@@ -339,7 +348,12 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                               }
                              }
                           },
-                          padding: const EdgeInsets.all(8.0),
+                          color: kPrimaryColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+
                           child: const Text(
                             "Save",
                             style: TextStyle(

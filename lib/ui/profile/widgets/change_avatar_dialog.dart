@@ -13,6 +13,7 @@ class ChangeAvatarDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
+import '../../../repo/services/user_services.dart';
+
 class ChangePasswordScreen extends StatelessWidget {
   static String id = "ChangePasswordScreen";
 
@@ -23,8 +25,11 @@ class ChangePasswordScreen extends StatelessWidget {
 
   final sendChangePasswordButtonController = RoundedLoadingButtonController();
 
+  final userServices = new UserServices();
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -66,6 +71,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 children: [
                   TextFormField(
                     focusNode: oldPassFocusNode,
+                    keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {
                       oldPass = value;
                     },
@@ -104,6 +110,8 @@ class ChangePasswordScreen extends StatelessWidget {
                   ),
                   TextFormField(
                     focusNode: newPassFocusNode,
+                    keyboardType: TextInputType.visiblePassword,
+
                     onChanged: (value) {
                       newPass = value;
                     },
@@ -147,6 +155,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     onChanged: (value) {
                       newRetypePass = value;
                     },
+                    keyboardType: TextInputType.visiblePassword,
                     cursorColor: kTextColor,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
@@ -200,6 +209,10 @@ class ChangePasswordScreen extends StatelessWidget {
                 //     loginButtonController.success();
                 //   }
                 // });
+                userServices.changePassword(oldPass, newPass);
+                oldPassController.clear();
+                newPassRetypeController.clear();
+                newPassController.clear();
               },
               controller: sendChangePasswordButtonController,
               horizontalPadding: 45,
