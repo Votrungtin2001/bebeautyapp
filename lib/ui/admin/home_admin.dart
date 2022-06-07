@@ -2,12 +2,14 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/repo/services/authentication_services.dart';
 import 'package:bebeautyapp/repo/services/brand_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/admin/Brand/brand_manage.dart';
 import 'package:bebeautyapp/ui/admin/Product/product_manage.dart';
 import 'package:bebeautyapp/ui/admin/chat/chat_room.dart';
 import 'package:bebeautyapp/ui/admin/order/order_manage_screen.dart';
+import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
 
 import 'package:bebeautyapp/ui/profile/profile_screen.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_infomation.dart';
@@ -15,6 +17,7 @@ import 'package:bebeautyapp/ui/profile/widgets/change_infomation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
 
@@ -48,7 +51,8 @@ class HomeAdmin extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Profile()),
+                    MaterialPageRoute(
+                        builder: (context) => EditProfileScreen()),
                   );
                 },
               ),
@@ -126,6 +130,7 @@ class HomeAdmin extends StatelessWidget {
 }
 
 void signOutDrawer(BuildContext context) {
+  final authServices = new AuthenticationServices();
   showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -169,7 +174,17 @@ void signOutDrawer(BuildContext context) {
                             color: Colors.black)),
                   ),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      authServices.signOut();
+                      Fluttertoast.showToast(
+                          msg: 'Logged out successfully.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    },
                     color: kPrimaryColor,
                     padding: const EdgeInsets.symmetric(horizontal: 50),
                     elevation: 2,
