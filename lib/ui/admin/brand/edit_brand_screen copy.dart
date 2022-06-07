@@ -5,7 +5,7 @@ import 'package:bebeautyapp/model/MBrand.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
-import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
+import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
@@ -82,15 +82,16 @@ class _EditBrandState extends State<EditBrand> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: kPrimaryColor,
+          backgroundColor: Colors.white,
           title: const Text("Brand Manage"),
           titleTextStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
+              color: kPrimaryColor,
+              fontSize: 16,
               fontFamily: 'Poppins',
-              fontWeight: FontWeight.w700),
+              fontWeight: FontWeight.w600),
           centerTitle: true,
-          automaticallyImplyLeading: true,
+          automaticallyImplyLeading: false,
+          leading: BackButton(color: kPrimaryColor),
         ),
         body: SingleChildScrollView(
             scrollDirection: Axis.vertical,

@@ -1,5 +1,5 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
+
 import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
 
 import 'package:flutter/material.dart';
@@ -10,7 +10,8 @@ import '../../../model/MSavedAddress.dart';
 import '../../../repo/providers/user_provider.dart';
 
 class AddressCard extends StatelessWidget {
-  const AddressCard({Key? key,
+  const AddressCard({
+    Key? key,
     required this.address,
   }) : super(key: key);
 
@@ -28,7 +29,8 @@ class AddressCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChangeAddressScreen(address: address,
+                builder: (context) => ChangeAddressScreen(
+                      address: address,
                     )),
           ),
         },
@@ -50,10 +52,9 @@ class AddressCard extends StatelessWidget {
         subtitle:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(address.userPhone),
-           Text(address.fullAddressName),
+          Text(address.fullAddressName),
         ]),
       ),
     );
   }
 }
-

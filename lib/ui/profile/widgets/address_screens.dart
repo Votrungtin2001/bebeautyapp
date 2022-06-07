@@ -1,5 +1,5 @@
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
-import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
+
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address_card.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
@@ -15,7 +15,6 @@ import '../../../repo/providers/user_provider.dart';
 import '../../../repo/services/address_services.dart';
 
 class AddressScreens extends StatefulWidget {
-
   @override
   _AddressScreens createState() => _AddressScreens();
 }
@@ -30,15 +29,17 @@ class _AddressScreens extends State<AddressScreens> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text("Delivery Address"),
         titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
+            color: kPrimaryColor,
+            fontSize: 16,
             fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700),
+            fontWeight: FontWeight.w500),
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: BackButton(color: kPrimaryColor),
       ),
       body: Column(
         children: <Widget>[
@@ -69,7 +70,8 @@ class _AddressScreens extends State<AddressScreens> {
                       ],
                     ),
                   ),
-                  child: AddressCard(address: savedAddressProvider.savedAddresses[index]),
+                  child: AddressCard(
+                      address: savedAddressProvider.savedAddresses[index]),
                 ),
               ),
             ),

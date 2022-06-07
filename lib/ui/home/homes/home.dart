@@ -1,15 +1,8 @@
-import 'dart:convert';
-
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/model/MCriteria.dart';
-import 'package:bebeautyapp/model/MDataCBR.dart';
-import 'package:bebeautyapp/model/MFactor.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
-import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
-import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/brand_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
@@ -32,9 +25,8 @@ class HomeScreens extends StatelessWidget {
   final brandServices = new BrandServices();
 
   List<MProduct> products = [];
-  List<MProduct> suggestProducts =[];
-  List<MBrand> brands =[];
-
+  List<MProduct> suggestProducts = [];
+  List<MBrand> brands = [];
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +55,13 @@ class HomeScreens extends StatelessWidget {
         leading: IconButton(
           icon: SvgPicture.asset(
             "assets/icons/search.svg",
-            color: kTextColor,
+            color: kPrimaryColor,
           ),
           onPressed: () {
-            showSearch(context: context, delegate: DataSearch(getProductList(),getSuggestionProductList(),getBrandList()));
+            showSearch(
+                context: context,
+                delegate: DataSearch(getProductList(),
+                    getSuggestionProductList(), getBrandList()));
           },
         ),
         title: kAppNameTextPinksm,
@@ -76,7 +71,7 @@ class HomeScreens extends StatelessWidget {
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",
               // By default our  icon color is white
-              color: kTextColor,
+              color: kPrimaryColor,
             ),
             onPressed: () {
               Navigator.push(
@@ -98,7 +93,7 @@ class HomeScreens extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 height: MediaQuery.of(context).size.height / 3,
                 child: Carousel(
-                  images: [
+                  images: const [
                     NetworkImage(
                         'https://cf.shopee.vn/file/dac4992cd9609052f3c50ab4f7caa096_xxhdpi'),
                     NetworkImage(

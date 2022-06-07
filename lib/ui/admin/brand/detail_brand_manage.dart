@@ -44,7 +44,7 @@ class _DetailsBrandManage extends State<DetailsBrandManage> {
         title: Text(widget.brand.name),
         titleTextStyle: const TextStyle(
             color: kPrimaryColor,
-            fontSize: 20,
+            fontSize: 18,
             fontFamily: 'Laila',
             fontWeight: FontWeight.w700),
         centerTitle: true,

@@ -13,7 +13,7 @@ import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
+
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -55,7 +55,7 @@ class SameBrandScreen extends StatelessWidget {
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",
               // By default our  icon color is white
-              color: kTextColor,
+              color: kPrimaryColor,
             ),
             onPressed: () {
               Navigator.push(

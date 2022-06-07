@@ -37,7 +37,7 @@ class _ProductManage extends State<ProductManage> {
         title: const Text('Product Manage'),
         titleTextStyle: const TextStyle(
             color: kPrimaryColor,
-            fontSize: 20,
+            fontSize: 18,
             fontFamily: 'Laila',
             fontWeight: FontWeight.w700),
         centerTitle: true,

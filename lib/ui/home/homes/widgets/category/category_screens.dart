@@ -8,9 +8,8 @@ import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
-import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
+
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +65,11 @@ class _CategoryScreensState extends State<CategoryScreens>
         leading: BackButton(
           color: kPrimaryColor,
         ),
+        title: Text(
+          categoryName,
+          style: TextStyle(color: kPrimaryColor, fontSize: 18),
+        ),
+        centerTitle: true,
         actions: <Widget>[
           // IconButton(
           //   icon: SvgPicture.asset(
@@ -81,7 +85,7 @@ class _CategoryScreensState extends State<CategoryScreens>
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",
               // By default our  icon color is white
-              color: kTextColor,
+              color: kPrimaryColor,
             ),
             onPressed: () {
               Navigator.push(
@@ -127,16 +131,6 @@ class _CategoryScreensState extends State<CategoryScreens>
             ),
           ),
           Divider(color: Colors.black),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-            child: Text(
-              categoryName,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            ),
-          ),
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),

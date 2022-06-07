@@ -30,7 +30,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
   Stream<QuerySnapshot>? receivedOrders;
   Stream<QuerySnapshot>? completedOrders;
   Stream<QuerySnapshot>? ratingOrders;
-  Stream<QuerySnapshot>? cancelledOrders;
+  Stream<QuerySnapshot>? canceledOrders;
   final orderServices = new OrderServices();
 
   @override
@@ -81,7 +81,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
 
     await orderServices.getOrderByStatus(-1).then((snapshots) {
       setState(() {
-        cancelledOrders = snapshots;
+        canceledOrders = snapshots;
       });
     });
   }
@@ -92,8 +92,8 @@ class _OrderManageScreen extends State<OrderManageScreen>
     Tab(text: 'To Ship'),
     Tab(text: 'To Receive'),
     Tab(text: 'Completed'),
-    Tab(text: 'Rating'),
-    Tab(text: 'Cancelled'),
+    Tab(text: 'To Rate'),
+    Tab(text: 'canceled'),
   ];
 
   static Widget not_orders = Column(
@@ -334,7 +334,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
         });
   }
 
-  Widget CancelledOrderList(List<MProduct> products) {
+  Widget canceledOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
         stream: ratingOrders,
         builder: (context, snapshot) {
@@ -407,7 +407,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
           ),
           leading: const BackButton(color: kPrimaryColor),
           title: const Text(
-            'ORDER MANAGEMENT',
+            'Order management',
             style: TextStyle(
               fontFamily: "Laila",
               fontSize: 18,
@@ -429,7 +429,7 @@ class _OrderManageScreen extends State<OrderManageScreen>
             ReceivedOrderList(productProvider.products),
             CompletedOrderList(productProvider.products),
             RatingOrderList(productProvider.products),
-            CancelledOrderList(productProvider.products),
+            canceledOrderList(productProvider.products),
           ],
         ),
       ),

@@ -1,8 +1,7 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MSavedAddress.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
-import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
-import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
+import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,16 +50,17 @@ class _AddAddressScreen extends State<AddAddressScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: kPrimaryColor,
+          backgroundColor: Colors.white,
           elevation: 0,
-          automaticallyImplyLeading: true,
-          title: const Text("Add Address"),
-          titleTextStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w700),
+          title: Text("Add Address"),
+          titleTextStyle: TextStyle(
+              color: kPrimaryColor,
+              fontSize: 16,
+              fontFamily: 'Laila',
+              fontWeight: FontWeight.w500),
           centerTitle: true,
+          automaticallyImplyLeading: false,
+          leading: BackButton(color: kPrimaryColor),
         ),
         body: Form(
           key: formKey,
@@ -144,6 +144,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                 phoneNumber = value;
                               });
                             },
+                            keyboardType: TextInputType.number,
                             cursorColor: kTextColor,
                             validator: (text) {
                               if (text == null || text.isEmpty) {
@@ -247,27 +248,27 @@ class _AddAddressScreen extends State<AddAddressScreen> {
 
                                 _addressController.text = address;
 
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("Load address success!"),
-                                ));
+                                Fluttertoast.showToast(
+                                    backgroundColor: Colors.green,
+                                    msg: 'Load address success!',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM);
                                 // Navigator.push(
                                 //   context,
                                 //   MaterialPageRoute(
                                 //       builder: (context) => MapView()),
                                 // );
 
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("Load address success!"),
-                                ));
                                 // Navigator.push(
                                 //   context,
                                 //   MaterialPageRoute(
                                 //       builder: (context) => MapView()),
                                 // );
                               },
-                              child: const Text('Get current location')),
+                              child: const Text(
+                                'Get current location',
+                                style: TextStyle(color: Colors.white),
+                              )),
                           const SizedBox(
                             height: 20,
                           ),
@@ -319,6 +320,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                               if (formKey.currentState!.validate()) {
                                 if (latitude == 0.0 && longitude == 0.0) {
                                   Fluttertoast.showToast(
+                                      backgroundColor: Colors.red,
                                       msg: 'This address is not vaid.',
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.BOTTOM);
@@ -349,12 +351,15 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                       latitude = 0.0;
                                       longitude = 0.0;
                                     });
+                                    Navigator.of(context).pop();
                                     Fluttertoast.showToast(
+                                        backgroundColor: Colors.green,
                                         msg: 'Add new address succesfully.',
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.BOTTOM);
                                   } else
                                     Fluttertoast.showToast(
+                                        backgroundColor: Colors.red,
                                         msg: 'Some errors happened.',
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.BOTTOM);
@@ -371,7 +376,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                               style: TextStyle(
                                   fontSize: 18,
                                   fontFamily: 'Poppins',
-                                  color: kTextColor),
+                                  color: Colors.white),
                             ),
                           )
                         ],

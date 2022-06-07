@@ -158,6 +158,7 @@ class DetailsScreen extends StatelessWidget {
                             .getProductForRealTime(product);
                         if (currentProduct.available < quantity) {
                           Fluttertoast.showToast(
+                              backgroundColor: Colors.red,
                               msg:
                                   "Sorry, this product don't have enough quantity in invertory to supply you.",
                               toastLength: Toast.LENGTH_SHORT,
@@ -169,11 +170,13 @@ class DetailsScreen extends StatelessWidget {
                               currentProduct.available) {
                             cartProvider.addProductInCart(product, quantity);
                             Fluttertoast.showToast(
+                                backgroundColor: Colors.green,
                                 msg: "Add this product successfully.",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM);
                           } else
                             Fluttertoast.showToast(
+                                backgroundColor: Colors.red,
                                 msg:
                                     "Sorry but the total quantity of this product you have added to your cart exceeds the quantity in stock we can supply.",
                                 toastLength: Toast.LENGTH_SHORT,
@@ -232,6 +235,7 @@ class DetailsScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(right: 8.0, left: 8.0),
               decoration: BoxDecoration(
+                color: Colors.white,
                 border: Border.all(color: kPrimaryColor, width: 2.0),
               ),
               child: IconButton(
@@ -310,6 +314,7 @@ class DetailsScreen extends StatelessWidget {
             if (result == true) {
               productProvider.updateUserFavorite(userID, product.getID());
               Fluttertoast.showToast(
+                  backgroundColor: Colors.green,
                   msg: 'Add it to your favorite list successfully',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM);
@@ -317,6 +322,7 @@ class DetailsScreen extends StatelessWidget {
               productProvider.updateUserFavorite(userID, product.getID());
 
               Fluttertoast.showToast(
+                  backgroundColor: Colors.green,
                   msg: 'Remove it in your favorite list successfully',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM);

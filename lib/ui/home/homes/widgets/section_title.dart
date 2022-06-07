@@ -19,15 +19,18 @@ class SectionTitle extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             color: kTextColor,
           ),
         ),
         GestureDetector(
           onTap: press,
-          child: Text(
-            "See More",
-            style: TextStyle(color: kTextLightColor),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Text(
+              "See More",
+              style: TextStyle(color: kTextLightColor),
+            ),
           ),
         ),
       ],

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MStatus.dart';
 import 'package:bebeautyapp/repo/services/cart_services.dart';
-import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
+import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
@@ -30,7 +30,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
     MStatus(id: 3, name: "To Receive"),
     MStatus(id: 4, name: "Completed"),
     MStatus(id: 5, name: "Rating"),
-    MStatus(id: -1, name: "Cancelled"),
+    MStatus(id: -1, name: "canceled"),
   ];
 
   late int statusId;
@@ -47,11 +47,11 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
       appBar: AppBar(
         leading: const BackButton(color: kPrimaryColor),
         title: const Text(
-          'TRACK ORDER',
+          'Track order',
           style: TextStyle(
             fontFamily: "Laila",
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
             color: kPrimaryColor,
           ),
         ),
@@ -65,7 +65,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Cancell',
+                      'cancel',
                       style: TextStyle(color: kPrimaryColor),
                     ),
                   ))
@@ -75,7 +75,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'Cancell',
+                          'cancel',
                           style: TextStyle(color: kPrimaryColor),
                         ),
                       ),
@@ -89,7 +89,6 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
           children: [
             Container(
               padding: const EdgeInsets.only(left: 16, top: 8.0, right: 16),
-              height: 350,
               width: 400,
               color: Colors.transparent,
               child: Container(
@@ -113,7 +112,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                       Text(
                         widget.order.getDate(),
                         style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                           color: kLightColor,
                         ),
                       ),
@@ -122,7 +121,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                           Text(
                             "Order ID : ",
                             style: TextStyle(
-                              fontSize: 18.0,
+                              fontSize: 16.0,
                               color: kLightColor,
                             ),
                           ),
@@ -134,17 +133,44 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                                 cut: false,
                                 paste: false),
                             style: TextStyle(
-                              fontSize: 18.0,
+                              fontSize: 16.0,
                               color: kCopy,
                             ),
                           ),
                         ],
                       ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 16, top: 8.0, right: 16),
+              width: 400,
+              color: Colors.transparent,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
                         widget.order.getUserName(),
                         style: const TextStyle(
                           fontFamily: 'Popppins',
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: kPrimaryColor,
                         ),
@@ -153,14 +179,14 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                         widget.order.getPhone(),
                         style: const TextStyle(
                           fontFamily: 'Popppins',
-                          fontSize: 16,
+                          fontSize: 14,
                           color: kTextLightColor,
                         ),
                       ),
                       Text(
                         widget.order.getAddress(),
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: kTextLightColor,
                         ),
                       ),
@@ -212,36 +238,37 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                               ],
                             )
                           : Container(),
+                      SizedBox(height: 10),
                       Row(
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children: const [
                               Text(
                                 'Order:',
                                 textAlign: TextAlign.start,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontFamily: 'Popppins',
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     color: kTextColor,
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
                                 'Delivery:',
                                 textAlign: TextAlign.start,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontFamily: 'Popppins',
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     color: kTextColor,
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
                                 'Discount:',
                                 textAlign: TextAlign.start,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontFamily: 'Popppins',
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     color: kTextColor,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -259,7 +286,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                                     .toVND(unit: 'đ'),
                                 style: const TextStyle(
                                     fontFamily: 'Popppins',
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     color: kPrimaryColor,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -270,7 +297,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                                     .toVND(unit: 'đ'),
                                 style: const TextStyle(
                                     fontFamily: 'Popppins',
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     color: kPrimaryColor,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -281,7 +308,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                                     .toVND(unit: 'đ'),
                                 style: const TextStyle(
                                     fontFamily: 'Popppins',
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     color: kPrimaryColor,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -289,7 +316,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                           )
                         ],
                       ),
-                      Divider(
+                      const Divider(
                         color: kTextLightColor,
                         thickness: 1,
                       ),
@@ -300,7 +327,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                             textAlign: TextAlign.start,
                             style: const TextStyle(
                                 fontFamily: 'Popppins',
-                                fontSize: 18,
+                                fontSize: 16,
                                 color: kTextColor,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -312,7 +339,7 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                                 .toVND(unit: 'đ'),
                             style: const TextStyle(
                                 fontFamily: 'Popppins',
-                                fontSize: 18,
+                                fontSize: 16,
                                 color: kPrimaryColor,
                                 fontWeight: FontWeight.w700),
                           )
@@ -339,23 +366,24 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                               widget.order
                                   .getProductsInOrder()[index]
                                   .getImage(),
-                              height: 100,
-                              width: 100,
+                              height: 80,
+                              width: 80,
                             ),
                             Container(
                               padding: const EdgeInsets.only(left: 12.0),
-                              width: 230,
+                              width: 250,
                               child: Text(
                                 widget.order
                                     .getProductsInOrder()[index]
                                     .getName(),
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
                                   color: kPrimaryColor,
                                 ),
                               ),
                             ),
+                            Spacer(),
                             Text(
                                 'x${widget.order.getProductsInOrder()[index].getQuantity()}'),
                           ],

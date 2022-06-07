@@ -9,7 +9,7 @@ import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/myorder.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address_screens.dart';
-import 'package:bebeautyapp/ui/profile/widgets/change_avatar_dialog.dart';
+
 import 'package:bebeautyapp/ui/profile/widgets/change_infomation.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_password.dart';
 import 'package:bebeautyapp/ui/profile/widgets/favorite_list_screens.dart';
@@ -32,7 +32,6 @@ class _ProfileScreens extends State<ProfileScreens> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final orderServices = OrderServices();
 
     String user_id = userProvider.user.getID();
     final MUser user;
@@ -40,12 +39,7 @@ class _ProfileScreens extends State<ProfileScreens> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: Text("Profile"),
-        titleTextStyle: TextStyle(
-            color: kPrimaryColor,
-            fontSize: 18,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w500),
+        title: kAppNameTextPinksm,
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -68,28 +62,6 @@ class _ProfileScreens extends State<ProfileScreens> {
                       backgroundImage:
                           NetworkImage(userProvider.user.getAvatarUri()),
                     ),
-                    // Positioned(
-                    //   right: -16,
-                    //   bottom: 0,
-                    //   child: SizedBox(
-                    //     height: 46,
-                    //     width: 46,
-                    //     child: FlatButton(
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(50),
-                    //         side: BorderSide(color: Colors.white),
-                    //       ),
-                    //       color: Color(0xFFF5F6F9),
-                    //       onPressed: () async {
-                    //         ImageSource source = await showDialog(
-                    //           context: context,
-                    //           builder: (context) => ChangeAvatarDialog(),
-                    //         );
-                    //       },
-                    //       child: SvgPicture.asset("assets/icons/camera.svg"),
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
               ),
@@ -128,7 +100,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
-                                  index: 0, userID: userProvider.user.id)),
+                                  index: 1, userID: userProvider.user.id)),
                         );
                       },
                     ),
@@ -140,7 +112,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
-                                  index: 1, userID: userProvider.user.id)),
+                                  index: 2, userID: userProvider.user.id)),
                         );
                       },
                     ),
@@ -152,7 +124,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
-                                  index: 2, userID: userProvider.user.id)),
+                                  index: 3, userID: userProvider.user.id)),
                         );
                       },
                     ),
@@ -164,14 +136,14 @@ class _ProfileScreens extends State<ProfileScreens> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MyOrderScreen(
-                                  index: 4, userID: userProvider.user.id)),
+                                  index: 5, userID: userProvider.user.id)),
                         );
                       },
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 8),
               ProfileMenu(
                 text: "My Profile",
                 icon: "assets/icons/user_icon.svg",
@@ -285,6 +257,7 @@ class OrderMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orderServices = OrderServices();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: TextButton(
@@ -296,20 +269,11 @@ class OrderMenu extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Badge(
-            //   // badgeColor: kPrimaryColor,
-            //   // animationType: BadgeAnimationType.slide,
-            //   // badgeContent: Text(
-            //   //   orderCount,
-            //   //   style: TextStyle(color: Colors.white),
-            //   // ),
-            //   child:
             SvgPicture.asset(
               icon,
               color: kPrimaryColor,
               width: 24,
             ),
-
             const SizedBox(
               height: 8,
             ),
@@ -375,6 +339,7 @@ void signOutDrawer(BuildContext context) {
                       authServices.signOut();
                       Fluttertoast.showToast(
                           msg: 'Logged out successfully.',
+                          backgroundColor: Colors.green,
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM);
                       Navigator.push(

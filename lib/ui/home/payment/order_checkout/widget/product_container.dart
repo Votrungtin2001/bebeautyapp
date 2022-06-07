@@ -69,338 +69,337 @@ class _ProductContainerState extends State<ProductContainer> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => TrackOrder(
-                      order: order,
-                    )),
-          );
-        },
-        child: Container(
-          height: 420,
-          color: Colors.transparent,
+        padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TrackOrder(
+                        order: order,
+                      )),
+            );
+          },
           child: Container(
-            padding: const EdgeInsets.only(left: 16, top: 8.0, right: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: ListView.builder(
-              itemCount: productsInCart.length,
-              itemBuilder: (context, index) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                widget.order.status == 0 ? Container(
-                    width: double.infinity,
-                    child: RaisedButton(
-
-                      onPressed: () {
-
-                        Navigator.pushReplacement<void, void>(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) => AddReviewScreen(id: productsInCart[index].id.toString() , name: widget.order.userName!),
-                          ),
-                        );
-
-                      },
-                      color: kPrimaryColor,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Text(
-                        "Add Review",
-                        style: TextStyle(
-                            fontSize: 14,
-                            letterSpacing: 2.2,
-                            color: Colors.white),
-                      ),
-                    )
-                ): Container(),
-                Row(
+            height: 420,
+            color: Colors.transparent,
+            child: Container(
+              padding: const EdgeInsets.only(left: 16, top: 8.0, right: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: ListView.builder(
+                itemCount: productsInCart.length,
+                itemBuilder: (context, index) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '#' + order.getID().toString(),
-                      style: const TextStyle(
-                        fontFamily: 'Popppins',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      order.getNumOfProducts() > 1
-                          ? order.getNumOfProducts().toString() + ' items'
-                          : order.getNumOfProducts().toString() + ' item',
-                      style: const TextStyle(
-                        fontFamily: 'Popppins',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Divider(
-                  color: kTextLightColor,
-                  thickness: 1,
-                ),
-                Text(
-                  order.getUserName(),
-                  style: const TextStyle(
-                    fontFamily: 'Popppins',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: kPrimaryColor,
-                  ),
-                ),
-                Text(
-                  order.getPhone(),
-                  style: const TextStyle(
-                    fontFamily: 'Popppins',
-                    fontSize: 16,
-                    color: kTextLightColor,
-                  ),
-                ),
-                Text(
-                  order.getAddress(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: kTextLightColor,
-                  ),
-                ),
-                const Divider(
-                  color: kTextLightColor,
-                  thickness: 1,
-                ),
-                Row(
-                  children: [
-                    Container(
-                        height: 80,
-                        width: 80,
-                        child: order.productsInCart.length > 0
-                            ? Image.network(order.productsInCart[0].getImage())
-                            : Image.asset('assets/images/loading.png')),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Container(
-                      width: 228,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            order.productsInCart.length > 0
-                                ? order.productsInCart[0].getName()
-                                : "No information",
-                            textAlign: TextAlign.right,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                ?.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            order.productsInCart.length > 0
-                                ? 'x' +
-                                    order.productsInCart[0]
-                                        .getQuantity()
-                                        .toString()
-                                : "No information",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                ?.copyWith(
-                                    color: kTextColor,
-                                    fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                order.getNumOfProducts() > 1
-                    ? Column(
-                        children: [
-                          Divider(
-                            color: kTextLightColor,
-                            thickness: 1,
-                          ),
-                          Text('View more product'),
-                          Divider(
-                            color: kTextLightColor,
-                            thickness: 1,
-                          ),
-                        ],
-                      )
-                    : Divider(
-                        color: kTextLightColor,
-                        thickness: 1,
-                      ),
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    widget.order.status == 3
+                        ? Container(
+                            width: double.infinity,
+                            child: MaterialButton(
+                              onPressed: () {
+                                Navigator.pushReplacement<void, void>(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (BuildContext context) =>
+                                        AddReviewScreen(
+                                            id: productsInCart[index]
+                                                .id
+                                                .toString(),
+                                            name: widget.order.userName),
+                                  ),
+                                );
+                              },
+                              color: kPrimaryColor,
+                              padding: EdgeInsets.symmetric(horizontal: 50),
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: const Text(
+                                "Add Review",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    letterSpacing: 2.2,
+                                    color: Colors.white),
+                              ),
+                            ))
+                        : Container(),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Order:',
-                          textAlign: TextAlign.start,
+                          '#' + order.getID().toString(),
                           style: const TextStyle(
-                              fontFamily: 'Popppins',
-                              fontSize: 18,
-                              color: kTextColor,
-                              fontWeight: FontWeight.w500),
+                            fontFamily: 'Popppins',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
-                          'Delivery:',
-                          textAlign: TextAlign.start,
+                          order.getNumOfProducts() > 1
+                              ? order.getNumOfProducts().toString() + ' items'
+                              : order.getNumOfProducts().toString() + ' item',
                           style: const TextStyle(
-                              fontFamily: 'Popppins',
-                              fontSize: 18,
-                              color: kTextColor,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          'Discount:',
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                              fontFamily: 'Popppins',
-                              fontSize: 18,
-                              color: kTextColor,
-                              fontWeight: FontWeight.w500),
+                            fontFamily: 'Popppins',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
-                    Spacer(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    Divider(
+                      color: kTextLightColor,
+                      thickness: 1,
+                    ),
+                    Text(
+                      order.getUserName(),
+                      style: const TextStyle(
+                        fontFamily: 'Popppins',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: kPrimaryColor,
+                      ),
+                    ),
+                    Text(
+                      order.getPhone(),
+                      style: const TextStyle(
+                        fontFamily: 'Popppins',
+                        fontSize: 16,
+                        color: kTextLightColor,
+                      ),
+                    ),
+                    Text(
+                      order.getAddress(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: kTextLightColor,
+                      ),
+                    ),
+                    const Divider(
+                      color: kTextLightColor,
+                      thickness: 1,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                            height: 80,
+                            width: 80,
+                            child: order.productsInCart.length > 0
+                                ? Image.network(
+                                    order.productsInCart[0].getImage())
+                                : Image.asset('assets/images/loading.png')),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Container(
+                          width: 228,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                order.productsInCart.length > 0
+                                    ? order.productsInCart[0].getName()
+                                    : "No information",
+                                textAlign: TextAlign.right,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Text(
+                                order.productsInCart.length > 0
+                                    ? 'x' +
+                                        order.productsInCart[0]
+                                            .getQuantity()
+                                            .toString()
+                                    : "No information",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(
+                                        color: kTextColor,
+                                        fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    order.getNumOfProducts() > 1
+                        ? Column(
+                            children: [
+                              Divider(
+                                color: kTextLightColor,
+                                thickness: 1,
+                              ),
+                              Text('View more product'),
+                              Divider(
+                                color: kTextLightColor,
+                                thickness: 1,
+                              ),
+                            ],
+                          )
+                        : Divider(
+                            color: kTextLightColor,
+                            thickness: 1,
+                          ),
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Order:',
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                  fontFamily: 'Popppins',
+                                  fontSize: 18,
+                                  color: kTextColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              'Delivery:',
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                  fontFamily: 'Popppins',
+                                  fontSize: 18,
+                                  color: kTextColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              'Discount:',
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                  fontFamily: 'Popppins',
+                                  fontSize: 18,
+                                  color: kTextColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              cartServices
+                                  .totalValueOfSelectedProductsInCart(
+                                      order.productsInCart)
+                                  .toStringAsFixed(0)
+                                  .toVND(unit: 'đ'),
+                              style: const TextStyle(
+                                  fontFamily: 'Popppins',
+                                  fontSize: 18,
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              order
+                                  .getShippingValue()
+                                  .toStringAsFixed(0)
+                                  .toVND(unit: 'đ'),
+                              style: const TextStyle(
+                                  fontFamily: 'Popppins',
+                                  fontSize: 18,
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              order
+                                  .getDiscountValue()
+                                  .toStringAsFixed(0)
+                                  .toVND(unit: 'đ'),
+                              style: const TextStyle(
+                                  fontFamily: 'Popppins',
+                                  fontSize: 18,
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: kTextLightColor,
+                      thickness: 1,
+                    ),
+                    Row(
                       children: [
                         Text(
-                          cartServices
-                              .totalValueOfSelectedProductsInCart(
-                                  order.productsInCart)
-                              .toStringAsFixed(0)
-                              .toVND(unit: 'đ'),
+                          'Total:',
+                          textAlign: TextAlign.start,
                           style: const TextStyle(
                               fontFamily: 'Popppins',
                               fontSize: 18,
-                              color: kPrimaryColor,
+                              color: kTextColor,
                               fontWeight: FontWeight.w500),
                         ),
+                        Spacer(),
                         Text(
                           order
-                              .getShippingValue()
+                              .getTotalPayment()
                               .toStringAsFixed(0)
                               .toVND(unit: 'đ'),
                           style: const TextStyle(
                               fontFamily: 'Popppins',
                               fontSize: 18,
                               color: kPrimaryColor,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          order
-                              .getDiscountValue()
-                              .toStringAsFixed(0)
-                              .toVND(unit: 'đ'),
-                          style: const TextStyle(
-                              fontFamily: 'Popppins',
-                              fontSize: 18,
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.w500),
-                        ),
+                              fontWeight: FontWeight.w700),
+                        )
                       ],
-                    )
-                  ],
-                ),
-                Divider(
-                  color: kTextLightColor,
-                  thickness: 1,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Total:',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                          fontFamily: 'Popppins',
-                          fontSize: 18,
-                          color: kTextColor,
-                          fontWeight: FontWeight.w500),
                     ),
-                    Spacer(),
-                    Text(
-                      order
-                          .getTotalPayment()
-                          .toStringAsFixed(0)
-                          .toVND(unit: 'đ'),
-                      style: const TextStyle(
-                          fontFamily: 'Popppins',
-                          fontSize: 18,
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.w700),
-                    )
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    widget.order.status == 0
+                        ? Container(
+                            width: double.infinity,
+                            child: RaisedButton(
+                              onPressed: () {
+                                // Navigator.pushReplacement<void, void>(
+                                //   context,
+                                //   MaterialPageRoute<void>(
+                                //     builder: (BuildContext context) => AddReviewScreen(id: lcart[index]['proID'], name: name!),
+                                //   ),
+                                // );
+                              },
+                              color: kPrimaryColor,
+                              padding: EdgeInsets.symmetric(horizontal: 50),
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    letterSpacing: 2.2,
+                                    color: Colors.white),
+                              ),
+                            ))
+                        : Container(),
                   ],
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                widget.order.status == 0 ? Container(
-                  width: double.infinity,
-               child: RaisedButton(
-
-                  onPressed: () {
-
-                    // Navigator.pushReplacement<void, void>(
-                    //   context,
-                    //   MaterialPageRoute<void>(
-                    //     builder: (BuildContext context) => AddReviewScreen(id: lcart[index]['proID'], name: name!),
-                    //   ),
-                    // );
-
-                  },
-                  color: kPrimaryColor,
-                  padding: EdgeInsets.symmetric(horizontal: 50),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                        fontSize: 14,
-                        letterSpacing: 2.2,
-                        color: Colors.white),
-                  ),
-                )
-                ): Container(),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    )
-    );
+        ));
   }
 }

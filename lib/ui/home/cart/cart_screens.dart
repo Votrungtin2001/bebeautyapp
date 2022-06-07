@@ -25,7 +25,7 @@ class _CartScreen extends State<CartScreen> {
   final cartServices = new CartServices();
   final voucherServices = new VoucherServices();
   String voucherCode = "";
-
+  TextEditingController _voucherController = new TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -126,7 +126,7 @@ class _CartScreen extends State<CartScreen> {
         // height: 174,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
@@ -159,6 +159,7 @@ class _CartScreen extends State<CartScreen> {
                   Container(
                     width: 200,
                     child: TextField(
+                      controller: _voucherController,
                       style: TextStyle(color: kTextLightColor, fontSize: 14),
                       decoration: InputDecoration(
                         labelText: 'Add voucher code',
@@ -190,7 +191,10 @@ class _CartScreen extends State<CartScreen> {
                                       selectedList)
                                   .toStringAsFixed(0)
                                   .toVND(),
-                          style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w700),
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
@@ -251,31 +255,6 @@ class _CartScreen extends State<CartScreen> {
         ),
       ),
     );
-  }
-
-  void showDialogForCheckOut(BuildContext) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          Future.delayed(const Duration(milliseconds: 1500), () {
-            Navigator.of(context).pop(true);
-          });
-          return AlertDialog(
-            title: Column(
-              children: const [
-                Icon(
-                  Icons.announcement_outlined,
-                  size: 40,
-                  color: kPrimaryColor,
-                ),
-                Text(
-                  'You have not select any item to delete!',
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          );
-        });
   }
 
   void showDialogForRemove(BuildContext) {

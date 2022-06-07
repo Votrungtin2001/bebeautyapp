@@ -8,7 +8,6 @@ import '../../../../repo/services/product_services.dart';
 import '../../details/details_screen.dart';
 
 class DataSearch extends SearchDelegate<String> {
-
   List<MProduct> products = [];
   List<MProduct> suggestProducts = [];
   List<MBrand> brands = [];
@@ -20,21 +19,22 @@ class DataSearch extends SearchDelegate<String> {
   }
 
   String getBrands(List<MBrand> list, int ID) {
-    for(int i = 0; i < list.length; i++) {
-      if(list[i].getID() == ID) return list[i].getName();
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].getID() == ID) return list[i].getName();
     }
     return "";
   }
-
 
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
         icon: Icon(Icons.clear),
+        color: kPrimaryColor,
         onPressed: () {
           query = "";
-        },)
+        },
+      )
     ];
   }
 
@@ -44,18 +44,77 @@ class DataSearch extends SearchDelegate<String> {
         onPressed: () => Navigator.pop(context),
         icon: AnimatedIcon(
           icon: AnimatedIcons.menu_arrow,
-          progress: transitionAnimation,)
-    );
+          color: kPrimaryColor,
+          progress: transitionAnimation,
+        ));
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return Card(
-      color: Colors.red,
-      child: Center(
-        child: Text(query),
-      ),
-    );
+    final productProvider = Provider.of<ProductProvider>(context);
+    final productServices = new ProductServices();
+
+    List<MProduct> results = [];
+
+    if (query.isEmpty) {
+      results = suggestProducts;
+    } else {
+      List<MProduct> list = [];
+      for (int i = 0; i < products.length; i++) {
+        String search_text = query.toLowerCase();
+        String name = products[i].getName().toLowerCase();
+        if (name.startsWith(search_text)) list.add(products[i]);
+      }
+      results = list;
+    }
+    return results.isNotEmpty
+        ? ListView.builder(
+            itemCount: results.length,
+            itemBuilder: (context, index) => ListTile(
+                onTap: () async {
+                  List<MProduct> similarProductsFromSelectedProducts =
+                      await productServices
+                          .getSimilarityProductsBySelectedProduct(
+                              productProvider.products, results[index]);
+                  Navigator.push<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => DetailsScreen(
+                        product: results[index],
+                        similarProductsFromSelectedProducts:
+                            similarProductsFromSelectedProducts,
+                      ),
+                    ),
+                  );
+                },
+                leading: Image.network(results[index].images[1],
+                    fit: BoxFit.cover), // image book
+                title: RichText(
+                  text: TextSpan(
+                      text: results[index].getName().substring(0, query.length),
+                      style: TextStyle(
+                          color: kPrimaryColor, fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                          text:
+                              results[index].getName().substring(query.length),
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        TextSpan(
+                            text: '\n' +
+                                getBrands(brands, results[index].getBrandID()) +
+                                '\n \n',
+                            style:
+                                TextStyle(color: kPrimaryColor, fontSize: 16)),
+                      ]),
+                )))
+        : Container(
+            child: Center(
+              child: Text('No product found!'),
+            ),
+          );
   }
 
   @override
@@ -65,53 +124,55 @@ class DataSearch extends SearchDelegate<String> {
 
     List<MProduct> results = [];
 
-    if(query.isEmpty) {
-      results = suggestProducts ;
-    }
-    else {
+    if (query.isEmpty) {
+      results = suggestProducts;
+    } else {
       List<MProduct> list = [];
       for (int i = 0; i < products.length; i++) {
         String search_text = query.toLowerCase();
         String name = products[i].getName().toLowerCase();
-        if(name.startsWith(search_text))
-          list.add(products[i]);
+        if (name.startsWith(search_text)) list.add(products[i]);
       }
       results = list;
     }
     return ListView.builder(
         itemCount: results.length,
         itemBuilder: (context, index) => ListTile(
-          onTap: () async {
-            List<MProduct> similarProductsFromSelectedProducts =
-            await productServices.getSimilarityProductsBySelectedProduct(productProvider.products, results[index]);
-            Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => DetailsScreen( product: results[index],
-                similarProductsFromSelectedProducts:
-                similarProductsFromSelectedProducts,),
-            ),
-          );
-          },
-            leading: Image.network(results[index].images[1], fit: BoxFit.cover), // image book
-          title: RichText(
-            text: TextSpan(
-                text: results[index].getName().substring(0, query.length),
-                style:TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
-                children: [
-                  TextSpan(
-                    text: results[index].getName().substring(query.length),
-                    style:TextStyle(color: Colors.grey,),
+            onTap: () async {
+              List<MProduct> similarProductsFromSelectedProducts =
+                  await productServices.getSimilarityProductsBySelectedProduct(
+                      productProvider.products, results[index]);
+              Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => DetailsScreen(
+                    product: results[index],
+                    similarProductsFromSelectedProducts:
+                        similarProductsFromSelectedProducts,
                   ),
-                  TextSpan(
-                      text: '\n' + getBrands(brands, results[index].getBrandID()) + '\n \n',
-                      style: TextStyle(color: kPrimaryColor,fontSize:16)
-                  ),
-                ]
-            ),
-          )
-      )
-    );
+                ),
+              );
+            },
+            leading: Image.network(results[index].images[1],
+                fit: BoxFit.cover), // image book
+            title: RichText(
+              text: TextSpan(
+                  text: results[index].getName().substring(0, query.length),
+                  style: TextStyle(
+                      color: kPrimaryColor, fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                      text: results[index].getName().substring(query.length),
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    TextSpan(
+                        text: '\n' +
+                            getBrands(brands, results[index].getBrandID()) +
+                            '\n \n',
+                        style: TextStyle(color: kPrimaryColor, fontSize: 16)),
+                  ]),
+            )));
   }
-
 }

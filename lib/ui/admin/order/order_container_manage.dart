@@ -12,7 +12,7 @@ import '../../../../../repo/services/cart_services.dart';
 import '../../../../../repo/services/order_services.dart';
 
 class ProductContainerManage extends StatefulWidget {
-  ProductContainerManage(
+  const ProductContainerManage(
       {Key? key, required this.order, required this.products})
       : super(key: key);
 
@@ -109,7 +109,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                       '#' + order.getID().toString(),
                       style: const TextStyle(
                         fontFamily: 'Popppins',
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -119,7 +119,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                           : order.getNumOfProducts().toString() + ' item',
                       style: const TextStyle(
                         fontFamily: 'Popppins',
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -133,7 +133,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                   order.getUserName(),
                   style: const TextStyle(
                     fontFamily: 'Popppins',
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: kPrimaryColor,
                   ),
@@ -142,14 +142,14 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                   order.getPhone(),
                   style: const TextStyle(
                     fontFamily: 'Popppins',
-                    fontSize: 16,
+                    fontSize: 14,
                     color: kTextLightColor,
                   ),
                 ),
                 Text(
                   order.getAddress(),
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     color: kTextLightColor,
                   ),
                 ),
@@ -238,7 +238,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                               fontFamily: 'Popppins',
-                              fontSize: 18,
+                              fontSize: 16,
                               color: kTextColor,
                               fontWeight: FontWeight.w500),
                         ),
@@ -247,7 +247,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                               fontFamily: 'Popppins',
-                              fontSize: 18,
+                              fontSize: 16,
                               color: kTextColor,
                               fontWeight: FontWeight.w500),
                         ),
@@ -256,7 +256,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                               fontFamily: 'Popppins',
-                              fontSize: 18,
+                              fontSize: 16,
                               color: kTextColor,
                               fontWeight: FontWeight.w500),
                         ),
@@ -274,7 +274,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                               .toVND(unit: 'đ'),
                           style: const TextStyle(
                               fontFamily: 'Popppins',
-                              fontSize: 18,
+                              fontSize: 16,
                               color: kPrimaryColor,
                               fontWeight: FontWeight.w500),
                         ),
@@ -285,7 +285,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                               .toVND(unit: 'đ'),
                           style: const TextStyle(
                               fontFamily: 'Popppins',
-                              fontSize: 18,
+                              fontSize: 16,
                               color: kPrimaryColor,
                               fontWeight: FontWeight.w500),
                         ),
@@ -296,7 +296,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
                               .toVND(unit: 'đ'),
                           style: const TextStyle(
                               fontFamily: 'Popppins',
-                              fontSize: 18,
+                              fontSize: 16,
                               color: kPrimaryColor,
                               fontWeight: FontWeight.w500),
                         ),

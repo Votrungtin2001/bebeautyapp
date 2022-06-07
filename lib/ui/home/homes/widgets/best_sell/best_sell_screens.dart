@@ -14,7 +14,7 @@ import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
+
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -30,7 +30,6 @@ class BestSellScreen extends StatelessWidget {
   late List<MProduct> products;
   late List<MProduct> suggestProducts;
   late List<MBrand> brands;
-
 
   BestSellScreen(List<MProduct> Products) {
     this.products = Products;
@@ -48,6 +47,11 @@ class BestSellScreen extends StatelessWidget {
         leading: BackButton(
           color: kPrimaryColor,
         ),
+        title: Text(
+          "Best sell",
+          style: TextStyle(color: kPrimaryColor, fontSize: 18),
+        ),
+        centerTitle: true,
         actions: <Widget>[
           // IconButton(
           //   icon: SvgPicture.asset(
@@ -63,7 +67,7 @@ class BestSellScreen extends StatelessWidget {
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",
               // By default our  icon color is white
-              color: kTextColor,
+              color: kPrimaryColor,
             ),
             onPressed: () {
               Navigator.push(
@@ -84,20 +88,6 @@ class BestSellScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    child: Text(
-                      "Best sell",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ),
                   const SizedBox(
                     height: 15,
                   ),

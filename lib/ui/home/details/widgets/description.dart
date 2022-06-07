@@ -26,13 +26,13 @@ class Description extends StatelessWidget {
   final MProduct product;
   final String type;
 
-  final brandServices = new BrandServices();
-  final originServices = new OriginServices();
-  final skinServices = new SkinServices();
-  final categoryServices = new CategoryServices();
-  final sessionServices = new SessionServices();
-  final structureServices = new StructureServices();
-  final genderServices = new GenderServices();
+  final brandServices = BrandServices();
+  final originServices = OriginServices();
+  final skinServices = SkinServices();
+  final categoryServices = CategoryServices();
+  final sessionServices = SessionServices();
+  final structureServices = StructureServices();
+  final genderServices = GenderServices();
 
   @override
   Widget build(BuildContext context) {
@@ -44,21 +44,25 @@ class Description extends StatelessWidget {
 
     int id = product.getID();
 
-    String brand = brandServices.getBrandName(brandProvider.brands, product.getBrandID());
+    String brand =
+        brandServices.getBrandName(brandProvider.brands, product.getBrandID());
 
-    String category = categoryServices.getCategoryName(categoryProvider.categories, product.getCategoryID());
+    String category = categoryServices.getCategoryName(
+        categoryProvider.categories, product.getCategoryID());
 
-    String origin = originServices.getOriginName(originProvider.origins, product.getOriginID());
+    String origin = originServices.getOriginName(
+        originProvider.origins, product.getOriginID());
 
     String skin = skinServices.getSkinName(product.getSkinID());
 
     String session = sessionServices.getSession(product.getSessionID());
 
-    String structure = structureServices.getStructureName(product.getStructureID());
+    String structure =
+        structureServices.getStructureName(product.getStructureID());
 
     String gender = genderServices.getGender(product.getGenderID());
 
-    if(type == "product specifications") {
+    if (type == "product specifications") {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
         child: Text(
@@ -66,15 +70,12 @@ class Description extends StatelessWidget {
           style: TextStyle(height: 1.5),
         ),
       );
-    }
-    else {
-      if(type == "description") {
+    } else {
+      if (type == "description") {
         description = product.getDescription();
-      }
-      else if(type == "chemical composition")  {
+      } else if (type == "chemical composition") {
         description = product.getChemicalComposition();
-      }
-      else if(type == "guideline") {
+      } else if (type == "guideline") {
         description = product.getGuideLine();
       }
       return Padding(
@@ -85,6 +86,5 @@ class Description extends StatelessWidget {
         ),
       );
     }
-
   }
 }

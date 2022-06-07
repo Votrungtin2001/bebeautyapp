@@ -11,7 +11,6 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../../constants.dart';
 import '../../../repo/providers/user_provider.dart';
-import 'change_avatar_dialog.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);

@@ -173,7 +173,7 @@ class _CartCounterState extends State<CartCounter> {
                     padding: const EdgeInsets.all(3),
                     child: Icon(
                       Icons.remove,
-                      size: 30,
+                      size: 20,
                       color: Colors.white,
                     ),
                   )),
@@ -263,7 +263,7 @@ class _CartCounterState extends State<CartCounter> {
                   ),
                   child: Icon(
                     Icons.add,
-                    size: 30,
+                    size: 20,
                     color: Colors.white,
                   )),
             ),

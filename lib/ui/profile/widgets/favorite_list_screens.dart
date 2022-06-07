@@ -1,18 +1,11 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
-import 'package:bebeautyapp/repo/providers/brand_provider.dart';
-import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 
-import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,14 +31,14 @@ class FavoriteListScreens extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text("Favourite List"),
+        title: Text("Favorite List"),
         titleTextStyle: TextStyle(
             color: kPrimaryColor,
-            fontSize: 18,
+            fontSize: 16,
             fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700),
+            fontWeight: FontWeight.w500),
         centerTitle: true,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
         leading: BackButton(
           color: kPrimaryColor,
         ),

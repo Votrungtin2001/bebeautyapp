@@ -4,8 +4,7 @@ import 'package:bebeautyapp/model/MProductInCart.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_card.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/address_selection.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/complete_order.dart';
-import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
-import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
+import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

@@ -1,6 +1,5 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
-import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,7 +54,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: true,
         title: const Text("Change Address"),

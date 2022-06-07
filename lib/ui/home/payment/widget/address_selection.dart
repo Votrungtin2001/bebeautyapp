@@ -1,7 +1,7 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/address_item.dart';
-import 'package:bebeautyapp/ui/profile/widgets/Address_class.dart';
+
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address_card.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
@@ -30,14 +30,14 @@ class _AddressSelection extends State<AddressSelection> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text("Address Selection"),
         titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
+            color: kPrimaryColor,
+            fontSize: 16,
             fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700),
+            fontWeight: FontWeight.w500),
         centerTitle: true,
       ),
       body: Column(

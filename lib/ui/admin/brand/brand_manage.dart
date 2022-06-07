@@ -49,15 +49,18 @@ class _BrandManageState extends State<BrandManage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: kPrimaryColor,
+        backgroundColor: Colors.white,
         title: const Text("Brand Manage"),
         titleTextStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
+            color: kPrimaryColor,
+            fontSize: 16,
             fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700),
+            fontWeight: FontWeight.w600),
         centerTitle: true,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
+        leading: BackButton(
+          color: kPrimaryColor,
+        ),
         actions: [
           IconButton(
             onPressed: () => Navigator.push(
@@ -68,7 +71,7 @@ class _BrandManageState extends State<BrandManage> {
             ),
             icon: const Icon(
               Icons.add,
-              color: Colors.white,
+              color: kPrimaryColor,
             ),
           ),
         ],

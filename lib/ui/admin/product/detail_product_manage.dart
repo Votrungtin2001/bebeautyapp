@@ -12,8 +12,8 @@ import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/origin_provider.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
+import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 
-import 'package:bebeautyapp/ui/home/product_details/components/sticky_label.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
 import 'package:image_picker/image_picker.dart';
@@ -169,7 +169,7 @@ class _DetailsProductManageScreenState
         title: Text('Product'),
         titleTextStyle: const TextStyle(
             color: kPrimaryColor,
-            fontSize: 20,
+            fontSize: 18,
             fontFamily: 'Laila',
             fontWeight: FontWeight.w700),
         centerTitle: true,

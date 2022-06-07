@@ -4,10 +4,7 @@ import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/product_column.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/recommend_product/recommend_product_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/same_brand/same_brand.dart';
 
 import 'package:flutter/material.dart';
@@ -20,9 +17,7 @@ import '../../../../model/MReview.dart';
 import '../../../../repo/providers/review_provider.dart';
 import '../../../review/components/review_card.dart';
 import '../../../review/reviews.dart';
-import '../../homes/widgets/recommend_product/recommend_product.dart';
 import 'description.dart';
-import 'product_title_with_image.dart';
 
 class Body extends StatefulWidget {
   const Body(
@@ -46,10 +41,10 @@ class _Body extends State<Body> {
     final productProvider = Provider.of<ProductProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
     final reviewProvider = Provider.of<ReviewProvider>(context);
-    List<ReviewModel> reviewPro =[];
+    List<ReviewModel> reviewPro = [];
 
-    for (int i = 0;i < reviewProvider.reviews.length ; i++){
-      if (reviewProvider.reviews[i].idPro == widget.product.id.toString()){
+    for (int i = 0; i < reviewProvider.reviews.length; i++) {
+      if (reviewProvider.reviews[i].idPro == widget.product.id.toString()) {
         reviewPro.add(reviewProvider.reviews[i]);
       }
     }
@@ -140,14 +135,14 @@ class _Body extends State<Body> {
           const SizedBox(height: kDefaultPadding / 2),
           Text(
             widget.product.engName,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontSize: 12),
           ),
           const SizedBox(height: kDefaultPadding),
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: Text(
               widget.product.name,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ),
 
@@ -162,15 +157,18 @@ class _Body extends State<Body> {
                   currencyformat.format(widget.product.getMarketPrice()) + 'đ',
                   style: new TextStyle(
                     color: Colors.grey,
-                    fontSize: 30,
+                    fontSize: 20,
                     decoration: TextDecoration.lineThrough,
                   ),
+                ),
+                SizedBox(
+                  width: 8.0,
                 ),
                 Text(
                   currencyformat.format(widget.product.getPrice()) + 'đ',
                   style: new TextStyle(
                     color: Colors.black,
-                    fontSize: 30,
+                    fontSize: 25,
                   ),
                 ),
 
@@ -190,7 +188,7 @@ class _Body extends State<Body> {
             ),
           ),
           const SizedBox(
-            height: kDefaultPadding,
+            height: kDefaultPadding / 4,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -262,8 +260,7 @@ class _Body extends State<Body> {
           //   },
           // ),
           Padding(
-            padding:
-            EdgeInsets.only(left: (20), right: (20),bottom: (0)),
+            padding: EdgeInsets.only(left: (20), right: (20), bottom: (0)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -274,74 +271,73 @@ class _Body extends State<Body> {
                       color: Colors.black,
                     ),
                   ),
-
                   Text(
-                    reviewPro.length == 0 ? " " : reviewPro.length.toString() + " reviews",
+                    reviewPro.length == 0
+                        ? " "
+                        : reviewPro.length.toString() + " reviews",
                     style: TextStyle(
                       fontSize: 14,
                       color: kSecondaryColor,
                     ),
                   ),
-                ]
-            ),
+                ]),
           ),
-          reviewPro.length != 0 ? ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.all((15)),
-            itemCount: reviewPro.length,
-            itemBuilder: (context, index) {
-              return ReviewCard(
-                review: reviewPro[index],
-                onTap: () => setState(() {
-                  isMore = !isMore;
-                }),
-                isLess: isMore,
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider(
-                thickness: 2.0,
-                color: kAccentColor,
-              );
-            },
-          ) : Padding(
-            padding:
+          reviewPro.length != 0
+              ? ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.all((15)),
+                  itemCount: reviewPro.length,
+                  itemBuilder: (context, index) {
+                    return ReviewCard(
+                      review: reviewPro[index],
+                      onTap: () => setState(() {
+                        isMore = !isMore;
+                      }),
+                      isLess: isMore,
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      thickness: 2.0,
+                      color: kAccentColor,
+                    );
+                  },
+                )
+              : Padding(
+                  padding: EdgeInsets.all((15)),
+                  child: Align(
+                    child: Text("No reviews yet.",
+                        style: TextStyle(color: kSecondaryColor)),
+                    alignment: Alignment.center,
+                  ),
+                ),
 
-            EdgeInsets.all((15)),
-            child: Align(
-              child: Text(
-                  "No reviews yet.",
-                  style: TextStyle(color: kSecondaryColor)
-              ),
-              alignment: Alignment.center,),
-          ),
-
-
-          reviewPro.length != 0 ? Padding(
-            padding:
-
-            EdgeInsets.all((15)),
-            child: Align(child: GestureDetector(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Reviews(id: widget.product.id)));
-              },
-              child: Text(
-                  "See More",
-                  style: TextStyle(color: Color.fromARGB(255, 125, 133, 151))
-              ),
-            ),
-              alignment: Alignment.center,),
-
-          ) : SizedBox.shrink(),
+          reviewPro.length != 0
+              ? Padding(
+                  padding: EdgeInsets.all((15)),
+                  child: Align(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                Reviews(id: widget.product.id)));
+                      },
+                      child: Text("See More",
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 125, 133, 151))),
+                    ),
+                    alignment: Alignment.center,
+                  ),
+                )
+              : SizedBox.shrink(),
           kSmallDivider,
           SameBrand(productServices.getProductsFromSameBrand(
               productProvider.products, widget.product)),
           const SizedBox(
             height: 16,
           ),
-          Row(
-              children: const <Widget>[
+          Row(children: const <Widget>[
             Expanded(
                 child: Divider(
               indent: 24,

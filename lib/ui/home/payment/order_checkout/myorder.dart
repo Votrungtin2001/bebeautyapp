@@ -16,7 +16,8 @@ import '../../../../repo/services/order_services.dart';
 class MyOrderScreen extends StatefulWidget {
   final int index;
   final String userID;
-  const MyOrderScreen({Key? key, required this.index, required this.userID}) : super(key: key);
+  const MyOrderScreen({Key? key, required this.index, required this.userID})
+      : super(key: key);
 
   @override
   _MyOrderScreen createState() => _MyOrderScreen();
@@ -26,11 +27,13 @@ class _MyOrderScreen extends State<MyOrderScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
+  Stream<QuerySnapshot>? pendingOrders;
   Stream<QuerySnapshot>? payOrders;
   Stream<QuerySnapshot>? shippingOrders;
   Stream<QuerySnapshot>? receivedOrders;
   Stream<QuerySnapshot>? completedOrders;
   Stream<QuerySnapshot>? ratingOrders;
+  Stream<QuerySnapshot>? canceledOrders;
   final orderServices = new OrderServices();
 
   @override
@@ -40,49 +43,60 @@ class _MyOrderScreen extends State<MyOrderScreen>
     _tabController.animateTo(2);
 
     getOrders();
-
   }
 
   getOrders() async {
-    await orderServices.getOrderByUserID(widget.userID, 0).then((snapshots) {
+    await orderServices.getOrderByStatus(0).then((snapshots) {
+      setState(() {
+        pendingOrders = snapshots;
+      });
+    });
+
+    await orderServices.getOrderByStatus(1).then((snapshots) {
       setState(() {
         payOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByUserID(widget.userID, 1).then((snapshots) {
+    await orderServices.getOrderByStatus(2).then((snapshots) {
       setState(() {
         shippingOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByUserID(widget.userID, 2).then((snapshots) {
+    await orderServices.getOrderByStatus(3).then((snapshots) {
       setState(() {
         receivedOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByUserID(widget.userID, 3).then((snapshots) {
+    await orderServices.getOrderByStatus(4).then((snapshots) {
       setState(() {
         completedOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByUserID(widget.userID, 4).then((snapshots) {
+    await orderServices.getOrderByStatus(5).then((snapshots) {
       setState(() {
         ratingOrders = snapshots;
       });
     });
 
+    await orderServices.getOrderByStatus(-1).then((snapshots) {
+      setState(() {
+        canceledOrders = snapshots;
+      });
+    });
   }
 
   static const List<Tab> _tabs = [
+    Tab(text: 'Pending'),
     Tab(text: 'To Pay'),
     Tab(text: 'To Ship'),
     Tab(text: 'To Receive'),
     Tab(text: 'Completed'),
     Tab(text: 'To Rate'),
-    Tab(text: 'Cancelled'),
+    Tab(text: 'canceled'),
   ];
 
   static Widget not_orders = Column(
@@ -96,42 +110,80 @@ class _MyOrderScreen extends State<MyOrderScreen>
     ],
   );
 
+  Widget PendingOrderList(List<MProduct> products) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: payOrders,
+        builder: (context, snapshot) {
+          return snapshot.hasData && snapshot.data!.docs.length > 0
+              ? ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
+
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainer(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
+              : Center(child: not_orders);
+        });
+  }
+
   Widget PayOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
         stream: payOrders,
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                MOrder order = new MOrder(snapshot.data!.docs[index]["orderID"],
-                    snapshot.data!.docs[index]["userID"],
-                    snapshot.data!.docs[index]["voucherCode"],
-                    snapshot.data!.docs[index]["discountValue"],
-                    snapshot.data!.docs[index]["shippingValue"],
-                    snapshot.data!.docs[index]["totalPayment"],
-                    snapshot.data!.docs[index]["totalQuantity"],
-                    snapshot.data!.docs[index]["numOfProducts"],
-                    snapshot.data!.docs[index]["address"],
-                    snapshot.data!.docs[index]["latitude"],
-                    snapshot.data!.docs[index]["longitude"],
-                    snapshot.data!.docs[index]["userName"],
-                    snapshot.data!.docs[index]["phone"],
-                    snapshot.data!.docs[index]["time"],
-                    snapshot.data!.docs[index]["status"]);
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
 
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  child: ProductContainer(
-                    order: order,
-                    products: products,
-                  ),
-                );
-              })
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainer(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
               : Center(child: not_orders);
-        }
-    );
+        });
   }
 
   Widget ShippingOrderList(List<MProduct> products) {
@@ -140,36 +192,36 @@ class _MyOrderScreen extends State<MyOrderScreen>
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                MOrder order = new MOrder(snapshot.data!.docs[index]["orderID"],
-                    snapshot.data!.docs[index]["userID"],
-                    snapshot.data!.docs[index]["voucherCode"],
-                    snapshot.data!.docs[index]["discountValue"],
-                    snapshot.data!.docs[index]["shippingValue"],
-                    snapshot.data!.docs[index]["totalPayment"],
-                    snapshot.data!.docs[index]["totalQuantity"],
-                    snapshot.data!.docs[index]["numOfProducts"],
-                    snapshot.data!.docs[index]["address"],
-                    snapshot.data!.docs[index]["latitude"],
-                    snapshot.data!.docs[index]["longitude"],
-                    snapshot.data!.docs[index]["userName"],
-                    snapshot.data!.docs[index]["phone"],
-                    snapshot.data!.docs[index]["time"],
-                    snapshot.data!.docs[index]["status"]);
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
 
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  child: ProductContainer(
-                    order: order,
-                    products: products,
-                  ),
-                );
-              })
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainer(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
               : Center(child: not_orders);
-        }
-    );
+        });
   }
 
   Widget ReceivedOrderList(List<MProduct> products) {
@@ -178,36 +230,36 @@ class _MyOrderScreen extends State<MyOrderScreen>
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                MOrder order = new MOrder(snapshot.data!.docs[index]["orderID"],
-                    snapshot.data!.docs[index]["userID"],
-                    snapshot.data!.docs[index]["voucherCode"],
-                    snapshot.data!.docs[index]["discountValue"],
-                    snapshot.data!.docs[index]["shippingValue"],
-                    snapshot.data!.docs[index]["totalPayment"],
-                    snapshot.data!.docs[index]["totalQuantity"],
-                    snapshot.data!.docs[index]["numOfProducts"],
-                    snapshot.data!.docs[index]["address"],
-                    snapshot.data!.docs[index]["latitude"],
-                    snapshot.data!.docs[index]["longitude"],
-                    snapshot.data!.docs[index]["userName"],
-                    snapshot.data!.docs[index]["phone"],
-                    snapshot.data!.docs[index]["time"],
-                    snapshot.data!.docs[index]["status"]);
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
 
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  child: ProductContainer(
-                    order: order,
-                    products: products,
-                  ),
-                );
-              })
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainer(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
               : Center(child: not_orders);
-        }
-    );
+        });
   }
 
   Widget CompletedOrderList(List<MProduct> products) {
@@ -216,36 +268,36 @@ class _MyOrderScreen extends State<MyOrderScreen>
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                MOrder order = new MOrder(snapshot.data!.docs[index]["orderID"],
-                    snapshot.data!.docs[index]["userID"],
-                    snapshot.data!.docs[index]["voucherCode"],
-                    snapshot.data!.docs[index]["discountValue"],
-                    snapshot.data!.docs[index]["shippingValue"],
-                    snapshot.data!.docs[index]["totalPayment"],
-                    snapshot.data!.docs[index]["totalQuantity"],
-                    snapshot.data!.docs[index]["numOfProducts"],
-                    snapshot.data!.docs[index]["address"],
-                    snapshot.data!.docs[index]["latitude"],
-                    snapshot.data!.docs[index]["longitude"],
-                    snapshot.data!.docs[index]["userName"],
-                    snapshot.data!.docs[index]["phone"],
-                    snapshot.data!.docs[index]["time"],
-                    snapshot.data!.docs[index]["status"]);
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
 
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  child: ProductContainer(
-                    order: order,
-                    products: products,
-                  ),
-                );
-              })
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainer(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
               : Center(child: not_orders);
-        }
-    );
+        });
   }
 
   Widget RatingOrderList(List<MProduct> products) {
@@ -254,72 +306,72 @@ class _MyOrderScreen extends State<MyOrderScreen>
         builder: (context, snapshot) {
           return snapshot.hasData
               ? ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                MOrder order = new MOrder(snapshot.data!.docs[index]["orderID"],
-                    snapshot.data!.docs[index]["userID"],
-                    snapshot.data!.docs[index]["voucherCode"],
-                    snapshot.data!.docs[index]["discountValue"],
-                    snapshot.data!.docs[index]["shippingValue"],
-                    snapshot.data!.docs[index]["totalPayment"],
-                    snapshot.data!.docs[index]["totalQuantity"],
-                    snapshot.data!.docs[index]["numOfProducts"],
-                    snapshot.data!.docs[index]["address"],
-                    snapshot.data!.docs[index]["latitude"],
-                    snapshot.data!.docs[index]["longitude"],
-                    snapshot.data!.docs[index]["userName"],
-                    snapshot.data!.docs[index]["phone"],
-                    snapshot.data!.docs[index]["time"],
-                    snapshot.data!.docs[index]["status"]);
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  child: ProductContainer(
-                    order: order,
-                    products: products,
-                  ),
-                );
-              })
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainer(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
               : Center(child: not_orders);
-        }
-    );
+        });
   }
 
-  Widget CancelledOrderList(List<MProduct> products) {
+  Widget canceledOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
         stream: ratingOrders,
         builder: (context, snapshot) {
           return snapshot.hasData
               ? ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                MOrder order = new MOrder(snapshot.data!.docs[index]["orderID"],
-                    snapshot.data!.docs[index]["userID"],
-                    snapshot.data!.docs[index]["voucherCode"],
-                    snapshot.data!.docs[index]["discountValue"],
-                    snapshot.data!.docs[index]["shippingValue"],
-                    snapshot.data!.docs[index]["totalPayment"],
-                    snapshot.data!.docs[index]["totalQuantity"],
-                    snapshot.data!.docs[index]["numOfProducts"],
-                    snapshot.data!.docs[index]["address"],
-                    snapshot.data!.docs[index]["latitude"],
-                    snapshot.data!.docs[index]["longitude"],
-                    snapshot.data!.docs[index]["userName"],
-                    snapshot.data!.docs[index]["phone"],
-                    snapshot.data!.docs[index]["time"],
-                    snapshot.data!.docs[index]["status"]);
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  child: ProductContainer(
-                    order: order,
-                    products: products,
-                  ),
-                );
-              })
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    MOrder order = new MOrder(
+                        snapshot.data!.docs[index]["orderID"],
+                        snapshot.data!.docs[index]["userID"],
+                        snapshot.data!.docs[index]["voucherCode"],
+                        snapshot.data!.docs[index]["discountValue"],
+                        snapshot.data!.docs[index]["shippingValue"],
+                        snapshot.data!.docs[index]["totalPayment"],
+                        snapshot.data!.docs[index]["totalQuantity"],
+                        snapshot.data!.docs[index]["numOfProducts"],
+                        snapshot.data!.docs[index]["address"],
+                        snapshot.data!.docs[index]["latitude"],
+                        snapshot.data!.docs[index]["longitude"],
+                        snapshot.data!.docs[index]["userName"],
+                        snapshot.data!.docs[index]["phone"],
+                        snapshot.data!.docs[index]["time"],
+                        snapshot.data!.docs[index]["status"]);
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ProductContainer(
+                        order: order,
+                        products: products,
+                      ),
+                    );
+                  })
               : Center(child: not_orders);
-        }
-    );
+        });
   }
 
   @override
@@ -328,7 +380,7 @@ class _MyOrderScreen extends State<MyOrderScreen>
 
     return DefaultTabController(
       initialIndex: widget.index,
-      length: 6,
+      length: 7,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -359,7 +411,7 @@ class _MyOrderScreen extends State<MyOrderScreen>
           ),
           leading: const BackButton(color: kPrimaryColor),
           title: const Text(
-            'MY ORDER',
+            'My order',
             style: TextStyle(
               fontFamily: "Laila",
               fontSize: 18,
@@ -375,12 +427,13 @@ class _MyOrderScreen extends State<MyOrderScreen>
           // Uncomment the line below and remove DefaultTabController if you want to use a custom TabController
           // controller: _tabController,
           children: [
+            PendingOrderList(productProvider.products),
             PayOrderList(productProvider.products),
             ShippingOrderList(productProvider.products),
             ReceivedOrderList(productProvider.products),
             CompletedOrderList(productProvider.products),
             RatingOrderList(productProvider.products),
-            CancelledOrderList(productProvider.products),
+            canceledOrderList(productProvider.products),
           ],
         ),
       ),

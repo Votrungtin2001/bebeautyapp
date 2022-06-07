@@ -1,16 +1,12 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
-import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
-import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
-import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/details_brand.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/item_card.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +30,11 @@ class BrandScreens extends StatelessWidget {
         leading: const BackButton(
           color: kPrimaryColor,
         ),
+        title: Text(
+          "Brands",
+          style: TextStyle(color: kPrimaryColor, fontSize: 18),
+        ),
+        centerTitle: true,
         actions: <Widget>[
           // IconButton(
           //   icon: SvgPicture.asset(
@@ -49,7 +50,7 @@ class BrandScreens extends StatelessWidget {
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",
               // By default our  icon color is white
-              color: kTextColor,
+              color: kPrimaryColor,
             ),
             onPressed: () {
               Navigator.push(
@@ -97,20 +98,7 @@ class BrandScreens extends StatelessWidget {
                   //          press: (){},
                   //        ): Container();},
                   //    ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    child: Text(
-                      "Brand",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ),
+
                   const SizedBox(
                     height: 15,
                   ),

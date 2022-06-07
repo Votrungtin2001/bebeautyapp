@@ -29,21 +29,21 @@ class ChangePasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text("Change Password"),
         titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
+            color: kPrimaryColor,
+            fontSize: 16,
             fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700),
+            fontWeight: FontWeight.w500),
         centerTitle: true,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
+        leading: BackButton(color: kPrimaryColor),
       ),
-      backgroundColor: Color(0xffc1c2c6).withOpacity(0.2),
+      backgroundColor: Color(0xffc1c2c6).withOpacity(0.1),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,17 +56,7 @@ class ChangePasswordScreen extends StatelessWidget {
               height: 250,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 26),
-              child: Text(
-                "Change your password account",
-                style: kBigTitleTextStyle.copyWith(
-                  fontSize: 25,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 50, right: 50),
+              padding: const EdgeInsets.only(left: 50, right: 50, top: 50),
               child: Column(
                 children: [
                   TextFormField(
@@ -111,7 +101,6 @@ class ChangePasswordScreen extends StatelessWidget {
                   TextFormField(
                     focusNode: newPassFocusNode,
                     keyboardType: TextInputType.visiblePassword,
-
                     onChanged: (value) {
                       newPass = value;
                     },
