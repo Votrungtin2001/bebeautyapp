@@ -1,16 +1,73 @@
-# bebeautyapp
 
-A new Flutter project.
+# Be Beauty
 
-## Getting Started
+A brief description of what this project does and who it's for
 
-This project is a starting point for a Flutter application.
+## Content
 
-A few resources to get you started if this is your first Flutter project:
+1. [Feature](#Feature)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+   1.1 [Sign In / Sign Up](#Sign-In-/-Sign-Up)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+   1.2 [Cart](#Cart)
+   
+   1.3 [Recommend Product](#Recommend-Product)
+
+   1.4 [Shipping status of the order](#Shipping-status-of-the-order)
+   
+   1.5 [Rating / Review](#Rating-/-Review)
+
+   1.6 [Wishlist](#Wishlist)
+   
+1. [Requirements](#Requirements)
+
+1. [Libraries and technology](#Libraries-and-technology)
+
+1. [Diagram](#Diagram)
+
+1. [Author](#Author)
+
+1. [License](#License)
+
+## Requirements
+- Android:
+
+   + Android studio: 4.2.1
+
+   + Gradle: 4.1
+
+   + Min SDK: 21
+
+   + Target SDK: 31
+
+##  Libraries and technology
+- Language : Dart
+
+- FrameWork : Flutter
+
+- Database: Firebase Authentication and Firebase Storage
+
+* [Multi image picker](https://pub.dev/packages/multiple_image_picker)
+
+* [Geolocator](https://pub.dev/packages/geolocator)
+
+* [Provider](https://pub.dev/packages/provider)
+
+* [Rounded Loading Button](https://pub.dev/packages/rounded_loading_button)
+
+* [Geocoding](https://pub.dev/packages/geocoding)
+
+## Author
+-   Võ Trung Tín - 19522353@gm.uit.edu.vn
+
+-    Nguyễn Minh Thi - 19521638@gm.uit.edu.vn
+
+-   Bùi Thanh Phú - 19522018@gm.uit.edu.vn
+
+
+## License
+
+[MIT](/LICENSE.md)
+
+
+
