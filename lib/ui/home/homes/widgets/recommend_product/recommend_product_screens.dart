@@ -1,9 +1,12 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/MReview.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
@@ -16,6 +19,8 @@ class RecommendProductScreen extends StatelessWidget {
 
   final productServices = new ProductServices();
 
+  final reviewServices = new ReviewServices();
+
   late List<MProduct> products;
   RecommendProductScreen(List<MProduct> Products) {
     this.products = Products;
@@ -24,6 +29,8 @@ class RecommendProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
+
+    final reviewProvider = Provider.of<ReviewProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -108,6 +115,9 @@ class RecommendProductScreen extends StatelessWidget {
                                         productProvider.products,
                                         products[index]);
 
+                            List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, products[index].id);
+
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -118,6 +128,7 @@ class RecommendProductScreen extends StatelessWidget {
                                     product: products[index],
                                     similarProductsFromSelectedProducts:
                                         similarProductsFromSelectedProducts,
+                                    reviewsOfProduct: reviewsOfProduct,
                                   ),
                                 ));
                           },

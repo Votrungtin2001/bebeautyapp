@@ -1,4 +1,8 @@
+import 'package:bebeautyapp/model/user/MUser.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/repo/services/user_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import '../../../constants.dart';
@@ -7,16 +11,18 @@ import '../../../model/MReview.dart';
 class ReviewCard extends StatelessWidget {
   final Function onTap;
   final bool isLess;
-  final ReviewModel review;
+  final MReview review;
+  final MUser user;
 
   ReviewCard({
     Key? key,
-    required this.review, required this.onTap, required this.isLess,
+    required this.review, required this.onTap, required this.isLess, required this.user
   }) : super(key: key);
+  
+  UserServices userServices = UserServices();
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       padding: EdgeInsets.only(
         top: 2.0,
@@ -35,7 +41,7 @@ class ReviewCard extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 ClipOval(
-                    child: review.image.isEmpty ? Container() : Image.network(review.image, fit: BoxFit.cover)
+                    child: user.avatarUri == "" ? Container() : Image.network(user.avatarUri, fit: BoxFit.cover)
                 ),
               ],
             ),
@@ -47,7 +53,7 @@ class ReviewCard extends StatelessWidget {
                 child: Row(
                     children: [
                       Text(
-                        review.name,
+                        user.displayName,
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
@@ -96,17 +102,18 @@ class ReviewCard extends StatelessWidget {
               ),
             ),
           ),
-          review.photo.length == 0 ? SizedBox(height: 1.0 ) : Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: GridView.builder(
-              itemCount: review.photo.length,
-              shrinkWrap: true,
-              gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6),
-              itemBuilder: (BuildContext context, int index) {
-                return Image.network(review.photo[index],
-                  fit: BoxFit.cover,);
+          review.images.length == 0
+              ? SizedBox(height: 1.0 )
+              : Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: GridView.builder(
+                  itemCount: review.images.length,
+                  shrinkWrap: true,
+                  gridDelegate:
+                    SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
+                    itemBuilder: (BuildContext context, int index) {
+                      print(review.images[index]);
+                      return Image.network(review.images[index], fit: BoxFit.cover,);
               },),),
         ],
       ),

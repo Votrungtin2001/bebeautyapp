@@ -7,7 +7,7 @@ import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/admin/brand/add_brand_screen.dart';
-import 'package:bebeautyapp/ui/admin/brand/edit_brand_screen%20copy.dart';
+import 'package:bebeautyapp/ui/admin/brand/edit_brand_screen.dart';
 import 'package:bebeautyapp/ui/admin/product/detail_product_manage.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:flutter/material.dart';
@@ -103,7 +103,7 @@ class _DetailsBrandManage extends State<DetailsBrandManage> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         DetailsProductManageScreen(
-                                      products:
+                                      product:
                                           widget.allProductsFromBrand[index],
                                     ),
                                   ));

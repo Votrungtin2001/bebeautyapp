@@ -1,8 +1,10 @@
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/MReview.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:bebeautyapp/ui/home/details/widgets/cart_counter.dart';
 
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
-import 'package:bebeautyapp/ui/home/homes/search/search_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:bebeautyapp/constants.dart';
@@ -15,26 +17,27 @@ import '../../../repo/providers/cart_provider.dart';
 import '../../../repo/providers/product_provider.dart';
 import '../../../repo/providers/user_provider.dart';
 import '../../../repo/services/product_services.dart';
-import '../../chat_user/chat.dart';
 
 class DetailsScreen extends StatelessWidget {
   final MProduct product;
   final List<MProduct> similarProductsFromSelectedProducts;
+  final List<MReview> reviewsOfProduct;
 
   final productServices = new ProductServices();
+
+
+  final ScrollController _scrollController = ScrollController();
 
   DetailsScreen(
       {Key? key,
       required this.product,
-      required this.similarProductsFromSelectedProducts})
+      required this.similarProductsFromSelectedProducts,
+      required this.reviewsOfProduct})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController _scrollController = ScrollController();
-
     final userProvider = Provider.of<UserProvider>(context);
-
     final cartProvider = Provider.of<CartProvider>(context);
 
     bool isFavorite = productServices.checkFavorite(
@@ -211,7 +214,9 @@ class DetailsScreen extends StatelessWidget {
             Body(
                 product: product,
                 similarProductsFromSelectedProducts:
-                    similarProductsFromSelectedProducts),
+                    similarProductsFromSelectedProducts,
+              reviewsOfProduct: reviewsOfProduct,
+            ),
           ])),
       floatingActionButton: FloatingActionButton(
         elevation: 0.5,

@@ -1,8 +1,11 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/MReview.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 
@@ -14,11 +17,14 @@ import 'package:provider/provider.dart';
 class FavoriteListScreens extends StatelessWidget {
   final productServices = new ProductServices();
   List<MProduct> favoriteProducts = [];
+  final reviewServices = new ReviewServices();
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
 
     final productProvider = Provider.of<ProductProvider>(context);
+
+    final reviewProvider = Provider.of<ReviewProvider>(context);
 
     if (productProvider.products.length > 10) {
       if (userProvider.user.id != "") {
@@ -107,6 +113,9 @@ class FavoriteListScreens extends StatelessWidget {
                                         productProvider.products,
                                         favoriteProducts[index]);
 
+                            List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, favoriteProducts[index].id);
+
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -119,6 +128,7 @@ class FavoriteListScreens extends StatelessWidget {
                                             productProvider.products)[index],
                                     similarProductsFromSelectedProducts:
                                         similarProductsFromSelectedProducts,
+                                    reviewsOfProduct: reviewsOfProduct,
                                   ),
                                 ));
                           },

@@ -1,4 +1,6 @@
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/repo/providers/savedAddress_provider.dart';
+import 'package:bebeautyapp/repo/services/savedAddress_services.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 
 import 'package:cool_alert/cool_alert.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlng/latlng.dart';
@@ -39,22 +42,55 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
   TextEditingController _addressController = TextEditingController();
 
   String address = '';
+  String name = '';
+  String phone = '';
+  bool isDefault = false;
+  double latitude = 0;
+  double longitude = 0;
+  final savedAddressServices = SavedAddressServices();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _nameController.text = widget.address.name;
-    // _phoneController.text = widget.address.;
-    // _addressController.text = widget.address.address;
   }
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+    final savedAddressProvider = Provider.of<SavedAddressProvider>(context);
+
+    Future<void> _deleteDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Delete'),
+            content: const Text('Are you sure to delete this Address?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  bool result = await savedAddressServices.deleteSavedAddress(widget.address);
+                  if(result == true) {
+                    savedAddressProvider.deleteSavedAddress(widget.address);
+                    Navigator.pop(context, 'OK');
+                  }
+
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.pinkAccent,
         elevation: 0,
         automaticallyImplyLeading: true,
         title: const Text("Change Address"),
@@ -74,7 +110,10 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
           ),
         ],
       ),
-      body: Container(
+      body: Form(
+        key: formKey,
+        child:
+          Container(
         color: kTextLightColor.withOpacity(0.15),
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -108,7 +147,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       TextFormField(
                         focusNode: nameFocusNode,
                         onChanged: (value) {
-                          userProvider.user.displayName = value;
+                          setState(() {
+                            name = value;
+                          });
                         },
                         cursorColor: kTextColor,
                         validator: (text) {
@@ -124,7 +165,13 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
                               icon: const Icon(Icons.close_rounded),
-                              onPressed: () => _nameController.clear()),
+                              onPressed: () {
+                                _nameController.clear();
+                                setState(() {
+                                  name = "";
+                                });
+                              }
+                            ),
                           focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
                           enabledBorder: const UnderlineInputBorder(
@@ -141,7 +188,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       TextFormField(
                         focusNode: phoneNumberFocusNode,
                         onChanged: (value) {
-                          userProvider.user.phone = value;
+                          setState(() {
+                            phone = value;
+                          });
                         },
                         cursorColor: kTextColor,
                         validator: (text) {
@@ -157,7 +206,12 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
                               icon: const Icon(Icons.close_rounded),
-                              onPressed: () => _phoneController.clear()),
+                              onPressed: () {
+                                _phoneController.clear();
+                                setState(() {
+                                  phone = "";
+                                });
+                              }),
                           focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
                           enabledBorder: const UnderlineInputBorder(
@@ -189,9 +243,11 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                       ),
                       TextFormField(
                         focusNode: addressFocusNode,
-                        // onChanged: (value) {
-                        //   userProvider.user.address = value;
-                        // },
+                        onChanged: (value) {
+                          setState(() {
+                            address = value;
+                          });
+                        },
                         cursorColor: kTextColor,
                         validator: (text) {
                           if (text == null || text.isEmpty) {
@@ -206,7 +262,14 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
                               icon: const Icon(Icons.close_rounded),
-                              onPressed: () => _addressController.clear()),
+                              onPressed: () {
+                                _addressController.clear();
+                                setState(() {
+                                  address = "";
+                                  latitude = 0;
+                                  longitude = 0;
+                                });
+                              }),
                           focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
                           enabledBorder: const UnderlineInputBorder(
@@ -227,6 +290,10 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                                 position.latitude, position.longitude);
                             GetAddressFromLatLong(position);
                             _addressController.text = address;
+                            setState(() {
+                              latitude = location.latitude;
+                              longitude = location.longitude;
+                            });
                           },
                           color: kThirdColor,
                           padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -267,7 +334,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                                 value: widget.address.isDefault,
                                 onToggle: (value) {
                                   setState(() {
-                                    widget.address.isDefault = value;
+                                    isDefault = value;
                                   });
                                 },
                               ),
@@ -279,7 +346,38 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
                         height: 20,
                       ),
                       RaisedButton(
-                        onPressed: () => {},
+                        onPressed: () async {
+                          if(isDefault == true) {
+                            await savedAddressServices.updateDefaultSavedAddress(widget.address.id, widget.address.userID);
+                          }
+
+                          MSavedAddress temp = new MSavedAddress(widget.address.id,
+                              widget.address.userID, address, name, phone, false, false, latitude, longitude);
+                          temp.setPhone(phone);
+                          temp.setFullUserName(name);
+                          temp.setFullAddressName(address);
+                          temp.setLongitude(longitude);
+                          temp.setLatitude(latitude);
+                          bool result = await savedAddressServices.updateSavedAddress(temp);
+                          if(result == true) {
+                            setState(() {
+                              address = "";
+                              _addressController.clear();
+                              phone = "";
+                              _phoneController.clear();
+                              name = "";
+                              _nameController.clear();
+                              latitude = 0;
+                              longitude = 0;
+                            });
+                            await savedAddressProvider.getSavedAddresses(widget.address.userID);
+                            Fluttertoast.showToast(msg: 'Updated this address successfully', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          }
+                          else {
+                            Fluttertoast.showToast(msg: 'Updated this address failed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          }
+
+                        },
                         color: kPrimaryColor,
                         padding: const EdgeInsets.symmetric(horizontal: 50),
                         elevation: 2,
@@ -301,7 +399,7 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
           },
         ),
       ),
-    );
+    ));
   }
 
   Future<Position> _getGeoLocationPosition() async {
@@ -344,34 +442,14 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
 
     Placemark place = placemarks[0];
     print(place);
-    address =
-        '${place.street}, ${place.subAdministrativeArea},${place.administrativeArea}';
 
-    setState(() {});
+    setState(() {
+      address =
+      '${place.street}, ${place.subAdministrativeArea},${place.administrativeArea}';
+    });
   }
 
-  Future<void> _deleteDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Delete'),
-          content: const Text('Are you sure to delete this Address?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   Future<void> _backDialog() async {
     return showDialog<void>(

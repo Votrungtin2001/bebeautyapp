@@ -105,13 +105,13 @@ class CartServices {
       return 30000;
     }
     else if(totalDistance >= 10 && totalDistance < 25) {
-    return 30000;
+    return 60000;
     }
     else if(totalDistance >= 25 && totalDistance < 50) {
-      return 60000;
+      return 100000;
     }
     else if(totalDistance >= 50) {
-      return 100000;
+      return 200000;
     }
     else return 0;
   }

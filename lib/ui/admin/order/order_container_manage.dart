@@ -1,13 +1,13 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProductInCart.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/admin/order/order_detail_manage.dart';
-import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../model/MOrder.dart';
 import '../../../../../model/MProduct.dart';
-import '../../../../../repo/providers/product_provider.dart';
 import '../../../../../repo/services/cart_services.dart';
 import '../../../../../repo/services/order_services.dart';
 
@@ -24,7 +24,6 @@ class ProductContainerManage extends StatefulWidget {
 }
 
 class _ProductContainerManageState extends State<ProductContainerManage> {
-  bool isUpdate = true;
   MOrder order =
       new MOrder("", "", "", 0.0, 0.0, 0.0, 0, 0, "", 0.0, 0.0, "", "", 0, 0);
 
@@ -69,6 +68,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
       child: GestureDetector(
@@ -78,6 +78,7 @@ class _ProductContainerManageState extends State<ProductContainerManage> {
             MaterialPageRoute(
                 builder: (context) => TrackOrderManage(
                       order: order,
+                      isAdmin: userProvider.user.role == 0,
                     )),
           );
         },

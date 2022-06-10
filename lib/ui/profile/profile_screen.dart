@@ -93,7 +93,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     OrderMenu(
-                      text: "To Pay",
+                      text: "Preparing",
                       icon: "assets/icons/check.svg",
                       press: () {
                         Navigator.push(
@@ -105,7 +105,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                       },
                     ),
                     OrderMenu(
-                      text: "To Ship",
+                      text: "Shipping",
                       icon: "assets/icons/package.svg",
                       press: () {
                         Navigator.push(
@@ -117,7 +117,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                       },
                     ),
                     OrderMenu(
-                      text: "To Receive",
+                      text: "Received",
                       icon: "assets/icons/delivery.svg",
                       press: () {
                         Navigator.push(
@@ -129,7 +129,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                       },
                     ),
                     OrderMenu(
-                      text: "To Rate",
+                      text: "Completed",
                       icon: "assets/icons/star-rate.svg",
                       press: () {
                         Navigator.push(
@@ -325,8 +325,13 @@ void signOutDrawer(BuildContext context) {
                           borderRadius: BorderRadius.circular(20)),
                       side: BorderSide(color: Colors.black, width: 1),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
+                    onPressed: () async {
+                      await authServices.signOut();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                            (Route<dynamic> route) => false,
+                      );
                     },
                     child: Text("NO",
                         style: TextStyle(

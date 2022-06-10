@@ -1,6 +1,4 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/repo/providers/brand_provider.dart';
-import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/authentication_services.dart';
 import 'package:bebeautyapp/repo/services/brand_services.dart';
@@ -29,7 +27,6 @@ class HomeAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final brandProvider = Provider.of<BrandProvider>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

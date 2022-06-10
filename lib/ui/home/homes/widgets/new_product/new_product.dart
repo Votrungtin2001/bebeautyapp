@@ -1,23 +1,22 @@
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/MReview.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
-
-import 'package:bebeautyapp/ui/home/homes/widgets/best_sell/best_sell.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
-import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/new_product/new_product_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/section_title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class NewProduct extends StatelessWidget {
   final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
+  final reviewServices = new ReviewServices();
 
   late List<MProduct> products;
   NewProduct(List<MProduct> Products) {
@@ -28,6 +27,7 @@ class NewProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
+    final reviewProvider = Provider.of<ReviewProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -73,6 +73,9 @@ class NewProduct extends StatelessWidget {
                               .getSimilarityProductsBySelectedProduct(
                                   productProvider.products, products[index]);
 
+                      List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, products[index].id);
+
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -80,6 +83,7 @@ class NewProduct extends StatelessWidget {
                               product: products[index],
                               similarProductsFromSelectedProducts:
                                   similarProductsFromSelectedProducts,
+                              reviewsOfProduct: reviewsOfProduct,
                             ),
                           ));
                     },

@@ -1,10 +1,13 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MBrand.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/MReview.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
 
@@ -17,16 +20,20 @@ class DetailsBrand extends StatelessWidget {
   final MBrand brand;
   final List<MProduct> allProductsFromBrand;
 
-  const DetailsBrand(
+
+  final reviewServices = new ReviewServices();
+  final preferenceServices = new PreferenceServices();
+  final productServices = new ProductServices();
+
+  DetailsBrand(
       {Key? key, required this.brand, required this.allProductsFromBrand})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final preferenceServices = new PreferenceServices();
     final productProvider = Provider.of<ProductProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
+    final reviewProvider = Provider.of<ReviewProvider>(context);
 
-    final productServices = new ProductServices();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -118,6 +125,9 @@ class DetailsBrand extends StatelessWidget {
                                           productProvider.products,
                                           allProductsFromBrand[index]);
 
+                              List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, allProductsFromBrand[index].id);
+
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -128,6 +138,7 @@ class DetailsBrand extends StatelessWidget {
                                       product: allProductsFromBrand[index],
                                       similarProductsFromSelectedProducts:
                                           similarProductsFromSelectedProducts,
+                                      reviewsOfProduct: reviewsOfProduct,
                                     ),
                                   ));
                             },

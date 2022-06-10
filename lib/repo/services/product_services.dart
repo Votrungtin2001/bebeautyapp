@@ -287,7 +287,7 @@ class ProductServices {
   }
 
   //Add Product
-  Future<bool> addProduct(MProduct product, String newProductID) async {
+  Future<bool> addProduct(MProduct product, int newProductID) async {
     try {
       await refProduct
           .doc(newProductID.toString())

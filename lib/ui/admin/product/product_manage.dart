@@ -1,11 +1,10 @@
 import 'package:bebeautyapp/constants.dart';
 
-import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
-import 'package:bebeautyapp/ui/admin/Product/detail_product_manage.dart';
+import 'package:bebeautyapp/ui/admin/product/detail_product_manage.dart';
 import 'package:bebeautyapp/ui/admin/product/add_product_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +93,7 @@ class _ProductManage extends State<ProductManage> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           DetailsProductManageScreen(
-                                            products:
+                                            product:
                                                 productProvider.products[index],
                                           )));
                             },

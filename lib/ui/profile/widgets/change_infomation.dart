@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:bebeautyapp/repo/services/image_services.dart';
+import 'package:bebeautyapp/repo/services/user_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,40 +25,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final formKey = GlobalKey<FormState>();
   String name = "";
   String phone = "";
-  String address = "";
-  String selectedPhoto = "";
+  String email = "";
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
   bool showPassword = false;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String collection = "Users";
 
-  File? image;
   String? filename;
   late String user_id;
-  late String url;
+  File? imageFile = null;
 
-  Future _getImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      final imageTemporaty = File(image!.path);
+  final imageServices = ImageServices();
+  final userServices = UserServices();
+
+  _getFromGallery() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
       setState(() {
-        this.image = imageTemporaty;
-        this.filename = basename(image.path);
-        selectedPhoto = basename(image.path);
+        imageFile = File(pickedFile.path);
       });
-    } on PlatformException catch (e) {
-      print('Failed o pick image: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final user_model = Provider.of<UserProvider>(context);
-    String photo = user_model.user.avatarUri;
     user_id = user_model.user.getID();
     return Container(
       constraints: BoxConstraints(
@@ -88,9 +86,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   clipBehavior: Clip.none,
                   children: [
                     CircleAvatar(
-                      backgroundImage: image != null
-                          ? Image.file(image!, fit: BoxFit.cover).image
-                          : Image.network(photo, fit: BoxFit.cover).image,
+                      backgroundImage: imageFile != null
+                          ? Image.file(imageFile!, fit: BoxFit.cover).image
+                          : Image.network(user_model.user.avatarUri, fit: BoxFit.cover).image,
                     ),
                     Positioned(
                       right: -16,
@@ -108,7 +106,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             backgroundColor: Color(0xFFF5F6F9),
                           ),
                           onPressed: () {
-                            _getImage();
+                            _getFromGallery();
                           },
                           child: const Icon(
                             Icons.camera_alt,
@@ -203,12 +201,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
                           child: TextFormField(
                             readOnly: true,
-                            controller: _addressController,
-                            onChanged: (value) {
-                              setState(() {
-                                address = value;
-                              });
-                            },
+                            controller: _emailController,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 10.0),
@@ -248,59 +241,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             color: Colors.black)),
                   ),
                   RaisedButton(
-                    onPressed: () {
-                      // Store image in storage
-                      if (selectedPhoto != "") {
-                        firebase_storage.FirebaseStorage storage =
-                            firebase_storage.FirebaseStorage.instance;
-                        firebase_storage.Reference ref =
-                            storage.ref().child(filename!);
-                        firebase_storage.UploadTask uploadTask =
-                            ref.putFile(image!);
-                        uploadTask.whenComplete(() async {
-                          url = await ref.getDownloadURL();
-                          if (url != "") {
-                            //Save image in firestore
-                            _firestore
-                                .collection(collection)
-                                .doc(user_id)
-                                .update({'ava': url});
-                            user_model.user.setAvatarURi(url);
-                          }
-                        });
+                    onPressed: () async {
+                      String image = "";
+                      if(imageFile != null) {
+                        image = await imageServices.addImageAndReturnString(imageFile);
+                        user_model.user.setAvatarURi(image);
                       }
-                      ////
                       if (name != "") {
-                        _firestore
-                            .collection(collection)
-                            .doc(user_model.user.getID())
-                            .update({'displayName': name});
                         user_model.user.setName(name);
                       }
                       if (phone != "") {
-                        _firestore
-                            .collection(collection)
-                            .doc(user_model.user.getID())
-                            .update({'phone': phone});
                         user_model.user.setPhone(phone);
                       }
-                      if (address != "") {
-                        _firestore
-                            .collection(collection)
-                            .doc(user_model.user.getID())
-                            .update({'address': address});
-                        // user_model.user.setAddress(address);
+                      bool result = await userServices.updateUserInformation(user_model.user);
+                      if(result == true) {
+                        _nameController.text = "";
+                        _phoneController.text = "";
 
+                        user_model.getUser(user_id);
+
+                        Fluttertoast.showToast(
+                            msg: 'Updated your information successfully',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM);
+                        Navigator.of(context).pop();
                       }
-                      _nameController.text = "";
-                      _phoneController.text = "";
-                      _addressController.text = "";
+                      else {
+                        Fluttertoast.showToast(
+                            msg: 'Updated your information failed',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM);
+                      }
 
-                      Fluttertoast.showToast(
-                          msg: 'Updated your information successfully',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM);
-                      Navigator.of(context).pop();
                     },
                     color: kPrimaryColor,
                     padding: EdgeInsets.symmetric(horizontal: 50),

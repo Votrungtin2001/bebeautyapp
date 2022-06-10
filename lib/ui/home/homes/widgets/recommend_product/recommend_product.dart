@@ -1,9 +1,12 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/MReview.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/recommend_product/recommend_product_screens.dart';
@@ -25,6 +28,7 @@ class _RecommendProductState extends State<RecommendProduct>
     with TickerProviderStateMixin {
   final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
+  final reviewServices = new ReviewServices();
   int length = 0;
   @override
   void initState() {
@@ -35,6 +39,7 @@ class _RecommendProductState extends State<RecommendProduct>
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
+    final reviewProvider = Provider.of<ReviewProvider>(context);
 
     if (userProvider.user.id != "") {
       if (productProvider.products.length > 10) {
@@ -112,6 +117,9 @@ class _RecommendProductState extends State<RecommendProduct>
                                     productProvider
                                         .similarProductsBasedUserByCBR[index]);
 
+                        List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, productProvider.similarProductsBasedUserByCBR[index].id);
+
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -123,6 +131,7 @@ class _RecommendProductState extends State<RecommendProduct>
                                     .similarProductsBasedUserByCBR[index],
                                 similarProductsFromSelectedProducts:
                                     similarProductsFromSelectedProducts,
+                                reviewsOfProduct: reviewsOfProduct,
                                 //builder: (context) => DetailsScreen(product: productProvider.similarProductsByCFR[index],
                               ),
                             ));

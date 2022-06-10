@@ -33,7 +33,7 @@ class SignIn_Function extends ChangeNotifier {
     if(result != null) {
       user = auth.currentUser!;
       String user_id = await user.uid.toString();
-      if(user_id == "t1rfY6046KaZ5sDTZwlKgeyr5Cu2") { // tried to find admin with its uid
+      if(user_id == "DESCqkYmeTa4krec99myZe7p0rE2") { // tried to find admin with its uid
         return 0; //sign in with admin account
       }
       else {

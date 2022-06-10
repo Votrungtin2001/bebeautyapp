@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MBrand.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
+import 'package:bebeautyapp/repo/services/brand_services.dart';
+import 'package:bebeautyapp/repo/services/image_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:provider/provider.dart';
@@ -24,11 +27,13 @@ class EditBrand extends StatefulWidget {
 
 class _EditBrandState extends State<EditBrand> {
   final formKey = GlobalKey<FormState>();
-  final productServices = new ProductServices();
+  final brandServices = new BrandServices();
+  final imageServices = new ImageServices();
 
   final addButtonController = RoundedLoadingButtonController();
-  File? imageFile;
+  File? imageFile = null;
   String nameBrand = '';
+  bool isGetFile = false;
   TextEditingController nameController = TextEditingController();
   _getFromGallery() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
@@ -39,32 +44,7 @@ class _EditBrandState extends State<EditBrand> {
     if (pickedFile != null) {
       setState(() {
         imageFile = File(pickedFile.path);
-        final storageRef = FirebaseStorage.instance.ref();
-        final uploadTask = storageRef
-            .child("Brands/${nameBrand}/${nameBrand}.jpg")
-            .putFile(imageFile!);
-        uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-          switch (taskSnapshot.state) {
-            case TaskState.running:
-              final progress = 100.0 *
-                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-              print("Upload is $progress% complete.");
-              break;
-            case TaskState.paused:
-              print("Upload is paused.");
-              break;
-            case TaskState.canceled:
-              print("Upload was canceled");
-              break;
-            case TaskState.error:
-              // Handle unsuccessful uploads
-              break;
-            case TaskState.success:
-              // Handle successful uploads on complete
-              // ...
-              break;
-          }
-        });
+        isGetFile = true;
       });
     }
   }
@@ -93,7 +73,9 @@ class _EditBrandState extends State<EditBrand> {
           automaticallyImplyLeading: false,
           leading: BackButton(color: kPrimaryColor),
         ),
-        body: SingleChildScrollView(
+        body: Form(
+          key: formKey,
+          child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0.0),
@@ -132,31 +114,18 @@ class _EditBrandState extends State<EditBrand> {
                   height: kDefaultPadding / 2,
                 ),
                 StickyLabel(text: 'Image', textStyle: TextStyle(fontSize: 14)),
-                imageFile == null
-                    ? Container(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            RaisedButton(
-                              color: Colors.greenAccent,
-                              onPressed: () {
-                                _getFromGallery();
-                              },
-                              child: Text("PICK FROM GALLERY"),
-                            ),
-                            Container(
-                              height: 40.0,
-                            ),
-                          ],
-                        ),
-                      )
-                    : Column(
+                Column(
                         children: [
                           Container(
                             height: 200,
                             width: 200,
-                            child: Image.network(
+                            child: isGetFile ?
+                            Image.file(
+                              imageFile!,
+                              fit: BoxFit.cover,
+                            )
+                            :
+                            Image.network(
                               widget.brand.imageUri,
                               fit: BoxFit.cover,
                             ),
@@ -171,20 +140,35 @@ class _EditBrandState extends State<EditBrand> {
                         ],
                       ),
                 CustomRoundedLoadingButton(
-                  text: 'Add',
+                  text: 'Update',
                   controller: addButtonController,
                   onPress: () async {
+                    addButtonController.start();
                     if (formKey.currentState!.validate()) {
-                      await brandProvider.addBrand(MBrand(
-                          id: 0,
-                          name: nameBrand,
-                          imageUri: 'imageUri',
-                          productQuantity: 0,
-                          totalSoldOut: 0));
+                      bool result1 = await brandServices.updateBrandName(widget.brand);
+                      bool result2 = true;
+                      if(imageFile != null) {
+                        String imageUrl = await imageServices.addImageAndReturnString(imageFile);
+                        widget.brand.setImage(imageUrl);
+                        result2 = await brandServices.updateBrandImage(widget.brand);
+                      }
+
+                      if(result1 == true && result2 == true) {
+                        brandProvider.updateBrand(widget.brand);
+                        addButtonController.success();
+                        Future.delayed(const Duration(milliseconds: 1500), () {
+                          addButtonController.stop();
+                          Fluttertoast.showToast(msg: 'Update selected brand successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                        });
+                      }
+                      else {
+                        Fluttertoast.showToast(msg: 'Some errors happened when updating.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      }
                     }
+                    else addButtonController.stop();
                   },
                 ),
               ]),
-            )));
+            ))));
   }
 }

@@ -1,3 +1,6 @@
+import 'package:bebeautyapp/model/MReview.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
@@ -11,6 +14,9 @@ class DataSearch extends SearchDelegate<String> {
   List<MProduct> products = [];
   List<MProduct> suggestProducts = [];
   List<MBrand> brands = [];
+
+  final reviewServices = new ReviewServices();
+
 
   DataSearch(List<MProduct> list1, List<MProduct> list2, List<MBrand> list3) {
     this.products = list1;
@@ -53,6 +59,7 @@ class DataSearch extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
     final productServices = new ProductServices();
+    final reviewProvider = Provider.of<ReviewProvider>(context);
 
     List<MProduct> results = [];
 
@@ -76,6 +83,10 @@ class DataSearch extends SearchDelegate<String> {
                       await productServices
                           .getSimilarityProductsBySelectedProduct(
                               productProvider.products, results[index]);
+
+                  List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, results[index].id);
+
+
                   Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
@@ -83,6 +94,7 @@ class DataSearch extends SearchDelegate<String> {
                         product: results[index],
                         similarProductsFromSelectedProducts:
                             similarProductsFromSelectedProducts,
+                        reviewsOfProduct: reviewsOfProduct,
                       ),
                     ),
                   );
@@ -121,6 +133,7 @@ class DataSearch extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
     final productServices = new ProductServices();
+    final reviewProvider = Provider.of<ReviewProvider>(context);
 
     List<MProduct> results = [];
 
@@ -142,6 +155,9 @@ class DataSearch extends SearchDelegate<String> {
               List<MProduct> similarProductsFromSelectedProducts =
                   await productServices.getSimilarityProductsBySelectedProduct(
                       productProvider.products, results[index]);
+
+              List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, results[index].id);
+
               Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
@@ -149,6 +165,7 @@ class DataSearch extends SearchDelegate<String> {
                     product: results[index],
                     similarProductsFromSelectedProducts:
                         similarProductsFromSelectedProducts,
+                    reviewsOfProduct: reviewsOfProduct,
                   ),
                 ),
               );

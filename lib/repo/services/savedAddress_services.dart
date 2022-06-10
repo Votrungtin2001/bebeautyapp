@@ -109,5 +109,30 @@ class SavedAddressServices {
     }
   }
 
+  Future<bool> updateSavedAddress(MSavedAddress address) async {
+    try {
+      if(address.getFullAddressName() != "") await refSavedAddress.doc(address.getID()).update({'fullAddressName': address.getFullAddressName()});
+      if(address.getFullUserName() != "") await refSavedAddress.doc(address.getID()).update({'fullUserName': address.getFullUserName()});
+      if(address.getPhone() != "") await refSavedAddress.doc(address.getID()).update({'userPhone': address.getPhone()});
+      if(address.getLatitude() > 0) await refSavedAddress.doc(address.getID()).update({'latitude': address.getLatitude()});
+      if(address.getLongitude() > 0) await refSavedAddress.doc(address.getID()).update({'longitude': address.getLongitude()});
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> deleteSavedAddress(MSavedAddress address) async {
+    try {
+      await refSavedAddress.doc(address.getID()).delete();
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
 
 }

@@ -1,4 +1,7 @@
 
+import 'package:bebeautyapp/model/user/MUser.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
+import 'package:bebeautyapp/repo/services/user_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,9 +20,10 @@ import 'components/review_card.dart';
 
 
 class Reviews extends StatefulWidget {
-  int id;
+  int productID;
+  List<MReview> reviews;
 
-  Reviews({Key? key, required int this.id}) : super(key: key);
+  Reviews({Key? key, required this.productID, required this.reviews}) : super(key: key);
 
   @override
   _ReviewsState createState() => _ReviewsState();
@@ -27,58 +31,41 @@ class Reviews extends StatefulWidget {
 
 class _ReviewsState extends State<Reviews> {
   bool isMore = false;
-  double totalRate = 0;
-  double totalRate1 = 0;
-  double totalRate2 = 0;
-  double totalRate3 = 0;
-  double totalRate4 = 0;
-  double totalRate5 = 0;
+
 
   List<double> ratings = [];
+  List<MUser> users = [];
+
+  final reviewServices = ReviewServices();
+  final userServices = UserServices();
+
+  @override
+  void initState() {
+    super.initState();
+    getUsersReview();
+
+  }
+
+  Future<void> getUsersReview() async {
+    List<MUser> results = [];
+    for(int i = 0; i < widget.reviews.length; i++) {
+      MUser user = await userServices.getUser(widget.reviews[i].userID);
+      bool isAdd = false;
+      for(int j = 0; j < results.length; j++) {
+        if(results[j].getID() == user.getID()) isAdd = true;
+      }
+
+      if(isAdd == true) results.add(user);
+    }
+    setState(() {
+      users = results;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final reviewProvider = Provider.of<ReviewProvider>(context);
-    List<ReviewModel> reviewPro = [];
 
-    //get list review
-    for (int i = 0;i < reviewProvider.reviews.length ; i++){
-      if (reviewProvider.reviews[i].idPro == widget.id.toString()){
-        reviewPro.add(reviewProvider.reviews[i]);
-      }
-    }
-
-    //get rating
-    for (int i = 0; i< reviewPro.length; i++)
-    {
-      totalRate += reviewPro[i].rating;
-      if (reviewPro[i].rating == 1)
-      {
-        totalRate1 ++;
-      }
-      else if (reviewPro[i].rating == 2)
-      {
-        totalRate2 ++;
-      }
-      else if (reviewPro[i].rating == 3)
-      {
-        totalRate3 ++;
-      }
-      else if (reviewPro[i].rating == 4)
-      {
-        totalRate4 ++;
-      }
-      else if (reviewPro[i].rating == 5)
-      {
-        totalRate5 ++;
-      }
-    }
-    ratings.add(totalRate1/reviewPro.length);
-    ratings.add(totalRate2/reviewPro.length);
-    ratings.add(totalRate3/reviewPro.length);
-    ratings.add(totalRate4/reviewPro.length);
-    ratings.add(totalRate5/reviewPro.length);
-
+    ratings = reviewServices.getRatings(widget.reviews);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -100,7 +87,7 @@ class _ReviewsState extends State<Reviews> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: NumberFormat("0.#").format(totalRate/reviewPro.length).toString(),
+                            text: NumberFormat("0.#").format(ratings[0]/widget.reviews.length).toString(),
                             style: TextStyle(fontSize: 48.0, color: kPrimaryColor),
                           ),
                           TextSpan(
@@ -115,14 +102,14 @@ class _ReviewsState extends State<Reviews> {
                     ),
                     SmoothStarRating(
                       starCount: 5,
-                      rating: totalRate/reviewPro.length,
+                      rating: ratings[0]/widget.reviews.length,
                       size: 20.0,
                       color: Color(0xFFFFC416),
                       borderColor: Color(0xFFFFC416),
                     ),
                     SizedBox(height: 14.0),
                     Text(
-                      "${reviewPro.length} Reviews",
+                      "${widget.reviews.length} Reviews",
                       style: TextStyle(
                         fontSize: 18.0,
                         color: kPrimaryColor,
@@ -164,17 +151,20 @@ class _ReviewsState extends State<Reviews> {
               ],
             ),
           ),
-          Expanded(
+          users.length == 0
+              ? Container()
+              : Expanded(
             child: ListView.separated(
               padding: EdgeInsets.all(15),
-              itemCount: reviewPro.length,
+              itemCount: widget.reviews.length,
               itemBuilder: (context, index) {
                 return ReviewCard(
-                  review: reviewPro[index],
+                  review: widget.reviews[index],
                   onTap: () => setState(() {
                     isMore = !isMore;
                   }),
                   isLess: isMore,
+                  user: userServices.getUserForReview(users, widget.reviews[index].userID),
                 );
               },
               separatorBuilder: (context, index) {

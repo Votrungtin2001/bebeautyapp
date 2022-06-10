@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/model/MStatus.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,72 @@ class OrderServices {
   final CollectionReference refOrder =
       FirebaseFirestore.instance.collection('Order');
   ProductServices productServices = ProductServices();
+
+
+  List<MStatus> statuses = [
+    MStatus(id: 0, name: "Pending"),
+    MStatus(id: 1, name: "Preparing"),
+    MStatus(id: 2, name: "Shipping"),
+    MStatus(id: 3, name: "Received"),
+    MStatus(id: 4, name: "Rated"),
+    MStatus(id: 5, name: "Completed"),
+    MStatus(id: -1, name: "Cancelled"),
+  ];
+
+  List<MStatus> getAllStatuses(){
+    return statuses;
+  }
+
+  int getStatusByTabName(String tabName) {
+    for(int i = 0; i < statuses.length; i++) {
+      if(tabName == statuses[i].name) return statuses[i].id;
+    }
+    return -2;
+  }
+  
+  List<MStatus> getStatusesForAdmin(int status) {
+    List<MStatus> temp = statuses;
+    temp.removeLast();
+    if(status == 0) {
+      temp.removeLast();
+      temp.removeLast();
+    }
+    else if(status == 1) {
+      temp.removeAt(0);
+      temp.removeLast();
+      temp.removeLast();
+    }
+    else if(status == 2) {
+      temp.removeAt(0);
+      temp.removeAt(0);
+      temp.removeLast();
+      temp.removeLast();
+    }
+    else if(status == 3) {
+      temp.removeAt(0);
+      temp.removeAt(0);
+      temp.removeAt(0);
+      temp.removeLast();
+      temp.removeLast();
+    }
+    else if(status == 4) {
+      temp.removeAt(0);
+      temp.removeAt(0);
+      temp.removeAt(0);
+      temp.removeAt(0);
+    }
+    else if(status == 5) {
+      temp.removeAt(0);
+      temp.removeAt(0);
+      temp.removeAt(0);
+      temp.removeAt(0);
+      temp.removeAt(0);
+    }
+
+    return temp;
+  }
+  
+
 
   //Add Order
   Future<bool> addOrder(
@@ -202,6 +269,16 @@ class OrderServices {
     try {
       await refOrder.doc(orderID.toString()).delete();
 
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateOrderStatus(String orderID, int status) async {
+    try {
+      await refOrder.doc(orderID).update({'status': status});
       return true;
     } catch (e) {
       print(e.toString());

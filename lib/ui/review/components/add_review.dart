@@ -1,12 +1,17 @@
+import 'dart:core';
 import 'dart:io';
 import 'dart:async';
+import 'package:bebeautyapp/model/MProductInCart.dart';
+import 'package:bebeautyapp/repo/services/image_services.dart';
+import 'package:bebeautyapp/repo/services/order_services.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import '../../../constants.dart';
@@ -18,12 +23,17 @@ import 'defaultBackButton.dart';
 
 
 class AddReviewScreen extends StatefulWidget {
-  static String routeName = "/payment";
+  static String routeName = "/addReivew";
 
-  String id;
-  String name;
+  List<MProductInCart> products;
+  String userID;
+  String orderID;
 
-  AddReviewScreen({Key? key, required this.id, required this.name}) : super(key: key);
+  AddReviewScreen(
+  {Key? key,
+  required this.products,
+  required this.userID,
+  required this.orderID}) : super(key: key);
 
   @override
   _AddReviewScreenState createState() => _AddReviewScreenState();
@@ -31,138 +41,47 @@ class AddReviewScreen extends StatefulWidget {
 
 class _AddReviewScreenState extends State<AddReviewScreen> {
   TextEditingController reviewcontroller = new TextEditingController();
-  String review = " ";
-  double? rate = 1;
-  final imagePicker = ImagePicker();
-  List<XFile>? imageFileList = <XFile>[];
-  File? _image = null;
-  String? _downloadUrl = " ";
-  List<String> photoUrl = [];
-  List<String> photolist = [];
+  String comment = "";
+  double rate = 1;
 
-  String? uploadedPhoto = " ";
-  bool check = false;
-  User? user = FirebaseAuth.instance.currentUser;
-  // UserModel loggedInUser = UserModel();
+  final ImagePicker imagePicker = ImagePicker();
+  List<File> fileImageArray = [];
+  List<Asset> images = [];
+
+  final imageServices = ImageServices();
+  final reviewServices = ReviewServices();
+  final orderServices = OrderServices();
+
+  void selectImages() async {
+    List<Asset> resultList = [];
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 3,
+        enableCamera: true,
+        selectedAssets: images,
+        materialOptions: MaterialOptions(
+          actionBarTitle: "Be Beauty",
+        ),
+      );
+    } on Exception catch (e) {
+      print(e);
+    }
+    setState(() {
+      images = resultList;
+      fileImageArray = imageServices.convertAssetListToFileList(resultList);
+    });
+  }
+
+
 
   @override
   void initState() {
     super.initState();
-
-    Reference _reference = FirebaseStorage.instance.ref().child("ImageProfile/${user!.uid}");
-    _reference.getDownloadURL().then((loc) => setState(() => _downloadUrl = loc));
-    if (_downloadUrl == null){
-      _downloadUrl = "http://hethongxephangtudong.net/public/client/images/no-avatar.png";
-    }
   }
-
 
   @override
   Widget build(BuildContext context) {
     final reviewProvider = Provider.of<ReviewProvider>(context);
-
-    showDeleteDialog (BuildContext context, List<String> photoList, bool check){
-      AlertDialog alert = AlertDialog(
-        content: Text("Are you sure you want to delete images?"),
-        actions: <Widget>[
-
-          FlatButton(
-            child: new Text("No", style: TextStyle(color: kPrimaryColor),),
-            onPressed: () async {
-              Navigator.pop(context);
-              check = false;
-            },
-          ),
-          FlatButton(
-            child: new Text("Yes", style: TextStyle(color: kPrimaryColor),),
-            onPressed: () {
-              photoList.clear();
-              check = true;
-              Fluttertoast.showToast(msg: "Deleted successfully.");
-              Navigator.pop(context);
-              print("check dialog  "+ check.toString());
-
-            },
-          ),
-
-        ],
-      );
-      showDialog(barrierDismissible: false,
-        context:context,
-        builder:(BuildContext context){
-          return alert;
-        },
-      );
-    }
-
-
-    // getting dp URL link
-    getUploadedPic(String index,  String datetime) async {
-
-      uploadedPhoto = await FirebaseStorage.instance
-          .ref('ImageReview/${widget.id}_${widget.name}_${index}_${datetime}')
-          .getDownloadURL();
-
-      photoUrl.add(uploadedPhoto!);
-    }
-
-    //upload image
-    uploadPic(File image, String index, String datetime) async {
-      print("vao upload:" + image.path);
-      var snapshot = await FirebaseStorage.instance.ref()
-          .child('ImageReview/${widget.id}_${widget.name}_${index}_${datetime}')
-          .putFile(image).whenComplete(() => getUploadedPic(index, datetime));
-      // setState(()  {
-      // });
-
-    }
-
-
-    //update rating product
-    void updateRating(String idPro) {
-      double totalRate = 0;
-      List<ReviewModel> reviewPro = [];
-
-      //get list review
-      for (int i = 0; i < reviewProvider.reviews.length; i++) {
-        if (reviewProvider.reviews[i].idPro == idPro) {
-          reviewPro.add(reviewProvider.reviews[i]);
-        }
-      }
-
-      //get rating
-      for (int i = 0; i < reviewPro.length; i++) {
-        totalRate += reviewPro[i].rating;
-      }
-
-      DocumentReference ref1 = FirebaseFirestore.instance.collection('product')
-          .doc(idPro);
-      ref1.update({
-        "rating": totalRate/reviewPro.length,
-      });
-    }
-
-    //select image from gallery
-    Future<void> selectImages() async {
-      if (imageFileList!.length == 3)
-      {
-        Fluttertoast.showToast(msg: "You can only choose 3 images.");
-      }else{
-        final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-        if (selectedImages!.isNotEmpty) {
-          imageFileList!.addAll(selectedImages);
-        }
-
-        setState((){
-        });
-      }
-
-    }
-    @override
-    customButton(List<String> photo){
-      this.photolist = photo;
-    }
-
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -171,73 +90,30 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           title: 'Add review',
           child: DefaultBackButton(),
         ),
-        body: SingleChildScrollView( child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: (20)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: (20)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
               Padding(
                   padding: EdgeInsets.all(
                       (10)),
                   child:Column(
-
                       children: <Widget> [
-                        imageFileList!.length == 0 ? SizedBox(height: 1) : Padding(
+                        fileImageArray.length == 0 ? SizedBox(height: 1) : Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: GridView.builder(
-                            itemCount: imageFileList!.length,
+                            itemCount: fileImageArray.length,
                             shrinkWrap: true,
                             gridDelegate:
                             SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3),
                             itemBuilder: (BuildContext context, int index) {
-
-                              if (imageFileList!.length == 1)
-                              {
-                                print("leng:"+index.toString() );
-
-                                uploadPic(File(imageFileList![0].path),
-                                    index.toString(),
-                                    DateFormat('dd_MM_yyyy hh_mm_ss')
-                                        .format(DateTime.now()).toString());
-                              }else if (imageFileList!.length == 2) {
-                                print("leng2:"+index.toString() );
-                                if (index == 1) {
-                                  uploadPic(File(imageFileList![1].path),
-                                      index.toString(),
-                                      DateFormat('dd_MM_yyyy hh_mm_ss')
-                                          .format(DateTime.now()).toString());
-                                }
-                              }else if (imageFileList!.length == 3) {
-                                print("leng3:"+index.toString() );
-
-                                if (index == 2) {
-                                  uploadPic(File(imageFileList![2].path),
-                                      index.toString(),
-                                      DateFormat('dd_MM_yyyy hh_mm_ss')
-                                          .format(DateTime.now()).toString());
-                                }
-                              }
-
-
-                              return GestureDetector(
-                                  onLongPress: () {
-                                    setState(()  {
-
-                                      print("photo: "+ photoUrl.length.toString());
-                                      photoUrl.removeAt(0);
-
-                                      print("image length: "+ imageFileList!.length.toString());
-
-                                      imageFileList!.removeAt(0);
-
-                                    });
-
-                                  },
-                                  child:  Image.file(File(imageFileList![index].path),
-                                    fit: BoxFit.cover,)
+                              return Image.file(
+                                fileImageArray[index],
+                                fit: BoxFit.cover,
                               );
 
                             },),),
@@ -295,8 +171,8 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                     size: 30.0,
                     color: Color(0xFFFFC416),
                     borderColor: Color(0xFFFFC416),
-                    onRated: (r) {
-                      rate = r;
+                    onRated: (value) {
+                      rate = value;
                     },
                   ),
                 ],
@@ -309,9 +185,9 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                     (10)),
                 child: TextFormField(
                   controller: reviewcontroller,
-                  onSaved: (newValue) => review = newValue!,
+                  onSaved: (newValue) => comment = newValue!,
                   onChanged: (value) {
-                    review = value;
+                    comment = value;
                   },
                   decoration: InputDecoration(
                     hintText: "Say something about the product",
@@ -325,38 +201,64 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                   padding: EdgeInsets.all(
                       (10)),
                   child: RaisedButton(
-                    onPressed: ()  {
+                      onPressed: ()  async {
+                        if(fileImageArray.length < 1 && comment == "") {
+                          Fluttertoast.showToast(msg: 'Please leave a comment or image before leaving a review.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                        }
+                        else {
+                          EasyLoading.show(status: 'Adding this review...');
+                          List<MReview> newReviews = [];
 
-                      ReviewModel newReview = new ReviewModel();
-                      newReview.idPro = widget.id;
-                      newReview.name = widget.name;
-                      newReview.rating = rate!;
-                      newReview.date = DateFormat('dd/MM/yyyy hh:mm')
-                          .format(DateTime.now());
-                      newReview.image = _downloadUrl!;
-                      newReview.photo = photoUrl;
-                      newReview.comment = review;
+                          List<String> urls = [];
 
-                      DocumentReference ref1 = FirebaseFirestore
-                          .instance.collection("Review").doc();
-                      ref1.set({
-                        'image': _downloadUrl,
-                        'idPro': widget.id,
-                        'name': widget.name,
-                        'rating': rate,
-                        'date': DateTime.now(),
-                        'comment': review,
-                        'photo': photoUrl,
+                          if(fileImageArray.length > 0) {
+                            urls = await imageServices.addImagesAndReturnStrings(fileImageArray);
+                          }
 
-                      });
+                          for(int i = 0; i < widget.products.length; i++) {
+                            MReview newReview = new MReview();
+                            newReview.userID = widget.userID;
+                            newReview.rating = rate;
+                            newReview.date = DateFormat('dd/MM/yyyy hh:mm')
+                                .format(DateTime.now());
+                            newReview.productID = widget.products[i].id;
+                            newReview.comment = comment;
 
-                      reviewProvider.reviews.add(newReview);
-                      updateRating(widget.id);
-                      Fluttertoast.showToast(msg: "Thank you about your review!");
-                      reviewcontroller.clear();
-                      Navigator.pop(context);
-                    },
-                    child:Text("Add Review")
+                            if(fileImageArray.length > 0) {
+                              newReview.images = urls;
+                            }
+
+                            newReviews.add(newReview);
+                          }
+
+                          bool result = await reviewServices.addReviews(newReviews);
+                          if(result == false) {
+                            EasyLoading.showError('Some errors happened when adding this review');
+                            Future.delayed(const Duration(milliseconds: 1000), () {
+                              EasyLoading.dismiss();
+                            });
+                          }
+                          else {
+                            bool result2 = await orderServices.updateOrderStatus(widget.orderID, 4);
+                            if(result2 == false) {
+                              EasyLoading.showError('Some errors happened when adding this review');
+                              Future.delayed(const Duration(milliseconds: 1000), () {
+                                EasyLoading.dismiss();
+                              });
+                            }
+                            else {
+                              reviewProvider.addReviews(newReviews);
+                              EasyLoading.showSuccess('Added this review successfully');
+                              Future.delayed(const Duration(milliseconds: 1000), () {
+                                EasyLoading.dismiss();
+                              });
+                              Navigator.pop(context);
+                            }
+                          }
+
+                        }
+                      },
+                      child:Text("Add Review")
                   )
               )
 

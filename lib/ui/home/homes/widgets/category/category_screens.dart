@@ -1,11 +1,14 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MCategory.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/MReview.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/cart/cart_screens.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
@@ -33,6 +36,7 @@ class _CategoryScreensState extends State<CategoryScreens>
     with TickerProviderStateMixin {
   final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
+  final reviewServices = new ReviewServices();
   int length = 0;
 
   late MCategory category;
@@ -56,6 +60,7 @@ class _CategoryScreensState extends State<CategoryScreens>
     final productProvider = Provider.of<ProductProvider>(context);
     final categoryProvider = Provider.of<CategoryProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
+    final reviewProvider = Provider.of<ReviewProvider>(context);
 
     final productServices = new ProductServices();
     return Scaffold(
@@ -176,6 +181,9 @@ class _CategoryScreensState extends State<CategoryScreens>
                                               productProvider.products,
                                               allProductsFromCategory[index]);
 
+                                  List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, allProductsFromCategory[index].id);
+
+
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -187,6 +195,7 @@ class _CategoryScreensState extends State<CategoryScreens>
                                               allProductsFromCategory[index],
                                           similarProductsFromSelectedProducts:
                                               similarProductsFromSelectedProducts,
+                                          reviewsOfProduct: reviewsOfProduct,
                                         ),
                                       ));
                                 },

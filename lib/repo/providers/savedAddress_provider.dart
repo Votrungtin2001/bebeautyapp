@@ -25,7 +25,19 @@ class SavedAddressProvider with ChangeNotifier {
   }
 
   addSavedAddress(MSavedAddress savedAddress) async {
+    if(savedAddress.isDefault == true) {
+      for(int i = 0; i < savedAddresses.length; i++) {
+        savedAddresses[i].isDefault = false;
+      }
+    }
     savedAddresses.add(savedAddress);
+    notifyListeners();
+  }
+
+  deleteSavedAddress(MSavedAddress savedAddress) async {
+    for(int i = 0; i < savedAddresses.length; i++) {
+      if(savedAddress.id == savedAddresses[i].id) savedAddresses.removeAt(i);
+    }
     notifyListeners();
   }
 

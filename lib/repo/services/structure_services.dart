@@ -1,4 +1,25 @@
+import 'package:bebeautyapp/model/MStructure.dart';
+
 class StructureServices {
+
+  List<MStructure> getStructures() {
+    List<MStructure> structures = [
+      MStructure(id: 0, name: "Dạng kem"),
+      MStructure(id: 1, name: "Dạng lỏng"),
+      MStructure(id: 2, name: "Dạng gel"),
+      MStructure(id: 3, name: "Dạng sữa"),
+      MStructure(id: 4, name: "Dạng nước"),
+      MStructure(id: 5, name: "Dạng giấy"),
+      MStructure(id: 6, name: "Dạng serum"),
+      MStructure(id: 7, name: "Dạng rắn dẻo"),
+      MStructure(id: 8, name: "Dạng tạo bọt sẵn"),
+      MStructure(id: 9, name: "Dạng hạt"),
+      MStructure(id: 10, name: "Dạng dầu"),
+      MStructure(id: 11, name: "Dạng rắn")
+    ];
+    return structures;
+  }
+
   String getStructureName(int structureID) {
     switch (structureID) {
       case 1:

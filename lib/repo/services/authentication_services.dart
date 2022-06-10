@@ -103,7 +103,7 @@ class AuthenticationServices {
   Future signOut() async {
     try {
       if(await googleSignIn.isSignedIn() != null) googleSignIn.disconnect();
-      if(await fb.isLoggedIn != null) fb.logOut();
+      //if(await fb.isLoggedIn != null) fb.logOut();
       return await _auth.signOut();
     } catch (error) {
       print(error.toString());

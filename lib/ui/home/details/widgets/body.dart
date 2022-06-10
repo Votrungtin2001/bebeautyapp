@@ -1,8 +1,12 @@
 import 'package:bebeautyapp/model/MProduct.dart';
+import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/providers/review_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/repo/services/preference_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
+import 'package:bebeautyapp/repo/services/review_services.dart';
+import 'package:bebeautyapp/repo/services/user_services.dart';
 import 'package:bebeautyapp/ui/home/details/details_screen.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/product_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/same_brand/same_brand.dart';
@@ -14,7 +18,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../model/MReview.dart';
-import '../../../../repo/providers/review_provider.dart';
 import '../../../review/components/review_card.dart';
 import '../../../review/reviews.dart';
 import 'description.dart';
@@ -23,10 +26,12 @@ class Body extends StatefulWidget {
   const Body(
       {Key? key,
       required this.product,
-      required this.similarProductsFromSelectedProducts})
+      required this.similarProductsFromSelectedProducts,
+      required this.reviewsOfProduct})
       : super(key: key);
   final MProduct product;
   final List<MProduct> similarProductsFromSelectedProducts;
+  final List<MReview> reviewsOfProduct;
 
   @override
   _Body createState() => _Body();
@@ -35,25 +40,48 @@ class Body extends StatefulWidget {
 class _Body extends State<Body> {
   final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
+  final reviewServices = new ReviewServices();
+  final userServices = new UserServices();
+
+  int currentIndex = 0;
+  NumberFormat currencyformat = new NumberFormat("#,###,##0");
+  bool isMore = false;
+  PageController pageController = PageController(initialPage: 0);
+  // It provide us total height and width
+  late Size size;
+  List<MUser> users = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUsersReview();
+  }
+
+  Future<void> getUsersReview() async {
+    List<MUser> results = [];
+    for(int i = 0; i < widget.reviewsOfProduct.length; i++) {
+      MUser user = await userServices.getUser(widget.reviewsOfProduct[i].userID);
+      bool isAdd = false;
+      for(int j = 0; j < results.length; j++) {
+        if(results[j].getID() == user.getID()) isAdd = true;
+      }
+
+      if(isAdd == true) results.add(user);
+    }
+    setState(() {
+      users = results;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
     final reviewProvider = Provider.of<ReviewProvider>(context);
-    List<ReviewModel> reviewPro = [];
 
-    for (int i = 0; i < reviewProvider.reviews.length; i++) {
-      if (reviewProvider.reviews[i].idPro == widget.product.id.toString()) {
-        reviewPro.add(reviewProvider.reviews[i]);
-      }
-    }
-    int currentIndex = 0;
-    NumberFormat currencyformat = new NumberFormat("#,###,##0");
-    bool isMore = false;
-    PageController pageController = PageController(initialPage: 0);
-    // It provide us total height and width
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
+
 
     return SingleChildScrollView(
       child: Column(
@@ -67,7 +95,6 @@ class _Body extends State<Body> {
               pageSnapping: true,
               itemBuilder: (context, index) {
                 currentIndex = index;
-
                 return Stack(
                   children: [
                     Image.network(
@@ -114,24 +141,6 @@ class _Body extends State<Body> {
               },
             ),
           ),
-          // Container(
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: List.generate(
-          //       widget.product.images.length,
-          //       (index) => AnimatedContainer(
-          //         duration: const Duration(milliseconds: 400),
-          //         height: 8.0,
-          //         width: currentIndex == index ? 10.0 : 8.0,
-          //         margin: const EdgeInsets.only(right: 4.0),
-          //         decoration: BoxDecoration(
-          //           color: currentIndex == index ? kPrimaryColor : kLightColor,
-          //           borderRadius: BorderRadius.circular(8.0),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
           const SizedBox(height: kDefaultPadding / 2),
           Text(
             widget.product.engName,
@@ -207,58 +216,6 @@ class _Body extends State<Body> {
               ),
             ),
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     StickyLabel(
-          //       text: "Review",
-          //       textStyle: kPop600TextStyle,
-          //     ),
-          //     GestureDetector(
-          //       onTap: () => Navigator.of(context).push(
-          //         MaterialPageRoute(
-          //           builder: (context) => Reviews(),
-          //         ),
-          //       ),
-          //       child: Padding(
-          //         padding: const EdgeInsets.only(right: kDefaultPadding),
-          //         child: StickyLabel(
-          //           text: "View All",
-          //           textStyle: TextStyle(
-          //               color: kTextLightColor,
-          //               fontSize: 16.0,
-          //               fontFamily: "Poppins"),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // ListView.separated(
-          //   shrinkWrap: true,
-          //   physics: NeverScrollableScrollPhysics(),
-          //   padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
-          //   itemCount: 3,
-          //   itemBuilder: (context, index) {
-          //     return ReviewUI(
-          //       image: reviewList[index].image,
-          //       name: reviewList[index].name,
-          //       date: reviewList[index].date,
-          //       comment: reviewList[index].comment,
-          //       rating: reviewList[index].rating,
-          //       onPressed: () => print("More Action $index"),
-          //       onTap: () => setState(() {
-          //         isMore = !isMore;
-          //       }),
-          //       isLess: isMore,
-          //     );
-          //   },
-          //   separatorBuilder: (context, index) {
-          //     return const Divider(
-          //       thickness: 2.0,
-          //       color: kAccentColor,
-          //     );
-          //   },
-          // ),
           Padding(
             padding: EdgeInsets.only(left: (20), right: (20), bottom: (0)),
             child: Row(
@@ -272,9 +229,9 @@ class _Body extends State<Body> {
                     ),
                   ),
                   Text(
-                    reviewPro.length == 0
+                    widget.reviewsOfProduct.length == 0
                         ? " "
-                        : reviewPro.length.toString() + " reviews",
+                        :  widget.reviewsOfProduct.length.toString() + " reviews",
                     style: TextStyle(
                       fontSize: 14,
                       color: kSecondaryColor,
@@ -282,19 +239,20 @@ class _Body extends State<Body> {
                   ),
                 ]),
           ),
-          reviewPro.length != 0
+          widget.reviewsOfProduct.length != 0
               ? ListView.separated(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.all((15)),
-                  itemCount: reviewPro.length,
+                  itemCount:  widget.reviewsOfProduct.length,
                   itemBuilder: (context, index) {
                     return ReviewCard(
-                      review: reviewPro[index],
+                      review:  widget.reviewsOfProduct[index],
                       onTap: () => setState(() {
                         isMore = !isMore;
                       }),
                       isLess: isMore,
+                      user: userServices.getUserForReview(users, widget.reviewsOfProduct[index].userID),
                     );
                   },
                   separatorBuilder: (context, index) {
@@ -313,7 +271,7 @@ class _Body extends State<Body> {
                   ),
                 ),
 
-          reviewPro.length != 0
+          widget.reviewsOfProduct.length != 0
               ? Padding(
                   padding: EdgeInsets.all((15)),
                   child: Align(
@@ -321,7 +279,9 @@ class _Body extends State<Body> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
-                                Reviews(id: widget.product.id)));
+                                Reviews(
+                                    productID: widget.product.id,
+                                    reviews: widget.reviewsOfProduct)));
                       },
                       child: Text("See More",
                           style: TextStyle(
@@ -394,6 +354,9 @@ class _Body extends State<Body> {
                                 widget.similarProductsFromSelectedProducts[
                                     index]);
 
+                    List<MReview> reviewsOfProduct1 = reviewServices.getReviewOfProduct(reviewProvider.reviews, widget.similarProductsFromSelectedProducts[index].id);
+
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -405,6 +368,7 @@ class _Body extends State<Body> {
                                 .similarProductsFromSelectedProducts[index],
                             similarProductsFromSelectedProducts:
                                 similarProductsFromSelectedProducts,
+                            reviewsOfProduct: reviewsOfProduct1,
                           ),
                         ));
                   },

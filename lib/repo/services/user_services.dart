@@ -159,13 +159,10 @@ class UserServices {
       if(user.getName() != "") {
         await userRef.doc(user.getID().toString()).update({'displayName': user.getName()});
       }
-      else if(user.getAvatarUri() != "") {
+      if(user.getAvatarUri() != "") {
         await userRef.doc(user.getID().toString()).update({'avatarUri': user.getAvatarUri()});
       }
-      // else if(user.getGender() > 0) {
-      //   await userRef.doc(user.getID().toString()).update({'gender': user.getGender()});
-      // }
-       if(user.getPhone() != "") {
+      if(user.getPhone() != "") {
         await userRef.doc(user.getID().toString()).update({'phone': user.getPhone()});
       }
       return true;
@@ -213,5 +210,27 @@ class UserServices {
       }
       return false;
     }
+  }
+
+  MUser getUserForReview(List<MUser> users, String userID) {
+    MUser temp = new MUser(id: "",
+        displayName: "",
+        email: "",
+        phone: "",
+        dob: DateTime(2001, 1, 1),
+        gender: 1,
+        address: new MAddress(userID: "",fullStreetName: "", latitude: 0, longitude: 0),
+        point: 0,
+        totalSpending: 0,
+        role: 1,
+        avatarUri: "https://firebasestorage.googleapis.com/v0/b/be-beauty-app.appspot.com/o/avatar.jpg?alt=media&token=4cb911b2-3282-4aea-b03a-0ab9b681602a",
+        preference: new MPreference(userID: "", brandHistory: [], skinTypeHistory: [], categoryHistory: [], sessionHistory: [], structureHistory: []));
+
+    for(int i = 0; i < users.length; i++) {
+      if(users[i].getID() == userID) return users[i];
+    }
+
+    return temp;
+
   }
 }

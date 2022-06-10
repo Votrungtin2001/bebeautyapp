@@ -8,17 +8,19 @@ import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:im_stepper/stepper.dart';
 
 import '../../../../../model/MOrder.dart';
 import '../../../../../repo/services/order_services.dart';
 
 class TrackOrder extends StatefulWidget {
-  const TrackOrder({Key? key, required this.order}) : super(key: key);
+  const TrackOrder({Key? key, required this.order, required this.isAdmin}) : super(key: key);
 
   @override
   _TrackOrderState createState() => _TrackOrderState();
   final MOrder order;
+  final bool isAdmin;
 }
 
 class _TrackOrderState extends State<TrackOrder> {
@@ -60,11 +62,20 @@ class _TrackOrderState extends State<TrackOrder> {
         actions: [
           widget.order.status == 0
               ? TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    bool result = await orderServices.updateOrderStatus(widget.order.id, -1);
+                    if(result == false) {
+                      Fluttertoast.showToast(msg: 'Some errors happened when trying to cancel this order.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                    }
+                    else {
+                      Fluttertoast.showToast(msg: 'Cancelled this order successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      Navigator.pop(context);
+                    }
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'cancel',
+                      'Cancel',
                       style: TextStyle(color: kPrimaryColor),
                     ),
                   ))
@@ -178,7 +189,7 @@ class _TrackOrderState extends State<TrackOrder> {
                           color: kTextLightColor,
                         ),
                       ),
-                      widget.order.status != 5
+                      widget.isAdmin == true
                           ? Column(
                               children: [
                                 StickyLabel(

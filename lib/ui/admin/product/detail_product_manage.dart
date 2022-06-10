@@ -11,25 +11,30 @@ import 'package:bebeautyapp/model/MStructure.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/origin_provider.dart';
+import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/services/gender_services.dart';
+import 'package:bebeautyapp/repo/services/image_services.dart';
+import 'package:bebeautyapp/repo/services/session_services.dart';
+import 'package:bebeautyapp/repo/services/skin_services.dart';
+import 'package:bebeautyapp/repo/services/structure_services.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../repo/services/product_services.dart';
 
 class DetailsProductManageScreen extends StatefulWidget {
-  final MProduct products;
-
-  final productServices = ProductServices();
-
+  final MProduct product;
   DetailsProductManageScreen({
     Key? key,
-    required this.products,
+    required this.product,
   }) : super(key: key);
   @override
   _DetailsProductManageScreenState createState() =>
@@ -49,9 +54,14 @@ class _DetailsProductManageScreenState
 
   final TextEditingController _marketPriceController = TextEditingController();
   final TextEditingController _importPriceController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
   final TextEditingController _discountRateController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _chemicalCompositionController = TextEditingController();
+
+  final ScrollController _scrollController = ScrollController();
+
+  final editButtonController = RoundedLoadingButtonController();
+
 
   late int brandId,
       categoryId,
@@ -61,102 +71,85 @@ class _DetailsProductManageScreenState
       structureId,
       sessionId;
   List<String> imageProduct = [];
+
+  final skinServices = SkinServices();
+  final sessionServices = SessionServices();
+  final structureServices = StructureServices();
+  final genderServices = GenderServices();
+  final imageServices = new ImageServices();
+  final productServices = new ProductServices();
+
+  final ImagePicker imagePicker = ImagePicker();
+  List<File> fileImageArray = [];
+  List<Asset> images = [];
+
+  List<MSkin> skins = [];
+  List<MSession> sessions = [];
+  List<MGender> genders = [];
+  List<MStructure> structures = [];
+
+  double price = 0;
+
+  void selectImages() async {
+    List<Asset> resultList = [];
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 3,
+        enableCamera: true,
+        selectedAssets: images,
+        materialOptions: MaterialOptions(
+          actionBarTitle: "Be Beauty",
+        ),
+      );
+    } on Exception catch (e) {
+      print(e);
+    }
+    setState(() {
+      images = resultList;
+      fileImageArray = imageServices.convertAssetListToFileList(resultList);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.products.name;
-    _nameController.text = widget.products.name;
-    _engNameController.text = widget.products.engName;
-    _guideLineController.text = widget.products.guideLine;
-    _descriptionController.text = widget.products.description;
-    _popularSearchTitleController.text = widget.products.popularSearchTitle;
+    _nameController.text = widget.product.name;
+    _nameController.text = widget.product.name;
+    _engNameController.text = widget.product.engName;
+    _guideLineController.text = widget.product.guideLine;
+    _descriptionController.text = widget.product.description;
+    _popularSearchTitleController.text = widget.product.popularSearchTitle;
     _marketPriceController.text =
-        widget.products.marketPrice.toStringAsFixed(0);
+        widget.product.marketPrice.toStringAsFixed(0);
     _importPriceController.text =
-        widget.products.importPrice.toStringAsFixed(0);
-    _priceController.text = widget.products.price.toStringAsFixed(0);
+        widget.product.importPrice.toStringAsFixed(0);
+    price = widget.product.price;
     _discountRateController.text =
-        widget.products.defaultDiscountRate.toStringAsFixed(0);
+        widget.product.defaultDiscountRate.toStringAsFixed(0);
 
-    _quantityController.text = widget.products.available.toStringAsFixed(0);
-    brandId = widget.products.getBrandID();
-    categoryId = widget.products.getCategoryID();
-    genderId = widget.products.getGenderID();
-    originId = widget.products.getOriginID();
-    skinId = widget.products.getSkinID();
-    structureId = widget.products.getStructureID();
-    sessionId = widget.products.getSessionID();
-    imageProduct = widget.products.images;
+    _quantityController.text = widget.product.available.toStringAsFixed(0);
+    _chemicalCompositionController.text = widget.product.getChemicalComposition();
+    brandId = widget.product.getBrandID();
+    categoryId = widget.product.getCategoryID();
+    genderId = widget.product.getGenderID();
+    originId = widget.product.getOriginID();
+    skinId = widget.product.getSkinID();
+    structureId = widget.product.getStructureID();
+    sessionId = widget.product.getSessionID();
+    imageProduct = widget.product.images;
+
+    skins = skinServices.getSkins();
+    sessions = sessionServices.getSessions();
+    genders = genderServices.getGenders();
+    structures = structureServices.getStructures();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController _scrollController = ScrollController();
-
-    final editButtonController = RoundedLoadingButtonController();
-
     final brandProvider = Provider.of<BrandProvider>(context);
-    final brands = brandProvider.brands;
-
     final categoryProvider = Provider.of<CategoryProvider>(context);
-    final categories = categoryProvider.categories;
-
     final originProvider = Provider.of<OriginProvider>(context);
-    final origin = originProvider.origins;
-
-    List<MSkin> skins = [
-      MSkin(id: 0, name: "Mọi loại da"),
-      MSkin(id: 1, name: "Da mụn"),
-      MSkin(id: 2, name: "Da dầu"),
-      MSkin(id: 3, name: "Da khô"),
-      MSkin(id: 4, name: "Da hỗn hợp"),
-      MSkin(id: 5, name: "Da nhạy cảm"),
-      MSkin(id: 6, name: "Da vùng mắt"),
-      MSkin(id: 7, name: "Da sẹo"),
-      MSkin(id: 8, name: "Da vùng môi"),
-    ];
-
-    List<MSession> session = [
-      MSession(id: 0, name: "Ngày và đêm"),
-      MSession(id: 1, name: "Ban ngày"),
-      MSession(id: 2, name: "Ban đêm"),
-    ];
-
-    List<MGender> gender = [
-      MGender(id: 0, name: "Dành cho mọi giới tính"),
-      MGender(id: 1, name: "Dành cho nữ giới"),
-      MGender(id: 2, name: "Dành cho nam tính"),
-    ];
-
-    List<MStructure> structure = [
-      MStructure(id: 0, name: "Dạng kem"),
-      MStructure(id: 1, name: "Dạng lỏng"),
-      MStructure(id: 2, name: "Dạng gel"),
-      MStructure(id: 3, name: "Dạng sữa"),
-      MStructure(id: 4, name: "Dạng nước"),
-      MStructure(id: 5, name: "Dạng giấy"),
-      MStructure(id: 6, name: "Dạng serum"),
-      MStructure(id: 7, name: "Dạng rắn dẻo"),
-      MStructure(id: 8, name: "Dạng tạo bọt sẵn"),
-      MStructure(id: 9, name: "Dạng hạt"),
-      MStructure(id: 10, name: "Dạng dầu"),
-      MStructure(id: 11, name: "Dạng rắn")
-    ];
-
-    final ImagePicker imagePicker = ImagePicker();
-    List<XFile>? imageFileList = [];
-    List<dynamic> images = [];
-    void selectImages() async {
-      final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-      if (selectedImages!.isNotEmpty) {
-        imageFileList.addAll(selectedImages);
-      }
-      setState(() {
-        images = imageFileList.map((e) => e.name).toList();
-      });
-      print("Image List Length:" + imageFileList.length.toString());
-      setState(() {});
-    }
+    final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -175,7 +168,9 @@ class _DetailsProductManageScreenState
         centerTitle: true,
       ),
       drawer: Drawer(),
-      body: SingleChildScrollView(
+      body: Form(
+        key: formKey,
+        child: SingleChildScrollView(
           controller: _scrollController,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -271,7 +266,7 @@ class _DetailsProductManageScreenState
                               categoryId = int.parse(newValue.toString());
                             });
                           },
-                          items: categories
+                          items: categoryProvider.categories
                               .map<DropdownMenuItem<String>>((MCategory value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -305,7 +300,7 @@ class _DetailsProductManageScreenState
                               brandId = int.parse(newValue.toString());
                             });
                           },
-                          items: brands
+                          items: brandProvider.brands
                               .map<DropdownMenuItem<String>>((MBrand value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -339,7 +334,7 @@ class _DetailsProductManageScreenState
                               originId = int.parse(newValue.toString());
                             });
                           },
-                          items: origin
+                          items: originProvider.origins
                               .map<DropdownMenuItem<String>>((MOrigin value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -408,7 +403,7 @@ class _DetailsProductManageScreenState
                               sessionId = int.parse(newValue.toString());
                             });
                           },
-                          items: session
+                          items: sessions
                               .map<DropdownMenuItem<String>>((MSession value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -442,7 +437,7 @@ class _DetailsProductManageScreenState
                               genderId = int.parse(newValue.toString());
                             });
                           },
-                          items: gender
+                          items: genders
                               .map<DropdownMenuItem<String>>((MGender value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -477,7 +472,8 @@ class _DetailsProductManageScreenState
                               structureId = int.parse(newValue.toString());
                             });
                           },
-                          items: structure.map<DropdownMenuItem<String>>(
+                          items: structures
+                              .map<DropdownMenuItem<String>>(
                               (MStructure value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -492,6 +488,14 @@ class _DetailsProductManageScreenState
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     _marketPriceController.text = value;
+                    if(_marketPriceController.text != "" && _discountRateController.text != "") {
+                      int iDiscountRate = int.parse(_discountRateController.text);
+                      double dMarketPrice = double.parse(_marketPriceController.text);
+                      int iPrice = (dMarketPrice - (dMarketPrice * iDiscountRate / 100)).round();
+                      setState(() {
+                        price = iPrice.toDouble();
+                      });
+                    }
                   },
                   controller: _marketPriceController,
                   cursorColor: kTextColor,
@@ -526,6 +530,14 @@ class _DetailsProductManageScreenState
                     setState(() {
                       _discountRateController.text = value;
                     });
+                    if(_marketPriceController.text != "" && _discountRateController.text != "") {
+                      int iDiscountRate = int.parse(_discountRateController.text);
+                      double dMarketPrice = double.parse(_marketPriceController.text);
+                      int iPrice = (dMarketPrice - (dMarketPrice * iDiscountRate / 100)).round();
+                      setState(() {
+                        price = iPrice.toDouble();
+                      });
+                    }
                   },
                   keyboardType: TextInputType.number,
                   controller: _discountRateController,
@@ -533,7 +545,10 @@ class _DetailsProductManageScreenState
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Discount Rate is empty';
-                    } else
+                    } if (int.parse(_discountRateController.text) > 100) {
+                      return 'Discount rate can not be over 100';
+                    }
+                    else
                       return null;
                   },
                   decoration: InputDecoration(
@@ -559,15 +574,21 @@ class _DetailsProductManageScreenState
                 TextFormField(
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
-                    _importPriceController.text = value;
+                    setState(() {
+                      _importPriceController.text = value;
+                    });
+
                   },
                   controller: _importPriceController,
                   cursorColor: kTextColor,
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Import Price is empty';
-                    } else
-                      return null;
+                    } else if (_importPriceController.text != "" &&
+                        double.parse(_importPriceController.text) > price.toDouble()) {
+                      return 'Import price can not be exceeded price = ' + price.toStringAsFixed(0);
+                    }
+                    return null;
                   },
                   decoration: InputDecoration(
                     filled: true,
@@ -714,6 +735,37 @@ class _DetailsProductManageScreenState
                     ),
                   ),
                 ),
+                StickyLabel(
+                    text: 'Chemical Composition', textStyle: TextStyle(fontSize: 14)),
+                TextFormField(
+                  onChanged: (value) {
+                    _chemicalCompositionController.text = value;
+                  },
+                  controller: _chemicalCompositionController,
+                  cursorColor: kTextColor,
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Chemical Composition is empty';
+                    } else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: kPrimaryColor, width: 1),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.black, width: 1),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.red, width: 1),
+                    ),
+                  ),
+                ),
                 MaterialButton(
                   color: kPrimaryColor,
                   onPressed: () {
@@ -724,16 +776,16 @@ class _DetailsProductManageScreenState
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                images.isNotEmpty
+                fileImageArray.isNotEmpty
                     ? Container(
                         height: 200,
                         child: GridView.count(
                           scrollDirection: Axis.horizontal,
                           crossAxisCount: 3,
                           crossAxisSpacing: 10,
-                          children: List.generate(images.length, (index) {
+                          children: List.generate(fileImageArray.length, (index) {
                             return Image.file(
-                              File(imageFileList[index].path),
+                              File(fileImageArray[index].path),
                               fit: BoxFit.cover,
                             );
                           }),
@@ -755,7 +807,46 @@ class _DetailsProductManageScreenState
                 CustomRoundedLoadingButton(
                   text: 'Save',
                   controller: editButtonController,
-                  onPress: () {},
+                  onPress: () async {
+                    editButtonController.start();
+                    if (formKey.currentState!.validate()) {
+                      print('here');
+                      MProduct updated_product = new MProduct(
+                          id: widget.product.id, name: _nameController.text,
+                          engName: _engNameController.text, brandID: brandId,
+                          categoryID: categoryId, originID: originId, skinID: skinId,
+                          sessionID: sessionId, genderID: genderId, structureID: structureId,
+                          soldOut: widget.product.soldOut, totalStarRating: widget.product.totalStarRating,
+                          totalRating: widget.product.totalRating, marketPrice: double.parse(_marketPriceController.text),
+                          importPrice: double.parse(_importPriceController.text), defaultDiscountRate: int.parse(_discountRateController.text),
+                          price: price, chemicalComposition: _chemicalCompositionController.text,
+                          guideLine: _guideLineController.text, images: imageProduct,
+                          userFavorite: widget.product.userFavorite, available: int.parse(_quantityController.text),
+                          searchCount: widget.product.searchCount, popularSearchTitle: _popularSearchTitleController.text,
+                          description: _descriptionController.text);
+
+                      if(fileImageArray.length > 0) {
+                        List<String> imageUrls = await imageServices.addImagesAndReturnStrings(fileImageArray);
+                        updated_product.setImages(imageUrls);
+                      }
+                      bool result = await productServices.updateProduct(updated_product);
+                      if(result == false) {
+                        editButtonController.stop();
+                        Fluttertoast.showToast(msg: 'Some errors happened when updating selected product.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      }
+                      else {
+                        productProvider.updateProduct(updated_product);
+                        editButtonController.success();
+                        Future.delayed(const Duration(milliseconds: 1500), () {
+                          editButtonController.stop();
+                          Fluttertoast.showToast(msg: 'Updated selected product successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+
+                        });
+                      }
+
+                    }
+                    else editButtonController.stop();
+                  },
                 ),
                 SizedBox(
                   height: 16.0,
@@ -763,6 +854,6 @@ class _DetailsProductManageScreenState
               ],
             ),
           )),
-    );
+    ));
   }
 }

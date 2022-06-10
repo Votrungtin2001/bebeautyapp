@@ -24,8 +24,7 @@ class _AddressScreens extends State<AddressScreens> {
   Widget build(BuildContext context) {
     final savedAddressProvider = Provider.of<SavedAddressProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
-    String userId = userProvider.user.id;
-    final addressServices = new AddressServices();
+    savedAddressProvider.getSavedAddresses(userProvider.user.id);
 
     return Scaffold(
       appBar: AppBar(

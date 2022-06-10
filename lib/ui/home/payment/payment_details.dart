@@ -653,6 +653,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
         _placeDistance = totalDistance.toStringAsFixed(2);
         print('DISTANCE: $_placeDistance km');
         shippingValue = cartServices.calculateShippingValue(totalDistance);
+        print('shipping: $shippingValue');
         voucherDiscount = 0 -
             voucherServices.calculateVoucherDiscount(
                 widget.voucher, shippingValue, totalValue);

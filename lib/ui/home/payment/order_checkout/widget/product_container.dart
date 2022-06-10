@@ -1,8 +1,10 @@
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProductInCart.dart';
+import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../model/MOrder.dart';
 import '../../../../../model/MProduct.dart';
@@ -40,9 +42,12 @@ class _ProductContainerState extends State<ProductContainer> {
   }
 
   getProductsInOrder() async {
+    List<MProductInCart> temp = [];
     if (widget.products.length > 0) {
-      List<MProductInCart> temp = await orderServices.getProductsInOrder(
+      temp = await orderServices.getProductsInOrder(
           widget.order.id, widget.products);
+    }
+    if(temp.length > 0) {
       setState(() {
         productsInCart = temp;
         order.updateOrder(
@@ -68,6 +73,7 @@ class _ProductContainerState extends State<ProductContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Padding(
         padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
         child: GestureDetector(
@@ -77,11 +83,12 @@ class _ProductContainerState extends State<ProductContainer> {
               MaterialPageRoute(
                   builder: (context) => TrackOrder(
                         order: order,
+                        isAdmin: userProvider.user.role == 0,
                       )),
             );
           },
           child: Container(
-            height: 420,
+            height: widget.order.status == 3 ? 480 : 430,
             color: Colors.transparent,
             child: Container(
               padding: const EdgeInsets.only(left: 16, top: 8.0, right: 16),
@@ -97,43 +104,10 @@ class _ProductContainerState extends State<ProductContainer> {
                   ),
                 ],
               ),
-              child: ListView.builder(
-                itemCount: productsInCart.length,
-                itemBuilder: (context, index) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    widget.order.status == 3
-                        ? Container(
-                            width: double.infinity,
-                            child: MaterialButton(
-                              onPressed: () {
-                                Navigator.pushReplacement<void, void>(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        AddReviewScreen(
-                                            id: productsInCart[index]
-                                                .id
-                                                .toString(),
-                                            name: widget.order.userName),
-                                  ),
-                                );
-                              },
-                              color: kPrimaryColor,
-                              padding: EdgeInsets.symmetric(horizontal: 50),
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: const Text(
-                                "Add Review",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    letterSpacing: 2.2,
-                                    color: Colors.white),
-                              ),
-                            ))
-                        : Container(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -369,37 +343,45 @@ class _ProductContainerState extends State<ProductContainer> {
                     const SizedBox(
                       height: 8,
                     ),
-                    widget.order.status == 0
-                        ? Container(
-                            width: double.infinity,
-                            child: RaisedButton(
-                              onPressed: () {
-                                // Navigator.pushReplacement<void, void>(
-                                //   context,
-                                //   MaterialPageRoute<void>(
-                                //     builder: (BuildContext context) => AddReviewScreen(id: lcart[index]['proID'], name: name!),
-                                //   ),
-                                // );
-                              },
-                              color: kPrimaryColor,
-                              padding: EdgeInsets.symmetric(horizontal: 50),
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    letterSpacing: 2.2,
-                                    color: Colors.white),
-                              ),
-                            ))
-                        : Container(),
+                  widget.order.status == 3
+                      ? Container(
+                      width: double.infinity,
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.pushReplacement<void, void>(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) =>
+                                  AddReviewScreen(
+                                      products: productsInCart,
+                                      userID: widget.order.userID,
+                                      orderID: widget.order.id,
+                                  ),
+                            ),
+                          );
+                        },
+                        color: kPrimaryColor,
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Text(
+                          "Add Review",
+                          style: TextStyle(
+                              fontSize: 14,
+                              letterSpacing: 2.2,
+                              color: Colors.white),
+                        ),
+                      ))
+                      : Container(),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   ],
                 ),
               ),
             ),
           ),
-        ));
+        );
   }
 }

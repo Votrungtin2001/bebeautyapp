@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/model/MStatus.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/product_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -28,17 +29,22 @@ class _MyOrderScreen extends State<MyOrderScreen>
   late TabController _tabController;
 
   Stream<QuerySnapshot>? pendingOrders;
-  Stream<QuerySnapshot>? payOrders;
+  Stream<QuerySnapshot>? preparingOrders;
   Stream<QuerySnapshot>? shippingOrders;
   Stream<QuerySnapshot>? receivedOrders;
   Stream<QuerySnapshot>? completedOrders;
-  Stream<QuerySnapshot>? ratingOrders;
-  Stream<QuerySnapshot>? canceledOrders;
+  Stream<QuerySnapshot>? ratedOrders;
+  Stream<QuerySnapshot>? cancelledOrders;
   final orderServices = new OrderServices();
+  List<Tab> tabs = [];
+  List<MStatus> statuses = [];
 
   @override
   void initState() {
     super.initState();
+
+    getTabs();
+
     _tabController = TabController(length: 6, vsync: this);
     _tabController.animateTo(2);
 
@@ -46,59 +52,63 @@ class _MyOrderScreen extends State<MyOrderScreen>
   }
 
   getOrders() async {
-    await orderServices.getOrderByStatus(0).then((snapshots) {
+    int status1 = orderServices.getStatusByTabName("Pending");
+    await orderServices.getOrderByUserID(widget.userID, status1).then((snapshots) {
       setState(() {
         pendingOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(1).then((snapshots) {
+    int status2 = orderServices.getStatusByTabName("Preparing");
+    await orderServices.getOrderByUserID(widget.userID, status2).then((snapshots) {
       setState(() {
-        payOrders = snapshots;
+        preparingOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(2).then((snapshots) {
+    int status3 = orderServices.getStatusByTabName("Shipping");
+    await orderServices.getOrderByUserID(widget.userID, status3).then((snapshots) {
       setState(() {
         shippingOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(3).then((snapshots) {
+    int status4 = orderServices.getStatusByTabName("Received");
+    await orderServices.getOrderByUserID(widget.userID, status4).then((snapshots) {
       setState(() {
         receivedOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(4).then((snapshots) {
+    int status5 = orderServices.getStatusByTabName("Rated");
+    await orderServices.getOrderByUserID(widget.userID, status5).then((snapshots) {
+      setState(() {
+        ratedOrders = snapshots;
+      });
+    });
+
+    int status6 = orderServices.getStatusByTabName("Completed");
+    await orderServices.getOrderByUserID(widget.userID, status6).then((snapshots) {
       setState(() {
         completedOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(5).then((snapshots) {
+    int status7 = orderServices.getStatusByTabName("Cancelled");
+    print(status7);
+    await orderServices.getOrderByUserID(widget.userID, status7).then((snapshots) {
       setState(() {
-        ratingOrders = snapshots;
-      });
-    });
-
-    await orderServices.getOrderByStatus(-1).then((snapshots) {
-      setState(() {
-        canceledOrders = snapshots;
+        cancelledOrders = snapshots;
       });
     });
   }
 
-  static const List<Tab> _tabs = [
-    Tab(text: 'Pending'),
-    Tab(text: 'To Pay'),
-    Tab(text: 'To Ship'),
-    Tab(text: 'To Receive'),
-    Tab(text: 'Completed'),
-    Tab(text: 'To Rate'),
-    Tab(text: 'canceled'),
-  ];
-
+  void getTabs() {
+    statuses = orderServices.getAllStatuses();
+    for (int i = 0; i < statuses.length; i++) {
+      tabs.add(Tab(text: statuses[i].name));
+    }
+  }
   static Widget not_orders = Column(
     children: [
       Container(
@@ -112,7 +122,7 @@ class _MyOrderScreen extends State<MyOrderScreen>
 
   Widget PendingOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: payOrders,
+        stream: pendingOrders,
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
@@ -148,9 +158,9 @@ class _MyOrderScreen extends State<MyOrderScreen>
         });
   }
 
-  Widget PayOrderList(List<MProduct> products) {
+  Widget PreparingOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: payOrders,
+        stream: preparingOrders,
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
@@ -262,9 +272,9 @@ class _MyOrderScreen extends State<MyOrderScreen>
         });
   }
 
-  Widget CompletedOrderList(List<MProduct> products) {
+  Widget RatedOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: completedOrders,
+        stream: ratedOrders,
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
@@ -300,11 +310,11 @@ class _MyOrderScreen extends State<MyOrderScreen>
         });
   }
 
-  Widget RatingOrderList(List<MProduct> products) {
+  Widget CompletedOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: ratingOrders,
+        stream: completedOrders,
         builder: (context, snapshot) {
-          return snapshot.hasData
+          return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data!.docs.length,
@@ -337,11 +347,11 @@ class _MyOrderScreen extends State<MyOrderScreen>
         });
   }
 
-  Widget canceledOrderList(List<MProduct> products) {
+  Widget CancelledOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: ratingOrders,
+        stream: cancelledOrders,
         builder: (context, snapshot) {
-          return snapshot.hasData
+          return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data!.docs.length,
@@ -380,7 +390,7 @@ class _MyOrderScreen extends State<MyOrderScreen>
 
     return DefaultTabController(
       initialIndex: widget.index,
-      length: 7,
+      length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -407,7 +417,7 @@ class _MyOrderScreen extends State<MyOrderScreen>
             isScrollable: true,
             physics: const BouncingScrollPhysics(),
             enableFeedback: true,
-            tabs: _tabs,
+            tabs: tabs,
           ),
           leading: const BackButton(color: kPrimaryColor),
           title: const Text(
@@ -428,12 +438,12 @@ class _MyOrderScreen extends State<MyOrderScreen>
           // controller: _tabController,
           children: [
             PendingOrderList(productProvider.products),
-            PayOrderList(productProvider.products),
+            PreparingOrderList(productProvider.products),
             ShippingOrderList(productProvider.products),
             ReceivedOrderList(productProvider.products),
+            RatedOrderList(productProvider.products),
             CompletedOrderList(productProvider.products),
-            RatingOrderList(productProvider.products),
-            canceledOrderList(productProvider.products),
+            CancelledOrderList(productProvider.products),
           ],
         ),
       ),

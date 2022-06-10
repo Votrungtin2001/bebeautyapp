@@ -31,4 +31,14 @@ class BrandProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  updateTotalQuantity(int brandID) {
+    for(int i = 0; i < brands.length; i++) {
+      if(brands[i].getID() == brandID) {
+        int totalQuantity = brands[i].getProductQuantity() + 1;
+        brands[i].setProductQuantity(totalQuantity);
+      }
+    }
+    notifyListeners();
+  }
 }

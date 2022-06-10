@@ -1,5 +1,6 @@
 import 'package:bebeautyapp/repo/function/sign_in.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
+import 'package:bebeautyapp/ui/admin/home_admin.dart';
 import 'package:bebeautyapp/ui/authenication/register/register_screen.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/constants.dart';
@@ -237,6 +238,14 @@ class _LoginScreen extends State<LoginScreen> {
                             backgroundColor: Colors.green,
                           ),
                         );
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          setState(() {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => HomeAdmin()),
+                                    (route) => false);
+                          });
+                        });
                         // Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                         loginButtonController.success();
                       } else if (result == 1) {

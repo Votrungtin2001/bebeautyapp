@@ -11,20 +11,26 @@ import 'package:bebeautyapp/model/MStructure.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
 import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/origin_provider.dart';
+import 'package:bebeautyapp/repo/providers/product_provider.dart';
+import 'package:bebeautyapp/repo/services/gender_services.dart';
+import 'package:bebeautyapp/repo/services/image_services.dart';
+import 'package:bebeautyapp/repo/services/session_services.dart';
+import 'package:bebeautyapp/repo/services/skin_services.dart';
+import 'package:bebeautyapp/repo/services/structure_services.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 
 import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../repo/services/product_services.dart';
 
 class AddProductScreen extends StatefulWidget {
-  final productServices = ProductServices();
-
   AddProductScreen({
     Key? key,
   }) : super(key: key);
@@ -47,7 +53,28 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _discountRateController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
-  final TextEditingController _searchCountController = TextEditingController();
+  final TextEditingController _chemicalCompositionController = TextEditingController();
+
+  final ScrollController _scrollController = ScrollController();
+
+  final editButtonController = RoundedLoadingButtonController();
+
+  final skinServices = SkinServices();
+  final sessionServices = SessionServices();
+  final structureServices = StructureServices();
+  final genderServices = GenderServices();
+  final imageServices = new ImageServices();
+  final productServices = new ProductServices();
+
+  final ImagePicker imagePicker = ImagePicker();
+  List<File> fileImageArray = [];
+  List<Asset> images = [];
+
+  List<MSkin> skins = [];
+  List<MSession> sessions = [];
+  List<MGender> genders = [];
+  List<MStructure> structures = [];
+
   late int brandId,
       categoryId,
       genderId,
@@ -66,74 +93,39 @@ class _AddProductScreenState extends State<AddProductScreen> {
     skinId = 1;
     structureId = 1;
     sessionId = 1;
+
+    skins = skinServices.getSkins();
+    sessions = sessionServices.getSessions();
+    genders = genderServices.getGenders();
+    structures = structureServices.getStructures();
+  }
+
+  void selectImages() async {
+    List<Asset> resultList = [];
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 3,
+        enableCamera: true,
+        selectedAssets: images,
+        materialOptions: MaterialOptions(
+          actionBarTitle: "Be Beauty",
+        ),
+      );
+    } on Exception catch (e) {
+      print(e);
+    }
+    setState(() {
+      images = resultList;
+      fileImageArray = imageServices.convertAssetListToFileList(resultList);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController _scrollController = ScrollController();
-    final _formKey = GlobalKey<FormState>();
-    final editButtonController = RoundedLoadingButtonController();
-
     final brandProvider = Provider.of<BrandProvider>(context);
-    final brands = brandProvider.brands;
-
     final categoryProvider = Provider.of<CategoryProvider>(context);
-    final categories = categoryProvider.categories;
-
     final originProvider = Provider.of<OriginProvider>(context);
-    final origin = originProvider.origins;
-
-    List<MSkin> skins = [
-      MSkin(id: 0, name: "Mọi loại da"),
-      MSkin(id: 1, name: "Da mụn"),
-      MSkin(id: 2, name: "Da dầu"),
-      MSkin(id: 3, name: "Da khô"),
-      MSkin(id: 4, name: "Da hỗn hợp"),
-      MSkin(id: 5, name: "Da nhạy cảm"),
-      MSkin(id: 6, name: "Da vùng mắt"),
-      MSkin(id: 7, name: "Da sẹo"),
-      MSkin(id: 8, name: "Da vùng môi"),
-    ];
-
-    List<MSession> session = [
-      MSession(id: 0, name: "Ngày và đêm"),
-      MSession(id: 1, name: "Ban ngày"),
-      MSession(id: 2, name: "Ban đêm"),
-    ];
-
-    List<MGender> gender = [
-      MGender(id: 0, name: "Dành cho mọi giới tính"),
-      MGender(id: 1, name: "Dành cho nữ giới"),
-      MGender(id: 2, name: "Dành cho nam tính"),
-    ];
-
-    List<MStructure> structure = [
-      MStructure(id: 0, name: "Dạng kem"),
-      MStructure(id: 1, name: "Dạng lỏng"),
-      MStructure(id: 2, name: "Dạng gel"),
-      MStructure(id: 3, name: "Dạng sữa"),
-      MStructure(id: 4, name: "Dạng nước"),
-      MStructure(id: 5, name: "Dạng giấy"),
-      MStructure(id: 6, name: "Dạng serum"),
-      MStructure(id: 7, name: "Dạng rắn dẻo"),
-      MStructure(id: 8, name: "Dạng tạo bọt sẵn"),
-      MStructure(id: 9, name: "Dạng hạt"),
-      MStructure(id: 10, name: "Dạng dầu"),
-      MStructure(id: 11, name: "Dạng rắn")
-    ];
-
-    final ImagePicker imagePicker = ImagePicker();
-    List<XFile>? imageFileList = [];
-    List<File> images = [];
-    void selectImages() async {
-      final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-      if (selectedImages!.isNotEmpty) {
-        imageFileList.addAll(selectedImages);
-      }
-
-      print("Image List Length:" + imageFileList.length.toString());
-      setState(() {});
-    }
+    final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -152,7 +144,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
         centerTitle: true,
       ),
       drawer: Drawer(),
-      body: SingleChildScrollView(
+        body: Form(
+        key: formKey,
+        child: SingleChildScrollView(
           controller: _scrollController,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -248,7 +242,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               categoryId = int.parse(newValue.toString());
                             });
                           },
-                          items: categories
+                          items: categoryProvider.categories
                               .map<DropdownMenuItem<String>>((MCategory value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -282,7 +276,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               brandId = int.parse(newValue.toString());
                             });
                           },
-                          items: brands
+                          items: brandProvider.brands
                               .map<DropdownMenuItem<String>>((MBrand value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -316,7 +310,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               originId = int.parse(newValue.toString());
                             });
                           },
-                          items: origin
+                          items: originProvider.origins
                               .map<DropdownMenuItem<String>>((MOrigin value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -385,7 +379,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               sessionId = int.parse(newValue.toString());
                             });
                           },
-                          items: session
+                          items: sessions
                               .map<DropdownMenuItem<String>>((MSession value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -419,7 +413,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               genderId = int.parse(newValue.toString());
                             });
                           },
-                          items: gender
+                          items: genders
                               .map<DropdownMenuItem<String>>((MGender value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -454,7 +448,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               structureId = int.parse(newValue.toString());
                             });
                           },
-                          items: structure.map<DropdownMenuItem<String>>(
+                          items: structures.map<DropdownMenuItem<String>>(
                               (MStructure value) {
                             return DropdownMenuItem<String>(
                               value: value.id.toString(),
@@ -468,14 +462,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     _priceController.text = value;
+                    if(_marketPriceController.text != "" && _priceController.text != "") {
+                      double dPrice = double.parse(_priceController.text);
+                      double dMarketPrice = double.parse(_marketPriceController.text);
+
+                      int iDiscountRate = 100 - (dPrice / dMarketPrice * 100).round();
+                      _discountRateController.text = iDiscountRate.toString();
+                    }
                   },
                   controller: _priceController,
                   cursorColor: kTextColor,
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Price is empty';
-                    } else
-                      return null;
+                    } else if (_marketPriceController.text != "" &&
+                      double.parse(_marketPriceController.text) < double.parse(_priceController.text)) {
+                        return 'Price can not be much more than market price';
+                      }
+                    else return null;
                   },
                   decoration: InputDecoration(
                     filled: true,
@@ -501,6 +505,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     _marketPriceController.text = value;
+                    if(_marketPriceController.text != "" && _priceController.text != "") {
+                      double dPrice = double.parse(_priceController.text);
+                      double dMarketPrice = double.parse(_marketPriceController.text);
+
+                      int iDiscountRate = 100 - (dPrice / dMarketPrice * 100).round();
+                      _discountRateController.text = iDiscountRate.toString();
+                    }
                   },
                   controller: _marketPriceController,
                   cursorColor: kTextColor,
@@ -534,6 +545,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   onChanged: (value) {
                     setState(() {
                       _discountRateController.text = value;
+                      if(_marketPriceController.text != "" && _discountRateController.text != "") {
+                        int iDiscountRate = int.parse(_discountRateController.text);
+                        double dMarketPrice = double.parse(_marketPriceController.text);
+
+                        int iPrice = (dMarketPrice - (dMarketPrice * iDiscountRate / 100)).round();
+                        _priceController.text = iPrice.toString();
+                      }
                     });
                   },
                   keyboardType: TextInputType.number,
@@ -542,7 +560,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Discount Rate is empty';
-                    } else
+                    } else if (int.parse(_discountRateController.text) > 100) {
+                      return 'Discount rate can not be over 100';
+                    }
+                    else
                       return null;
                   },
                   decoration: InputDecoration(
@@ -575,7 +596,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Import Price is empty';
-                    } else
+                    } else if (_importPriceController.text != "" &&
+                        double.parse(_importPriceController.text) > double.parse(_priceController.text)) {
+                      return 'Import price can not be exceeded price';
+                    }
                       return null;
                   },
                   decoration: InputDecoration(
@@ -724,16 +748,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                 ),
                 StickyLabel(
-                    text: 'Search Count', textStyle: TextStyle(fontSize: 14)),
+                    text: 'Chemical Composition', textStyle: TextStyle(fontSize: 14)),
                 TextFormField(
                   onChanged: (value) {
-                    _searchCountController.text = value;
+                    _chemicalCompositionController.text = value;
                   },
-                  controller: _searchCountController,
+                  controller: _chemicalCompositionController,
                   cursorColor: kTextColor,
                   validator: (text) {
                     if (text == null || text.isEmpty) {
-                      return 'Search Count is empty';
+                      return 'Chemical Composition is empty';
                     } else
                       return null;
                   },
@@ -770,9 +794,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     scrollDirection: Axis.horizontal,
                     crossAxisCount: 3,
                     crossAxisSpacing: 10,
-                    children: List.generate(images.length, (index) {
+                    children: List.generate(fileImageArray.length, (index) {
                       return Image.file(
-                        File(imageFileList[index].path),
+                        fileImageArray[index],
                         fit: BoxFit.cover,
                       );
                     }),
@@ -781,7 +805,67 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 CustomRoundedLoadingButton(
                   text: 'Save',
                   controller: editButtonController,
-                  onPress: () {},
+                  onPress: () async {
+                    editButtonController.start();
+                    if (formKey.currentState!.validate()) {
+                      if(fileImageArray.length == 0) {
+                        editButtonController.stop();
+                        Fluttertoast.showToast(msg: 'Please add at least one image before adding a new product.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      }
+                      else {
+                        List<String> imageUrls = await imageServices.addImagesAndReturnStrings(fileImageArray);
+                        int newProductID = productServices.getNewProductID(productProvider.products);
+                        MProduct new_product = new MProduct(
+                          id: newProductID, name: _nameController.text,
+                          engName: _engNameController.text, brandID: brandId,
+                          categoryID: categoryId, originID: originId, skinID: skinId,
+                          sessionID: sessionId, genderID: genderId, structureID: structureId,
+                          soldOut: 0, totalStarRating: 0, totalRating: 0, 
+                          marketPrice: double.parse(_marketPriceController.text), 
+                          importPrice: double.parse(_importPriceController.text), 
+                          defaultDiscountRate: int.parse(_discountRateController.text),
+                          price: double.parse(_priceController.text),
+                          chemicalComposition: _chemicalCompositionController.text,
+                          guideLine: _guideLineController.text,
+                          images: imageUrls, userFavorite: [], available: int.parse(_quantityController.text),
+                          searchCount: 0, popularSearchTitle: _popularSearchTitleController.text,
+                          description: _descriptionController.text);
+
+
+                          bool result = await productServices.addProduct(new_product, newProductID);
+                          if(result == false) {
+                            editButtonController.stop();
+                            Fluttertoast.showToast(msg: 'Some errors happened when adding a new product.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          }
+                          else {
+                            productProvider.addProduct(new_product);
+                            brandProvider.updateTotalQuantity(new_product.getBrandID());
+                            setState(() {
+                              _nameController.text = "";
+                              _engNameController.text = "";
+                              _marketPriceController.text = "";
+                              _importPriceController.text = "";
+                              _discountRateController.text = "";
+                              _priceController.text = "";
+                              _chemicalCompositionController.text = "";
+                              _guideLineController.text = "";
+                              _quantityController.text = "";
+                              _popularSearchTitleController.text = "";
+                              _descriptionController.text = "";
+                              images = [];
+                              fileImageArray = [];
+                            });
+                          }
+                          editButtonController.success();
+                          Future.delayed(const Duration(milliseconds: 1500), () {
+                            editButtonController.stop();
+                            Fluttertoast.showToast(msg: 'Add new product successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+
+                          });
+                        }
+                      }
+                    else editButtonController.stop();
+                  },
                 ),
                 SizedBox(
                   height: 16.0,
@@ -789,6 +873,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
               ],
             ),
           )),
-    );
+    ));
   }
 }

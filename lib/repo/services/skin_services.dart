@@ -1,4 +1,22 @@
+import 'package:bebeautyapp/model/MSkin.dart';
+
 class SkinServices {
+
+  List<MSkin> getSkins() {
+    List<MSkin> skins = [
+      MSkin(id: 0, name: "Mọi loại da"),
+      MSkin(id: 1, name: "Da mụn"),
+      MSkin(id: 2, name: "Da dầu"),
+      MSkin(id: 3, name: "Da khô"),
+      MSkin(id: 4, name: "Da hỗn hợp"),
+      MSkin(id: 5, name: "Da nhạy cảm"),
+      MSkin(id: 6, name: "Da vùng mắt"),
+      MSkin(id: 7, name: "Da sẹo"),
+      MSkin(id: 8, name: "Da vùng môi"),
+    ];
+    return skins;
+  }
+
   String getSkinName(int skinID) {
     switch (skinID) {
       case 1:

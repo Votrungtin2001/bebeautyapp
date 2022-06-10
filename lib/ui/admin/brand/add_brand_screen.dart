@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MBrand.dart';
 import 'package:bebeautyapp/repo/providers/brand_provider.dart';
+import 'package:bebeautyapp/repo/services/brand_services.dart';
+import 'package:bebeautyapp/repo/services/image_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/profile/widgets/sticky_label.dart';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:provider/provider.dart';
@@ -22,10 +25,11 @@ class AddBrand extends StatefulWidget {
 
 class _AddBrandState extends State<AddBrand> {
   final formKey = GlobalKey<FormState>();
-  final productServices = new ProductServices();
+  final imageServices = new ImageServices();
+  final brandServices = new BrandServices();
 
   final addButtonController = RoundedLoadingButtonController();
-  late File? imageFile = null;
+  File? imageFile = null;
   String nameBrand = '';
   TextEditingController nameController = TextEditingController();
   _getFromGallery() async {
@@ -59,7 +63,9 @@ class _AddBrandState extends State<AddBrand> {
           automaticallyImplyLeading: false,
           leading: BackButton(color: kPrimaryColor),
         ),
-        body: SingleChildScrollView(
+        body: Form(
+          key: formKey,
+          child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0.0),
@@ -140,17 +146,42 @@ class _AddBrandState extends State<AddBrand> {
                   text: 'Add',
                   controller: addButtonController,
                   onPress: () async {
+                    addButtonController.start();
                     if (formKey.currentState!.validate()) {
-                      await brandProvider.addBrand(MBrand(
-                          id: 0,
-                          name: nameBrand,
-                          imageUri: 'imageUri',
-                          productQuantity: 0,
-                          totalSoldOut: 0));
+                      if(imageFile == null) {
+                        addButtonController.stop();
+                        Fluttertoast.showToast(msg: 'Please add image before adding a new brand.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      }
+                      else {
+                        String imageUrl = await imageServices.addImageAndReturnString(imageFile);
+                        int newBrandID = brandServices.getNewBrandID(brandProvider.brands);
+                        MBrand new_brand = new MBrand(id: newBrandID, name: nameBrand, imageUri: imageUrl, productQuantity: 0, totalSoldOut: 0);
+                        bool result = await brandServices.addBrand(new_brand);
+                        if(result == false) {
+                          addButtonController.stop();
+                          Fluttertoast.showToast(msg: 'Some errors happened when adding a new brand.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                        }
+                        else {
+                          brandProvider.addBrand(new_brand);
+                          setState(() {
+                            nameController.text = "";
+                            nameBrand = "";
+                            imageFile = null;
+                          });
+
+                          addButtonController.success();
+                          Future.delayed(const Duration(milliseconds: 1500), () {
+                            addButtonController.stop();
+                            Fluttertoast.showToast(msg: 'Add new brand successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+
+                          });
+                        }
+                      }
                     }
+                    else addButtonController.stop();
                   },
                 ),
               ]),
-            )));
+            ))));
   }
 }

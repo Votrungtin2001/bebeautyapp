@@ -42,6 +42,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
   String address = '';
   double latitude = 0.0;
   double longitude = 0.0;
+  bool isDefault = false;
 
   @override
   Widget build(BuildContext context) {
@@ -298,12 +299,10 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                     toggleSize: 17.5,
                                     borderRadius: 15.0,
                                     activeColor: kPrimaryColor,
-                                    value: savedAddressProvider
-                                        .defaultSavedAddress.isDefault,
+                                    value: isDefault,
                                     onToggle: (value) {
                                       setState(() {
-                                        savedAddressProvider.defaultSavedAddress
-                                            .isDefault = value;
+                                        isDefault = value;
                                       });
                                     },
                                   ),
@@ -321,7 +320,7 @@ class _AddAddressScreen extends State<AddAddressScreen> {
                                 if (latitude == 0.0 && longitude == 0.0) {
                                   Fluttertoast.showToast(
                                       backgroundColor: Colors.red,
-                                      msg: 'This address is not vaid.',
+                                      msg: 'This address is not valid.',
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.BOTTOM);
                                 } else {

@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/model/MStatus.dart';
+import 'package:bebeautyapp/ui/admin/home_admin.dart';
 import 'package:bebeautyapp/ui/admin/order/order_container_manage.dart';
 import 'package:bebeautyapp/ui/home/payment/order_checkout/widget/product_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../model/MOrder.dart';
@@ -25,76 +28,88 @@ class _OrderManageScreen extends State<OrderManageScreen>
   late TabController _tabController;
 
   Stream<QuerySnapshot>? pendingOrders;
-  Stream<QuerySnapshot>? payOrders;
+  Stream<QuerySnapshot>? preparingOrders;
   Stream<QuerySnapshot>? shippingOrders;
   Stream<QuerySnapshot>? receivedOrders;
   Stream<QuerySnapshot>? completedOrders;
-  Stream<QuerySnapshot>? ratingOrders;
+  Stream<QuerySnapshot>? ratedOrders;
   Stream<QuerySnapshot>? canceledOrders;
   final orderServices = new OrderServices();
+  List<Tab> tabs = [];
+  List<MStatus> statuses = [];
 
   @override
   void initState() {
     super.initState();
+
+    getTabs();
     _tabController = TabController(length: 6, vsync: this);
     _tabController.animateTo(2);
 
     getOrders();
   }
 
+  void getTabs() {
+    statuses = orderServices.getAllStatuses();
+    for (int i = 0; i < statuses.length; i++) {
+      tabs.add(Tab(text: statuses[i].name));
+    }
+  }
+
   getOrders() async {
-    await orderServices.getOrderByStatus(0).then((snapshots) {
+    int status1 = orderServices.getStatusByTabName("Pending");
+    await orderServices.getOrderByStatus(status1).then((snapshots) {
       setState(() {
         pendingOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(1).then((snapshots) {
+    int status2 = orderServices.getStatusByTabName("Preparing");
+    await orderServices.getOrderByStatus(status2).then((snapshots) {
       setState(() {
-        payOrders = snapshots;
+        preparingOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(2).then((snapshots) {
+    int status3 = orderServices.getStatusByTabName("Shipping");
+    await orderServices.getOrderByStatus(status3).then((snapshots) {
       setState(() {
         shippingOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(3).then((snapshots) {
+    int status4 = orderServices.getStatusByTabName("Received");
+    await orderServices.getOrderByStatus(status4).then((snapshots) {
       setState(() {
         receivedOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(4).then((snapshots) {
+    int status5 = orderServices.getStatusByTabName("Rated");
+    await orderServices.getOrderByStatus(status5).then((snapshots) {
+      setState(() {
+        ratedOrders = snapshots;
+      });
+    });
+
+    int status6 = orderServices.getStatusByTabName("Completed");
+    await orderServices.getOrderByStatus(status6).then((snapshots) {
       setState(() {
         completedOrders = snapshots;
       });
     });
 
-    await orderServices.getOrderByStatus(5).then((snapshots) {
-      setState(() {
-        ratingOrders = snapshots;
-      });
-    });
-
-    await orderServices.getOrderByStatus(-1).then((snapshots) {
+    int status7 = orderServices.getStatusByTabName("Cancelled");
+    print(status7);
+    await orderServices.getOrderByStatus(status7).then((snapshots) {
       setState(() {
         canceledOrders = snapshots;
       });
     });
   }
 
-  static const List<Tab> _tabs = [
-    Tab(text: 'Pending'),
-    Tab(text: 'To Pay'),
-    Tab(text: 'To Ship'),
-    Tab(text: 'To Receive'),
-    Tab(text: 'Completed'),
-    Tab(text: 'To Rate'),
-    Tab(text: 'canceled'),
-  ];
+
+
 
   static Widget not_orders = Column(
     children: [
@@ -145,9 +160,9 @@ class _OrderManageScreen extends State<OrderManageScreen>
         });
   }
 
-  Widget PayOrderList(List<MProduct> products) {
+  Widget PreparingOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: payOrders,
+        stream: preparingOrders,
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
@@ -259,9 +274,9 @@ class _OrderManageScreen extends State<OrderManageScreen>
         });
   }
 
-  Widget CompletedOrderList(List<MProduct> products) {
+  Widget RatedOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: completedOrders,
+        stream: ratedOrders,
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
@@ -297,11 +312,11 @@ class _OrderManageScreen extends State<OrderManageScreen>
         });
   }
 
-  Widget RatingOrderList(List<MProduct> products) {
+  Widget CompletedOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: ratingOrders,
+        stream: completedOrders,
         builder: (context, snapshot) {
-          return snapshot.hasData
+          return snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data!.docs.length,
@@ -334,11 +349,11 @@ class _OrderManageScreen extends State<OrderManageScreen>
         });
   }
 
-  Widget canceledOrderList(List<MProduct> products) {
+  Widget CanceledOrderList(List<MProduct> products) {
     return StreamBuilder<QuerySnapshot>(
-        stream: ratingOrders,
+        stream: canceledOrders,
         builder: (context, snapshot) {
-          return snapshot.hasData
+          return snapshot.hasData && snapshot.hasData && snapshot.data!.docs.length > 0
               ? ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data!.docs.length,
@@ -374,9 +389,8 @@ class _OrderManageScreen extends State<OrderManageScreen>
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
-
     return DefaultTabController(
-      length: 7,
+      length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -403,9 +417,20 @@ class _OrderManageScreen extends State<OrderManageScreen>
             isScrollable: true,
             physics: const BouncingScrollPhysics(),
             enableFeedback: true,
-            tabs: _tabs,
+            tabs: tabs,
           ),
-          leading: const BackButton(color: kPrimaryColor),
+          leading: IconButton(
+            icon: const BackButtonIcon(),
+            color: kPrimaryColor,
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeAdmin()),
+                    (Route<dynamic> route) => false,
+              );
+            },
+          ),
           title: const Text(
             'Order management',
             style: TextStyle(
@@ -424,12 +449,12 @@ class _OrderManageScreen extends State<OrderManageScreen>
           // controller: _tabController,
           children: [
             PendingOrderList(productProvider.products),
-            PayOrderList(productProvider.products),
+            PreparingOrderList(productProvider.products),
             ShippingOrderList(productProvider.products),
             ReceivedOrderList(productProvider.products),
+            RatedOrderList(productProvider.products),
             CompletedOrderList(productProvider.products),
-            RatingOrderList(productProvider.products),
-            canceledOrderList(productProvider.products),
+            CanceledOrderList(productProvider.products),
           ],
         ),
       ),

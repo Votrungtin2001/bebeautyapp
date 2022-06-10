@@ -1,39 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-class ReviewModel {
-  String image = " ";
-  List<String> photo = [];
-  String idPro = " ";
-  String name = " ";
+class MReview {
+  String id = "";
+  List<String> images = [];
+  int productID = 0;
+  String userID = "";
   double rating = 0;
   String date = " ";
   String comment = " ";
 
-  ReviewModel()
+  MReview()
   {}
 
-  ReviewModel.fromSnapshot(DocumentSnapshot snapshot) {
-    image = snapshot.get('image');
-    for(int i=0; i< snapshot.get("photo").length; i++){
-      photo.add(snapshot.get("photo")[i]);
-    }
-    idPro = snapshot.get('idPro');
-    name = snapshot.get('name');
-    rating = double.parse(snapshot.get("rating").toString());
+  MReview.fromSnapshot(DocumentSnapshot snapshot) {
+    id = snapshot.get('id');
+    images = List.from(snapshot.get('image'));
+    userID = snapshot.get('userID');
+    productID = snapshot.get('productID');
+    double intRating = snapshot.get('rating') + .0;
+    rating = intRating.toDouble();
     date = formatTimestamp(snapshot.get("date"));
     comment = snapshot.get('comment');
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'image': this.image,
-      'photo': this.photo,
-      'idPro': this.idPro,
-      'name': this.name,
+      'id': this.id,
+      'images': this.images,
+      'userID': this.userID,
+      'productID': this. productID,
       'rating': this.rating,
       'date': this.date,
-      'comment': this.comment,
+      'comment': this.comment
     };
   }
 }
