@@ -14,11 +14,14 @@ class ReviewCard extends StatelessWidget {
   final MReview review;
   final MUser user;
 
-  ReviewCard({
-    Key? key,
-    required this.review, required this.onTap, required this.isLess, required this.user
-  }) : super(key: key);
-  
+  ReviewCard(
+      {Key? key,
+      required this.review,
+      required this.onTap,
+      required this.isLess,
+      required this.user})
+      : super(key: key);
+
   UserServices userServices = UserServices();
 
   @override
@@ -41,80 +44,83 @@ class ReviewCard extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 ClipOval(
-                    child: user.avatarUri == "" ? Container() : Image.network(user.avatarUri, fit: BoxFit.cover)
-                ),
+                    child: user.avatarUri == ""
+                        ? Container()
+                        : Image.network(user.avatarUri, fit: BoxFit.cover)),
               ],
             ),
-
           ),
           Row(
             children: [
               Expanded(
-                child: Row(
-                    children: [
-                      Text(
-                        user.displayName,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      Spacer(),
-                      Text(
-                        review.date,
-                        style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
-                      ),
-                    ]
-
-                )
-              ),
+                  child: Row(children: [
+                Text(
+                  user.displayName,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: kPrimaryColor,
+                  ),
+                ),
+                Spacer(),
+                Text(
+                  review.date,
+                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
+                ),
+              ])),
             ],
           ),
           SizedBox(height: 8.0),
           SmoothStarRating(
-                  isReadOnly: true,
-                  starCount: 5,
-                  rating: review.rating,
-                  size: 20.0,
-                  color:  Color(0xFFFFC416),
-                  borderColor:  Color(0xFFFFC416),
+            isReadOnly: true,
+            starCount: 5,
+            rating: review.rating,
+            size: 20.0,
+            color: Color(0xFFFFC416),
+            borderColor: Color(0xFFFFC416),
           ),
           SizedBox(height: 5.0),
-
           GestureDetector(
-            onTap: (){},
+            onTap: () {},
             child: isLess
                 ? Text(
-              review.comment,
-              style: TextStyle(
-                fontSize: 14.0,
-                color: kSecondaryColor,
-              ),
-            )
+                    review.comment,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: kSecondaryColor,
+                    ),
+                  )
                 : Text(
-              review.comment,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 14.0,
-                color: kLightColor,
-              ),
-            ),
+                    review.comment,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: kLightColor,
+                    ),
+                  ),
           ),
           review.images.length == 0
-              ? SizedBox(height: 1.0 )
+              ? SizedBox(height: 1.0)
               : Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: GridView.builder(
-                  itemCount: review.images.length,
-                  shrinkWrap: true,
-                  gridDelegate:
-                    SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: GridView.builder(
+                    itemCount: review.images.length,
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 4,
+                    ),
                     itemBuilder: (BuildContext context, int index) {
                       print(review.images[index]);
-                      return Image.network(review.images[index], fit: BoxFit.cover,);
-              },),),
+                      return Image.network(
+                        review.images[index],
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),
         ],
       ),
     );

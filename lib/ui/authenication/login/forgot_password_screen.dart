@@ -26,7 +26,7 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFFE3E3),
+      backgroundColor: kFourthColor.withOpacity(0.15),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(

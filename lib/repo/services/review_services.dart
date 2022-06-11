@@ -2,8 +2,8 @@ import 'package:bebeautyapp/model/MReview.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReviewServices {
-  final CollectionReference refReview = FirebaseFirestore.instance.collection(
-      'Review');
+  final CollectionReference refReview =
+      FirebaseFirestore.instance.collection('Review');
 
   Future<List<MReview>> getReviews() async {
     List<MReview> reviews = [];
@@ -20,15 +20,17 @@ class ReviewServices {
       DocumentReference docRef = refReview.doc();
       String newReviewID = docRef.id;
 
-      await refReview
-          .doc()
-          .set({'id': newReviewID, 'comment': newReview.comment, 'date': newReview.date,
-        'images': newReview.images, 'productID': newReview.productID, 'rating': newReview.rating,
+      await refReview.doc().set({
+        'id': newReviewID,
+        'comment': newReview.comment,
+        'date': DateTime.now(),
+        'images': newReview.images,
+        'productID': newReview.productID,
+        'rating': newReview.rating,
         'userID': newReview.userID
       });
 
       return true;
-
     } catch (e) {
       print(e.toString());
       return false;
@@ -38,14 +40,15 @@ class ReviewServices {
   Future<bool> addReviews(List<MReview> newReviews) async {
     try {
       int iCount = 0;
-      for(int i = 0; i < newReviews.length; i++) {
+      for (int i = 0; i < newReviews.length; i++) {
         addReview(newReviews[i]);
         iCount++;
       }
 
-      if(iCount == newReviews.length) return true;
-      else return false;
-
+      if (iCount == newReviews.length)
+        return true;
+      else
+        return false;
     } catch (e) {
       print(e.toString());
       return false;
@@ -54,8 +57,8 @@ class ReviewServices {
 
   List<MReview> getReviewOfProduct(List<MReview> reviews, int productID) {
     List<MReview> results = [];
-    for(int i = 0; i < reviews.length; i++) {
-      if(reviews[i].productID == productID) results.add(reviews[i]);
+    for (int i = 0; i < reviews.length; i++) {
+      if (reviews[i].productID == productID) results.add(reviews[i]);
     }
     return results;
   }
@@ -70,45 +73,28 @@ class ReviewServices {
     double totalRate4 = 0;
     double totalRate5 = 0;
 
-    for (int i = 0; i< reviews.length; i++)
-    {
+    for (int i = 0; i < reviews.length; i++) {
       totalRate += reviews[i].rating;
 
-      if (reviews[i].rating == 1)
-      {
-        totalRate1 ++;
-      }
-
-      else if (reviews[i].rating == 2)
-      {
-        totalRate2 ++;
-      }
-
-      else if (reviews[i].rating == 3)
-      {
-        totalRate3 ++;
-      }
-
-      else if (reviews[i].rating == 4)
-      {
-        totalRate4 ++;
-      }
-
-      else if (reviews[i].rating == 5)
-      {
-        totalRate5 ++;
+      if (reviews[i].rating == 1) {
+        totalRate1++;
+      } else if (reviews[i].rating == 2) {
+        totalRate2++;
+      } else if (reviews[i].rating == 3) {
+        totalRate3++;
+      } else if (reviews[i].rating == 4) {
+        totalRate4++;
+      } else if (reviews[i].rating == 5) {
+        totalRate5++;
       }
     }
 
-    ratings.add(totalRate1/reviews.length);
-    ratings.add(totalRate2/reviews.length);
-    ratings.add(totalRate3/reviews.length);
-    ratings.add(totalRate4/reviews.length);
-    ratings.add(totalRate5/reviews.length);
+    ratings.add(totalRate1 / reviews.length);
+    ratings.add(totalRate2 / reviews.length);
+    ratings.add(totalRate3 / reviews.length);
+    ratings.add(totalRate4 / reviews.length);
+    ratings.add(totalRate5 / reviews.length);
 
     return ratings;
   }
-
-
-
 }

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:im_stepper/stepper.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../../../../model/MOrder.dart';
@@ -17,7 +17,8 @@ import '../../../../../repo/services/order_services.dart';
 import 'order_manage_screen.dart';
 
 class TrackOrderManage extends StatefulWidget {
-  const TrackOrderManage({Key? key, required this.order, required this.isAdmin}) : super(key: key);
+  const TrackOrderManage({Key? key, required this.order, required this.isAdmin})
+      : super(key: key);
 
   @override
   _TrackOrderManageState createState() => _TrackOrderManageState();
@@ -59,30 +60,37 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
         actions: [
           (widget.order.status == 0 || widget.order.status == 1)
               ? TextButton(
-                      onPressed: () async {
-                        bool result = await orderServices.updateOrderStatus(widget.order.id, -1);
-                        if(result == false) {
-                          Fluttertoast.showToast(msg: 'Some errors happened when trying to cancel this order.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                        }
-                        else {
-                          Fluttertoast.showToast(msg: 'Cancelled this order successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => OrderManageScreen()),
-                                (Route<dynamic> route) => false,
-                          );
-                        }
-
-                        },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(color: kPrimaryColor),
-                        ),
-                      ),
-                    )
-                  : Container(),
+                  onPressed: () async {
+                    bool result = await orderServices.updateOrderStatus(
+                        widget.order.id, -1);
+                    if (result == false) {
+                      Fluttertoast.showToast(
+                          msg:
+                              'Some errors happened when trying to cancel this order.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: 'Cancelled this order successfully.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OrderManageScreen()),
+                        (Route<dynamic> route) => false,
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: kPrimaryColor),
+                    ),
+                  ),
+                )
+              : Container(),
         ],
       ),
       body: SingleChildScrollView(
@@ -192,7 +200,9 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                           color: kTextLightColor,
                         ),
                       ),
-                      widget.order.status != 5 && widget.order.status != -1 && widget.isAdmin == true
+                      widget.order.status != 5 &&
+                              widget.order.status != -1 &&
+                              widget.isAdmin == true
                           ? Column(
                               children: [
                                 StickyLabel(
@@ -223,26 +233,42 @@ class _TrackOrderManageState extends State<TrackOrderManage> {
                                           underline: SizedBox(),
                                           value: statusId.toString(),
                                           onChanged: (String? newValue) async {
-                                            if(statusId != int.parse(
-                                                newValue.toString())) {
+                                            if (statusId !=
+                                                int.parse(
+                                                    newValue.toString())) {
                                               int newStatus = int.parse(
                                                   newValue.toString());
-                                              bool result =
-                                              await orderServices.updateOrderStatus(widget.order.id, newStatus);
+                                              bool result = await orderServices
+                                                  .updateOrderStatus(
+                                                      widget.order.id,
+                                                      newStatus);
 
-                                              if(result == false) {
-                                                Fluttertoast.showToast(msg: "Some errors happened when trying to update this order's status." , toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                                              }
-                                              else {
-                                                Fluttertoast.showToast(msg: "Updated this order's status successfully.", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                                              if (result == false) {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "Some errors happened when trying to update this order's status.",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM);
+                                              } else {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        "Updated this order's status successfully.",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM);
                                                 Navigator.pushAndRemoveUntil(
                                                   context,
-                                                  MaterialPageRoute(builder: (context) => OrderManageScreen()),
-                                                      (Route<dynamic> route) => false,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          OrderManageScreen()),
+                                                  (Route<dynamic> route) =>
+                                                      false,
                                                 );
                                               }
                                             }
-
                                           },
                                           items: statuses
                                               .map<DropdownMenuItem<String>>(

@@ -10,12 +10,11 @@ class MReview {
   String date = " ";
   String comment = " ";
 
-  MReview()
-  {}
+  MReview() {}
 
   MReview.fromSnapshot(DocumentSnapshot snapshot) {
     id = snapshot.get('id');
-    images = List.from(snapshot.get('image'));
+    images = List.from(snapshot.get('images'));
     userID = snapshot.get('userID');
     productID = snapshot.get('productID');
     double intRating = snapshot.get('rating') + .0;
@@ -29,7 +28,7 @@ class MReview {
       'id': this.id,
       'images': this.images,
       'userID': this.userID,
-      'productID': this. productID,
+      'productID': this.productID,
       'rating': this.rating,
       'date': this.date,
       'comment': this.comment

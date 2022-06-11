@@ -5,12 +5,14 @@ import 'package:bebeautyapp/repo/services/brand_services.dart';
 import 'package:bebeautyapp/repo/services/product_services.dart';
 import 'package:bebeautyapp/ui/admin/Brand/brand_manage.dart';
 import 'package:bebeautyapp/ui/admin/Product/product_manage.dart';
+import 'package:bebeautyapp/ui/admin/change_infoStore.dart';
 import 'package:bebeautyapp/ui/admin/chat/chat_room.dart';
 import 'package:bebeautyapp/ui/admin/order/order_manage_screen.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
 
 import 'package:bebeautyapp/ui/profile/profile_screen.dart';
 import 'package:bebeautyapp/ui/profile/widgets/change_infomation.dart';
+import 'package:bebeautyapp/ui/profile/widgets/change_password.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -106,6 +108,30 @@ class HomeAdmin extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ChatRoomAdmin()),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              ProfileMenu(
+                text: "Information",
+                icon: "assets/icons/settings.svg",
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChangeInformationScreen()),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              ProfileMenu(
+                text: "Settings",
+                icon: "assets/icons/settings.svg",
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChangePasswordScreen()),
                   );
                 },
               ),

@@ -1,23 +1,23 @@
-import 'package:bebeautyapp/constants.dart';
+import 'package:bebeautyapp/repo/function/forgotPassword.dart';
+import 'package:bebeautyapp/repo/services/user_services.dart';
+import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.dart';
+
 import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:cool_alert/cool_alert.dart';
-
+import 'package:bebeautyapp/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-import '../../../repo/services/user_services.dart';
-
-class ChangePasswordScreen extends StatelessWidget {
+class ChangePasswordScreen extends StatefulWidget {
   static String id = "ChangePasswordScreen";
 
-  final oldPassFocusNode = FocusNode();
-  final newPassFocusNode = FocusNode();
-  final newPassRetypeFocusNode = FocusNode();
+  @override
+  _ChangePasswordScreenState createState() => new _ChangePasswordScreenState();
+}
 
-  String oldPass = "";
-  String newPass = "";
-  String newRetypePass = "";
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  final _formKey = GlobalKey<FormState>();
 
   final oldPassController = TextEditingController();
   final newPassController = TextEditingController();
@@ -25,7 +25,19 @@ class ChangePasswordScreen extends StatelessWidget {
 
   final sendChangePasswordButtonController = RoundedLoadingButtonController();
 
-  final userServices = new UserServices();
+  final userServices = UserServices();
+
+  final passwordFocusNode = FocusNode();
+  final newPassFocusNode = FocusNode();
+  final reNewPassFocusNode = FocusNode();
+
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
+  bool _obscureText3 = true;
+
+  String password = "";
+  String newPass = "";
+  String reNewPass = "";
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +45,17 @@ class ChangePasswordScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text("Change Password"),
-        titleTextStyle: TextStyle(
+        title: const Text("Change Password"),
+        titleTextStyle: const TextStyle(
             color: kPrimaryColor,
             fontSize: 16,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w500),
         centerTitle: true,
         automaticallyImplyLeading: false,
-        leading: BackButton(color: kPrimaryColor),
+        leading: const BackButton(color: kPrimaryColor),
       ),
-      backgroundColor: Color(0xffc1c2c6).withOpacity(0.1),
+      backgroundColor: const Color(0xffc1c2c6).withOpacity(0.1),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -60,11 +72,12 @@ class ChangePasswordScreen extends StatelessWidget {
               child: Column(
                 children: [
                   TextFormField(
-                    focusNode: oldPassFocusNode,
-                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: _obscureText1,
                     onChanged: (value) {
-                      oldPass = value;
+                      newPass = value;
                     },
+                    focusNode: passwordFocusNode,
+                    controller: oldPassController,
                     cursorColor: kTextColor,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
@@ -72,15 +85,28 @@ class ChangePasswordScreen extends StatelessWidget {
                       }
                       return null;
                     },
-                    controller: oldPassController,
                     decoration: InputDecoration(
+                      hintText: "Password",
                       filled: true,
                       fillColor: Colors.white,
                       prefixIcon: Icon(
-                        Icons.mail_outline_outlined,
+                        Icons.lock,
                         color: Colors.black,
                       ),
-                      hintText: "Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText1
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _obscureText1 = !_obscureText1;
+                          });
+                        },
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide(color: kPrimaryColor, width: 1),
@@ -95,15 +121,16 @@ class ChangePasswordScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 15,
                   ),
                   TextFormField(
-                    focusNode: newPassFocusNode,
-                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: _obscureText1,
                     onChanged: (value) {
-                      newPass = value;
+                      password = value;
                     },
+                    focusNode: passwordFocusNode,
+                    controller: newPassController,
                     cursorColor: kTextColor,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
@@ -113,15 +140,28 @@ class ChangePasswordScreen extends StatelessWidget {
                             'one lowercase letter, one number and one special character!';
                       return null;
                     },
-                    controller: newPassController,
                     decoration: InputDecoration(
+                      hintText: "New Password",
                       filled: true,
                       fillColor: Colors.white,
                       prefixIcon: Icon(
-                        Icons.mail_outline_outlined,
+                        Icons.lock,
                         color: Colors.black,
                       ),
-                      hintText: "New Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText1
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _obscureText1 = !_obscureText1;
+                          });
+                        },
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide(color: kPrimaryColor, width: 1),
@@ -136,32 +176,46 @@ class ChangePasswordScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 15,
                   ),
                   TextFormField(
-                    focusNode: newPassRetypeFocusNode,
+                    obscureText: _obscureText1,
                     onChanged: (value) {
-                      newRetypePass = value;
+                      reNewPass = value;
                     },
-                    keyboardType: TextInputType.visiblePassword,
+                    focusNode: reNewPassFocusNode,
+                    controller: newPassRetypeController,
                     cursorColor: kTextColor,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
                         return 'New Retype Password is empty';
-                      } else if (text != newPass)
+                      } else if (text != newPassController.text)
                         return 'Password does not match!';
                       return null;
                     },
-                    controller: newPassRetypeController,
                     decoration: InputDecoration(
+                      hintText: "Re-type New Password",
                       filled: true,
                       fillColor: Colors.white,
                       prefixIcon: Icon(
-                        Icons.mail_outline_outlined,
+                        Icons.lock,
                         color: Colors.black,
                       ),
-                      hintText: "New Retype Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText1
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _obscureText1 = !_obscureText1;
+                          });
+                        },
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide(color: kPrimaryColor, width: 1),
@@ -182,23 +236,7 @@ class ChangePasswordScreen extends StatelessWidget {
             CustomRoundedLoadingButton(
               text: 'Confirm',
               onPress: () {
-                //login click
-                // Provider.of<LoginViewModel>(context, listen: false)
-                //     .loginWithEmailAndPassword((message) {
-                //   if (message != null) {
-                //     CoolAlert.show(
-                //         context: context,
-                //         type: CoolAlertType.error,
-                //         text: 'Sign in failed!\nError: $message',
-                //         onConfirmBtnTap: () {
-                //           loginButtonController.reset();
-                //           Navigator.of(context).pop();
-                //         });
-                //   } else {
-                //     loginButtonController.success();
-                //   }
-                // });
-                userServices.changePassword(oldPass, newPass);
+                userServices.changePassword(password, newPass);
                 oldPassController.clear();
                 newPassRetypeController.clear();
                 newPassController.clear();
