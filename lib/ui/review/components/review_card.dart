@@ -26,6 +26,7 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(user.displayName + " here");
     return Container(
       padding: EdgeInsets.only(
         top: 2.0,
@@ -55,7 +56,7 @@ class ReviewCard extends StatelessWidget {
               Expanded(
                   child: Row(children: [
                 Text(
-                  user.displayName,
+                  user.displayName != "" ? user.displayName : "",
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
@@ -113,7 +114,6 @@ class ReviewCard extends StatelessWidget {
                       crossAxisSpacing: 4,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      print(review.images[index]);
                       return Image.network(
                         review.images[index],
                         fit: BoxFit.cover,

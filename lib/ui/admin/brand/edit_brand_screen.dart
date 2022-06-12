@@ -145,6 +145,7 @@ class _EditBrandState extends State<EditBrand> {
                   onPress: () async {
                     addButtonController.start();
                     if (formKey.currentState!.validate()) {
+                      if(nameBrand != "") widget.brand.name = nameBrand;
                       bool result1 = await brandServices.updateBrandName(widget.brand);
                       bool result2 = true;
                       if(imageFile != null) {

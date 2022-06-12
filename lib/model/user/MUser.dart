@@ -61,7 +61,7 @@ class MUser {
   }
 
   void setName(String Name) {
-    this.displayName = displayName;
+    this.displayName = Name;
   }
 
   String getEmail() {

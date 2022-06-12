@@ -34,10 +34,11 @@ class _SearchState extends State<SearchChatRoomAdmin> {
       await database
           .searchByName(searchEditingController.text)
           .then((snapshot) {
-        searchResultSnapshot = snapshot;
+
         setState(() {
           isLoading = false;
           haveUserSearched = true;
+          searchResultSnapshot = snapshot;
         });
       });
     }
@@ -53,10 +54,10 @@ class _SearchState extends State<SearchChatRoomAdmin> {
               itemCount: searchResultSnapshot!.docs.length,
               itemBuilder: (context, index) {
                 return userTile(
-                    searchResultSnapshot!.docs[index]["name"],
+                    searchResultSnapshot!.docs[index]["displayName"],
                     searchResultSnapshot!.docs[index]["id"],
                     admin_id,
-                    searchResultSnapshot!.docs[index]["photo"]);
+                    searchResultSnapshot!.docs[index]["avatarUri"]);
               },
             ))
         : Container();

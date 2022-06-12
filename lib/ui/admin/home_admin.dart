@@ -125,7 +125,7 @@ class HomeAdmin extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               ProfileMenu(
-                text: "Settings",
+                text: "Change Password",
                 icon: "assets/icons/settings.svg",
                 press: () {
                   Navigator.push(

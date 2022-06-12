@@ -173,7 +173,6 @@ class _AddBrandState extends State<AddBrand> {
                           Future.delayed(const Duration(milliseconds: 1500), () {
                             addButtonController.stop();
                             Fluttertoast.showToast(msg: 'Add new brand successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-
                           });
                         }
                       }

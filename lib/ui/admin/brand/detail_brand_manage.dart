@@ -28,12 +28,6 @@ class DetailsBrandManage extends StatefulWidget {
 class _DetailsBrandManage extends State<DetailsBrandManage> {
   @override
   Widget build(BuildContext context) {
-    final preferenceServices = new PreferenceServices();
-    final productProvider = Provider.of<ProductProvider>(context);
-    final userProvider = Provider.of<UserProvider>(context);
-    final editButtonController = RoundedLoadingButtonController();
-    final productServices = new ProductServices();
-    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

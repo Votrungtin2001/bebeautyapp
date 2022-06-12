@@ -62,9 +62,9 @@ class _Body extends State<Body> {
     List<MUser> results = [];
     for(int i = 0; i < widget.reviewsOfProduct.length; i++) {
       MUser user = await userServices.getUser(widget.reviewsOfProduct[i].userID);
-      bool isAdd = false;
+      bool isAdd = true;
       for(int j = 0; j < results.length; j++) {
-        if(results[j].getID() == user.getID()) isAdd = true;
+        if(results[j].getID() == user.getID()) isAdd = false;
       }
 
       if(isAdd == true) results.add(user);

@@ -22,9 +22,6 @@ class _ProductManage extends State<ProductManage> {
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
-    final preferenceServices = new PreferenceServices();
-    final userProvider = Provider.of<UserProvider>(context);
-    final editButtonController = RoundedLoadingButtonController();
 
     return Scaffold(
       appBar: AppBar(

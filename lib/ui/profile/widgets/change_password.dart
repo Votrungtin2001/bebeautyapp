@@ -7,6 +7,7 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:bebeautyapp/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -56,8 +57,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         leading: const BackButton(color: kPrimaryColor),
       ),
       backgroundColor: const Color(0xffc1c2c6).withOpacity(0.1),
-      body: SingleChildScrollView(
-        child: Column(
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(
@@ -74,7 +77,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   TextFormField(
                     obscureText: _obscureText1,
                     onChanged: (value) {
-                      newPass = value;
+                      password = value;
                     },
                     focusNode: passwordFocusNode,
                     controller: oldPassController,
@@ -125,11 +128,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     height: 15,
                   ),
                   TextFormField(
-                    obscureText: _obscureText1,
+                    obscureText: _obscureText2,
                     onChanged: (value) {
-                      password = value;
+                      newPass = value;
                     },
-                    focusNode: passwordFocusNode,
+                    focusNode: newPassFocusNode,
                     controller: newPassController,
                     cursorColor: kTextColor,
                     validator: (text) {
@@ -150,7 +153,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureText1
+                          _obscureText2
                               ? Icons.visibility
                               : Icons.visibility_off,
                           color: Colors.black,
@@ -158,7 +161,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         onPressed: () {
                           // Update the state i.e. toogle the state of passwordVisible variable
                           setState(() {
-                            _obscureText1 = !_obscureText1;
+                            _obscureText2 = !_obscureText2;
                           });
                         },
                       ),
@@ -180,7 +183,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     height: 15,
                   ),
                   TextFormField(
-                    obscureText: _obscureText1,
+                    obscureText: _obscureText3,
                     onChanged: (value) {
                       reNewPass = value;
                     },
@@ -204,7 +207,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureText1
+                          _obscureText3
                               ? Icons.visibility
                               : Icons.visibility_off,
                           color: Colors.black,
@@ -212,7 +215,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         onPressed: () {
                           // Update the state i.e. toogle the state of passwordVisible variable
                           setState(() {
-                            _obscureText1 = !_obscureText1;
+                            _obscureText3 = !_obscureText3;
                           });
                         },
                       ),
@@ -235,7 +238,25 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
             CustomRoundedLoadingButton(
               text: 'Confirm',
-              onPress: () {
+              onPress: () async {
+                sendChangePasswordButtonController.start();
+                if (_formKey.currentState!.validate()) {
+                  bool result = await userServices.changePassword(password, newPass);
+                  if(result == true) {
+                    oldPassController.clear();
+                    newPassRetypeController.clear();
+                    newPassController.clear();
+                    setState(() {
+                      newPass = "";
+                      password = "";
+                      reNewPass = "";
+                    });
+                    sendChangePasswordButtonController.stop();
+
+                  }
+                  else sendChangePasswordButtonController.stop();
+                }
+                else sendChangePasswordButtonController.stop();
                 userServices.changePassword(password, newPass);
                 oldPassController.clear();
                 newPassRetypeController.clear();
@@ -247,6 +268,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 }

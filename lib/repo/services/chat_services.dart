@@ -77,9 +77,11 @@ class ChatServices {
   }
 
   searchByName(String searchField) {
+
+    print(searchField);
     return FirebaseFirestore.instance
         .collection("Users")
-        .where('name', isEqualTo: searchField)
+        .where('displayName', isEqualTo: searchField)
         .get();
   }
 

@@ -69,7 +69,7 @@ class _ProfileScreens extends State<ProfileScreens> {
                 height: 15,
               ),
               ProfileMenu(
-                text: "Purchase order",
+                text: "Purchase Order",
                 icon: "assets/icons/menu-order.svg",
                 press: () {
                   Navigator.push(
@@ -180,7 +180,7 @@ class _ProfileScreens extends State<ProfileScreens> {
               ),
               const SizedBox(height: 8),
               ProfileMenu(
-                text: "Settings",
+                text: "Change Password",
                 icon: "assets/icons/settings.svg",
                 press: () {
                   Navigator.push(
@@ -325,13 +325,8 @@ void signOutDrawer(BuildContext context) {
                           borderRadius: BorderRadius.circular(20)),
                       side: BorderSide(color: Colors.black, width: 1),
                     ),
-                    onPressed: () async {
-                      await authServices.signOut();
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                            (Route<dynamic> route) => false,
-                      );
+                    onPressed: () {
+                      Navigator.of(context).pop();
                     },
                     child: Text("NO",
                         style: TextStyle(
@@ -340,17 +335,14 @@ void signOutDrawer(BuildContext context) {
                             color: Colors.black)),
                   ),
                   RaisedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       authServices.signOut();
-                      Fluttertoast.showToast(
-                          msg: 'Logged out successfully.',
-                          backgroundColor: Colors.green,
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                      await authServices.signOut();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                            (Route<dynamic> route) => false,
+                      );
                     },
                     color: kPrimaryColor,
                     padding: const EdgeInsets.symmetric(horizontal: 50),
