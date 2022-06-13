@@ -18,6 +18,14 @@ A brief description of what this project does and who it's for
    1.5 [Rating / Review](#Rating-/-Review)
 
    1.6 [Wishlist](#Wishlist)
+
+   1.7 [Chat](#Chat)
+   
+   1.8 [Rating / Review](#Rating-/-Review)
+
+   1.9 [Order](#Order)
+   
+   1.6 [Wishlist](#Wishlist)
    
 1. [Requirements](#Requirements)
 
