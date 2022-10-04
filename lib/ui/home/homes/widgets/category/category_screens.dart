@@ -164,25 +164,27 @@ class _CategoryScreensState extends State<CategoryScreens>
                                 rating: true,
                                 product: allProductsFromCategory[index],
                                 press: () async {
-                                  productProvider
-                                          .isNeededUpdated_SimilarProductsBasedUserByCBR =
-                                      true;
-                                  await preferenceServices.updatePreference(
-                                      userProvider.user,
-                                      allProductsFromCategory[index]);
+                                  // productProvider
+                                  //         .isNeededUpdated_SimilarProductsBasedUserByCBR =
+                                  //     true;
+                                  // await preferenceServices.updatePreference(
+                                  //     userProvider.user,
+                                  //     allProductsFromCategory[index]);
 
                                   //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                                   //await preferenceServices.updatePreference(userProvider.user, products[index]);
 
-                                  List<MProduct>
-                                      similarProductsFromSelectedProducts =
-                                      await productServices
-                                          .getSimilarityProductsBySelectedProduct(
-                                              productProvider.products,
-                                              allProductsFromCategory[index]);
+                                  // List<MProduct>
+                                  //     similarProductsFromSelectedProducts =
+                                  //     await productServices
+                                  //         .getSimilarityProductsBySelectedProduct(
+                                  //             productProvider.products,
+                                  //             allProductsFromCategory[index]);
 
-                                  List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, allProductsFromCategory[index].id);
-
+                                  List<MReview> reviewsOfProduct =
+                                      reviewServices.getReviewOfProduct(
+                                          reviewProvider.reviews,
+                                          allProductsFromCategory[index].id);
 
                                   Navigator.push(
                                       context,
@@ -193,8 +195,8 @@ class _CategoryScreensState extends State<CategoryScreens>
                                         builder: (context) => DetailsScreen(
                                           product:
                                               allProductsFromCategory[index],
-                                          similarProductsFromSelectedProducts:
-                                              similarProductsFromSelectedProducts,
+                                          // similarProductsFromSelectedProducts:
+                                          //     similarProductsFromSelectedProducts,
                                           reviewsOfProduct: reviewsOfProduct,
                                         ),
                                       ));

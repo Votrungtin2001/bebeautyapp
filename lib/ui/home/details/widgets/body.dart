@@ -26,11 +26,11 @@ class Body extends StatefulWidget {
   const Body(
       {Key? key,
       required this.product,
-      required this.similarProductsFromSelectedProducts,
+      //required this.similarProductsFromSelectedProducts,
       required this.reviewsOfProduct})
       : super(key: key);
   final MProduct product;
-  final List<MProduct> similarProductsFromSelectedProducts;
+  //final List<MProduct> similarProductsFromSelectedProducts;
   final List<MReview> reviewsOfProduct;
 
   @override
@@ -60,14 +60,15 @@ class _Body extends State<Body> {
 
   Future<void> getUsersReview() async {
     List<MUser> results = [];
-    for(int i = 0; i < widget.reviewsOfProduct.length; i++) {
-      MUser user = await userServices.getUser(widget.reviewsOfProduct[i].userID);
+    for (int i = 0; i < widget.reviewsOfProduct.length; i++) {
+      MUser user =
+          await userServices.getUser(widget.reviewsOfProduct[i].userID);
       bool isAdd = true;
-      for(int j = 0; j < results.length; j++) {
-        if(results[j].getID() == user.getID()) isAdd = false;
+      for (int j = 0; j < results.length; j++) {
+        if (results[j].getID() == user.getID()) isAdd = false;
       }
 
-      if(isAdd == true) results.add(user);
+      if (isAdd == true) results.add(user);
     }
     setState(() {
       users = results;
@@ -81,7 +82,6 @@ class _Body extends State<Body> {
     final reviewProvider = Provider.of<ReviewProvider>(context);
 
     size = MediaQuery.of(context).size;
-
 
     return SingleChildScrollView(
       child: Column(
@@ -231,7 +231,8 @@ class _Body extends State<Body> {
                   Text(
                     widget.reviewsOfProduct.length == 0
                         ? " "
-                        :  widget.reviewsOfProduct.length.toString() + " reviews",
+                        : widget.reviewsOfProduct.length.toString() +
+                            " reviews",
                     style: TextStyle(
                       fontSize: 14,
                       color: kSecondaryColor,
@@ -244,15 +245,16 @@ class _Body extends State<Body> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.all((15)),
-                  itemCount:  widget.reviewsOfProduct.length,
+                  itemCount: widget.reviewsOfProduct.length,
                   itemBuilder: (context, index) {
                     return ReviewCard(
-                      review:  widget.reviewsOfProduct[index],
+                      review: widget.reviewsOfProduct[index],
                       onTap: () => setState(() {
                         isMore = !isMore;
                       }),
                       isLess: isMore,
-                      user: userServices.getUserForReview(users, widget.reviewsOfProduct[index].userID),
+                      user: userServices.getUserForReview(
+                          users, widget.reviewsOfProduct[index].userID),
                     );
                   },
                   separatorBuilder: (context, index) {
@@ -278,10 +280,9 @@ class _Body extends State<Body> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                Reviews(
-                                    productID: widget.product.id,
-                                    reviews: widget.reviewsOfProduct)));
+                            builder: (context) => Reviews(
+                                productID: widget.product.id,
+                                reviews: widget.reviewsOfProduct)));
                       },
                       child: Text("See More",
                           style: TextStyle(
@@ -297,85 +298,84 @@ class _Body extends State<Body> {
           const SizedBox(
             height: 16,
           ),
-          Row(children: const <Widget>[
-            Expanded(
-                child: Divider(
-              indent: 24,
-              endIndent: 16,
-              thickness: 1.5,
-            )),
-            Text(
-              "You aslo may like",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: "Poppins",
-                  letterSpacing: -1,
-                  color: kTextColor),
-            ),
-            Expanded(
-                child: Divider(
-              indent: 24,
-              endIndent: 16,
-              thickness: 1.5,
-            )),
-          ]),
-          const SizedBox(
-            height: 15,
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 175,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              child: GridView.builder(
-                itemCount: widget.similarProductsFromSelectedProducts.length > 6
-                    ? 6
-                    : widget.similarProductsFromSelectedProducts.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: kDefaultPadding,
-                  crossAxisSpacing: kDefaultPadding,
-                  childAspectRatio: 0.5,
-                ),
-                itemBuilder: (context, index) => ProductCard(
-                  rating: true,
-                  product: widget.similarProductsFromSelectedProducts[index],
-                  press: () async {
-                    productProvider
-                        .isNeededUpdated_SimilarProductsBasedUserByCBR = true;
-                    await preferenceServices.updatePreference(userProvider.user,
-                        widget.similarProductsFromSelectedProducts[index]);
+          // Row(children: const <Widget>[
+          //   Expanded(
+          //       child: Divider(
+          //     indent: 24,
+          //     endIndent: 16,
+          //     thickness: 1.5,
+          //   )),
+          //   Text(
+          //     "You aslo may like",
+          //     style: TextStyle(
+          //         fontSize: 14,
+          //         fontFamily: "Poppins",
+          //         letterSpacing: -1,
+          //         color: kTextColor),
+          //   ),
+          //   Expanded(
+          //       child: Divider(
+          //     indent: 24,
+          //     endIndent: 16,
+          //     thickness: 1.5,
+          //   )),
+          // ]),
+          // const SizedBox(
+          //   height: 15,
+          // ),
+          // SizedBox(
+          //   height: MediaQuery.of(context).size.height - 175,
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          //     child: GridView.builder(
+          //       itemCount: widget.similarProductsFromSelectedProducts.length > 6
+          //           ? 6
+          //           : widget.similarProductsFromSelectedProducts.length,
+          //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          //         crossAxisCount: 2,
+          //         mainAxisSpacing: kDefaultPadding,
+          //         crossAxisSpacing: kDefaultPadding,
+          //         childAspectRatio: 0.5,
+          //       ),
+          //       itemBuilder: (context, index) => ProductCard(
+          //         rating: true,
+          //         product: widget.similarProductsFromSelectedProducts[index],
+          //         press: () async {
+          //           productProvider
+          //               .isNeededUpdated_SimilarProductsBasedUserByCBR = true;
+          //           await preferenceServices.updatePreference(userProvider.user,
+          //               widget.similarProductsFromSelectedProducts[index]);
 
-                    //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
-                    //await preferenceServices.updatePreference(userProvider.user, widget.similarProductsFromSelectedProducts[index]);
-                    List<MProduct> similarProductsFromSelectedProducts =
-                        await productServices
-                            .getSimilarityProductsBySelectedProduct(
-                                productProvider.products,
-                                widget.similarProductsFromSelectedProducts[
-                                    index]);
+          //           //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
+          //           //await preferenceServices.updatePreference(userProvider.user, widget.similarProductsFromSelectedProducts[index]);
+          //           List<MProduct> similarProductsFromSelectedProducts =
+          //               await productServices
+          //                   .getSimilarityProductsBySelectedProduct(
+          //                       productProvider.products,
+          //                       widget.similarProductsFromSelectedProducts[
+          //                           index]);
 
-                    List<MReview> reviewsOfProduct1 = reviewServices.getReviewOfProduct(reviewProvider.reviews, widget.similarProductsFromSelectedProducts[index].id);
+          //           List<MReview> reviewsOfProduct1 = reviewServices.getReviewOfProduct(reviewProvider.reviews, widget.similarProductsFromSelectedProducts[index].id);
 
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          // builder: (context) => DetailsScreen(
-                          //   product: products[index],
-                          // ),
-                          builder: (context) => DetailsScreen(
-                            product: widget
-                                .similarProductsFromSelectedProducts[index],
-                            similarProductsFromSelectedProducts:
-                                similarProductsFromSelectedProducts,
-                            reviewsOfProduct: reviewsOfProduct1,
-                          ),
-                        ));
-                  },
-                ),
-              ),
-            ),
-          ),
+          //           Navigator.push(
+          //               context,
+          //               MaterialPageRoute(
+          //                 // builder: (context) => DetailsScreen(
+          //                 //   product: products[index],
+          //                 // ),
+          //                 builder: (context) => DetailsScreen(
+          //                   product: widget
+          //                       .similarProductsFromSelectedProducts[index],
+          //                   similarProductsFromSelectedProducts:
+          //                       similarProductsFromSelectedProducts,
+          //                   reviewsOfProduct: reviewsOfProduct1,
+          //                 ),
+          //               ));
+          //         },
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

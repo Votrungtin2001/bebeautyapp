@@ -63,10 +63,10 @@ dependencies:
   flutter_switch: ^0.3.2
   badges: ^2.0.2
   http: ^0.13.4
-
+  url_launcher: ^6.0.17
   geolocator: ^8.2.0
   geocoding: ^2.0.4
-
+  flutter_screenutil: any
   flutter_format_money_vietnam: ^0.0.2
 
   #google_api_headers: ^1.0.0
@@ -74,22 +74,7 @@ dependencies:
   flutter_bounce: ^1.1.0
   flutter_polyline_points: ^1.0.0
   multi_image_picker: ^4.7.14
-  flutter_absolute_path: ^1.0.6
 
-
-
-dependency_overrides:
-  firebase_messaging_platform_interface: 3.1.6
-  firebase_crashlytics_platform_interface: 3.1.13
-  cloud_firestore_platform_interface: 5.4.13
-  firebase_auth_platform_interface: 6.1.11
-  firebase_storage_platform_interface: 4.0.14
-  cloud_functions_platform_interface: 5.0.21
-  firebase_analytics_platform_interface: 3.0.5
-  firebase_remote_config_platform_interface: 1.0.5
-  firebase_dynamic_links_platform_interface: 0.2.0+5
-  firebase_performance_platform_interface: 0.1.0+5
-  firebase_app_installations_platform_interface: 0.1.0+6
 
 dev_dependencies:
   flutter_test:
@@ -133,6 +118,16 @@ flutter:
       fonts:
             - asset: assets/fonts/glitten/Glitten-Regular.ttf
               weight: 700
+
+    - family: Berfilem
+      fonts:
+            - asset: assets/fonts/berfilem/Berfilem-Regular.ttf
+              weight: 500
+
+    - family: Helvetica
+      fonts:
+            - asset: assets/fonts/helvetica/Helvetica.ttf
+              weight: 500
 
 
 

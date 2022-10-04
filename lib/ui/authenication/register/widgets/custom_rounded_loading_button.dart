@@ -6,32 +6,32 @@ class CustomRoundedLoadingButton extends StatelessWidget {
   final String text;
   final RoundedLoadingButtonController controller;
   final void Function() onPress;
-  final double horizontalPadding;
   const CustomRoundedLoadingButton(
-      {required this.text,
+      {Key? key,
+      required this.text,
       required this.onPress,
-      required this.controller,
-      this.horizontalPadding = 0});
+      required this.controller})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       child: RoundedLoadingButton(
+        borderRadius: 0,
         controller: controller,
         onPressed: onPress,
         successColor: kPrimaryColor,
-        height: 60,
+        height: 48,
         width: 9999,
         child: Text(
           text,
           style: const TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
+              fontFamily: 'Helvetica',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: kGreenColor),
         ),
-        color: kPrimaryColor,
+        color: Colors.white,
       ),
     );
   }

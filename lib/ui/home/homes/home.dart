@@ -13,6 +13,7 @@ import 'package:bebeautyapp/ui/home/homes/widgets/category/categories.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/brand/brand_card.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/new_product/new_product.dart';
 import 'package:bebeautyapp/ui/home/homes/widgets/recommend_product/recommend_product.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:carousel_pro/carousel_pro.dart';
@@ -20,12 +21,22 @@ import 'package:provider/provider.dart';
 
 import '../../../model/MBrand.dart';
 
-class HomeScreens extends StatelessWidget {
-  final productServices = new ProductServices();
-  final brandServices = new BrandServices();
+class HomeScreens extends StatefulWidget {
+  const HomeScreens({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreens> createState() => _HomeScreensState();
+}
+
+class _HomeScreensState extends State<HomeScreens> {
+  final productServices = ProductServices();
+
+  final brandServices = BrandServices();
 
   List<MProduct> products = [];
+
   List<MProduct> suggestProducts = [];
+
   List<MBrand> brands = [];
 
   @override
@@ -33,7 +44,7 @@ class HomeScreens extends StatelessWidget {
     final productProvider = Provider.of<ProductProvider>(context);
     final brandProvider = Provider.of<BrandProvider>(context);
     final categoryProvider = Provider.of<CategoryProvider>(context);
-
+    TextEditingController _searchQueryController = TextEditingController();
     List<MBrand> getBrandList() {
       return brandProvider.brands;
     }
@@ -48,30 +59,63 @@ class HomeScreens extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: kBgColor,
+      drawer: SideMenu(
+        categories: categoryProvider.categories,
+      ),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            "assets/icons/search.svg",
-            color: kPrimaryColor,
+        backgroundColor: kBgColor,
+        elevation: 1,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(
+              Icons.category_outlined,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+
+              // showSearch(
+              //     context: context,
+              //     delegate: DataSearch(getProductList(),
+              //         getSuggestionProductList(), getBrandList()));
+            },
           ),
-          onPressed: () {
-            showSearch(
-                context: context,
-                delegate: DataSearch(getProductList(),
-                    getSuggestionProductList(), getBrandList()));
-          },
         ),
-        title: kAppNameTextPinksm,
-        centerTitle: true,
+        title: Container(
+          height: 40,
+          width: double.infinity,
+          color: Colors.white,
+          child: TextField(
+            controller: _searchQueryController,
+            decoration: const InputDecoration(
+              hintText: "What are you looking for?",
+              border: InputBorder.none,
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.black45,
+              ),
+            ),
+            style: const TextStyle(
+              color: Colors.black45,
+              fontFamily: 'Helvetica',
+              fontSize: 14,
+            ),
+            onTap: () {
+              showSearch(
+                  context: context,
+                  delegate: DataSearch(getProductList(),
+                      getSuggestionProductList(), getBrandList()));
+            },
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: SvgPicture.asset(
               "assets/icons/cart.svg",
-              // By default our  icon color is white
-              color: kPrimaryColor,
+              height: 24,
+              width: 24,
             ),
             onPressed: () {
               Navigator.push(
@@ -83,38 +127,29 @@ class HomeScreens extends StatelessWidget {
           const SizedBox(width: kDefaultPadding / 2)
         ],
       ),
-      drawer: Drawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: Container(
-                padding: const EdgeInsets.all(20.0),
-                height: MediaQuery.of(context).size.height / 3,
-                child: Carousel(
-                  images: const [
-                    NetworkImage(
-                        'https://cf.shopee.vn/file/dac4992cd9609052f3c50ab4f7caa096_xxhdpi'),
-                    NetworkImage(
-                        'https://cf.shopee.vn/file/c64e8430deec41e474be2c15e128fb9b_xxhdpi'),
-                    NetworkImage(
-                        'https://cf.shopee.vn/file/9effbe0829a3f513afe65109b40d1aa1_xxhdpi')
-                  ],
-                  boxFit: BoxFit.fill,
-                  showIndicator: false,
-                  borderRadius: false,
-                  moveIndicatorFromBottom: 180.0,
-                  noRadiusForIndicator: true,
-                  radius: Radius.circular(30.0),
-                ),
+            SizedBox(
+              height: 180,
+              child: Carousel(
+                images: [
+                  Image.asset('assets/images/banner_01.png'),
+                  Image.asset('assets/images/banner_01.png'),
+                  Image.asset('assets/images/banner_01.png'),
+                ],
+                dotSize: 4.0,
+                dotSpacing: 15.0,
+                dotColor: kTextColor,
+                dotIncreasedColor: kRedColor,
+                dotBgColor: Colors.transparent,
+                moveIndicatorFromBottom: 180,
+                showIndicator: true,
               ),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height / 60,
             ),
-
-            Categories(categoryProvider.categories),
             SizedBox(
               height: MediaQuery.of(context).size.height / 50,
             ),
@@ -127,14 +162,12 @@ class HomeScreens extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height / 50,
             ),
-            RecommendProduct(),
-            //RecommendProduct(productProvider.similarProductsByCFR),
+            // RecommendProduct(),
+            // RecommendProduct(productProvider.similarProductsByCFR),
 
             NewProduct(
                 productServices.getTop10NewProducts(productProvider.products)),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 50,
-            ),
+            const SizedBox(height: 50),
           ],
         ),
       ),

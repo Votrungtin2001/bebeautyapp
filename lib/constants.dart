@@ -12,6 +12,11 @@ const kFacebookColor = Color(0xff4267B2);
 const kCopy = Color.fromARGB(255, 14, 88, 235);
 const kDefaultPadding = 20.0;
 
+const kGreenColor = Color(0xFF247330);
+const kRedColor = Color(0xFFF7444E);
+const kBgColor = Color(0xFFF7F3EF);
+const kUnselectedColor = Color(0xFFC9C9C9);
+
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,

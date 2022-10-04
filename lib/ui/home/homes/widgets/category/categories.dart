@@ -25,6 +25,7 @@ class Categories extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: SectionTitle(
+            color: kRedColor,
             title: "Categories",
             press: () {
               List<MProduct> allProductsFromCategory =
@@ -44,23 +45,6 @@ class Categories extends StatelessWidget {
             },
           ),
         ),
-        // const SizedBox(height: 20,),
-        // SingleChildScrollView(
-        //   scrollDirection: Axis.horizontal,
-        //   child: Wrap(
-        //     spacing: 16, // gap between adjacent chips
-        //     runSpacing: 9.0, // gap between lines
-        //     direction: Axis.horizontal,
-        //     children: List.generate(
-        //       categories.length,
-        //       (index) => CategoryCard(
-        //         icon: categories[index].imageUri,
-        //         text: categories[index].name,
-        //         press: () {},
-        //       ),
-        //     ),
-        //   ),
-        // ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Column(

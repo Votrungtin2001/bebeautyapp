@@ -28,15 +28,15 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NumberFormat currencyformat = new NumberFormat("#,###,##0");
-    final productServices = new ProductServices();
+    NumberFormat currencyformat = NumberFormat("#,###,##0");
+    final productServices = ProductServices();
     final userProvider = Provider.of<UserProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
 
     return GestureDetector(
       onTap: press,
       child: SizedBox(
-        width: 150,
+        width: 170,
         height: 300,
         child: Column(
           children: [
@@ -44,36 +44,36 @@ class ProductCard extends StatelessWidget {
               children: [
                 Image.network(product.getImage(0)),
                 Positioned(
-                  right: -18,
-                  top: -10,
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    alignment: Alignment.topRight,
-                    child: Stack(
-                      children: [
-                        SizedBox(
-                          height: 90 * 0.5833333333333334,
-                          width: 90,
-                          child: CustomPaint(
-                            painter: RPSCustomPainter(),
-                            size:
-                                Size(90, (90 * 0.5833333333333334).toDouble()),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 38, top: 10),
-                          child: Text(
-                            product.defaultDiscountRate.toString() +
-                                '%' +
-                                '\nsale ',
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 15,
+                  left: 0,
+                  top: 0,
+                  child: Stack(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/sale.svg',
+                        height: 48,
+                      ),
+                      Container(
+                          padding: const EdgeInsets.only(left: 12, top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text:
+                                  product.defaultDiscountRate.toString() + '%',
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 14,
+                              ),
+                              children: const <TextSpan>[
+                                TextSpan(
+                                  text: '\nSALE ',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
+                          )),
+                    ],
                   ),
                 ),
               ],
@@ -86,27 +86,39 @@ class ProductCard extends StatelessWidget {
               children: [
                 Text.rich(
                   TextSpan(
-                      text: product.getName(),
-                      style: const TextStyle(color: Colors.black)),
+                    text: product.getName(),
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Helvetica',
+                        height: 18 / 14,
+                        fontSize: 14),
+                  ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 16,
                 ),
-                Text(
-                  currencyformat.format(product.getMarketPrice()) + 'đ',
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    decoration: TextDecoration.lineThrough,
-                  ),
-                ),
-                Text(
-                  currencyformat.format(product.getPrice()) + 'đ',
-                  style: const TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 18,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      currencyformat.format(product.getPrice()) + 'đ',
+                      style: const TextStyle(
+                        color: kPrimaryColor,
+                        fontFamily: 'Helvetica',
+                        fontSize: 18,
+                      ),
+                    ),
+                    Text(
+                      currencyformat.format(product.getMarketPrice()) + 'đ',
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                        fontFamily: 'Helvetica',
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -115,8 +127,16 @@ class ProductCard extends StatelessWidget {
                     children: [
                       StarRating(
                           rating: product.totalStarRating / product.totalRating,
-                          size: 15),
-                      Spacer(),
+                          size: 13),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Text(
+                        "Sold " + product.soldOut.toString(),
+                        style: const TextStyle(
+                            fontSize: 12, fontFamily: 'Helvetica'),
+                      ),
+                      const Spacer(),
                       InkWell(
                         borderRadius: BorderRadius.circular(50),
                         onTap: () async {
@@ -169,31 +189,5 @@ class ProductCard extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class RPSCustomPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint0 = Paint()
-      ..color = const Color(0xffFFD839)
-      ..style = PaintingStyle.fill
-      ..strokeWidth = 5;
-
-    Path path0 = Path();
-    path0.moveTo(size.width * 0.3750000, size.height * 0.2128571);
-    path0.lineTo(size.width * 0.3755000, size.height * 1);
-    path0.lineTo(size.width * 0.5825000, size.height * 0.8428571);
-    path0.lineTo(size.width * 0.7920000, size.height * 1);
-    path0.lineTo(size.width * 0.7910000, size.height * 0.2157143);
-    path0.lineTo(size.width * 0.3750000, size.height * 0.2128571);
-    path0.close();
-
-    canvas.drawPath(path0, paint0);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

@@ -24,7 +24,7 @@ class TopBackSkipView extends StatelessWidget {
         dotSize: 5.0,
         dotSpacing: 16.0,
         dotPosition: DotPosition.bottomCenter,
-        images: [
+        images: const [
           AssetImage("assets/images/product_detail.jpg"),
           AssetImage("assets/images/product_detail_1.jpg"),
         ],
@@ -40,36 +40,28 @@ class TopBackSkipView extends StatelessWidget {
     final _signUpMoveAnimation =
         Tween<double>(begin: 0, end: 1.0).animate(CurvedAnimation(
       parent: animationController,
-      curve: Interval(
+      curve: const Interval(
         0.6,
         0.8,
         curve: Curves.fastOutSlowIn,
       ),
     ));
     final _animation =
-        Tween<Offset>(begin: Offset(0, -1), end: Offset(0.0, 0.0))
+        Tween<Offset>(begin: const Offset(0, -1), end: const Offset(0.0, 0.0))
             .animate(CurvedAnimation(
       parent: animationController,
-      curve: Interval(
+      curve: const Interval(
         0.0,
         0.2,
         curve: Curves.fastOutSlowIn,
       ),
     ));
-    // final _backAnimation =
-    //     Tween<Offset>(begin: Offset(0, 0), end: Offset(-2, 0))
-    //         .animate(CurvedAnimation(
-    //   parent: animationController,
-    //   curve: Interval(
-    //     0.6,
-    //     0.8,
-    //     curve: Curves.fastOutSlowIn,
-    //   ),
-    // ));
-    final _skipAnimation = Tween<Offset>(begin: Offset(0, 0), end: Offset(2, 0))
-        .animate(CurvedAnimation(
+
+    final _skipAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(2, 0))
+            .animate(CurvedAnimation(
       parent: animationController,
-      curve: Interval(
+      curve: const Interval(
         0.6,
         0.8,
         curve: Curves.fastOutSlowIn,
@@ -119,16 +111,22 @@ class TopBackSkipView extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: onBackClick,
-                                icon: Icon(Icons.arrow_back_ios_new_rounded),
+                                icon: const Icon(
+                                  Icons.arrow_back_ios_new_rounded,
+                                  color: kGreenColor,
+                                ),
                                 //   ),
                               ),
                               SlideTransition(
                                 position: _skipAnimation,
                                 child: IconButton(
                                   onPressed: onSkipClick,
-                                  icon: Text(
+                                  icon: const Text(
                                     'Skip',
-                                    style: TextStyle(color: kTextColor),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Helvetica'),
                                   ),
                                 ),
                               ),
@@ -140,36 +138,5 @@ class TopBackSkipView extends StatelessWidget {
                   )),
       ),
     );
-
-    // return SlideTransition(
-    //   position: _animation,
-    //   child: Padding(
-    //     padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-    //     child: Container(
-    //       height: 58,
-    //       child: Padding(
-    //         padding: const EdgeInsets.only(left: 8, right: 16),
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: [
-    //
-    //             IconButton(
-    //               onPressed: onBackClick,
-    //               icon: Icon(Icons.arrow_back_ios_new_rounded),
-    //               //   ),
-    //             ),
-    //             SlideTransition(
-    //               position: _skipAnimation,
-    //               child: IconButton(
-    //                 onPressed: onSkipClick,
-    //                 icon: Text('Skip',style: TextStyle(color: kTextColor),),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

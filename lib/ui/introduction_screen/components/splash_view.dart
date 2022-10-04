@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bebeautyapp/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,89 +31,67 @@ class _SplashViewState extends State<SplashView> {
         position: _introductionanimation,
         child: Container(
           height: MediaQuery.of(context).size.height,
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-            maxWidth: MediaQuery.of(context).size.width,
-          ),
+          width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/images/intro_background.png"),
               fit: BoxFit.cover,
             ),
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 47,
-                ),
-                Text(
-                  "BE BEAUTY",
-                  style: TextStyle(
-                      fontSize: 36.0,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: "Laila",
-                      color: Colors.white),
-                ),
-                const SizedBox(
-                  height: 210,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                  child: Text(
-                    "Be You.\nBe Authentic.\nBe Beauty.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 48.0,
-                        fontWeight: FontWeight.w800,
-                        fontFamily: "Laila",
-                        color: kFourthColor),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 80,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 64, right: 64),
-                  child: Text(
-                    "Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: kFourthColor),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 140.0),
+                    child: Text(
+                      "Be You.\nBe Authentic.\nBe Beauty.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 48.0,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: "Berfilem",
+                          letterSpacing: 0.25,
+                          color: kFourthColor),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 48,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).padding.bottom),
-                  child: InkWell(
+                  const SizedBox(
+                    height: 150,
+                  ),
+                  InkWell(
                     onTap: () {
                       widget.animationController.animateTo(0.2);
                     },
                     child: Container(
-                        height: 57,
-                        width: 263,
-                        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                          color: kPrimaryColor,
-                        ),
+                        height: 48,
+                        width: MediaQuery.of(context).size.width - 32,
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        color: Colors.white,
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               "Let's begin",
                               style: TextStyle(
-                                fontSize: 24,
+                                fontSize: 20,
+                                fontFamily: 'Helvetica',
                                 color: kTextColor,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             SvgPicture.asset(
                               "assets/icons/arrow_next.svg",
+                              height: 16,
+                              width: 16,
                             )
                           ],
                         )),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ));

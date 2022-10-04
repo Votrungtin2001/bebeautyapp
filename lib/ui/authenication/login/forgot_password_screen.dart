@@ -1,8 +1,4 @@
 import 'package:bebeautyapp/repo/function/forgotPassword.dart';
-import 'package:bebeautyapp/ui/authenication/login/widgets/rounded_input_field.dart';
-
-import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:bebeautyapp/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,8 +7,10 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 class ForgotPasswordScreen extends StatefulWidget {
   static String id = "ForgotPasswordScreen";
 
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
+
   @override
-  _ForgotPasswordScreen createState() => new _ForgotPasswordScreen();
+  _ForgotPasswordScreen createState() => _ForgotPasswordScreen();
 }
 
 class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
@@ -22,113 +20,137 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
   final emailController = TextEditingController();
 
   String email = "";
-  final forgotPasswordFunctions = new ForgotPasswordFunction();
+  final forgotPasswordFunctions = ForgotPasswordFunction();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kFourthColor.withOpacity(0.15),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              SvgPicture.asset(
-                "assets/images/forgot_password.svg",
-                height: 352,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Forgot password?",
-                style: kBigTitleTextStyle.copyWith(
-                  fontSize: 25,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/image_bg_forgot_password.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50),
-                child: Text(
-                  "Don’t worry! It happens. Please enter the email address associated with your account.",
-                  style: kPop400TextStyle,
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                      ),
+                      //   ),
+                    ),
+                    Image.asset(
+                      'assets/images/app_text_title_white.png',
+                      width: 300,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 100,
+                ),
+                const Text(
+                  "Forgot password?",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontFamily: 'Helvetica',
+                    letterSpacing: 2,
+                  ),
                   textAlign: TextAlign.center,
                 ),
-              ),
-              const SizedBox(
-                height: 26,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50),
-                child: TextFormField(
-                  focusNode: emailFocusNode,
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  cursorColor: kTextColor,
-                  validator: (text) {
-                    if (text == null || text.isEmpty) {
-                      return 'Email is empty';
-                    } else if (!emailValidatorRegExp.hasMatch(text))
-                      return 'Invalid email!';
-                    return null;
-                  },
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: Icon(
-                      Icons.mail_outline_outlined,
-                      color: Colors.black,
+                const Padding(
+                  padding: EdgeInsets.only(left: 50, right: 50, top: 12),
+                  child: Text(
+                    "don’t worry! it happens. please enter the email address associated with your account.",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w100,
+                      fontFamily: 'Helvetica',
+                      letterSpacing: 2,
                     ),
-                    hintText: "Email",
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: kPrimaryColor, width: 1),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.black, width: 1),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.red, width: 1),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(
+                  height: 100,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextFormField(
+                    focusNode: emailFocusNode,
+                    onChanged: (value) {
+                      email = value;
+                    },
+                    cursorColor: Colors.white,
+                    style: const TextStyle(color: Colors.white),
+                    validator: (text) {
+                      if (text == null || text.isEmpty) {
+                        return 'Email is empty';
+                      } else if (!emailValidatorRegExp.hasMatch(text)) {
+                        return 'Invalid email!';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      ),
+                      labelText: 'Email',
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              CustomRoundedLoadingButton(
-                text: 'Send',
-                onPress: () async {
-                  if (_formKey.currentState!.validate()) {
-                    await forgotPasswordFunctions.sendEmailResetPassword(email);
-                    sendEmailButtonController.stop();
-                  } else
-                    sendEmailButtonController.stop();
-                  //login click
-                  // Provider.of<LoginViewModel>(context, listen: false)
-                  //     .loginWithEmailAndPassword((message) {
-                  //   if (message != null) {
-                  //     CoolAlert.show(
-                  //         context: context,
-                  //         type: CoolAlertType.error,
-                  //         text: 'Sign in failed!\nError: $message',
-                  //         onConfirmBtnTap: () {
-                  //           loginButtonController.reset();
-                  //           Navigator.of(context).pop();
-                  //         });
-                  //   } else {
-                  //     loginButtonController.success();
-                  //   }
-                  // });
-                },
-                controller: sendEmailButtonController,
-                horizontalPadding: 45,
-              ),
-            ],
+                const SizedBox(
+                  height: 220,
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: TextButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await forgotPasswordFunctions
+                            .sendEmailResetPassword(email);
+                      }
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 32.0),
+                      child: Text(
+                        'Send',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'Helvetica',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

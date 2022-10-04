@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/phudeptraiprovip/Flutter/bebeautyapp/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-land/values-land.xml",
+            "map": [
+                {
+                    "source": "/Users/phudeptraiprovip/.gradle/caches/transforms-3/7e477556e72ced6dd60e4d7d8882f670/transformed/appcompat-1.1.0/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,125,196",
+                        "endColumns": "69,70,67",
+                        "endOffsets": "120,191,259"
+                    }
+                },
+                {
+                    "source": "/Users/phudeptraiprovip/.gradle/caches/transforms-3/f03f38f3183919901e60888995561e8e/transformed/material-1.0.0/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "10",
+                        "endOffsets": "222"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "264",
+                        "endLines": "8",
+                        "endColumns": "10",
+                        "endOffsets": "431"
+                    }
+                }
+            ]
+        }
+    ]
+}

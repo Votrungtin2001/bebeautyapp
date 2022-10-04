@@ -26,7 +26,6 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(user.displayName + " here");
     return Container(
       padding: EdgeInsets.only(
         top: 2.0,

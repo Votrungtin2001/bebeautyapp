@@ -1,15 +1,10 @@
 import 'package:bebeautyapp/constants.dart';
-import 'package:bebeautyapp/ui/authenication/register/widgets/custom_rounded_loading_button.dart';
 import 'package:bebeautyapp/ui/home/payment/widget/address_item.dart';
 
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
-import 'package:bebeautyapp/ui/profile/widgets/address_card.dart';
-import 'package:bebeautyapp/ui/profile/widgets/change_address.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../../repo/providers/savedAddress_provider.dart';
 import '../../../../repo/providers/user_provider.dart';

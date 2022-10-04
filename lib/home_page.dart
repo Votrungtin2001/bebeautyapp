@@ -1,5 +1,7 @@
+import 'package:bebeautyapp/repo/providers/category_provider.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/chat_user/chat.dart';
+import 'package:bebeautyapp/ui/home/homes/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:bebeautyapp/ui/home/homes/home.dart';
 import 'package:bebeautyapp/ui/profile/profile_screen.dart';
@@ -23,38 +25,36 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final user = Provider.of<MUser_IsNotLogout?>(context);
     final userProvider = Provider.of<UserProvider>(context);
+
     if (user!.uid != null) userID = user.uid.toString();
     if (userID == "") userProvider.getUser(userID);
     userID = userProvider.user.getID();
 
     List<Widget> _body = [
-      HomeScreens(),
-      Chat(
-        chatRoomId: userID,
-        user_id: userID,
-        user_name: "Be Beauty",
-      ),
+      const HomeScreens(),
+      const Chat(),
       ProfileScreens(),
     ];
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      body: Center(
-        child: _body.elementAt(_page),
-      ),
+      body: _body.elementAt(_page),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: kBgColor,
+        unselectedItemColor: kUnselectedColor,
+        selectedItemColor: Colors.black87,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
+            icon: Icon(Icons.chat_bubble_outline),
             label: 'Chat',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle_outlined),
             label: 'Profile',
           ),
         ],
@@ -65,7 +65,6 @@ class _HomePageState extends State<HomePage> {
             },
           );
         },
-        selectedItemColor: kPrimaryColor,
         currentIndex: _page,
       ),
     );

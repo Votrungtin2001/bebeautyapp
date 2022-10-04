@@ -72,6 +72,7 @@ class _RecommendProductState extends State<RecommendProduct>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SectionTitle(
+              color: kRedColor,
               title: "Recommend product",
               press: () {
                 Navigator.push(
@@ -99,26 +100,29 @@ class _RecommendProductState extends State<RecommendProduct>
                           productProvider.similarProductsBasedUserByCBR[index],
                       //ProductCard(product: productProvider.similarProductsByCFR[index],
                       press: () async {
-                        productProvider
-                                .isNeededUpdated_SimilarProductsBasedUserByCBR =
-                            true;
-                        await preferenceServices.updatePreference(
-                            userProvider.user,
-                            productProvider
-                                .similarProductsBasedUserByCBR[index]);
+                        // productProvider
+                        //         .isNeededUpdated_SimilarProductsBasedUserByCBR =
+                        //     true;
+                        // await preferenceServices.updatePreference(
+                        //     userProvider.user,
+                        //     productProvider
+                        //         .similarProductsBasedUserByCBR[index]);
 
                         //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                         //await preferenceServices.updatePreference(userProvider.user, productProvider.similarProductsByCFR[index]);
 
-                        List<MProduct> similarProductsFromSelectedProducts =
-                            await productServices
-                                .getSimilarityProductsBySelectedProduct(
-                                    productProvider.products,
-                                    productProvider
-                                        .similarProductsBasedUserByCBR[index]);
+                        // List<MProduct> similarProductsFromSelectedProducts =
+                        //     await productServices
+                        //         .getSimilarityProductsBySelectedProduct(
+                        //             productProvider.products,
+                        //             productProvider
+                        //                 .similarProductsBasedUserByCBR[index]);
 
-                        List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, productProvider.similarProductsBasedUserByCBR[index].id);
-
+                        List<MReview> reviewsOfProduct =
+                            reviewServices.getReviewOfProduct(
+                                reviewProvider.reviews,
+                                productProvider
+                                    .similarProductsBasedUserByCBR[index].id);
 
                         Navigator.push(
                             context,
@@ -129,8 +133,8 @@ class _RecommendProductState extends State<RecommendProduct>
                               builder: (context) => DetailsScreen(
                                 product: productProvider
                                     .similarProductsBasedUserByCBR[index],
-                                similarProductsFromSelectedProducts:
-                                    similarProductsFromSelectedProducts,
+                                // similarProductsFromSelectedProducts:
+                                //     similarProductsFromSelectedProducts,
                                 reviewsOfProduct: reviewsOfProduct,
                                 //builder: (context) => DetailsScreen(product: productProvider.similarProductsByCFR[index],
                               ),

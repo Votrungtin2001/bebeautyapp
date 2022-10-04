@@ -1,6 +1,0 @@
-[submodule "lib/recommendation-system"]
-	path = lib/recommendation-system
-	url = https://github.com/Votrungtin2001/recommendation-system.git
-[submodule "lib/admin-bebeauty"]
-	path = lib/admin-bebeauty
-	url = https://github.com/phubuideptrai/admin-bebeauty.git

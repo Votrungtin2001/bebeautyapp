@@ -20,7 +20,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp( MultiProvider(
+  runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<SignIn_Function>(
           create: (context) => SignIn_Function()),

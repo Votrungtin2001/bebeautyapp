@@ -17,7 +17,6 @@ class DataSearch extends SearchDelegate<String> {
 
   final reviewServices = new ReviewServices();
 
-
   DataSearch(List<MProduct> list1, List<MProduct> list2, List<MBrand> list3) {
     this.products = list1;
     this.suggestProducts = list2;
@@ -79,21 +78,22 @@ class DataSearch extends SearchDelegate<String> {
             itemCount: results.length,
             itemBuilder: (context, index) => ListTile(
                 onTap: () async {
-                  List<MProduct> similarProductsFromSelectedProducts =
-                      await productServices
-                          .getSimilarityProductsBySelectedProduct(
-                              productProvider.products, results[index]);
+                  // List<MProduct> similarProductsFromSelectedProducts =
+                  //     await productServices
+                  //         .getSimilarityProductsBySelectedProduct(
+                  //             productProvider.products, results[index]);
 
-                  List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, results[index].id);
-
+                  List<MReview> reviewsOfProduct =
+                      reviewServices.getReviewOfProduct(
+                          reviewProvider.reviews, results[index].id);
 
                   Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
                       builder: (BuildContext context) => DetailsScreen(
                         product: results[index],
-                        similarProductsFromSelectedProducts:
-                            similarProductsFromSelectedProducts,
+                        // similarProductsFromSelectedProducts:
+                        //     similarProductsFromSelectedProducts,
                         reviewsOfProduct: reviewsOfProduct,
                       ),
                     ),
@@ -156,15 +156,17 @@ class DataSearch extends SearchDelegate<String> {
                   await productServices.getSimilarityProductsBySelectedProduct(
                       productProvider.products, results[index]);
 
-              List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, results[index].id);
+              List<MReview> reviewsOfProduct =
+                  reviewServices.getReviewOfProduct(
+                      reviewProvider.reviews, results[index].id);
 
               Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
                   builder: (BuildContext context) => DetailsScreen(
                     product: results[index],
-                    similarProductsFromSelectedProducts:
-                        similarProductsFromSelectedProducts,
+                    // similarProductsFromSelectedProducts:
+                    //     similarProductsFromSelectedProducts,
                     reviewsOfProduct: reviewsOfProduct,
                   ),
                 ),

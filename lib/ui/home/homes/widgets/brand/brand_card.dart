@@ -24,6 +24,7 @@ class BrandCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SectionTitle(
+            color: Colors.black45,
             title: "Popular Brands",
             press: () {
               Navigator.push(

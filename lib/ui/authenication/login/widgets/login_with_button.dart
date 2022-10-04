@@ -20,7 +20,7 @@ class LoginWithButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.only(left: 16),
       child: ElevatedButton.icon(
         icon: Icon(
           icon,
@@ -29,19 +29,19 @@ class LoginWithButton extends StatelessWidget {
         onPressed: onPress,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
               side: isOutLine
-                  ? BorderSide(color: Colors.black54)
+                  ? const BorderSide(color: Colors.white)
                   : BorderSide.none),
-          minimumSize: Size(300, 46),
+          minimumSize: const Size(170, 46),
           primary: color,
         ),
         label: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             text,
-            style: TextStyle(
-              color: textColor,
+            style: const TextStyle(
+              fontFamily: 'Helvetica',
+              color: Colors.white,
               fontSize: 16,
             ),
           ),

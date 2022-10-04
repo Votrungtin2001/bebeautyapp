@@ -79,55 +79,59 @@ class CareView extends StatelessWidget {
         position: _secondHalfAnimation,
         child: Container(
           width: MediaQuery.of(context).size.width,
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-            maxWidth: MediaQuery.of(context).size.width,
-          ),
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/introduction_bg.png"),
-              fit: BoxFit.cover,
-            ),
+                image: ExactAssetImage('assets/images/introduction_2.png'),
+                fit: BoxFit.cover),
           ),
-          padding: const EdgeInsets.only(bottom: 100),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SlideTransition(
-                position: _imageFirstHalfAnimation,
-                child: SlideTransition(
-                  position: _imageSecondHalfAnimation,
-                  child: Container(
-                    constraints: BoxConstraints(maxWidth: 350, maxHeight: 250),
-                    child: SvgPicture.asset(
-                      'assets/images/introduction_2.svg',
-                      fit: BoxFit.contain,
+                  position: _imageFirstHalfAnimation,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Image.asset(
+                        'assets/images/app_text_title_green.png',
+                        width: 300,
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
+                  )),
+              const Spacer(),
+              const Spacer(),
               SlideTransition(
-                position: _relaxFirstHalfAnimation,
-                child: SlideTransition(
-                  position: _relaxSecondHalfAnimation,
-                  child: Text(
-                    "Everything you need",
-                    style:
-                        TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+                position: _imageSecondHalfAnimation,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 64),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "New arrival",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontFamily: 'Berfilem',
+                            fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.start,
+                      ),
+                      Text(
+                        "We are release our new product skin care for your perfect skin",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Helvetica',
+                            letterSpacing: 0.25,
+                            fontWeight: FontWeight.w100),
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 64, right: 64, bottom: 16, top: 16),
-                child: Text(
-                  "We have all the products you need.",
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              const Spacer(),
             ],
           ),
         ),

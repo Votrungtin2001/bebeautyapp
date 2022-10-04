@@ -127,8 +127,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
       print(e);
     }
     setState(() {
-      images = resultList;
-      fileImageArray = imageServices.convertAssetListToFileList(resultList);
+      // images = resultList;
+      // fileImageArray = imageServices.convertAssetListToFileList(resultList);
     });
   }
 

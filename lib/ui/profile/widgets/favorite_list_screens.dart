@@ -107,14 +107,16 @@ class FavoriteListScreens extends StatelessWidget {
                           rating: true,
                           product: favoriteProducts[index],
                           press: () async {
-                            List<MProduct> similarProductsFromSelectedProducts =
-                                await productServices
-                                    .getSimilarityProductsBySelectedProduct(
-                                        productProvider.products,
-                                        favoriteProducts[index]);
+                            // List<MProduct> similarProductsFromSelectedProducts =
+                            //     await productServices
+                            //         .getSimilarityProductsBySelectedProduct(
+                            //             productProvider.products,
+                            //             favoriteProducts[index]);
 
-                            List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, favoriteProducts[index].id);
-
+                            List<MReview> reviewsOfProduct =
+                                reviewServices.getReviewOfProduct(
+                                    reviewProvider.reviews,
+                                    favoriteProducts[index].id);
 
                             Navigator.push(
                                 context,
@@ -126,8 +128,8 @@ class FavoriteListScreens extends StatelessWidget {
                                     product: productServices
                                         .getTop10BestSellerProduct(
                                             productProvider.products)[index],
-                                    similarProductsFromSelectedProducts:
-                                        similarProductsFromSelectedProducts,
+                                    // similarProductsFromSelectedProducts:
+                                    //     similarProductsFromSelectedProducts,
                                     reviewsOfProduct: reviewsOfProduct,
                                   ),
                                 ));

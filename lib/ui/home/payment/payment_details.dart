@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -631,10 +630,6 @@ class _PaymentDetailsState extends State<PaymentDetails> {
       //   destinationLatitude,
       //   destinationLongitude,
       // );
-      double khoangcanh = Geolocator.distanceBetween(startLatitude,
-              startLongitude, destinationLatitude, destinationLongitude) /
-          1000;
-      print('DISTANCE 1: ' + khoangcanh.toStringAsFixed(2) + ' km');
 
       double totalDistance = 0.0;
       // Calculating the total distance by adding the distance

@@ -22,7 +22,6 @@ class BestSellScreen extends StatelessWidget {
 
   final productServices = new ProductServices();
 
-
   final reviewServices = new ReviewServices();
 
   late List<MProduct> products;
@@ -109,23 +108,24 @@ class BestSellScreen extends StatelessWidget {
                           product: products[index],
                           rating: true,
                           press: () async {
-                            productProvider
-                                    .isNeededUpdated_SimilarProductsBasedUserByCBR =
-                                true;
-                            await preferenceServices.updatePreference(
-                                userProvider.user, products[index]);
+                            // productProvider
+                            //         .isNeededUpdated_SimilarProductsBasedUserByCBR =
+                            //     true;
+                            // await preferenceServices.updatePreference(
+                            //     userProvider.user, products[index]);
 
                             //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                             //await preferenceServices.updatePreference(userProvider.user, products[index]);
 
-                            List<MProduct> similarProductsFromSelectedProducts =
-                                await productServices
-                                    .getSimilarityProductsBySelectedProduct(
-                                        productProvider.products,
-                                        products[index]);
+                            // List<MProduct> similarProductsFromSelectedProducts =
+                            //     await productServices
+                            //         .getSimilarityProductsBySelectedProduct(
+                            //             productProvider.products,
+                            //             products[index]);
 
-                            List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, products[index].id);
-
+                            List<MReview> reviewsOfProduct =
+                                reviewServices.getReviewOfProduct(
+                                    reviewProvider.reviews, products[index].id);
 
                             Navigator.push(
                                 context,
@@ -135,8 +135,8 @@ class BestSellScreen extends StatelessWidget {
                                   // ),
                                   builder: (context) => DetailsScreen(
                                     product: products[index],
-                                    similarProductsFromSelectedProducts:
-                                        similarProductsFromSelectedProducts,
+                                    // similarProductsFromSelectedProducts:
+                                    //     similarProductsFromSelectedProducts,
                                     reviewsOfProduct: reviewsOfProduct,
                                   ),
                                 ));

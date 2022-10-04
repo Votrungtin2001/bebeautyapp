@@ -35,8 +35,8 @@ class _IntroductionScreenState extends State<IntroductionScreen>
 
   @override
   Widget build(BuildContext context) {
-    print(_animationController?.value);
     return Scaffold(
+      backgroundColor: const Color(0xffF7F3EF),
       body: ClipRect(
         child: Stack(
           children: [
@@ -55,14 +55,14 @@ class _IntroductionScreenState extends State<IntroductionScreen>
             WelcomeView(
               animationController: _animationController!,
             ),
+            CenterNextButton(
+              animationController: _animationController!,
+              onNextClick: _onNextClick,
+            ),
             TopBackSkipView(
               onBackClick: _onBackClick,
               onSkipClick: _onSkipClick,
               animationController: _animationController!,
-            ),
-            CenterNextButton(
-              animationController: _animationController!,
-              onNextClick: _onNextClick,
             ),
           ],
         ),

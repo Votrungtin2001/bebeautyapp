@@ -114,8 +114,8 @@ class _DetailsProductManageScreenState
       print(e);
     }
     setState(() {
-      images = resultList;
-      fileImageArray = imageServices.convertAssetListToFileList(resultList);
+      // images = resultList;
+      // fileImageArray = imageServices.convertAssetListToFileList(resultList);
     });
   }
 
@@ -841,7 +841,6 @@ class _DetailsProductManageScreenState
                       onPress: () async {
                         editButtonController.start();
                         if (formKey.currentState!.validate()) {
-                          print('here');
                           MProduct updated_product = new MProduct(
                               id: widget.product.id,
                               name: name,

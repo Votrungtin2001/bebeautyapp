@@ -116,143 +116,158 @@ class _CartScreen extends State<CartScreen> {
                     ),
                   ),
           ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 15,
-          horizontal: 30,
-        ),
-        // height: 174,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, -15),
-              blurRadius: 20,
-              color: Color(0xFFDADADA).withOpacity(0.15),
-            )
-          ],
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFF5F6F9),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: SvgPicture.asset("assets/icons/receipt.svg"),
-                  ),
-                  Spacer(),
-                  Container(
-                    width: 200,
-                    child: TextField(
-                      controller: _voucherController,
-                      style: TextStyle(color: kTextLightColor, fontSize: 14),
-                      decoration: InputDecoration(
-                        labelText: 'Add voucher code',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          voucherCode = value;
-                        });
-                      },
-                    ),
-                  ),
-                ],
+          Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 30,
+            ),
+            // height: 174,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0, -15),
+                  blurRadius: 20,
+                  color: Color(0xFFDADADA).withOpacity(0.15),
+                )
+              ],
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text.rich(
-                    TextSpan(
-                      text: "Total:\n",
-                      children: [
-                        TextSpan(
-                          text: "\n" +
-                              cartServices
-                                  .totalValueOfSelectedProductsInCart(
-                                      selectedList)
-                                  .toStringAsFixed(0)
-                                  .toVND(),
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF5F6F9),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                      width: 150,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        child: SvgPicture.asset("assets/icons/receipt.svg"),
                       ),
-                      child: MaterialButton(
-                        color: kPrimaryColor,
-                        onPressed: () async {
-                          if (selectedList.length > 0) {
-                            MVoucher defaultVoucher = MVoucher();
-                            if (voucherCode != "") {
-                              double totalValue = cartServices
-                                  .totalValueOfSelectedProductsInCart(
-                                      selectedList);
-                              MVoucher voucher =
-                                  await voucherServices.isValidVoucher(
-                                      voucherCode,
-                                      totalValue,
-                                      userProvider.user.point);
-                              if (voucher.getID() != "") {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => PaymentDetails(
-                                      productsInCart: selectedList,
-                                      voucher: voucher,
-                                    ),
-                                  ),
-                                );
-                              }
-                            } else
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => PaymentDetails(
-                                    productsInCart: selectedList,
-                                    voucher: defaultVoucher,
-                                  ),
-                                ),
-                              );
-                          }
-                        },
-                        child: Text(
-                          'Check Out',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                      Spacer(),
+                      Container(
+                        width: 200,
+                        child: TextField(
+                          controller: _voucherController,
+                          style:
+                              TextStyle(color: kTextLightColor, fontSize: 14),
+                          decoration: InputDecoration(
+                            hintText: 'Add voucher here',
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: kPrimaryColor, width: 1),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.red, width: 1),
+                            ),
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              voucherCode = value;
+                            });
+                          },
                         ),
-                      )),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: "Total:\n",
+                          children: [
+                            TextSpan(
+                              text: "\n" +
+                                  cartServices
+                                      .totalValueOfSelectedProductsInCart(
+                                          selectedList)
+                                      .toStringAsFixed(0)
+                                      .toVND(),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                          width: 150,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: MaterialButton(
+                            color: kPrimaryColor,
+                            onPressed: () async {
+                              if (selectedList.length > 0) {
+                                MVoucher defaultVoucher = MVoucher();
+                                if (voucherCode != "") {
+                                  double totalValue = cartServices
+                                      .totalValueOfSelectedProductsInCart(
+                                          selectedList);
+                                  MVoucher voucher =
+                                      await voucherServices.isValidVoucher(
+                                          voucherCode,
+                                          totalValue,
+                                          userProvider.user.point);
+                                  if (voucher.getID() != "") {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => PaymentDetails(
+                                          productsInCart: selectedList,
+                                          voucher: voucher,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                } else
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => PaymentDetails(
+                                        productsInCart: selectedList,
+                                        voucher: defaultVoucher,
+                                      ),
+                                    ),
+                                  );
+                              }
+                            },
+                            child: Text(
+                              'Check Out',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

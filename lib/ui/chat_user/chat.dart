@@ -1,332 +1,344 @@
+import 'dart:convert';
+
 import 'package:bebeautyapp/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import '../../repo/services/chat_services.dart';
 
 class Chat extends StatefulWidget {
-  final String chatRoomId;
-  final String user_id;
-  final String user_name;
-
-  Chat(
-      {required this.chatRoomId,
-      required this.user_id,
-      required this.user_name});
+  const Chat({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  _ChatState createState() =>
-      _ChatState(this.chatRoomId, this.user_id, this.user_name);
+  _ChatState createState() => _ChatState();
 }
 
 class _ChatState extends State<Chat> {
-  Stream<QuerySnapshot>? chats;
-  TextEditingController messageEditingController = new TextEditingController();
-  String chatRoomId = "";
-  String user_id = "";
-  String user_name = "";
+  Future<Message>? futureMessage;
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
+  List<String> _data = [];
+  TextEditingController _controller = TextEditingController();
 
-  final chatServices = new ChatServices();
   String latestMessageUserID = "";
-
-  _ChatState(String chatRoomID, String userID, String userName) {
-    this.chatRoomId = chatRoomID;
-    this.user_id = userID;
-    this.user_name = userName;
-  }
-
-  int Calculate(int a, int b) {
-    DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(a);
-    final date1 = DateTime.now();
-    final diff = date1.difference(notificationDate);
-
-    DateTime notificationDate1 = DateTime.fromMillisecondsSinceEpoch(b);
-    final date2 = DateTime.now();
-    final diff1 = date2.difference(notificationDate1);
-
-    return diff.inMinutes - diff1.inMinutes;
-  }
-
-  Widget chatMessages() {
-    String id = latestMessageUserID;
-
-    String calculateTimeAgoSinceDate1(int time) {
-      DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(time);
-      final date2 = DateTime.now();
-      final diff = date2.difference(notificationDate);
-
-      if (diff.inDays > 7)
-        return DateFormat("dd/MM/yyyy").format(notificationDate);
-      else if (diff.inDays >= 2 && diff.inDays <= 7)
-        return DateFormat('EEEE').format(notificationDate);
-      else if (diff.inDays > 1 && diff.inDays < 2)
-        return 'Yesterday';
-      else
-        return DateFormat("kk:mm a").format(notificationDate);
-    }
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: chats,
-      builder: (context, snapshot) {
-        return snapshot.hasData
-            ? ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, index) {
-                  bool isDisplayTime = false;
-                  String timeBreakSection = "";
-                  if (index == snapshot.data!.docs.length - 1) {
-                    isDisplayTime = true;
-                    timeBreakSection = "";
-                  } else {
-                    if (id == snapshot.data!.docs[index]["sendBy"] &&
-                        id != snapshot.data!.docs[index + 1]["sendBy"]) {
-                      isDisplayTime = true;
-                      id = snapshot.data!.docs[index + 1]["sendBy"];
-                    }
-                    if (Calculate(snapshot.data!.docs[index]["time"],
-                            snapshot.data!.docs[index + 1]["time"]) >
-                        60) {
-                      timeBreakSection = calculateTimeAgoSinceDate1(
-                          snapshot.data!.docs[index + 1]["time"]);
-                    }
-                  }
-                  return MessageTile(
-                    message: snapshot.data!.docs[index]["message"],
-                    sendByMe: user_id == snapshot.data!.docs[index]["sendBy"],
-                    time: snapshot.data!.docs[index]["time"],
-                    isDisplayTime: isDisplayTime,
-                    timeBreakSection: timeBreakSection,
-                  );
-                })
-            : Container();
-      },
-    );
-  }
-
-  addMessage() {
-    if (messageEditingController.text.isNotEmpty) {
-      int time = DateTime.now().millisecondsSinceEpoch;
-      Map<String, dynamic> chatMessageMap = {
-        "sendBy": user_id,
-        "message": messageEditingController.text,
-        'time': time,
-      };
-
-      chatServices.addMessage(widget.chatRoomId, chatMessageMap,
-          messageEditingController.text, time, false, user_id, false);
-
-      setState(() {
-        messageEditingController.text = "";
-      });
-    } else {
-      Fluttertoast.showToast(
-          msg: 'Nothing to send!',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.grey);
-    }
-  }
 
   @override
   void initState() {
-    chatServices.getFirstMesageUserID(widget.chatRoomId);
-    //  FirebaseFirestore.instance.collection("ChatRoom")
-    //      .doc(chatRoomId)
-    //      .collection("Chat")
-    //      .orderBy('time')
-    //      .get().then(((result) {
-    //    String id = result.docs[0].get("sendBy");
-    //    setState(() {
-    //      latestMessageUserID = id;
-    //    });
-    //  }));
-
-    chatServices.getChats(widget.chatRoomId).then((val) {
-      setState(() {
-        chats = val;
-      });
-    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: kAppNameTextPinksm,
-          centerTitle: true,
-          elevation: 0,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 80.h,
+        elevation: 1,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 20.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                    width: 40.h,
+                    height: 40.h,
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: kPrimaryColor,
+                      size: 25.w,
+                    )),
+              ),
+            ],
+          ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height - 135,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height - 100,
-                  child: chatMessages(),
+        title: Row(
+          children: [
+            Container(
+              height: 40.h,
+              width: 40.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.h),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.h),
+                child: Image.asset(
+                  "assets/images/doctor.png",
+                  fit: BoxFit.fill,
                 ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 16, bottom: 10),
-                    height: 70,
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            controller: messageEditingController,
-                            decoration: InputDecoration(
-                                hintText: "Type message...",
-                                hintStyle:
-                                    TextStyle(color: Colors.grey.shade500),
-                                border: InputBorder.none),
-                          ),
-                        ),
-                      ],
-                    ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10.w),
+              child: Text(
+                "Dr.Cowin",
+                style: kBigTitleTextStyle.copyWith(
+                    fontSize: ScreenUtil().setSp(22.sp)),
+              ),
+            ),
+            GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.only(right: 10.w, left: 140),
+                  child: Icon(
+                    Icons.phone,
+                    color: kPrimaryColor,
+                    size: 30,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 30, bottom: 40),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        addMessage();
-                      },
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: kPrimaryColor,
-                      elevation: 0,
+                onTap: () async {
+                  const _url = "tel:19003228";
+                  if (await canLaunch(_url)) {
+                    await launch(_url);
+                  } else {
+                    throw 'Could not launch $_url';
+                  }
+                })
+          ],
+        ),
+      ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 60),
+            child: AnimatedList(
+                key: _listKey,
+                initialItemCount: _data.length,
+                itemBuilder: (BuildContext context, int index,
+                    Animation<double> animation) {
+                  return _buildItem(_data[index], animation, index);
+                }),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: TextField(
+                  decoration: InputDecoration(
+                    icon: Icon(
+                      Icons.message,
+                      color: kPrimaryColor,
                     ),
+                    hintText: "Say something with me?",
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    fillColor: Colors.white12,
                   ),
-                )
-              ],
+                  controller: _controller,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: (value) {
+                    this._getResponse();
+                  },
+                ),
+              ),
             ),
           ),
-        ));
+        ],
+      ),
+    );
+  }
+
+  http.Client _getClient() {
+    return http.Client();
+  }
+
+  void _getResponse() async {
+    if (_controller.text.length > 0) {
+      this._insertSingleItem(_controller.text);
+      var client = _getClient();
+      try {
+        client.post(
+          Uri.parse("https://uitcovidchatbot.herokuapp.com/"),
+          body: {"sentence": _controller.text},
+        ).then((response) {
+          print("tôi là bot đây: " + response.body);
+
+          Map<String, dynamic> data = jsonDecode(response.body);
+          if (data['status'] == 'OK') {
+            switch (data['response']['tag']) {
+              // chao hoi
+              case 'greeting':
+                _insertSingleItem((data['response']['data'] + "<bot>"));
+                break;
+              // tra cuu cong dung thuoc
+              case 'indications_and_usage':
+                _insertSingleItem((data['response']['data'] + "<bot>"));
+                break;
+              // tra cuu luu luong thuoc
+              case 'dosage_and_administration':
+                _insertSingleItem((data['response']['data'] + "<bot>"));
+                break;
+              // thong tin covid
+              case 'covid_info':
+                _insertSingleItem((data['response']['data']['lastUpdatedDate'] +
+                    '\n' +
+                    'Tong so ca mac: ' +
+                    (data['response']['data']['totalCases']).toString() +
+                    '\n' +
+                    'So ca mac moi: ' +
+                    (data['response']['data']['newCases']).toString() +
+                    '\n' +
+                    'Tong so ca tu vong: ' +
+                    (data['response']['data']['totalDeaths']).toString() +
+                    '\n' +
+                    'So ca moi tu vong: ' +
+                    (data['response']['data']['newDeaths']).toString() +
+                    "<bot>"));
+                break;
+              // tin tuc y te
+              case 'health_news':
+                _insertSingleItem(
+                    (data['response']['data']['news']['title'] + "<bot>"));
+                break;
+              // cong thuc nau an ngau nhien
+              case 'random_recipe':
+                _insertSingleItem((data['response']['data']['title'] +
+                    '\n' +
+                    '\n' +
+                    data['response']['data']['sourceUrl'] +
+                    "<bot>"));
+                break;
+              // kiem tra trieu chung
+              case 'symptom_checker':
+                _insertSingleItem((data['response']['data']['name'] + "<bot>"));
+                break;
+              default:
+                _insertSingleItem((data['message'] + "<bot>"));
+                break;
+            }
+          } else {
+            _insertSingleItem((data['message'] + "<bot>"));
+          }
+        });
+      } catch (e) {
+        print("Failed -> $e");
+      } finally {
+        client.close();
+        _controller.clear();
+      }
+    }
+  }
+
+  void _insertSingleItem(String message) {
+    _data.add(message);
+    _listKey.currentState!.insertItem(_data.length - 1);
+  }
+
+  Widget _buildItem(String item, Animation<double> animation, int index) {
+    DateTime date = DateTime.now();
+
+    bool mine = item.endsWith("<bot>");
+    return SizeTransition(
+      sizeFactor: animation,
+      child: Padding(
+        padding: EdgeInsets.only(top: 10),
+        child: Container(
+            alignment: mine ? Alignment.topLeft : Alignment.topRight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                mine
+                    ? Padding(
+                        padding: EdgeInsets.only(bottom: 0),
+                        child: RichText(
+                          text: TextSpan(
+                              text: "Doctor",
+                              style: TextStyle(color: Colors.black)),
+                        ),
+                      )
+                    : SizedBox(),
+                mine
+                    ? Container(
+                        margin: EdgeInsets.only(top: 5.h),
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.w),
+                              topRight: Radius.circular(15.w),
+                              bottomRight: Radius.circular(15.w),
+                            )),
+                        child: Text(
+                          item.replaceAll("<bot>", ""),
+                          style: kBigTitleTextStyle.copyWith(
+                              fontSize: ScreenUtil().setSp(17.sp)),
+                        ),
+                      )
+                    : Container(
+                        //margin: EdgeInsets.only(top: 10.h),
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.w),
+                              topRight: Radius.circular(15.w),
+                              bottomLeft: Radius.circular(15.w),
+                            )),
+                        child: Text(
+                          item.replaceAll("<bot>", ""),
+                          style: kBigTitleTextStyle.copyWith(
+                              fontSize: ScreenUtil().setSp(17.sp)),
+                        ),
+                      ),
+                mine
+                    ? Padding(
+                        padding: EdgeInsets.only(top: 6),
+                        child: RichText(
+                          text: TextSpan(
+                              text: "${date.hour}:${date.minute}",
+                              style: kBigTitleTextStyle),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(top: 6),
+                        child: RichText(
+                          text: TextSpan(
+                              text: "${date.hour}:${date.minute}",
+                              style: TextStyle(color: Colors.grey[500]),
+                              children: [
+                                TextSpan(text: " ✓", style: kBigTitleTextStyle)
+                              ]),
+                        ),
+                      ),
+              ],
+            )),
+      ),
+    );
   }
 }
 
-class MessageTile extends StatelessWidget {
-  final String message;
-  final bool sendByMe;
-  final int time;
-  final bool isDisplayTime;
-  final String timeBreakSection;
+Future<Message> fetchMessage() async {
+  final response = await http.get(
+    Uri.parse('https://uitcovidchatbot.herokuapp.com/'),
+  );
 
-  MessageTile(
-      {required this.message,
-      required this.sendByMe,
-      required this.time,
-      required this.isDisplayTime,
-      required this.timeBreakSection});
-
-  String calculateTimeAgoSinceDate(int time) {
-    DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(time);
-    final date2 = DateTime.now();
-    final diff = date2.difference(notificationDate);
-
-    if (diff.inDays > 7)
-      return DateFormat("kk:mm dd/MM/yyyy").format(notificationDate);
-    else if (diff.inDays >= 2 && diff.inDays <= 7)
-      return DateFormat('kk:mm a EEEE').format(notificationDate);
-    else if (diff.inDays > 1 && diff.inDays < 2)
-      return DateFormat("kk:mm a").format(notificationDate) + ' Yesterday';
-    else
-      return DateFormat("kk:mm a").format(notificationDate);
+  if (response.statusCode == 200) {
+    return Message.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load album');
   }
+}
 
-  @override
-  Widget build(BuildContext context) {
-    String timeChat = calculateTimeAgoSinceDate(time);
-    return Column(children: [
-      Container(
-          padding: EdgeInsets.only(
-              top: 8,
-              bottom: 8,
-              left: sendByMe ? 0 : 24,
-              right: sendByMe ? 24 : 0),
-          alignment: sendByMe ? Alignment.bottomRight : Alignment.bottomLeft,
-          child: Column(
-            crossAxisAlignment:
-                sendByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: sendByMe
-                    ? EdgeInsets.only(left: 30)
-                    : EdgeInsets.only(right: 30),
-                padding:
-                    EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-                decoration: BoxDecoration(
-                  borderRadius: sendByMe
-                      ? BorderRadius.only(
-                          topLeft: Radius.circular(23),
-                          topRight: Radius.circular(23),
-                          bottomLeft: Radius.circular(23))
-                      : BorderRadius.only(
-                          topLeft: Radius.circular(23),
-                          topRight: Radius.circular(23),
-                          bottomRight: Radius.circular(23)),
-                  color: sendByMe ? Colors.white : kFourthColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 3,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Text(message,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500)),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              isDisplayTime
-                  ? Container(
-                      child: Text(
-                        timeChat,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    )
-                  : SizedBox(),
-              SizedBox(
-                height: 10,
-              ),
-            ],
-          )),
-      (timeBreakSection != "" && isDisplayTime)
-          ? Container(
-              height: 20,
-              child: Center(
-                  child: Text(
-                timeBreakSection,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600),
-              )))
-          : SizedBox(),
-    ]);
+class Message {
+  final String title;
+
+  const Message({
+    required this.title,
+  });
+
+  factory Message.fromJson(Map<String, dynamic> json) {
+    return Message(
+      title: json['response']['data'],
+    );
   }
 }

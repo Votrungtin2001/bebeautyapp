@@ -73,12 +73,12 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
               ),
               TextButton(
                 onPressed: () async {
-                  bool result = await savedAddressServices.deleteSavedAddress(widget.address);
-                  if(result == true) {
+                  bool result = await savedAddressServices
+                      .deleteSavedAddress(widget.address);
+                  if (result == true) {
                     savedAddressProvider.deleteSavedAddress(widget.address);
                     Navigator.pop(context, 'OK');
                   }
-
                 },
                 child: const Text('OK'),
               ),
@@ -89,317 +89,335 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.pinkAccent,
-        elevation: 0,
-        automaticallyImplyLeading: true,
-        title: const Text("Change Address"),
-        titleTextStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.delete_forever_outlined),
-            color: Colors.white,
-            onPressed: () {
-              _deleteDialog();
-            },
-          ),
-        ],
-      ),
-      body: Form(
-        key: formKey,
-        child:
-          Container(
-        color: kTextLightColor.withOpacity(0.15),
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: Text(
-                            'Contact',
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1
-                                ?.copyWith(color: kTextColor),
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          elevation: 0,
+          automaticallyImplyLeading: true,
+          title: const Text("Change Address"),
+          titleTextStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w700),
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.delete_forever_outlined),
+              color: Colors.white,
+              onPressed: () {
+                _deleteDialog();
+              },
+            ),
+          ],
+        ),
+        body: Form(
+          key: formKey,
+          child: Container(
+            color: kTextLightColor.withOpacity(0.15),
+            child: LayoutBuilder(
+              builder:
+                  (BuildContext context, BoxConstraints viewportConstraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: viewportConstraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 15,
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        focusNode: nameFocusNode,
-                        onChanged: (value) {
-                          setState(() {
-                            name = value;
-                          });
-                        },
-                        cursorColor: kTextColor,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'Name is empty';
-                          }
-                          return null;
-                        },
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          hintText: widget.address.fullUserName,
-                          filled: true,
-                          fillColor: Colors.white,
-                          suffixIcon: IconButton(
-                              icon: const Icon(Icons.close_rounded),
-                              onPressed: () {
-                                _nameController.clear();
-                                setState(() {
-                                  name = "";
-                                });
-                              }
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Text(
+                                'Contact',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(color: kTextColor),
+                              ),
                             ),
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
                           ),
-                          border: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          const SizedBox(
+                            height: 15,
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      TextFormField(
-                        focusNode: phoneNumberFocusNode,
-                        onChanged: (value) {
-                          setState(() {
-                            phone = value;
-                          });
-                        },
-                        cursorColor: kTextColor,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'Phone Number is empty';
-                          }
-                          return null;
-                        },
-                        controller: _phoneController,
-                        decoration: InputDecoration(
-                          hintText: widget.address.userPhone,
-                          filled: true,
-                          fillColor: Colors.white,
-                          suffixIcon: IconButton(
-                              icon: const Icon(Icons.close_rounded),
-                              onPressed: () {
-                                _phoneController.clear();
+                          TextFormField(
+                            focusNode: nameFocusNode,
+                            onChanged: (value) {
+                              setState(() {
+                                name = value;
+                              });
+                            },
+                            cursorColor: kTextColor,
+                            validator: (text) {
+                              if (text == null || text.isEmpty) {
+                                return 'Name is empty';
+                              }
+                              return null;
+                            },
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              hintText: widget.address.fullUserName,
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.close_rounded),
+                                  onPressed: () {
+                                    _nameController.clear();
+                                    setState(() {
+                                      name = "";
+                                    });
+                                  }),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 3,
+                          ),
+                          TextFormField(
+                            focusNode: phoneNumberFocusNode,
+                            onChanged: (value) {
+                              setState(() {
+                                phone = value;
+                              });
+                            },
+                            cursorColor: kTextColor,
+                            validator: (text) {
+                              if (text == null || text.isEmpty) {
+                                return 'Phone Number is empty';
+                              }
+                              return null;
+                            },
+                            controller: _phoneController,
+                            decoration: InputDecoration(
+                              hintText: widget.address.userPhone,
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.close_rounded),
+                                  onPressed: () {
+                                    _phoneController.clear();
+                                    setState(() {
+                                      phone = "";
+                                    });
+                                  }),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Text(
+                                'Address',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(color: kTextColor),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          TextFormField(
+                            focusNode: addressFocusNode,
+                            onChanged: (value) {
+                              setState(() {
+                                address = value;
+                              });
+                            },
+                            cursorColor: kTextColor,
+                            validator: (text) {
+                              if (text == null || text.isEmpty) {
+                                return 'Address is empty';
+                              }
+                              return null;
+                            },
+                            controller: _addressController,
+                            decoration: InputDecoration(
+                              hintText: widget.address.fullAddressName,
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.close_rounded),
+                                  onPressed: () {
+                                    _addressController.clear();
+                                    setState(() {
+                                      address = "";
+                                      latitude = 0;
+                                      longitude = 0;
+                                    });
+                                  }),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          RaisedButton(
+                              onPressed: () async {
+                                Position position =
+                                    await _getGeoLocationPosition();
+                                LatLng location = new LatLng(
+                                    position.latitude, position.longitude);
+                                GetAddressFromLatLong(position);
+                                _addressController.text = address;
                                 setState(() {
-                                  phone = "";
+                                  latitude = location.latitude;
+                                  longitude = location.longitude;
                                 });
-                              }),
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                              },
+                              color: kThirdColor,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 50),
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: const Text('Get Location')),
+                          const SizedBox(
+                            height: 20,
                           ),
-                          border: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          Container(height: 30),
+                          Container(
+                            height: 50,
+                            color: Colors.white,
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text(
+                                    'Set default address',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Poppins',
+                                      color: kTextColor,
+                                    ),
+                                  ),
+                                ),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 12.0),
+                                  child: FlutterSwitch(
+                                    height: 25.0,
+                                    width: 50.0,
+                                    padding: 4.0,
+                                    toggleSize: 17.5,
+                                    borderRadius: 15.0,
+                                    activeColor: kPrimaryColor,
+                                    value: widget.address.isDefault,
+                                    onToggle: (value) {
+                                      setState(() {
+                                        isDefault = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: Text(
-                            'Address',
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1
-                                ?.copyWith(color: kTextColor),
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      TextFormField(
-                        focusNode: addressFocusNode,
-                        onChanged: (value) {
-                          setState(() {
-                            address = value;
-                          });
-                        },
-                        cursorColor: kTextColor,
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return 'Address is empty';
-                          }
-                          return null;
-                        },
-                        controller: _addressController,
-                        decoration: InputDecoration(
-                          hintText: widget.address.fullAddressName,
-                          filled: true,
-                          fillColor: Colors.white,
-                          suffixIcon: IconButton(
-                              icon: const Icon(Icons.close_rounded),
-                              onPressed: () {
-                                _addressController.clear();
+                          RaisedButton(
+                            onPressed: () async {
+                              if (isDefault == true) {
+                                await savedAddressServices
+                                    .updateDefaultSavedAddress(
+                                        widget.address.id,
+                                        widget.address.userID);
+                              }
+
+                              MSavedAddress temp = new MSavedAddress(
+                                  widget.address.id,
+                                  widget.address.userID,
+                                  address,
+                                  name,
+                                  phone,
+                                  false,
+                                  false,
+                                  latitude,
+                                  longitude);
+                              temp.setPhone(phone);
+                              temp.setFullUserName(name);
+                              temp.setFullAddressName(address);
+                              temp.setLongitude(longitude);
+                              temp.setLatitude(latitude);
+                              bool result = await savedAddressServices
+                                  .updateSavedAddress(temp);
+                              if (result == true) {
                                 setState(() {
                                   address = "";
+                                  _addressController.clear();
+                                  phone = "";
+                                  _phoneController.clear();
+                                  name = "";
+                                  _nameController.clear();
                                   latitude = 0;
                                   longitude = 0;
                                 });
-                              }),
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          border: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      RaisedButton(
-                          onPressed: () async {
-                            Position position = await _getGeoLocationPosition();
-                            LatLng location = new LatLng(
-                                position.latitude, position.longitude);
-                            GetAddressFromLatLong(position);
-                            _addressController.text = address;
-                            setState(() {
-                              latitude = location.latitude;
-                              longitude = location.longitude;
-                            });
-                          },
-                          color: kThirdColor,
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          child: const Text('Get Location')),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(height: 30),
-                      Container(
-                        height: 50,
-                        color: Colors.white,
-                        child: Row(
-                          children: [
-                            const Padding(
-                              padding: const EdgeInsets.only(left: 12.0),
-                              child: Text(
-                                'Set default address',
-                                style: TextStyle(
-                                  fontSize: 16,
+                                await savedAddressProvider
+                                    .getSavedAddresses(widget.address.userID);
+                                Fluttertoast.showToast(
+                                    msg: 'Updated this address successfully',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM);
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: 'Updated this address failed',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM);
+                              }
+                            },
+                            color: kPrimaryColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: const Text(
+                              "Save",
+                              style: TextStyle(
+                                  fontSize: 18,
                                   fontFamily: 'Poppins',
-                                  color: kTextColor,
-                                ),
-                              ),
+                                  color: kTextColor),
                             ),
-                            const Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 12.0),
-                              child: FlutterSwitch(
-                                height: 25.0,
-                                width: 50.0,
-                                padding: 4.0,
-                                toggleSize: 17.5,
-                                borderRadius: 15.0,
-                                activeColor: kPrimaryColor,
-                                value: widget.address.isDefault,
-                                onToggle: (value) {
-                                  setState(() {
-                                    isDefault = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      RaisedButton(
-                        onPressed: () async {
-                          if(isDefault == true) {
-                            await savedAddressServices.updateDefaultSavedAddress(widget.address.id, widget.address.userID);
-                          }
-
-                          MSavedAddress temp = new MSavedAddress(widget.address.id,
-                              widget.address.userID, address, name, phone, false, false, latitude, longitude);
-                          temp.setPhone(phone);
-                          temp.setFullUserName(name);
-                          temp.setFullAddressName(address);
-                          temp.setLongitude(longitude);
-                          temp.setLatitude(latitude);
-                          bool result = await savedAddressServices.updateSavedAddress(temp);
-                          if(result == true) {
-                            setState(() {
-                              address = "";
-                              _addressController.clear();
-                              phone = "";
-                              _phoneController.clear();
-                              name = "";
-                              _nameController.clear();
-                              latitude = 0;
-                              longitude = 0;
-                            });
-                            await savedAddressProvider.getSavedAddresses(widget.address.userID);
-                            Fluttertoast.showToast(msg: 'Updated this address successfully', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                          }
-                          else {
-                            Fluttertoast.showToast(msg: 'Updated this address failed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                          }
-
-                        },
-                        color: kPrimaryColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: const Text(
-                          "Save",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'Poppins',
-                              color: kTextColor),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    ));
+                );
+              },
+            ),
+          ),
+        ));
   }
 
   Future<Position> _getGeoLocationPosition() async {
@@ -445,11 +463,9 @@ class _ChangeAddressScreen extends State<ChangeAddressScreen> {
 
     setState(() {
       address =
-      '${place.street}, ${place.subAdministrativeArea},${place.administrativeArea}';
+          '${place.street}, ${place.subAdministrativeArea},${place.administrativeArea}';
     });
   }
-
-
 
   Future<void> _backDialog() async {
     return showDialog<void>(

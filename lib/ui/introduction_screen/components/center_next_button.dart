@@ -14,10 +14,10 @@ class CenterNextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _topMoveAnimation =
-        Tween<Offset>(begin: Offset(0, 5), end: Offset(0, 0))
+        Tween<Offset>(begin: const Offset(0, 5), end: const Offset(0, 0.7))
             .animate(CurvedAnimation(
       parent: animationController,
-      curve: Interval(
+      curve: const Interval(
         0.0,
         0.2,
         curve: Curves.fastOutSlowIn,
@@ -26,12 +26,13 @@ class CenterNextButton extends StatelessWidget {
     final _signUpMoveAnimation =
         Tween<double>(begin: 0, end: 1.0).animate(CurvedAnimation(
       parent: animationController,
-      curve: Interval(
+      curve: const Interval(
         0.6,
         0.8,
         curve: Curves.fastOutSlowIn,
       ),
     ));
+
     final _loginTextMoveAnimation =
         Tween<Offset>(begin: Offset(0, 5), end: Offset(0, 0))
             .animate(CurvedAnimation(
@@ -54,30 +55,15 @@ class CenterNextButton extends StatelessWidget {
             position: _topMoveAnimation,
             child: AnimatedBuilder(
               animation: animationController,
-              builder: (context, child) => AnimatedOpacity(
-                opacity: animationController.value >= 0.2 &&
-                        animationController.value <= 0.6
-                    ? 1
-                    : 0,
-                duration: const Duration(milliseconds: 480),
-                child: _pageView(),
-              ),
-            ),
-          ),
-          SlideTransition(
-            position: _topMoveAnimation,
-            child: AnimatedBuilder(
-              animation: animationController,
               builder: (context, child) => Padding(
-                padding: EdgeInsets.only(
-                    bottom: 38 - (38 * _signUpMoveAnimation.value)),
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                ),
                 child: Container(
-                  height: 58,
-                  width: 58 + (200 * _signUpMoveAnimation.value),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: kPrimaryColor,
-                  ),
+                  height: 48,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white,
                   child: PageTransitionSwitcher(
                     duration: const Duration(milliseconds: 480),
                     reverse: _signUpMoveAnimation.value < 0.7,
@@ -112,11 +98,12 @@ class CenterNextButton extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Create Account',
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
+                                      color: kGreenColor,
+                                      fontSize: 16,
+                                      fontFamily: 'Helvetica',
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -127,85 +114,36 @@ class CenterNextButton extends StatelessWidget {
                         : InkWell(
                             key: ValueKey('next button'),
                             onTap: onNextClick,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Icon(Icons.arrow_forward_ios_rounded,
-                                  color: Colors.white),
-                            ),
+                            child: const SizedBox(
+                                height: 48,
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Next',
+                                      style: TextStyle(
+                                        color: kGreenColor,
+                                        fontSize: 16,
+                                        fontFamily: 'Helvetica',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ))),
                           ),
                   ),
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: SlideTransition(
-              position: _loginTextMoveAnimation,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.transparent,
-                    ),
-                    child: InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 263,
-                              height: 57,
-                              child: OutlinedButton(
-                                child: Text('Login',
-                                    style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24)),
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                    color: kPrimaryColor,
-                                    style: BorderStyle.solid,
-                                    width: 3,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen()),
-                                  );
-                                },
-                              ),
-                            ),
-                            // MaterialButton(
-                            //   child: Text("Button text"),
-                            //       onPressed: null,
-                            //       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
-                            //   ),
-                            // Text(
-                            //   'Login',
-                            //   style: TextStyle(
-                            //     color: Colors.white,
-                            //     fontSize: 18,
-                            //     fontWeight: FontWeight.w500,
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, RegisterScreen.id);
-                      },
-                    ),
-                  ),
-                ],
+          SlideTransition(
+            position: _topMoveAnimation,
+            child: AnimatedBuilder(
+              animation: animationController,
+              builder: (context, child) => AnimatedOpacity(
+                opacity: animationController.value >= 0.2 &&
+                        animationController.value <= 0.6
+                    ? 1
+                    : 0,
+                duration: const Duration(milliseconds: 480),
+                child: _pageView(),
               ),
             ),
           ),
@@ -216,7 +154,6 @@ class CenterNextButton extends StatelessWidget {
 
   Widget _pageView() {
     int _selectedIndex = 0;
-
     if (animationController.value >= 0.7) {
       _selectedIndex = 3;
     } else if (animationController.value >= 0.5) {
@@ -228,13 +165,13 @@ class CenterNextButton extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(top: 16, bottom: 48),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           for (var i = 0; i < 4; i++)
             Padding(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.only(top: 12, left: 4, right: 4),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 480),
                 decoration: BoxDecoration(

@@ -2,6 +2,9 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 
+import '../../authenication/login/login_screen.dart';
+import '../../authenication/register/register_screen.dart';
+
 class WelcomeView extends StatelessWidget {
   final AnimationController animationController;
   const WelcomeView({Key? key, required this.animationController})
@@ -17,7 +20,7 @@ class WelcomeView extends StatelessWidget {
         dotSize: 6.0,
         dotSpacing: 15.0,
         dotPosition: DotPosition.bottomCenter,
-        images: [
+        images: const [
           AssetImage("assets/images/introduction_bg.png"),
           AssetImage("assets/images/intro_background.png"),
         ],
@@ -58,70 +61,87 @@ class WelcomeView extends StatelessWidget {
       ),
     ));
 
-    final _welcomeImageAnimation =
-        Tween<Offset>(begin: Offset(4, 0), end: Offset(0, 0))
-            .animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(
-        0.6,
-        0.8,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ));
     return SlideTransition(
       position: _firstHalfAnimation,
       child: SlideTransition(
         position: _secondHalfAnimation,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 100),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // SlideTransition(
-              //   position: _welcomeImageAnimation,
-              //   child: Container(
-              //     // constraints: BoxConstraints(maxWidth: 350, maxHeight: 350),
-              //     child: image_slider_carousel
-              //   ),
-              // ),
-              SlideTransition(
-                  position: _welcomeFirstHalfAnimation,
-                  child: Padding(
-                      padding: const EdgeInsets.only(left: 36),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 360,
-                          ),
-                          Text.rich(TextSpan(
-                              text: 'Welcome to\n',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SlideTransition(
+                position: _welcomeFirstHalfAnimation,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 250,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 24.0),
+                      child: Text.rich(TextSpan(
+                          text: 'Welcome to\n',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Laila',
+                              color: kTextColor,
+                              fontWeight: FontWeight.w500),
+                          children: <InlineSpan>[
+                            TextSpan(
+                              text: 'The world of\n',
                               style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 42,
+                                  fontWeight: FontWeight.w900,
                                   fontFamily: 'Laila',
-                                  color: kTextColor,
-                                  fontWeight: FontWeight.w500),
-                              children: <InlineSpan>[
-                                TextSpan(
-                                  text: 'The world of\n',
+                                  color: kTextColor),
+                            ),
+                            TextSpan(
+                              text: 'LaMuse',
+                              style: TextStyle(
+                                  fontSize: 42,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'Laila',
+                                  color: kRedColor),
+                            )
+                          ])),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 32,
+                            height: 48,
+                            child: OutlinedButton(
+                              child: const Text('Login',
                                   style: TextStyle(
-                                      fontSize: 42,
-                                      fontWeight: FontWeight.w900,
-                                      fontFamily: 'Laila',
-                                      color: kTextColor),
+                                      color: kGreenColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24)),
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(
+                                  color: kGreenColor,
+                                  style: BorderStyle.solid,
+                                  width: 1,
                                 ),
-                                TextSpan(
-                                  text: 'LaMuse',
-                                  style: TextStyle(
-                                      fontSize: 42,
-                                      fontWeight: FontWeight.w900,
-                                      fontFamily: 'Laila',
-                                      color: kPrimaryColor),
-                                )
-                              ])),
-                        ],
-                      ))),
-            ],
-          ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()),
+                                );
+                              },
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, RegisterScreen.id);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+          ],
         ),
       ),
     );

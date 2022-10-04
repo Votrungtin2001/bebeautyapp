@@ -1,3 +1,4 @@
+import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/MProduct.dart';
 import 'package:bebeautyapp/model/MReview.dart';
 import 'package:bebeautyapp/repo/providers/product_provider.dart';
@@ -29,10 +30,11 @@ class NewProduct extends StatelessWidget {
     final productProvider = Provider.of<ProductProvider>(context);
     final reviewProvider = Provider.of<ReviewProvider>(context);
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           SectionTitle(
+            color: kRedColor,
             title: "New product",
             press: () {
               Navigator.push(
@@ -52,42 +54,40 @@ class NewProduct extends StatelessWidget {
             children: List.generate(
               products.length,
               (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: ProductCard(
-                    rating: true,
-                    product: products[index],
-                    press: () async {
-                      productProvider
-                          .isNeededUpdated_SimilarProductsBasedUserByCBR = true;
-                      await preferenceServices.updatePreference(
-                          userProvider.user, products[index]);
-                      await productProvider.updateSimilarProductsBasedUserByCBR(
-                          productProvider.products, userProvider.user);
+                return ProductCard(
+                  rating: true,
+                  product: products[index],
+                  press: () async {
+                    // productProvider
+                    //     .isNeededUpdated_SimilarProductsBasedUserByCBR = true;
+                    // await preferenceServices.updatePreference(
+                    //     userProvider.user, products[index]);
+                    // await productProvider.updateSimilarProductsBasedUserByCBR(
+                    //     productProvider.products, userProvider.user);
 
-                      //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
-                      //await preferenceServices.updatePreference(userProvider.user, products[index]);
+                    //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
+                    //await preferenceServices.updatePreference(userProvider.user, products[index]);
 
-                      List<MProduct> similarProductsFromSelectedProducts =
-                          await productServices
-                              .getSimilarityProductsBySelectedProduct(
-                                  productProvider.products, products[index]);
+                    // List<MProduct> similarProductsFromSelectedProducts =
+                    //     await productServices
+                    //         .getSimilarityProductsBySelectedProduct(
+                    //             productProvider.products, products[index]);
 
-                      List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, products[index].id);
+                    List<MReview> reviewsOfProduct =
+                        reviewServices.getReviewOfProduct(
+                            reviewProvider.reviews, products[index].id);
 
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailsScreen(
-                              product: products[index],
-                              similarProductsFromSelectedProducts:
-                                  similarProductsFromSelectedProducts,
-                              reviewsOfProduct: reviewsOfProduct,
-                            ),
-                          ));
-                    },
-                  ),
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsScreen(
+                            product: products[index],
+                            // similarProductsFromSelectedProducts:
+                            //     similarProductsFromSelectedProducts,
+                            reviewsOfProduct: reviewsOfProduct,
+                          ),
+                        ));
+                  },
                 );
               },
             ),

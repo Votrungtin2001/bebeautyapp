@@ -61,7 +61,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/bg2.png"),
+          image: AssetImage("assets/images/avt.png"),
           fit: BoxFit.cover,
         ),
       ),
@@ -86,7 +86,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     CircleAvatar(
                       backgroundImage: imageFile != null
                           ? Image.file(imageFile!, fit: BoxFit.cover).image
-                          : Image.network(user_model.user.avatarUri, fit: BoxFit.cover).image,
+                          : Image.network(user_model.user.avatarUri,
+                                  fit: BoxFit.cover)
+                              .image,
                     ),
                     Positioned(
                       right: -16,
@@ -241,8 +243,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   RaisedButton(
                     onPressed: () async {
                       String image = "";
-                      if(imageFile != null) {
-                        image = await imageServices.addImageAndReturnString(imageFile);
+                      if (imageFile != null) {
+                        image = await imageServices
+                            .addImageAndReturnString(imageFile);
                         user_model.user.setAvatarURi(image);
                       }
                       if (name != "") {
@@ -251,8 +254,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       if (phone != "") {
                         user_model.user.setPhone(phone);
                       }
-                      bool result = await userServices.updateUserInformation(user_model.user);
-                      if(result == true) {
+                      bool result = await userServices
+                          .updateUserInformation(user_model.user);
+                      if (result == true) {
                         _nameController.text = "";
                         _phoneController.text = "";
 
@@ -263,14 +267,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM);
                         Navigator.of(context).pop();
-                      }
-                      else {
+                      } else {
                         Fluttertoast.showToast(
                             msg: 'Updated your information failed',
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM);
                       }
-
                     },
                     color: kPrimaryColor,
                     padding: EdgeInsets.symmetric(horizontal: 50),

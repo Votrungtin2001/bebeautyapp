@@ -20,18 +20,17 @@ import '../../../repo/services/product_services.dart';
 
 class DetailsScreen extends StatelessWidget {
   final MProduct product;
-  final List<MProduct> similarProductsFromSelectedProducts;
+  //final List<MProduct> similarProductsFromSelectedProducts;
   final List<MReview> reviewsOfProduct;
 
   final productServices = new ProductServices();
-
 
   final ScrollController _scrollController = ScrollController();
 
   DetailsScreen(
       {Key? key,
       required this.product,
-      required this.similarProductsFromSelectedProducts,
+      //required this.similarProductsFromSelectedProducts,
       required this.reviewsOfProduct})
       : super(key: key);
 
@@ -212,9 +211,9 @@ class DetailsScreen extends StatelessWidget {
           controller: _scrollController,
           child: Column(children: [
             Body(
-                product: product,
-                similarProductsFromSelectedProducts:
-                    similarProductsFromSelectedProducts,
+              product: product,
+              // similarProductsFromSelectedProducts:
+              //     similarProductsFromSelectedProducts,
               reviewsOfProduct: reviewsOfProduct,
             ),
           ])),

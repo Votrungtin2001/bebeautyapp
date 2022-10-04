@@ -20,7 +20,6 @@ class DetailsBrand extends StatelessWidget {
   final MBrand brand;
   final List<MProduct> allProductsFromBrand;
 
-
   final reviewServices = new ReviewServices();
   final preferenceServices = new PreferenceServices();
   final productServices = new ProductServices();
@@ -108,25 +107,27 @@ class DetailsBrand extends StatelessWidget {
                             rating: true,
                             product: allProductsFromBrand[index],
                             press: () async {
-                              productProvider
-                                      .isNeededUpdated_SimilarProductsBasedUserByCBR =
-                                  true;
-                              await preferenceServices.updatePreference(
-                                  userProvider.user,
-                                  allProductsFromBrand[index]);
+                              // productProvider
+                              //         .isNeededUpdated_SimilarProductsBasedUserByCBR =
+                              //     true;
+                              // await preferenceServices.updatePreference(
+                              //     userProvider.user,
+                              //     allProductsFromBrand[index]);
 
                               //productProvider.isNeededUpdated_SimilarProductsByCFR = true;
                               //await preferenceServices.updatePreference(userProvider.user, products[index]);
 
-                              List<MProduct>
-                                  similarProductsFromSelectedProducts =
-                                  await productServices
-                                      .getSimilarityProductsBySelectedProduct(
-                                          productProvider.products,
-                                          allProductsFromBrand[index]);
+                              // List<MProduct>
+                              //     similarProductsFromSelectedProducts =
+                              //     await productServices
+                              //         .getSimilarityProductsBySelectedProduct(
+                              //             productProvider.products,
+                              //             allProductsFromBrand[index]);
 
-                              List<MReview> reviewsOfProduct = reviewServices.getReviewOfProduct(reviewProvider.reviews, allProductsFromBrand[index].id);
-
+                              List<MReview> reviewsOfProduct =
+                                  reviewServices.getReviewOfProduct(
+                                      reviewProvider.reviews,
+                                      allProductsFromBrand[index].id);
 
                               Navigator.push(
                                   context,
@@ -136,8 +137,8 @@ class DetailsBrand extends StatelessWidget {
                                     // ),
                                     builder: (context) => DetailsScreen(
                                       product: allProductsFromBrand[index],
-                                      similarProductsFromSelectedProducts:
-                                          similarProductsFromSelectedProducts,
+                                      // similarProductsFromSelectedProducts:
+                                      //     similarProductsFromSelectedProducts,
                                       reviewsOfProduct: reviewsOfProduct,
                                     ),
                                   ));

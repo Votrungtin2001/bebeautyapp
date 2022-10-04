@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:badges/badges.dart';
@@ -5,6 +6,7 @@ import 'package:bebeautyapp/constants.dart';
 import 'package:bebeautyapp/model/user/MUser.dart';
 import 'package:bebeautyapp/repo/providers/user_provider.dart';
 import 'package:bebeautyapp/ui/authenication/login/login_screen.dart';
+import 'package:bebeautyapp/ui/chat_user/chat.dart';
 
 import 'package:bebeautyapp/ui/home/payment/order_checkout/myorder.dart';
 import 'package:bebeautyapp/ui/profile/widgets/address.dart';
@@ -341,7 +343,7 @@ void signOutDrawer(BuildContext context) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => LoginScreen()),
-                            (Route<dynamic> route) => false,
+                        (Route<dynamic> route) => false,
                       );
                     },
                     color: kPrimaryColor,
